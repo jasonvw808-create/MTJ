@@ -9,6 +9,7 @@ The two catalogue volumes use only the facts in the supplied records: the granit
 | G1 | **Brand spelling.** The brief says "Majuterus Jaya". The logo artwork and the site say **Maju Terus Jaya**. | The supplied logo artwork is used unchanged. Confirm the spelling to use in running text and the PDF metadata. |
 | G2 | **Lifestyle images.** Every kitchen image is a 3D visualisation. Each sink was built from its listed dimensions and its product photograph. None is a photograph of a physical product. | The notes in each volume say so. Confirm this is acceptable, or replace the images with photography later. |
 | G3 | **Taps, wastes and accessories in the kitchens** are styling, apart from the fittings listed in the price list. | Each volume says that items shown are not included unless listed in the specifications. |
+| G4 | **Bahasa Indonesia editions.** The translation was made with AI from the English text and has not been checked by a native speaker. | Have it proofread before printing. Product and trade terms (Pressed, Hand Made, Inset Edge, Flat Edge, finish names, brands, undermount, top-mount) are kept in English, as in the source records. |
 
 ## Granite Kitchen Sink Collection (Volume 01)
 
@@ -26,7 +27,7 @@ The two catalogue volumes use only the facts in the supplied records: the granit
 
 | # | Model | Item | What the catalogue does |
 |---|-------|------|-------------------------|
-| S1 | W 10050 TSG | **Width printed as "10050 mm"** in the price list. The model code and the photograph proportions (500 : 1000) suggest 1000 mm. | Width shown as **TBC †** in the specifications, the drawing and the index. The render uses 1000 mm. |
+| S1 | W 10050 TSG | **Width printed as "10050 mm"** in the price list. The model code and the photograph proportions (500 : 1000) suggest 1000 mm. | Width shown as **TBC †** in the specifications, the drawing and the index (**? †** in the Indonesian edition, where "TBC" reads as tuberculosis). The render uses 1000 mm. |
 | S2 | W 5050 TSB | **Thickness printed "± 0.3 + 0.9 mm".** Every other hand made model reads "± 3.0 + 0.7/0.9 mm", so this is probably a typing error. | Printed as in the source, marked †. |
 | S3 | W 8550 TDG | **Bowl configuration not stated.** In the photograph the bowls sit under the two tempered glass covers. The code's "D" suggests double. | Bowls are "Not stated †". The image shows the covers closed, as photographed. The drawing shows the two glass covers, with the bowls dashed. |
 | S4 | WL 07, WL 12, WL 18 | **Handing.** The product photographs show the drainboard on the right. The price-list pictures show it on the left. | Shown as photographed (drainboard on the right), with a † note. Confirm which handing is supplied, or whether both are. |

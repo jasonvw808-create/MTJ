@@ -97,6 +97,7 @@ class Volume:
         self.vol = "01" if self.G else "02"
         self.pages = []
         self.page_of = {}
+        self.outline = []   # (title, page, level): the PDF's bookmarks, set by finalize_pdf.py
 
     # ── facts, phrased ──
     def eyebrow(self, m):
@@ -133,10 +134,12 @@ class Volume:
         return rows
 
     # ── pages ──
-    def add(self, html_, key=None):
+    def add(self, html_, key=None, mark=None, level=0):
         self.pages.append(html_)
         if key:
             self.page_of[key] = len(self.pages)
+        if mark:
+            self.outline.append((mark, len(self.pages), level))
 
     def cover(self):
         if self.G:
@@ -327,7 +330,7 @@ class Volume:
         nhtml = "".join(f"<p>{T(t)}</p>" for t in notes[:half])
         nhtml2 = "".join(f"<p>{T(t)}</p>" for t in notes[half:])
         notes_block = ("" if not self.G else
-                       f'<div class="ix-notes" style="top:92mm;bottom:auto"><div><h4 class="label" style="color:var(--ink)">About this catalogue</h4>{nhtml}</div><div><h4 class="label">&nbsp;</h4>{nhtml2}</div></div>')
+                       f'<div class="ix-notes" style="top:92mm;bottom:auto"><div><h4 class="label" style="color:var(--ink)">About this catalogue</h4>{nhtml}</div><div><div class="label" style="margin:0 0 2.5mm">&nbsp;</div>{nhtml2}</div></div>')
         strip = (bleed_img("ix-strip", self.A["strip"], "center") if self.G and self.A.get("strip") else "")
         return f'''<section class="page index vol-{self.kind}{' with-strip' if self.G else ''}">
   {strip if self.G else ''}
@@ -386,34 +389,38 @@ class Volume:
     # ── the whole volume ──
     def build(self):
         if self.G:
-            self.add(self.cover())
+            self.add(self.cover(), mark="Cover")
             contents = [("The collection", 3, "03"), ("Colours", 4, "04"), ("Models", 5, "05 – 10"), ("Index", 11, "11")]
-            self.add(self.intro(contents))
-            self.add(self.overview(self.models, "Six Models", "Each model is shown on its own page, installed in a kitchen of its own, with its specifications and drawing.", 2, 52))
-            self.add(self.colours_page())
+            self.add(self.intro(contents), mark="Introduction and contents")
+            self.add(self.overview(self.models, "Six Models", "Each model is shown on its own page, installed in a kitchen of its own, with its specifications and drawing.", 2, 52),
+                     mark="The collection")
+            self.add(self.colours_page(), mark="Colours")
+            self.outline.append(("Models", len(self.pages) + 1, 0))
             for m in self.models:
-                self.add(self.feature(m), key=m["model"])
-            self.add(self.index_page())
-            self.add(self.back())
+                self.add(self.feature(m), key=m["model"], mark=m["model"], level=1)
+            self.add(self.index_page(), mark="Index and notes")
+            self.add(self.back(), mark="Back cover")
         else:
             pressed = [m for m in self.models if m["range"] == "Pressed"]
             hand = [m for m in self.models if m["range"] == "Hand Made"]
-            self.add(self.cover())
+            self.add(self.cover(), mark="Cover")
             contents = [("Finishes", 3, "03"), ("The collection", 4, "04 – 05"), ("Pressed", 6, "06 – 17"), ("Hand Made", 18, "18 – 32"), ("Index", 33, "33"), ("Notes", 34, "34")]
-            self.add(self.intro(contents))
-            self.add(self.finishes_page())
-            self.add(self.overview(pressed, "Pressed", "Eleven models in stainless steel 201, from LUCKY PRO and wellup.", 4, 44, n_label="The collection · 1 of 2"))
-            self.add(self.overview(hand, "Hand Made", "Fourteen models in stainless steel 201 and 304, from wellup.", 4, 28, n_label="The collection · 2 of 2"))
-            self.add(self.opener("Pressed", pressed, self.A["opener_pressed"], self.A.get("opener_pressed_pos", "center")))
+            self.add(self.intro(contents), mark="Introduction and contents")
+            self.add(self.finishes_page(), mark="Finishes")
+            self.add(self.overview(pressed, "Pressed", "Eleven models in stainless steel 201, from LUCKY PRO and wellup.", 4, 44, n_label="The collection · 1 of 2"),
+                     mark="The collection: Pressed")
+            self.add(self.overview(hand, "Hand Made", "Fourteen models in stainless steel 201 and 304, from wellup.", 4, 28, n_label="The collection · 2 of 2"),
+                     mark="The collection: Hand Made")
+            self.add(self.opener("Pressed", pressed, self.A["opener_pressed"], self.A.get("opener_pressed_pos", "center")), mark="Pressed range")
             for m in pressed:
-                self.add(self.feature(m), key=m["model"])
-            self.add(self.opener("Hand Made", hand, self.A["opener_hand"], self.A.get("opener_hand_pos", "center")))
+                self.add(self.feature(m), key=m["model"], mark=m["model"], level=1)
+            self.add(self.opener("Hand Made", hand, self.A["opener_hand"], self.A.get("opener_hand_pos", "center")), mark="Hand Made range")
             for m in hand:
-                self.add(self.feature(m), key=m["model"])
-            self.add(self.index_page())
-            self.add(self.notes_page())
+                self.add(self.feature(m), key=m["model"], mark=m["model"], level=1)
+            self.add(self.index_page(), mark="Index")
+            self.add(self.notes_page(), mark="Notes")
             self.add(self.image_page(self.A["closing"], self.A.get("closing_pos", "center")))
-            self.add(self.back())
+            self.add(self.back(), mark="Back cover")
         out = "\n".join(self.pages)
         for model, p in self.page_of.items():
             out = out.replace("{PAGE:" + model + "}", f"{p:02d}")
@@ -446,6 +453,7 @@ def main():
         body = vol.build()
         name = f"{kind}-{mode}.html"
         open(os.path.join(out_dir, name), "w").write(document(vol, body, mode))
+        json.dump([dict(title=t, page=p, level=lv) for t, p, lv in vol.outline], open(os.path.join(out_dir, f"{kind}-{mode}.outline.json"), "w"), indent=1)
         print(name, len(vol.pages), "pages")
 
 

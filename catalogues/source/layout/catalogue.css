@@ -176,6 +176,9 @@ h1, h2, h3 { margin: 0; font-weight: 300; }
 .back .bk-line { margin: 9mm auto 0; font-family: var(--display); font-weight: 400; font-size: 6.6pt; letter-spacing: .3em; text-transform: uppercase; color: var(--bone2); line-height: 2.1; }
 .back .bk-foot { position: absolute; left: 15mm; right: 15mm; bottom: 14mm; text-align: center; font-size: 6pt; line-height: 1.6; color: #8f877d; }
 .full-img { left: 0; right: 0; top: 0; bottom: 0; }
+/* a soft shade under the folio wherever it sits on a photograph */
+.full-img::after, .ix-strip::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--bleed) + 26mm);
+  background: linear-gradient(to top, rgba(18,17,16,.58), rgba(18,17,16,.3) 45%, rgba(18,17,16,0)); }
 
 /* an image across the foot of a text page (index, notes) */
 .ix-strip { left: 0; right: 0; bottom: 0; height: calc(var(--bleed) + 104mm); }

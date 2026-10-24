@@ -17,8 +17,8 @@ for MODE in screen print; do
   node "$HERE/export_pdf.js" "$WORK/stainless-$MODE.html" "$WORK/stainless-$MODE.pdf"
 done
 FIN="$HERE/finalize_pdf.py"
-$PY "$FIN" "$WORK/granite-screen.pdf" "$OUT/MTJ_Granite_Kitchen_Sink_Collection_Vol01.pdf" "Maju Terus Jaya — Granite Kitchen Sink Collection — Volume 01" screen
-$PY "$FIN" "$WORK/granite-print.pdf" "$OUT/MTJ_Granite_Kitchen_Sink_Collection_Vol01_PRINT.pdf" "Maju Terus Jaya — Granite Kitchen Sink Collection — Volume 01 (print)" print
-$PY "$FIN" "$WORK/stainless-screen.pdf" "$OUT/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02.pdf" "Maju Terus Jaya — Stainless Steel Kitchen Sink Collection — Volume 02" screen
-$PY "$FIN" "$WORK/stainless-print.pdf" "$OUT/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_PRINT.pdf" "Maju Terus Jaya — Stainless Steel Kitchen Sink Collection — Volume 02 (print)" print
+$PY "$FIN" "$WORK/granite-screen.pdf" "$OUT/MTJ_Granite_Kitchen_Sink_Collection_Vol01.pdf" "Maju Terus Jaya — Granite Kitchen Sink Collection — Volume 01" screen "$WORK/granite-screen.outline.json"
+$PY "$FIN" "$WORK/granite-print.pdf" "$OUT/MTJ_Granite_Kitchen_Sink_Collection_Vol01_PRINT.pdf" "Maju Terus Jaya — Granite Kitchen Sink Collection — Volume 01 (print)" print "$WORK/granite-print.outline.json"
+$PY "$FIN" "$WORK/stainless-screen.pdf" "$OUT/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02.pdf" "Maju Terus Jaya — Stainless Steel Kitchen Sink Collection — Volume 02" screen "$WORK/stainless-screen.outline.json"
+$PY "$FIN" "$WORK/stainless-print.pdf" "$OUT/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_PRINT.pdf" "Maju Terus Jaya — Stainless Steel Kitchen Sink Collection — Volume 02 (print)" print "$WORK/stainless-print.outline.json"
 ls -la "$OUT"

@@ -63,7 +63,7 @@ NOTES = {
     "W 6045 TSS": [DECK], "W 6045 TSB": [DECK], "W 8050 TSS": [DECK], "W 8050 TSB": [DECK], "W 8245 TDB": [DECK],
     "W 7546 TSB": ["Glass rinser, control knob and button are shown as in the product photograph; only the 5 Modes Spray is listed in the price list — to be confirmed."],
     "W 7546 TSBN": ["Control panel, buttons and display are shown as in the product photograph; only the 5 Modes Spray is listed in the price list — to be confirmed."],
-    "W 8550 TDG": ["The price list states neither the bowl configuration nor the knife holder, soap dispenser and control knob seen in the product photograph — to be confirmed."],
+    "W 8550 TDG": ["The price list states neither the bowl configuration nor the soap dispenser and control knob seen in the product photograph — to be confirmed."],
     "W 10050 TSG": ["Width printed as “10050” mm in the price list; read as 1000 mm from the model code and the photograph — to be confirmed."],
 }
 

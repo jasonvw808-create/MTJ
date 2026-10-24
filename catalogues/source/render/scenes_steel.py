@@ -678,13 +678,15 @@ def w8550tdg():
         kitchen.worktop(-2.6, 2.6, yw - 0.62, yw, H, 0.03, porc, [], None)
         kitchen.base_run(-2.6, 2.6, yw - 0.6, H - 0.03, cab, None, depth=0.58)
         geo.box(-2.6, yw - 0.35, 1.5, 2.6, yw, 2.4, name="uppers_b", mat=dark)
-        kitchen.led_strip(-2.5, 2.5, 1.499, yw - 0.3, None, color=kelvin(3000), strength=6)
+        kitchen.led_strip(-2.5, 2.5, 1.499, yw - 0.3, None, color=kelvin(4000), strength=6)
         kit.shelf_items(ctx, -2.2, 2.2, H, seed=201, kinds=("gap", "jar", "bottle", "gap", "gap", "vase", "gap", "bowl", "gap"), y=yw - 0.2)
         props.bowl("bw", kit.right(ctx, 0.35), sy + 0.03, H, r=0.14, h=0.06, mat=mats.ceramic(C(30, 30, 30), rough=0.3))
         kit.branches(ctx, kit.left(ctx, 0.4), sy + 0.15, mats.ceramic(C(232, 230, 226)), h=0.32, r=0.08, leaf=(0.15, 0.2, 0.12), seed=65)
 
     def light(ctx):
-        kit.moody(ctx, key_dir=(-1.6, -0.9, 1.7), key_power=190, key_k=5600, fill=12, world=(0.008, 0.008, 0.009), rim_power=26, top=26, top_k=5200)
+        # a neutral rim: a warm one turns the satin steel bronze where it grazes the deck
+        kit.moody(ctx, key_dir=(-1.6, -0.9, 1.7), key_power=190, key_k=5600, fill=12, world=(0.008, 0.008, 0.009), rim_power=26, rim_k=5200, top=26, top_k=5200)
+        kit.reflector(ctx, power=60)
 
     return _r("W 8550 TDG", "handmade", layout="island", island_depth=1.0, run=(-1.35, 1.35), back_y=1.95, counter=porc, edge="square",
               cab=dict(cab_mat=white, door="groove", handle="none"),

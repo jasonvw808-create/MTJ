@@ -71,7 +71,9 @@ for name in GRANITE + STEEL:
     heroes[name] = R("heroes", name + ".jpg")
     m = meta(name)
     bb = m["bbox"] if m else dict(x0=0.3, x1=0.7, y0=0.4, y1=0.75)
-    cx, cy = (bb["x0"] + bb["x1"]) / 2, (bb["y0"] + bb["y1"]) / 2
+    # the box holds the whole sink, bowl underside included, which projects below the worktop edge:
+    # the sink as seen is centred about 40 % of the way down it
+    cx, cy = (bb["x0"] + bb["x1"]) / 2, bb["y0"] + 0.4 * (bb["y1"] - bb["y0"])
     # the feature page's hero box keeps the full width: only the height is cropped; keep the sink in view
     box_aspect = (216 / 169) if PRINT else (210 / 166)
     vis = min(1.0, (im.width / im.height) / box_aspect)
@@ -152,7 +154,7 @@ for group, table in DETAIL.items():
         w = bw * (0.46 if group == "colour" else 0.6)
         h = w * (84 / 56 if group == "colour" else 58 / 87)
         cx = (bb["x0"] + bb["x1"]) / 2 * im.width
-        cy = (bb["y0"] * 0.3 + bb["y1"] * 0.7) * im.height
+        cy = (bb["y0"] + 0.4 * (bb["y1"] - bb["y0"])) * im.height   # see the thumbnails above
         x0 = min(max(cx - w / 2, 0), im.width - w)
         y0 = min(max(cy - h / 2, 0), im.height - h)
         c = im.crop((round(x0), round(y0), round(x0 + w), round(y0 + h)))

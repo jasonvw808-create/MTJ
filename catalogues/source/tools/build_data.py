@@ -28,7 +28,7 @@ for model in dict.fromkeys(r['model'] for r in G):
     })
 
 BOWLS = {'one': 'Single bowl', 'two': 'Double bowl', 'oneD': 'Single bowl with drainboard',
-         'twoD': 'Double bowl with drainboard', 'wl11': 'Two bowls with a small centre bowl', None: None}
+         'twoD': 'Double bowl with drainboard', 'wl11': 'Two bowls and a small bowl', None: None}
 stainless = []
 for r in S:
     stainless.append({

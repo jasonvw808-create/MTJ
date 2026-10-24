@@ -19,6 +19,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: #555; }
+.nw { white-space: nowrap; }
 body { font-family: var(--text); color: var(--ink); -webkit-font-smoothing: antialiased; font-kerning: normal; font-variant-numeric: lining-nums; }
 
 .page {

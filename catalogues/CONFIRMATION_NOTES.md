@@ -36,7 +36,7 @@ The two catalogue volumes use only the facts in the supplied records: the granit
 | S8 | Several hand made models | **Loose accessories** (roll-up racks, chopping boards, colanders) appear in the product photographs but are not listed. | Not shown in the kitchen images. Confirm whether any are included. |
 | S9 | All | **Wastes / strainers** are not described in the price list. | The images show simple strainers in the waste holes as styling. |
 | S10 | All | **Pack and box quantities** are in the price list. | Not printed, since they are trade information. Available to add. |
-| S11 | WL 11 | **The small centre bowl's depth** is not listed. | Not stated. The overall height (210 mm) is as listed. |
+| S11 | WL 11 | **The small bowl's depth** is not listed. The price list describes "two bowls and a small bowl"; in the photograph the small bowl sits between the two. | Not stated. The overall height (210 mm) is as listed. |
 
 ## Data sources
 

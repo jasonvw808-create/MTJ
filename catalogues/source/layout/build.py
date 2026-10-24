@@ -8,12 +8,25 @@ source is unclear the page says so with a dagger (†) and a note."""
 import html
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 import drawings  # noqa: E402
 
 E = html.escape
+CODE = re.compile(r'\b(?:LPS|WL|GDU|GST|GSU|W) \d{2,5}(?: [A-Z]{1,4})?\b')
+
+
+def T(s):
+    """Escaped text in which no model code breaks across a line."""
+    return CODE.sub(lambda m: f'<span class="nw">{m.group(0)}</span>', E(s))
+
+
+def series(items):
+    """Model codes as a list that breaks only after a separator, never inside a code."""
+    items = list(items)
+    return " ".join(f'<span class="nw">{E(x)}{" ·" if i < len(items) - 1 else ""}</span>' for i, x in enumerate(items))
 EDITION = "2026"
 
 # ── what each model page shows (the facts themselves come from data.json) ──
@@ -42,7 +55,7 @@ FINISH_DOT = {"Mat Polished": "#c3c4c1", "Electroplate": "#dcdddb", "Satin": "#a
 
 DECK = "Knife holder, soap dispenser and control knob are shown as in the product photograph; they are not listed in the price list — to be confirmed."
 NOTES = {
-    "GST 7546": ["The deck fittings — glass rinser, pull-out spray, tap, control knob and drain button — are shown as in the product photographs; they are not itemised in the source — to be confirmed."],
+    "GST 7546": ["The deck fittings (glass rinser, pull-out spray, tap, control knob and drain button) are shown as in the product photographs; they are not itemised in the source — to be confirmed."],
     "WL 07": ["Drainboard shown on the right, as in the product photograph; the price-list picture shows it on the left — handing to be confirmed."],
     "WL 12": ["Drainboard shown on the right, as in the product photograph; the price-list picture shows it on the left — handing to be confirmed."],
     "WL 18": ["Drainboard shown on the right, as in the product photograph; the price-list picture shows it on the left — handing to be confirmed."],
@@ -147,7 +160,7 @@ class Volume:
 
     def intro(self, contents):
         if self.G:
-            lede = ("Six sinks moulded in granite composite — single and double bowls, for undermount and top-mount installation, "
+            lede = ("Six sinks in granite composite — single and double bowls, for undermount and top-mount installation, "
                     "in Pearl Black, Pure White and Titanium Grey.")
             body = ("Each model has a page of its own: the sink installed in a kitchen, its specifications, and a drawing of its "
                     "overall dimensions and bowl layout. The colours are shown together on page 04.")
@@ -211,11 +224,11 @@ class Volume:
             av = "All six models" if not missing else f'{len(avail)} models — not available for {", ".join(missing)}'
             bands.append(f'''<div class="sw"><div class="chip" style="height:84mm;background-image:url('{self.A["colour_detail"].get(cid, "")}')"></div>
       <div class="prod" style="height:40mm;background-image:url('{self.A["colour_prod"][cid]}')"></div>
-      <h3>{COLOUR_NAME[cid]}</h3><div class="avail"><b>Available</b>{E(av)}<br><span style="color:var(--mute)">{E(" · ".join(avail))}</span></div></div>''')
+      <h3>{COLOUR_NAME[cid]}</h3><div class="avail"><b>Available</b>{T(av)}<br><span style="color:var(--mute)">{series(avail)}</span></div></div>''')
         return f'''<section class="page swatches vol-{self.kind}">
   <div class="trim">
     <div class="sw-head"><p class="eyebrow">Colours</p><h2 class="title-l" style="margin-top:3.5mm">Three Colours</h2>
-      <p class="lede">Granite composite in Pearl Black, Pure White and Titanium Grey — each seen in one of the kitchens in this volume, and below it as photographed, on the GSU 7545.</p></div>
+      <p class="lede">Granite composite in Pearl Black, Pure White and Titanium Grey — each seen in one of the kitchens in this volume, and below it as photographed, on the <span class="nw">GSU 7545</span>.</p></div>
     <div class="sw-grid" style="grid-template-columns:repeat(3,1fr)">{"".join(bands)}</div>
     <p class="body" style="position:absolute;left:15mm;bottom:17mm;margin:0;font-size:6.6pt;color:var(--mute)">Colours in print may differ slightly from the products.</p>
     {folio(len(self.pages) + 1, self.title)}
@@ -229,11 +242,10 @@ class Volume:
             ms = [m for m in self.models if m["finish"] == f]
             rng = sorted({m["range"] for m in ms})
             grades = sorted({m["grade"] for m in ms})
-            names = " · ".join(m["model"] for m in ms)
             cells.append(f'''<div class="sw"><div class="chip" style="height:58mm;background-image:url('{self.A["finish_detail"].get(f, "")}')"></div>
       <div style="display:grid;grid-template-columns:1fr 24mm;column-gap:4mm;align-items:start">
         <div><h3>{E(f)}</h3><div class="avail"><b>Range</b>{E(" and ".join(rng))} · stainless steel {E(" and ".join(grades))}</div>
-          <div class="avail" style="margin-top:2.2mm"><b>{len(ms)} models</b>{E(names)}</div></div>
+          <div class="avail" style="margin-top:2.2mm"><b>{len(ms)} models</b>{series(m["model"] for m in ms)}</div></div>
         <div class="prod" style="height:24mm;margin-top:4.5mm;background-size:cover;background-image:url('{self.A["finish"][f]}')"></div></div></div>''')
         return f'''<section class="page swatches vol-{self.kind}">
   <div class="trim">
@@ -252,13 +264,12 @@ class Volume:
         else:
             text = ("Hand made sinks in stainless steel 201 and 304, each with a flat edge: single and double bowls, four of them "
                     "supplied with a 5 Modes Spray or tempered glass. From wellup, in Satin and Nano Black.")
-        lst = " · ".join(m["model"] for m in models)
         return f'''<section class="page opener on-image vol-{self.kind}">
   {bleed_img("op-img", img, pos)}
   <div class="op-shade"></div>
   <div class="trim">
     <div class="op-text"><p class="eyebrow">The range · {len(models)} models</p><h2 class="op-title">{E(rng)}</h2>
-      <div class="op-body"><p>{E(text)}</p><div class="op-models">{E(lst)}</div></div></div>
+      <div class="op-body"><p>{E(text)}</p><div class="op-models">{series(m["model"] for m in models)}</div></div></div>
     {folio(len(self.pages) + 1, self.title)}
   </div>
 </section>'''
@@ -281,7 +292,7 @@ class Volume:
         cap = ("Plan · overall dimensions in mm · bowl layout for reference" if self.G
                else "Plan and front view · dimensions in mm (approximate) · bowl layout for reference")
         notes = NOTES.get(m["model"], [])
-        nt = "".join(f'<span>† {E(t)}</span>' for t in notes)
+        nt = "".join(f'<span>† {T(t)}</span>' for t in notes)
         return f'''<section class="page feature vol-{self.kind}" id="{show["anchor"]}">
   {bleed_img("hero", self.A["heroes"].get(show["recipe"], ""), self.A["hero_pos"].get(show["recipe"], "center"))}
   <div class="trim">
@@ -313,8 +324,8 @@ class Volume:
                                 f'<td>{self.size_plain(m)}</td><td>{E(m["grade"])}</td><td>{E(m["finish"])}</td><td class="r">{{PAGE:{m["model"]}}}</td></tr>')
         notes = self.general_notes()
         half = (len(notes) + 1) // 2
-        nhtml = "".join(f"<p>{E(t)}</p>" for t in notes[:half])
-        nhtml2 = "".join(f"<p>{E(t)}</p>" for t in notes[half:])
+        nhtml = "".join(f"<p>{T(t)}</p>" for t in notes[:half])
+        nhtml2 = "".join(f"<p>{T(t)}</p>" for t in notes[half:])
         notes_block = ("" if not self.G else
                        f'<div class="ix-notes" style="top:92mm;bottom:auto"><div><h4 class="label" style="color:var(--ink)">About this catalogue</h4>{nhtml}</div><div><h4 class="label">&nbsp;</h4>{nhtml2}</div></div>')
         strip = (bleed_img("ix-strip", self.A["strip"], "center") if self.G and self.A.get("strip") else "")
@@ -343,7 +354,7 @@ class Volume:
     def notes_page(self):
         notes = self.general_notes()
         half = (len(notes) + 1) // 2
-        mat = "".join(f'<div><b>{E(k)}</b><span>{E(v)}</span></div>' for k, v in [
+        mat = "".join(f'<div><b>{E(k)}</b><span>{T(v)}</span></div>' for k, v in [
             ("Pressed", "Stainless steel 201 · Inset Edge · Mat Polished (LUCKY PRO, WL 03) or Electroplate (WL 05 A – WL 18)"),
             ("Hand Made", "Stainless steel 201 or 304, as listed per model · Flat Edge · Satin or Nano Black"),
             ("Included", "5 Modes Spray — W 7546 TSB, W 7546 TSBN · 2 Tempered Glasses — W 8550 TDG · Tempered Glasses Wing — W 10050 TSG"),
@@ -352,7 +363,7 @@ class Volume:
         return f'''<section class="page notes-page with-strip vol-{self.kind}">
   {strip}
   <div class="trim"><div class="nt"><p class="eyebrow">Notes</p><h2 class="title-m" style="margin-top:3mm">About this catalogue</h2>
-    <div class="nt-cols"><div>{"".join(f"<p>{E(t)}</p>" for t in notes[:half])}</div><div>{"".join(f"<p>{E(t)}</p>" for t in notes[half:])}</div></div>
+    <div class="nt-cols"><div>{"".join(f"<p>{T(t)}</p>" for t in notes[:half])}</div><div>{"".join(f"<p>{T(t)}</p>" for t in notes[half:])}</div></div>
     <p class="label" style="margin-top:12mm">At a glance</p><div class="mat">{mat}</div></div>
     {folio(len(self.pages) + 1, self.title)}
   </div>

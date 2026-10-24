@@ -10,9 +10,11 @@ def main():
     w = int(sys.argv[2]) if len(sys.argv) > 2 else 1800
     h = int(sys.argv[3]) if len(sys.argv) > 3 else 2526
     sc = common.reset()
-    common.cycles(sc, samples=64, res=(w, h), threshold=0.03, look="AgX - Medium High Contrast", exposure=-1.2)
+    common.cycles(sc, samples=64, res=(w, h), threshold=0.03, look="AgX - Medium High Contrast", exposure=-1.8)
     common.world_color(sc, (0.002, 0.002, 0.002), 1.0)
-    stone = mats.marble(base=(0.020, 0.019, 0.018), vein=(0.085, 0.08, 0.075), vein2=(0.035, 0.033, 0.031), rough=0.42, scale=0.9,
+    # near-black, with faint light hairlines in the fine (crisp) vein layer and soft darker clouding in the
+    # broad one: light broad veins blur into glowing bands, and text has to sit on this
+    stone = mats.marble(base=(0.014, 0.0135, 0.013), vein=(0.010, 0.0095, 0.009), vein2=(0.040, 0.038, 0.036), rough=0.42, scale=0.9,
                         vein_width=0.012, warp=3.0, seed=8.0, honed=True)
     geo.box(-1, -1.4, -0.02, 1, 1.4, 0.0, name="slab", mat=stone)
     # light raking across from the upper left, and a faint warm one from the right

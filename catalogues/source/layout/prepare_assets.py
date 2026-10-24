@@ -6,7 +6,7 @@ the supplied product photographs, logos. Writes <out>/img/... and <out>/assets-<
 import json
 import os
 import sys
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 renders, photos, logos, out, mode = sys.argv[1:6]
 PRINT = mode == "print"
@@ -166,7 +166,9 @@ for group, table in DETAIL.items():
 stone = None
 sp = render_path("stone_dark")
 if sp:
-    save(load(sp), D("extra", "stone_dark.jpg"), 1400 if not PRINT else None)
+    # graded to a deep, nearly neutral charcoal, so light text reads anywhere on it
+    st = ImageEnhance.Brightness(ImageEnhance.Color(load(sp)).enhance(0.35)).enhance(0.48)
+    save(st, D("extra", "stone_dark.jpg"), 1400 if not PRINT else None)
     stone = R("extra", "stone_dark.jpg")
 
 # logos

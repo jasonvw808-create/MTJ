@@ -1,0 +1,774 @@
+{
+ "granite": [
+  {
+   "model": "GDU 8145",
+   "slug": "gdu-8145",
+   "bowls": "Double bowl",
+   "installation": "Undermount",
+   "material": "Granite composite",
+   "dims": [
+    810,
+    450
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gdu-8145-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gdu-8145-pure-white"
+    },
+    {
+     "id": "titan",
+     "name": "Titanium Grey",
+     "photo": "gdu-8145-titanium-grey"
+    }
+   ],
+   "features": [
+    "Double bowl in granite composite",
+    "Undermount installation",
+    "Central strainer waste"
+   ]
+  },
+  {
+   "model": "GST 6045",
+   "slug": "gst-6045",
+   "bowls": "Single bowl",
+   "installation": "Top-mount",
+   "material": "Granite composite",
+   "dims": [
+    600,
+    450
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gst-6045-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gst-6045-pure-white"
+    },
+    {
+     "id": "titan",
+     "name": "Titanium Grey",
+     "photo": "gst-6045-titanium-grey"
+    }
+   ],
+   "features": [
+    "Single bowl in granite composite",
+    "Top-mount installation",
+    "Central strainer waste"
+   ]
+  },
+  {
+   "model": "GST 7546",
+   "slug": "gst-7546",
+   "bowls": "Single bowl",
+   "installation": "Top-mount",
+   "material": "Granite composite",
+   "dims": [
+    750,
+    460
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gst-7546-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gst-7546-pure-white"
+    }
+   ],
+   "features": [
+    "Single bowl in granite composite",
+    "Top-mount installation",
+    "Workstation ledge for accessories"
+   ]
+  },
+  {
+   "model": "GSU 6045",
+   "slug": "gsu-6045",
+   "bowls": "Single bowl",
+   "installation": "Undermount",
+   "material": "Granite composite",
+   "dims": [
+    600,
+    450
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gsu-6045-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gsu-6045-pure-white"
+    },
+    {
+     "id": "titan",
+     "name": "Titanium Grey",
+     "photo": "gsu-6045-titanium-grey"
+    }
+   ],
+   "features": [
+    "Single bowl in granite composite",
+    "Undermount installation",
+    "Central strainer waste"
+   ]
+  },
+  {
+   "model": "GSU 7545",
+   "slug": "gsu-7545",
+   "bowls": "Single bowl",
+   "installation": "Undermount",
+   "material": "Granite composite",
+   "dims": [
+    750,
+    450
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gsu-7545-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gsu-7545-pure-white"
+    },
+    {
+     "id": "titan",
+     "name": "Titanium Grey",
+     "photo": "gsu-7545-titanium-grey"
+    }
+   ],
+   "features": [
+    "Single bowl in granite composite",
+    "Undermount installation",
+    "Central strainer waste"
+   ]
+  },
+  {
+   "model": "GSU 8045",
+   "slug": "gsu-8045",
+   "bowls": "Single bowl",
+   "installation": "Undermount",
+   "material": "Granite composite",
+   "dims": [
+    800,
+    450
+   ],
+   "colours": [
+    {
+     "id": "pearl",
+     "name": "Pearl Black",
+     "photo": "gsu-8045-pearl-black"
+    },
+    {
+     "id": "pure",
+     "name": "Pure White",
+     "photo": "gsu-8045-pure-white"
+    },
+    {
+     "id": "titan",
+     "name": "Titanium Grey",
+     "photo": "gsu-8045-titanium-grey"
+    }
+   ],
+   "features": [
+    "Single bowl in granite composite",
+    "Undermount installation",
+    "Central strainer waste"
+   ]
+  }
+ ],
+ "stainless": [
+  {
+   "model": "LPS 5040",
+   "slug": "lps-5040",
+   "range": "Pressed",
+   "brand": "LUCKY PRO",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.4 mm",
+   "size_printed": "± 500 x 400 x 160 mm",
+   "dims": [
+    500,
+    400,
+    160
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "10",
+   "photo": "lps-5040"
+  },
+  {
+   "model": "LPS 7540 A",
+   "slug": "lps-7540-a",
+   "range": "Pressed",
+   "brand": "LUCKY PRO",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.33 mm",
+   "size_printed": "± 750 x 400 x 145 mm",
+   "dims": [
+    750,
+    400,
+    145
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "10",
+   "photo": "lps-7540-a"
+  },
+  {
+   "model": "LPS 8643 A",
+   "slug": "lps-8643-a",
+   "range": "Pressed",
+   "brand": "LUCKY PRO",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.4 mm",
+   "size_printed": "± 860 x 430 x 145 mm",
+   "dims": [
+    860,
+    430,
+    145
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "10",
+   "photo": "lps-8643-a"
+  },
+  {
+   "model": "LPS 9643 A",
+   "slug": "lps-9643-a",
+   "range": "Pressed",
+   "brand": "LUCKY PRO",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.33 mm",
+   "size_printed": "± 960 x 430 x 145 mm",
+   "dims": [
+    960,
+    430,
+    145
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "10",
+   "photo": "lps-9643-a"
+  },
+  {
+   "model": "LPS 10050 A",
+   "slug": "lps-10050-a",
+   "range": "Pressed",
+   "brand": "LUCKY PRO",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.5 mm",
+   "size_printed": "± 1000 x 500 x 160 mm",
+   "dims": [
+    1000,
+    500,
+    160
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "lps-10050-a"
+  },
+  {
+   "model": "WL 03",
+   "slug": "wl-03",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Mat Polished",
+   "edge": "Inset Edge",
+   "thickness": "± 0.6 mm",
+   "size_printed": "± 600 x 450 x 210 mm",
+   "dims": [
+    600,
+    450,
+    210
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-03"
+  },
+  {
+   "model": "WL 05 A",
+   "slug": "wl-05-a",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Electroplate",
+   "edge": "Inset Edge",
+   "thickness": "± 0.7 mm",
+   "size_printed": "± 800 x 500 x 210 mm",
+   "dims": [
+    800,
+    500,
+    210
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Double bowl",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-05-a"
+  },
+  {
+   "model": "WL 07",
+   "slug": "wl-07",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Electroplate",
+   "edge": "Inset Edge",
+   "thickness": "± 0.7 mm",
+   "size_printed": "± 850 x 500 x 210 mm",
+   "dims": [
+    850,
+    500,
+    210
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-07"
+  },
+  {
+   "model": "WL 11",
+   "slug": "wl-11",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Electroplate",
+   "edge": "Inset Edge",
+   "thickness": "± 0.6 mm",
+   "size_printed": "± 930 x 450 x 210 mm",
+   "dims": [
+    930,
+    450,
+    210
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Two bowls with a small centre bowl",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-11"
+  },
+  {
+   "model": "WL 12",
+   "slug": "wl-12",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Electroplate",
+   "edge": "Inset Edge",
+   "thickness": "± 0.6 mm",
+   "size_printed": "± 1000 x 460 x 210 mm",
+   "dims": [
+    1000,
+    460,
+    210
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-12"
+  },
+  {
+   "model": "WL 18",
+   "slug": "wl-18",
+   "range": "Pressed",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Electroplate",
+   "edge": "Inset Edge",
+   "thickness": "± 0.6 mm",
+   "size_printed": "± 1200 x 500 x 180 mm",
+   "dims": [
+    1200,
+    500,
+    180
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Double bowl with drainboard",
+   "included": null,
+   "pack": "1",
+   "box": "5",
+   "photo": "wl-18"
+  },
+  {
+   "model": "W 5050 TSB",
+   "slug": "w-5050-tsb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 0.3 + 0.9 mm",
+   "size_printed": "± 500 x 500 x 230 mm",
+   "dims": [
+    500,
+    500,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-5050-tsb"
+  },
+  {
+   "model": "W 6045 TSS",
+   "slug": "w-6045-tss",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 600 x 450 x 230 mm",
+   "dims": [
+    600,
+    450,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-6045-tss"
+  },
+  {
+   "model": "W 6045 TSB",
+   "slug": "w-6045-tsb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 600 x 450 x 230 mm",
+   "dims": [
+    600,
+    450,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-6045-tsb"
+  },
+  {
+   "model": "W 7546 TSB",
+   "slug": "w-7546-tsb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 750 x 460 x 230 mm",
+   "dims": [
+    750,
+    460,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": "5 Modes Spray",
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7546-tsb"
+  },
+  {
+   "model": "W 7546 TSBN",
+   "slug": "w-7546-tsbn",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 750 x 460 x 230 mm",
+   "dims": [
+    750,
+    460,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": "5 Modes Spray",
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7546-tsbn"
+  },
+  {
+   "model": "W 7646 USS",
+   "slug": "w-7646-uss",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 760 x 460 x 230 mm",
+   "dims": [
+    760,
+    460,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7646-uss"
+  },
+  {
+   "model": "W 7646 USB",
+   "slug": "w-7646-usb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 760 x 460 x 230 mm",
+   "dims": [
+    760,
+    460,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7646-usb"
+  },
+  {
+   "model": "W 7845 UDS",
+   "slug": "w-7845-uds",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 780 x 450 x 230 mm",
+   "dims": [
+    780,
+    450,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Double bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7845-uds"
+  },
+  {
+   "model": "W 7845 UDB",
+   "slug": "w-7845-udb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "201",
+   "material": "Stainless Steel 201",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.7 mm",
+   "size_printed": "± 780 x 450 x 230 mm",
+   "dims": [
+    780,
+    450,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Double bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-7845-udb"
+  },
+  {
+   "model": "W 8050 TSS",
+   "slug": "w-8050-tss",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.9 mm",
+   "size_printed": "± 800 x 500 x 230 mm",
+   "dims": [
+    800,
+    500,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-8050-tss"
+  },
+  {
+   "model": "W 8050 TSB",
+   "slug": "w-8050-tsb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.9 mm",
+   "size_printed": "± 800 x 500 x 230 mm",
+   "dims": [
+    800,
+    500,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Single bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-8050-tsb"
+  },
+  {
+   "model": "W 8245 TDB",
+   "slug": "w-8245-tdb",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Nano Black",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.9 mm",
+   "size_printed": "± 820 x 450 x 230 mm",
+   "dims": [
+    820,
+    450,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": "Double bowl",
+   "included": null,
+   "pack": "1",
+   "box": "1",
+   "photo": "w-8245-tdb"
+  },
+  {
+   "model": "W 8550 TDG",
+   "slug": "w-8550-tdg",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.9 mm",
+   "size_printed": "± 850 x 500 x 230 mm",
+   "dims": [
+    850,
+    500,
+    230
+   ],
+   "dims_unconfirmed": false,
+   "bowls": null,
+   "included": "2 Tempered Glasses",
+   "pack": "1",
+   "box": "1",
+   "photo": "w-8550-tdg"
+  },
+  {
+   "model": "W 10050 TSG",
+   "slug": "w-10050-tsg",
+   "range": "Hand Made",
+   "brand": "wellup",
+   "grade": "304",
+   "material": "Stainless Steel 304",
+   "finish": "Satin",
+   "edge": "Flat Edge",
+   "thickness": "± 3.0 + 0.9 mm",
+   "size_printed": "± 10050 x 500 x 230 mm — as printed; read as 1000 mm wide, to be confirmed",
+   "dims": [
+    1000,
+    500,
+    230
+   ],
+   "dims_unconfirmed": true,
+   "bowls": "Single bowl",
+   "included": "Tempered Glasses Wing",
+   "pack": "1",
+   "box": "1",
+   "photo": "w-10050-tsg"
+  }
+ ]
+}

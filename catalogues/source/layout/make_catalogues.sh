@@ -11,6 +11,8 @@ cp -r "$HERE/fonts" "$WORK/" && cp "$HERE/fonts/fonts.css" "$WORK/fonts.css"
 for MODE in screen print; do
   $PY "$HERE/prepare_assets.py" "$RENDERS" "$PHOTOS" "$LOGOS" "$WORK" $MODE
   $PY "$HERE/build.py" "$HERE/data/data.json" "$WORK" $MODE
+  # stop on colliding text or text outside the safe area (SKIP_CHECK=1 to build anyway)
+  node "$HERE/check_layout.js" "$WORK/granite-$MODE.html" "$WORK/stainless-$MODE.html" || [ "${SKIP_CHECK:-0}" = 1 ]
   node "$HERE/export_pdf.js" "$WORK/granite-$MODE.html" "$WORK/granite-$MODE.pdf"
   node "$HERE/export_pdf.js" "$WORK/stainless-$MODE.html" "$WORK/stainless-$MODE.pdf"
 done

@@ -27,7 +27,7 @@ def _moody_cover(ctx):
               rim_power=40, rim_k=3600, top=16, top_k=5000)
 
 
-PORTRAIT = (1800, 2526)
+PORTRAIT = (2160, 3031)   # 254 ppi on a full A4 page with bleed
 WIDE = (2400, 1500)
 STRIP = (2400, 1040)
 EXTRAS = {

@@ -142,8 +142,9 @@ h1, h2, h3 { margin: 0; font-weight: 300; }
 .feature dl.specs dd .hint { margin-left: 1.6mm; font-family: var(--display); font-weight: 500; font-size: 5pt; letter-spacing: .14em; color: var(--mute); }
 .feature .draw { margin: 0; }
 .feature .draw figcaption { margin-top: 1mm; font-family: var(--display); font-weight: 500; font-size: 5pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
-.feature .notes { position: absolute; left: 15mm; right: 15mm; bottom: 15.5mm; margin: 0; font-size: 6pt; line-height: 1.5; color: var(--mute); }
+.feature .notes { position: absolute; left: 15mm; width: 84mm; bottom: 15.5mm; margin: 0; font-size: 6pt; line-height: 1.5; color: var(--mute); }
 .feature .notes span { display: block; }
+.feature .notes span + span { margin-top: .8mm; }
 .drawing .dim { font-family: var(--text); font-size: 2.15px; fill: #2b2926; letter-spacing: .02px; }
 
 /* ── index ───────────────────────────────────────────────────────────── */

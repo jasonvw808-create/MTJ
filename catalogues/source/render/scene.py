@@ -86,6 +86,7 @@ def compose(R, quality="preview"):
         h = sp.get("h", 0.6)
         objs.append(geo.box(run[0] if sp.get("full_width") is None else sp["full_width"][0], wall_y - sp.get("t", 0.012), H,
                             run[1] if sp.get("full_width") is None else sp["full_width"][1], wall_y, H + h, name="splash", mat=sp["mat"]))
+        ctx["splash"] = dict(t=sp.get("t", 0.012), top=H + h)
     ctx["wall_y"] = wall_y
     # the scene's own additions: back run, shelves, uppers, props, lights
     for fn in R.get("build", []):
@@ -122,6 +123,8 @@ def place_tap(ctx, tap):
         x, y, z = sx + hx, sy + hy, ctx["zs"]
     elif where == "wall":
         x, y, z = sx + tap.get("dx", 0.0), ctx["wall_y"], H + tap.get("h", 0.42)
+        if ctx.get("splash") and z < ctx["splash"]["top"]:
+            y -= ctx["splash"]["t"]   # on the face of the tiling, not inside it
         return props.faucet_wall("tap", x, y, z, mat=m, reach=tap.get("reach", 0.26))
     else:
         x = sx + tap.get("dx", 0.0)

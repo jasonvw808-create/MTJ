@@ -94,7 +94,7 @@ def lps8643a():
         props.herb_pot("sill", 0.36, yw + 0.06, win["z0"], r=0.055, h=0.1, pot_mat=mats.ceramic(C(180, 100, 60), matte=True), seed=23)
 
     def light(ctx):
-        kit.daylight(ctx, sun_elev=34, sun_azim=160, sun_power=5.5, sun_k=6000, sky=1.0, fill=16, top=8)
+        kit.daylight(ctx, sun_elev=34, sun_azim=160, sun_power=5.5, sun_k=6000, sky=1.0, fill=16, top=8, sky_sun=False)
         kit.portal(ctx, win)
 
     return _r("LPS 8643 A", "pressed", layout="window", counter=lime, cab=dict(cab_mat=cab, door="shaker", handle="knob", handle_mat=brass),

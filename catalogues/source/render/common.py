@@ -1,6 +1,7 @@
 """Scene setup shared by every render: an empty scene, Cycles settings, colour management,
 camera helpers."""
 import math
+import os
 import bpy
 from mathutils import Vector
 
@@ -49,7 +50,11 @@ def cycles(sc, samples=256, res=(1600, 1200), denoise=True, threshold=0.015, cla
     sc.render.resolution_x, sc.render.resolution_y = res
     sc.render.resolution_percentage = 100
     sc.render.film_transparent = False
-    sc.render.threads_mode = 'AUTO'
+    # RENDER_THREADS caps the CPU threads, so a preview can run beside a final render
+    n = int(os.environ.get('RENDER_THREADS', '0'))
+    sc.render.threads_mode = 'FIXED' if n else 'AUTO'
+    if n:
+        sc.render.threads = n
     sc.render.use_persistent_data = False
     vs = sc.view_settings
     try:
@@ -83,8 +88,9 @@ def world_color(sc, col=(0.05, 0.05, 0.05), strength=1.0):
     return w
 
 
-def world_sky(sc, sun_elev=25, sun_rot=135, strength=1.0, air=1.0, dust=1.0, ozone=1.0):
-    """Physical sky (no image needed)."""
+def world_sky(sc, sun_elev=25, sun_rot=135, strength=1.0, air=1.0, dust=1.0, ozone=1.0, sun_disc=True):
+    """Physical sky (no image needed). Its sun sits at the azimuth opposite a sun() lamp given the same
+    angles, so in the kitchens it shines in from the open, camera side of the room."""
     w = bpy.data.worlds.new("sky")
     sc.world = w
     w.use_nodes = True
@@ -97,15 +103,15 @@ def world_sky(sc, sun_elev=25, sun_rot=135, strength=1.0, air=1.0, dust=1.0, ozo
             break
         except Exception:
             continue
-    try:
-        sky.sun_elevation = math.radians(sun_elev)
-        sky.sun_rotation = math.radians(sun_rot)
-        sky.air_density = air
-        sky.dust_density = dust
-        sky.ozone_density = ozone
-        sky.sun_disc = False
-    except Exception as e:
-        print('sky params', e)
+    # the sky keeps its own sun disc unless asked: the daylight kitchens were lit and approved with it on
+    for k, v in (("sun_elevation", math.radians(sun_elev)), ("sun_rotation", math.radians(sun_rot)), ("air_density", air),
+                 ("aerosol_density", dust), ("ozone_density", ozone)):
+        if hasattr(sky, k):
+            setattr(sky, k, v)
+        elif k == "aerosol_density" and hasattr(sky, "dust_density"):   # its name before Blender 5
+            sky.dust_density = v
+    if hasattr(sky, "sun_disc"):
+        sky.sun_disc = sun_disc
     bg = nt.nodes.new("ShaderNodeBackground")
     bg.inputs[1].default_value = strength
     out = nt.nodes.new("ShaderNodeOutputWorld")

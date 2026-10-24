@@ -39,11 +39,12 @@ def moody(ctx, key_dir=(-1.5, -0.75, 1.65), key_power=190, key_size=(1.3, 1.1), 
 
 
 def daylight(ctx, sun_elev=32, sun_azim=200, sun_power=4.0, sun_k=5400, sky=1.0, window_light=None, key_dir=None, key_power=150, key_k=6200,
-             key_size=(1.6, 1.4), fill=18, top=12, top_k=5600):
+             key_size=(1.6, 1.4), fill=18, top=12, top_k=5600, sky_sun=True):
     """A sunny or bright interior. sun_azim: 180 = from behind the back wall (through a window there);
-    90 = from the right; 270 = from the left."""
+    90 = from the right; 270 = from the left. sky_sun=False turns off the sky's own sun disc, which
+    otherwise also lights the room from the camera side."""
     sx, sy, H = ctx["sx"], ctx["sy"], ctx["H"]
-    common.world_sky(ctx["sc"], sun_elev=sun_elev, sun_rot=sun_azim, strength=sky)
+    common.world_sky(ctx["sc"], sun_elev=sun_elev, sun_rot=sun_azim, strength=sky, sun_disc=sky_sun)
     if sun_power:
         common.sun("sun", elev=sun_elev, azim=sun_azim, energy=sun_power, color=kelvin(sun_k), angle=1.2)
     tgt = (sx, sy, H)

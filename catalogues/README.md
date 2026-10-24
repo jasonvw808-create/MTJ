@@ -43,8 +43,6 @@ Everything is generated from source in `source/`:
 
 1. `tools/extract.js` and `tools/build_data.py` read the product records and photographs from `index.html` into `layout/data/data.json`.
 2. `render/` holds the Blender (`bpy`, Cycles) scene code: the sink models (`granite.py`, `pressed.py`, `handmade.py`, built from `granite_data.py` and `steel_data.py`), the kitchens (`kitchen.py`, `kit.py`, `props.py`, `mats.py`) and one recipe per model (`scenes_granite.py`, `scenes_steel.py`). Render one image with `python -m render.scene <recipe> <out.png> final`.
-3. `layout/` holds the page generator: `prepare_assets.py` prepares the images, `build.py` builds the HTML pages from the data, `drawings.py` makes the SVG technical drawings, `catalogue.css` is the design system, and `export_pdf.js` prints the pages to PDF (Chromium / Playwright). `make_catalogues.sh` runs these steps in order.
+3. `layout/` holds the page generator: `prepare_assets.py` prepares the images, `build.py` builds the HTML pages from the data, `drawings.py` makes the SVG technical drawings, `catalogue.css` is the design system, and `export_pdf.js` prints the pages to PDF (Chromium / Playwright). `check_layout.js` stops the build if any text collides with other text or runs into the 5 mm safety margin. `make_catalogues.sh` runs these steps in order.
 
-Rendering needs Python 3.13 with Blender as a module (`pip install bpy==5.2.3`); point `BPY` at that interpreter for the batch scripts in `tools/`. The layout needs Python 3 with Pillow and pypdf, and Node with Playwright (Chromium).
-
-Typefaces: Montserrat (display, matching the wordmark) and Inter (text), both under the SIL Open Font License, embedded in the PDFs.
+Typefaces: Montserrat (display, matching the wordmark) and Inter (text), both under the SIL Open Font License (texts in `layout/fonts/`). The static TrueType files in `layout/fonts/` were instanced from the Google Fonts variable fonts, so the PDFs embed ordinary TrueType subsets, which prepress accepts.

@@ -448,8 +448,10 @@ def w7546tsb():
 
 # W 7546 TSBN — dark luxury: warm grey porcelain, gloss charcoal, light lines
 def w7546tsbn():
-    porc = mats.marble(base=C(150, 146, 140), vein=C(163, 160, 155), vein2=C(118, 114, 109), rough=0.2, vein_width=0.012, seed=23.0, scale=0.5,
-                       stretch=(1.0, 2.2, 2.4))   # veins run lengthwise on the worktop and the splashback alike
+    # light veins only in the fine, crisp layer (vein2): the broad layer blurs where it widens, so it carries soft
+    # darker clouding instead. The veins run lengthwise on the worktop and the splashback alike.
+    porc = mats.marble(base=C(150, 146, 140), vein=C(138, 134, 128), vein2=C(196, 193, 188), rough=0.2, vein_width=0.012, seed=23.0, scale=0.5,
+                       stretch=(1.0, 2.2, 2.4))
     gloss = mats.paint(C(34, 34, 36), rough=0.12, coat=0.6, texture=0)
     wall = mats.plaster(C(40, 40, 42), var=0.03, rough=0.85)
     chrome = mats.metal("chrome")
@@ -527,8 +529,9 @@ def w7646usb():
 
 # W 7845 UDS — greige plaster, honed grey marble, linen, soft light
 def w7845uds():
-    pietra = mats.marble(base=C(120, 116, 110), vein=C(146, 142, 136), vein2=C(98, 95, 90), rough=0.36, vein_width=0.012, seed=23.0, honed=True, scale=0.6,
-                         stretch=(1.0, 2.2, 2.4))   # soft veins: bright ones on a dark ground glow where they widen
+    # light veins only in the fine, crisp layer (vein2), as in the W 7546 TSBN kitchen
+    pietra = mats.marble(base=C(120, 116, 110), vein=C(110, 106, 101), vein2=C(176, 172, 166), rough=0.36, vein_width=0.012, seed=23.0, honed=True, scale=0.6,
+                         stretch=(1.0, 2.2, 2.4))
     greige = mats.paint(C(190, 180, 166), rough=0.6)
     wall = mats.plaster(C(200, 190, 176), var=0.05, rough=0.92, scale=0.45, bump=0.1)
     nickel = mats.metal("nickel")

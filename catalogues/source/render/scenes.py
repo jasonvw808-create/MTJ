@@ -24,7 +24,7 @@ def variant(base, camera=None, light=None, **over):
 
 def _moody_cover(ctx):
     kit.moody(ctx, key_dir=(-1.4, -0.7, 1.7), key_power=170, key_k=5200, fill=6, world=(0.004, 0.004, 0.0042), rim_dir=(1.4, 1.2, 0.7),
-              rim_power=40, rim_k=3600, top=16, top_k=5000)
+              rim_power=40, rim_k=4400, top=16, top_k=5000)
 
 
 PORTRAIT = (2160, 3031)   # 254 ppi on a full A4 page with bleed

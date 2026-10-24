@@ -570,13 +570,14 @@ def w7845udb():
         kitchen.worktop(-2.6, 2.6, yw - 0.62, yw, H, 0.03, cal, [], None)
         kitchen.base_run(-2.6, 2.6, yw - 0.6, H - 0.03, cab, None, depth=0.58)
         geo.box(-2.6, yw - 0.012, H, 2.6, yw, H + 0.65, name="slab_b", mat=cal)
-        kit.shelf(ctx, -1.8, 1.2, 1.7, depth=0.22, mat=brass, t=0.01, led=(5, 2800))
+        # a walnut shelf, not brass: the black divider's brushed top mirrors whatever is above it
+        kit.shelf(ctx, -1.8, 1.2, 1.7, depth=0.22, mat=mats.wood("walnut", along='X'), t=0.03, led=(5, 3500))
         kit.shelf_items(ctx, -1.8, 1.2, 1.7, seed=171, kinds=("vase", "plates", "bowl", "jar", "vase2", "cups"), palette=[cer, mats.ceramic(C(98, 34, 30), rough=0.3)])
         kit.fruit_bowl(ctx, kit.right(ctx, 0.32), sy + 0.03, cer, r=0.13, fruit=("pear", "pear", "apple"))
         kit.branches(ctx, kit.left(ctx, 0.4), sy + 0.12, mats.glass((0.92, 0.95, 0.93)), h=0.3, r=0.07, leaf=(0.15, 0.2, 0.12), seed=57, style=1)
 
     def light(ctx):
-        kit.moody(ctx, key_dir=(-1.6, -0.8, 1.6), key_power=170, key_k=4800, fill=10, world=(0.006, 0.005, 0.0045), rim_power=24, rim_k=2800, top=24)
+        kit.moody(ctx, key_dir=(-1.6, -0.8, 1.6), key_power=170, key_k=4800, fill=10, world=(0.006, 0.005, 0.0045), rim_power=24, rim_k=4500, top=24)
 
     return _r("W 7845 UDB", "handmade", layout="island", island_depth=1.0, run=(-1.35, 1.35), back_y=1.95, counter=cal,
               cab=dict(cab_mat=ox, door="shaker", handle="bar", handle_mat=brass),

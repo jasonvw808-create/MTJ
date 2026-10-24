@@ -2,18 +2,32 @@
 
 Two coordinated catalogue volumes, redesigned from the shop's two kitchen sink catalogues:
 
-| Volume | Presentation / screen (A4) | Print (A4 + 3 mm bleed) |
-|---|---|---|
-| **01 · Granite Kitchen Sink Collection**: 6 models, 12 pages | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01.pdf` | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_PRINT.pdf` |
-| **02 · Stainless Steel Kitchen Sink Collection**: 25 models, 36 pages | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02.pdf` | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_PRINT.pdf` |
+| Volume | Language | Presentation / screen (A4) | Print (A4 + 3 mm bleed) |
+|---|---|---|---|
+| **01 · Granite Kitchen Sink Collection**: 6 models, 12 pages | English | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01.pdf` | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_PRINT.pdf` |
+| | Bahasa Indonesia | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_ID.pdf` | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_ID_PRINT.pdf` |
+| **02 · Stainless Steel Kitchen Sink Collection**: 25 models, 36 pages | English | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02.pdf` | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_PRINT.pdf` |
+| | Bahasa Indonesia | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_ID.pdf` | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_ID_PRINT.pdf` |
 
 Both page counts are multiples of four, for saddle-stitched printing.
 
 The **print** files are 216 × 303 mm sheets. Images and dark backgrounds run into the 3 mm bleed, and each page carries a TrimBox at A4 (210 × 297 mm). Photographs are placed at 235 ppi (kitchen pages) to 254 ppi (covers and full-page images). The files are RGB: the printer converts them with their own CMYK profile. The **presentation** files are trimmed A4 with lighter images, for screens, email and showroom tablets.
 
-All four files are PDF 1.4 with embedded TrueType fonts, document metadata and bookmarks (sections, ranges and every model).
+All eight files are PDF 1.4 with embedded TrueType fonts, document metadata (including the document language) and bookmarks (sections, ranges and every model).
 
 **Before printing, read `CONFIRMATION_NOTES.md`.** It lists every item marked † in the catalogues: information that is unclear or inconsistent in the source and needs the supplier's confirmation.
+
+## Bahasa Indonesia editions
+
+The Indonesian editions have the same pages, page numbers, images and drawings as the English ones. All text is translated, including the specification labels, bookmarks and PDF metadata. Colour names follow the website: Hitam Mutiara, Putih Murni, Abu Titanium. Product and trade terms stay in English, as in the source records: Pressed, Hand Made, Inset Edge, Flat Edge, the finish names, the brands, and undermount and top-mount.
+
+Where the English edition prints "TBC", the Indonesian prints "?" with the same † note, because "TBC" usually means tuberculosis in Indonesian.
+
+**The translation was made with AI and has not been checked by a native speaker.** Have it proofread before printing.
+
+## On the website
+
+The website (`index.html`, published with GitHub Pages) offers the presentation editions in English and Indonesian from the `catalogue/` folder beside it. They are stored there under the file names the site expects, with three page images of each for its "Look inside" panel. `layout/publish_site.py` copies the files there. It also writes their page counts, file sizes and every model's page number into `index.html`, so "View in the catalogue" opens the right page. See `catalogue/HOW-TO-UPDATE.txt`.
 
 ## What's inside each volume
 
@@ -50,6 +64,7 @@ Everything is generated from source in `source/`. It needs Python 3.13 with Blen
 
 1. `tools/extract.js` and `tools/build_data.py` read the product records and photographs from `index.html` into `layout/data/data.json`.
 2. `render/` holds the Blender (`bpy`, Cycles) scene code: the sink models (`granite.py`, `pressed.py`, `handmade.py`, built from `granite_data.py` and `steel_data.py`), the kitchens (`kitchen.py`, `kit.py`, `props.py`, `mats.py`) and one recipe per model (`scenes_granite.py`, `scenes_steel.py`). Render one image with `python -m render.scene <recipe> <out.png> final` (about 10 to 20 minutes on four CPU cores; `tools/finals.sh` and `tools/queue_runner.sh` render a list in turn). `render/texture.py` renders the dark stone used on the text pages and back covers.
-3. `layout/` holds the page generator: `prepare_assets.py` prepares the images, `build.py` builds the HTML pages from the data, `drawings.py` makes the SVG technical drawings, `catalogue.css` is the design system, and `export_pdf.js` prints the pages to PDF (Chromium / Playwright). `check_layout.js` stops the build if any text collides with other text or runs into the 5 mm safety margin. `make_catalogues.sh` runs these steps in order: `make_catalogues.sh <renders> <photos> <logos> <work> <pdf out>`. `export_images.py` writes the `images/` folder.
+3. `layout/` holds the page generator: `prepare_assets.py` prepares the images, `build.py` builds the HTML pages from the data, `drawings.py` makes the SVG technical drawings, `catalogue.css` is the design system, and `export_pdf.js` prints the pages to PDF (Chromium / Playwright). `check_layout.js` stops the build if any text collides with other text or runs into the 5 mm safety margin. `build.py` makes either language (`en` or `id`); `i18n.py` holds the Indonesian text, and the build stops if any text has no translation. `make_catalogues.sh` runs these steps in order and makes all eight PDFs: `make_catalogues.sh <renders> <photos> <logos> <work> <pdf out>`. `export_images.py` writes the `images/` folder.
+4. `layout/publish_site.py <pdf out> <work> <website>` puts the presentation editions on the website (see above). It also needs `pdftoppm` (poppler-utils).
 
 Typefaces: Montserrat (display, matching the wordmark) and Inter (text), both under the SIL Open Font License (texts in `layout/fonts/`). The static TrueType files in `layout/fonts/` were instanced from the Google Fonts variable fonts, so the PDFs embed ordinary TrueType subsets, which prepress accepts.

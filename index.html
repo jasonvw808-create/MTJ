@@ -14735,22 +14735,29 @@ const SINK_3D_GRAIN = {"pearl":{"albedo":"#3B3B3B","mm":191.3,"grain":"data:imag
    the granite sinks as the shop lists them. Nothing is added to them, and
    there are no prices in the catalogue: prices stay in the shop.
 
-   Every picture is a supplied photograph of the product itself — the
-   shop's own product photographs; no rooms, no visualisations.
+   Every picture on these pages is a supplied photograph of the product
+   itself — the shop's own product photographs; no rooms, no visualisations.
+   (The PDF catalogues also show each sink in a kitchen: visualisations made
+   from its photograph and its listed dimensions.)
 
    The files live in a folder beside the site, `catalogue/`:
-     · the PDFs, made from this file's print pages (#/print/kitchen-sinks/…)
+     · the PDFs — the two catalogue volumes, made by the catalogue generator in catalogues/source/
        — see catalogue/HOW-TO-UPDATE.txt for making them again;
-     · img/cat/*.jpg — the catalogues' pictures: each sink lifted from its supplied photograph and laid on a
-       stone, ivory or charcoal ground, and close details cropped from the same photographs (tools/make_catalogue_images.py);
-     · img/pages/*.jpg — three pages of each PDF, for the look inside.
+     · img/pages/*.jpg — three pages of each PDF, for the look inside;
+     · img/here.gif — the folder's marker (see ksProbe).
+   Where a PDF cannot be shown, the catalogue is read here instead (#/print/kitchen-sinks/…), drawn by the site from the
+   same records, with the product photographs.
    ═══════════════════════════════════════════════════════════════════════════ */
 const KS_DIR = "catalogue/";
 /* A picture from the catalogue's folder (the product photographs themselves are carried in the page, SINK_IMG) */
 const KS_IMG = (name) => KS_DIR + "img/" + name;
 const KS_EDITION = { en: "October 2026", id: "Oktober 2026" };
-/* pages and size of each PDF, written in when the files are made (tools/make-catalogue-pdfs) */
-const KS_PDF_META = {"granite-en":{"pages":10,"bytes":1572963},"granite-id":{"pages":10,"bytes":1571893},"stainless-en":{"pages":30,"bytes":4208606},"stainless-id":{"pages":30,"bytes":4209147}};
+/* pages and size of each PDF, written in when the files are put in the folder (catalogues/source/layout/publish_site.py) */
+const KS_PDF_META = {"granite-en":{"pages":12,"bytes":2219024},"granite-id":{"pages":12,"bytes":2218127},"stainless-en":{"pages":36,"bytes":6347686},"stainless-id":{"pages":36,"bytes":6349883}};
+/* and what is on each page of a PDF (the same in both languages), written in with them: a model's code, or the page of
+   the catalogue read here with the same contents (cover, overview, colours or finishes, index) — null where there is
+   none; and the three pages of the look inside (img/pages/<doc>-<lang>-1…3.jpg) */
+const KS_PDF_PAGES = {"granite":{"peek":[1,3,5],"pages":["cover",null,"overview","colours","GDU 8145","GST 6045","GST 7546","GSU 6045","GSU 7545","GSU 8045","index",null]},"stainless":{"peek":[1,4,7],"pages":["cover",null,"finishes","overview-pressed","overview-handmade",null,"LPS 5040","LPS 7540 A","LPS 8643 A","LPS 9643 A","LPS 10050 A","WL 03","WL 05 A","WL 07","WL 11","WL 12","WL 18",null,"W 5050 TSB","W 6045 TSS","W 6045 TSB","W 7546 TSB","W 7546 TSBN","W 7646 USS","W 7646 USB","W 7845 UDS","W 7845 UDB","W 8050 TSS","W 8050 TSB","W 8245 TDB","W 8550 TDG","W 10050 TSG","index",null,null,null]}};
 const KS_LANGS = ["en", "id"];
 /* two catalogues, one for each material — granite and stainless steel are never in the same one */
 const KS_DOCS = {
@@ -14766,6 +14773,21 @@ const KS_DOC_LIST = ["granite", "stainless"];
 const ksPdfFile = (doc, lang) => KS_DOCS[doc].stem + (lang === "id" ? "_ID" : "") + ".pdf";
 const ksPdfHref = (doc, lang) => KS_DIR + ksPdfFile(doc, lang);
 const ksPdfMeta = (doc, lang) => (KS_PDF_META && KS_PDF_META[doc + "-" + (lang === "id" ? "id" : "en")]) || null;
+/* the look inside's three pages, and a model's page — in the PDF (without its list, in the catalogue read here) */
+const ksPdfPeek = (doc) => (KS_PDF_PAGES[doc] ? KS_PDF_PAGES[doc].peek : kcPeek(doc));
+const ksPdfPageOf = (doc, model) => {
+  if (!KS_PDF_PAGES[doc]) return kcPageOf(doc, model);
+  const i = KS_PDF_PAGES[doc].pages.indexOf(model);
+  return i >= 0 ? i + 1 : null;
+};
+/* a page of the PDF, as the page of the catalogue read here with the same contents (its pages are in an order of their
+   own); null where it has none, which opens it at its start */
+const ksReadPage = (doc, page) => {
+  if (!page || !KS_PDF_PAGES[doc]) return page || null;
+  const key = KS_PDF_PAGES[doc].pages[page - 1];
+  const i = key ? kcPlan(doc).pages.findIndex((p) => (p.m ? p.m.model : p.range ? p.kind + "-" + p.range : p.kind) === key) : -1;
+  return i >= 0 ? i + 1 : null;
+};
 
 /* Are the catalogue's files beside this page? A copy of the page opened on its own — straight out of a zip, in an
    app's file preview, or uploaded without its folder — has no PDFs to give, and a download link there would only
@@ -14798,6 +14820,8 @@ const useKsFiles = () => {
   return s;
 };
 const ksReadHref = (doc, lang) => "#/print/kitchen-sinks/" + doc + "/" + (lang === "id" ? "id" : "en");
+/* the catalogue read here, at a page of the PDF */
+const ksReadAt = (doc, lang, page = null) => { const p = ksReadPage(doc, page); return ksReadHref(doc, lang) + (p ? "/" + p : ""); };
 /* the material a catalogue belongs to, and its page in the shop */
 const ksKindOfDoc = (doc) => (doc === "stainless" ? "stainless-steel" : "granite");
 /* The catalogue to look at on the website: the PDF itself, shown inside the page by the browser's own PDF viewer —
@@ -14809,7 +14833,7 @@ const ksViewHref = (doc, lang, page = null) =>
 const ksViewLink = (doc, lang, page = null) => {
   const L = lang === "id" ? "id" : "en";
   const href = typeof window !== "undefined" && window.KS_EMBED_PDF === false
-    ? ksReadHref(doc, L) + (page ? "/" + page : "")
+    ? ksReadAt(doc, L, page)
     : ksViewHref(doc, L, page);
   return { href, "data-ks-view": doc + "-" + L };
 };
@@ -15129,9 +15153,9 @@ const KsPdfFan = ({ doc, lang, set = "web-collection" }) => {
     <div className="absolute inset-0 flex items-center justify-center" data-ks-peek={doc + "-" + L}>
       <p className="absolute left-6 top-6 text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute md:left-8 md:top-8">{x({ en: "Look inside", id: "Lihat isinya" })}</p>
       {order.map((k, n) => (
-        <a key={k} {...ksViewLink(doc, L, kcPeek(doc)[k - 1])}
+        <a key={k} {...ksViewLink(doc, L, ksPdfPeek(doc)[k - 1])}
           className={"group/pg absolute block w-[30%] max-w-[190px] transition-transform duration-700 ease-quiet hover:-translate-y-2 " + pos[n]}
-          aria-label={x({ en: "View the catalogue here — page " + kcPeek(doc)[k - 1], id: "Lihat katalog di sini — halaman " + kcPeek(doc)[k - 1] })}>
+          aria-label={x({ en: "View the catalogue here — page " + ksPdfPeek(doc)[k - 1], id: "Lihat katalog di sini — halaman " + ksPdfPeek(doc)[k - 1] })}>
           <img src={KS_IMG("pages/" + doc + "-" + L + "-" + k + ".jpg")} alt="" loading="lazy" decoding="async" draggable="false"
             onError={() => setMissing(true)}
             className="no-dim block aspect-[210/297] w-full bg-white object-cover shadow-[0_14px_34px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)]" />
@@ -15450,11 +15474,11 @@ const KsCatalogueView = ({ kind, edition = null, page = null }) => {
   const title = tx(KS_DOCS[doc].title, L);
   useKsMeta(K ? title : null, K ? tx({ en: "The " + KS_DOCS[doc].title.en + " of Maju Terus Jaya, as a PDF: page through it here, print it or download it.",
                                        id: KS_DOCS[doc].title.id + " dari Maju Terus Jaya, sebagai PDF: lihat di sini, cetak atau unduh." }, lang) : null);
-  useEffect(() => { if (K && files === "missing") location.replace(ksReadHref(doc, L) + (page ? "/" + page : "")); }, [files]);
+  useEffect(() => { if (K && files === "missing") location.replace(ksReadAt(doc, L, page)); }, [files]);
   if (!K) return <KsCategory kind={kind} />;
   const pdf = ksPdfHref(doc, L);
   const src = pdf + (page ? "#page=" + page : "");
-  const read = ksReadHref(doc, L) + (page ? "/" + page : "");
+  const read = ksReadAt(doc, L, page);
   const btn = "inline-flex h-12 items-center gap-3 whitespace-nowrap border px-6 text-[11px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color,border-color] duration-500 ease-quiet ";
   const dark = btn + "border-ink bg-ink text-bone hover:bg-transparent hover:text-ink", light = btn + "border-ink text-ink hover:bg-ink hover:text-bone";
   return (
@@ -15636,8 +15660,8 @@ const KsNotes = () => {
   return (
     <div className="mx-auto max-w-site border-t border-line px-5 py-10 md:px-10">
       <p className="max-w-[100ch] text-[12px] leading-[1.7] text-mute">
-        {x({ en: "Dimensions in millimetres, as listed for each model. Every picture is a supplied photograph of the product. Prices and stock are in the shop.",
-             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Setiap gambar adalah foto produk yang disediakan. Harga dan stok ada di toko." })}
+        {x({ en: "Dimensions in millimetres, as listed for each model. The product pictures here are supplied photographs; the kitchens in the catalogues are visualisations made from them and the listed dimensions. Prices and stock are in the shop.",
+             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Gambar produk di sini adalah foto produk yang disediakan; dapur di dalam katalog merupakan visualisasi yang dibuat dari foto tersebut dan dimensi yang tercantum. Harga dan stok ada di toko." })}
       </p>
     </div>
   );
@@ -15869,7 +15893,7 @@ const KsProduct = ({ kind, model, colour }) => {
     { id: "downloads", label: x({ en: "Downloads", id: "Unduhan" }), body: (
       <div className="max-w-[760px]">
         <div className="border-t border-line" data-ks-product-pdf="">
-          <KsPdfLink doc={K.doc} lang={lang} variant="row" page={kcPageOf(K.doc, m.model)}>{x(KS_DOCS[K.doc].title)}</KsPdfLink>
+          <KsPdfLink doc={K.doc} lang={lang} variant="row" page={ksPdfPageOf(K.doc, m.model)}>{x(KS_DOCS[K.doc].title)}</KsPdfLink>
         </div>
         <p className="mt-5 text-[13px] leading-[1.7] text-mute">{x({ en: "No separate specification sheet or drawing has been supplied for this model yet; its full specification is on this page and in the catalogue.",
                                                                        id: "Belum ada lembar spesifikasi atau gambar terpisah untuk model ini; spesifikasi lengkapnya ada di halaman ini dan di katalog." })}</p>
@@ -15932,7 +15956,7 @@ const KsProduct = ({ kind, model, colour }) => {
           </dl>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <KsViewLink doc={K.doc} lang={lang} page={kcPageOf(K.doc, m.model)} className="justify-center">{x({ en: "View in the catalogue", id: "Lihat di katalog" })}</KsViewLink>
+            <KsViewLink doc={K.doc} lang={lang} page={ksPdfPageOf(K.doc, m.model)} className="justify-center">{x({ en: "View in the catalogue", id: "Lihat di katalog" })}</KsViewLink>
             <KsPdfLink doc={K.doc} lang={lang} className="justify-center">{x({ en: "Download PDF", id: "Unduh PDF" })}</KsPdfLink>
             <a href={"#/contact/" + row.slug} data-ks-enquire="" className={btn + "border-line text-ink hover:border-ink"}>{x({ en: "Request a quote", id: "Minta penawaran" })}</a>
           </div>
@@ -16037,7 +16061,7 @@ const KsProductDownloads = ({ p }) => {
   return (
     <Accordion title={x({ en: "Downloads", id: "Unduhan" })}>
       <div className="-mt-2 border-t border-line" data-ks-product-pdf="">
-        <KsPdfLink doc={KS_KINDS[k].doc} lang={lang} variant="row" page={m ? kcPageOf(KS_KINDS[k].doc, m.model) : null}>{x(KS_DOCS[KS_KINDS[k].doc].title)}</KsPdfLink>
+        <KsPdfLink doc={KS_KINDS[k].doc} lang={lang} variant="row" page={m ? ksPdfPageOf(KS_KINDS[k].doc, m.model) : null}>{x(KS_DOCS[KS_KINDS[k].doc].title)}</KsPdfLink>
       </div>
       <p className="mt-4 text-[12.5px]">{x({ en: "No separate specification sheet has been supplied for this model; its full specification is above and in the catalogue.", id: "Belum ada lembar spesifikasi terpisah untuk model ini; spesifikasi lengkapnya ada di atas dan di katalog." })}</p>
     </Accordion>
@@ -16140,6 +16164,9 @@ const KsListNote = ({ kind }) => {
    everything else; no notes, no philosophy, nothing that is not about the products. */
 const KSP_DOCS = ["granite", "stainless"];
 const kcImg = (name) => KS_DIR + "img/cat/" + name + ".jpg";
+/* the pictures once made for these pages (img/cat/*.jpg) are not in the folder with the generator's PDFs, so the
+   pages show the shop's own photographs; true asks the folder for them first */
+const KC_CAT_PICS = false;
 
 /* The print view's pictures, best first; each tried in turn (onPick says which is shown), onFail once none is there. */
 const KspImg = ({ srcs, alt = "", className, onFail, onPick }) => {
@@ -16155,7 +16182,7 @@ const KspImg = ({ srcs, alt = "", className, onFail, onPick }) => {
    photograph of the same sink, on the shop's plate (the frame takes the plate's colour, so it reads as one). */
 const KcPic = ({ name, row = null, alt = "", className = "" }) => {
   const files = useKsFiles();
-  const srcs = [files === "ok" ? kcImg(name) : null, row ? pImg(row, 0, 1000) : null].filter(Boolean);
+  const srcs = [KC_CAT_PICS && files === "ok" ? kcImg(name) : null, row ? pImg(row, 0, 1000) : null].filter(Boolean);
   const [plate, setPlate] = useState(false);
   return (
     <div className={"kc-pic " + (plate ? "kc-pic-plate " : "") + className}>

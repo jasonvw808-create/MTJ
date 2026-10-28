@@ -69,15 +69,16 @@ def compose(R, quality="preview"):
         if win:
             objs += kitchen.window(win["x0"], win["x1"], win["z0"], win["z1"], wall_y, win["frame"], None,
                                    mullions=win.get("mullions", 1), transoms=win.get("transoms", 0), reveal=0.15)
-            # the reveal's sides, head and the sill
+            # the reveal's sides, head and the sill, each standing 2 mm proud of the wall it lines (flush with it, its face
+            # would be in that wall's shadow and render black)
             rm = win.get("reveal_mat", wall_mat)
             # the sill: a board a little proud of the wall below (level with it, its top would be in that wall's
             # shadow) and running 2 cm out over the splashback
             objs.append(geo.box(win["x0"] - 0.0, wall_y - 0.02, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"] + 0.003, name="sill",
                                 mat=win.get("sill", rm), bevel=0.002))
-            objs.append(geo.box(win["x0"] - 0.01, wall_y, win["z0"], win["x0"], wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
-            objs.append(geo.box(win["x1"], wall_y, win["z0"], win["x1"] + 0.01, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
-            objs.append(geo.box(win["x0"], wall_y, win["z1"], win["x1"], wall_y + 0.15, win["z1"] + 0.01, name="rev_t", mat=rm))
+            objs.append(geo.box(win["x0"] - 0.008, wall_y, win["z0"], win["x0"] + 0.002, wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
+            objs.append(geo.box(win["x1"] - 0.002, wall_y, win["z0"], win["x1"] + 0.008, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
+            objs.append(geo.box(win["x0"], wall_y, win["z1"] - 0.002, win["x1"], wall_y + 0.15, win["z1"] + 0.008, name="rev_t", mat=rm))
     side = R.get("side_wall")
     if side:
         x = side["x"]

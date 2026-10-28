@@ -109,7 +109,8 @@ def lps8643a():
 def lps9643a():
     conc = mats.concrete(base=C(92, 90, 86), rough=0.5, tone=0.12)
     blackc = mats.paint(C(30, 31, 32), rough=0.55)
-    tiles = mats.tile(col=C(60, 62, 64), grout=C(110, 108, 104), w=0.2, h=0.065, gap=0.003, rough=0.25, var=0.08)
+    # pale glazed tiles behind the sink: the flat steel drainboard mirrors the wall, and it should read as steel
+    tiles = mats.tile(col=C(206, 204, 198), grout=C(150, 147, 141), w=0.2, h=0.065, gap=0.003, rough=0.12, var=0.06)
     brick = mats.plaster(C(132, 122, 112), var=0.08, rough=0.9)
     steel = mats.metal("black")
     oak = mats.wood("smoked_oak", along='X', contrast=0.5)
@@ -370,7 +371,9 @@ def w5050tsb():
               floor=mats.wood("walnut", along='X'), wall=wall, splash=dict(mat=arab, h=0.4),
               tap=dict(kind="gooseneck", finish="black", gap=0.035, height=0.3, reach=0.18, dx=-0.14),
               build=[build], light=light, front_margin=0.06,
-              camera=dict(dist=1.8, elev=36, azim=18, lens=55, fstop=2.8, tz=0.03, ty=0.12), exposure=-1.1)
+              camera=dict(dist=1.8, elev=36, azim=18, lens=55, fstop=2.8, tz=0.03, ty=0.12), exposure=-1.1,
+              # evening light: a gentle fill, so the black bowl reads and the warmth stays
+              sink_fill=18)
 
 
 # W 6045 TSS — light oak minimal, white quartz, bright
@@ -533,8 +536,10 @@ def w7646usb():
 # W 7845 UDS — greige plaster, honed grey marble, linen, soft light
 def w7845uds():
     # light veins only in the fine, crisp layer (vein2), as in the W 7546 TSBN kitchen
-    pietra = mats.marble(base=C(120, 116, 110), vein=C(110, 106, 101), vein2=C(176, 172, 166), rough=0.36, vein_width=0.012, seed=23.0, honed=True, scale=0.6,
-                         stretch=(1.0, 2.2, 2.4))
+    # Pietra Grey: a dark grey limestone with sparse white calcite veins running through it, the finer veins only a
+    # shade off the ground (light ones on a fine network read as cracked glaze)
+    pietra = mats.marble(base=C(120, 116, 110), vein=C(196, 192, 186), vein2=C(134, 130, 124), rough=0.36, vein_width=0.009, seed=23.0, honed=True, scale=0.6,
+                         stretch=(1.0, 2.2, 2.4), density=0.55, halo=0.0, crisp=True)
     greige = mats.paint(C(190, 180, 166), rough=0.6)
     wall = mats.plaster(C(200, 190, 176), var=0.05, rough=0.92, scale=0.45, bump=0.1)
     nickel = mats.metal("nickel")
@@ -589,7 +594,9 @@ def w7845udb():
               floor=mats.wood("walnut", along='X'), wall=wall,
               tap=dict(kind="gooseneck", finish="brass_polished", gap=0.07, height=0.37, reach=0.22),
               build=[build], light=light,
-              camera=dict(dist=2.4, elev=29, azim=-18, lens=50, fstop=2.8, tz=0.05, ty=0.42), exposure=-1.1)
+              camera=dict(dist=2.4, elev=29, azim=-18, lens=50, fstop=2.8, tz=0.05, ty=0.42), exposure=-1.1,
+              # evening light: a gentle fill, so the black bowl reads and the warmth stays
+              sink_fill=18)
 
 
 # W 8050 TSS — white under a skylight: lacquer, quartz, pale oak
@@ -622,7 +629,9 @@ def w8050tss():
 
 # W 8050 TSB — walnut and honed limestone, warm evening
 def w8050tsb():
-    lime = mats.marble(base=C(214, 206, 192), vein=C(176, 166, 150), vein2=C(196, 188, 174), rough=0.4, vein_width=0.018, seed=31.0, honed=True)
+    # honed limestone: its veins flowing up the splashback and breaking off, not closing into cells
+    lime = mats.marble(base=C(214, 206, 192), vein=C(176, 166, 150), vein2=C(196, 188, 174), rough=0.4, vein_width=0.018, seed=31.0, honed=True,
+                       stretch=(1.0, 2.2, 2.4), density=0.7, breakup=0.8)
     walnut = mats.wood("walnut", along='X', rough=0.45, contrast=0.55)
     wall = mats.plaster(C(150, 136, 120), var=0.04, rough=0.9, scale=0.4, bump=0.08)
     blk = mats.metal("black")

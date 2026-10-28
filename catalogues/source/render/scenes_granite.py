@@ -229,7 +229,9 @@ def gsu8045():
                 tap=dict(kind="bridge", finish="nickel", gap=0.055, height=0.3, reach=0.2),
                 build=[build], light=light,
                 camera=dict(dist=2.1, elev=33, azim=17, lens=50, fstop=3.2, tz=0.03, ty=0.18),
-                exposure=-1.1)
+                exposure=-1.1,
+                # a gentle neutral fill: the Titanium Grey reads grey in the evening light, the sun's shadows kept
+                sink_fill=12)
 
 
 RECIPES = {"gdu8145": gdu8145, "gst6045": gst6045, "gst7546": gst7546, "gsu6045": gsu6045, "gsu7545": gsu7545, "gsu8045": gsu8045}

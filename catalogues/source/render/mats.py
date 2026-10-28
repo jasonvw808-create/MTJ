@@ -362,12 +362,13 @@ def emission(col=(1.0, 0.8, 0.6), strength=10.0):
 @cached
 def marble(base=(0.82, 0.80, 0.77), vein=(0.30, 0.29, 0.28), vein2=(0.55, 0.52, 0.48), rough=0.12,
            scale=1.0, vein_width=0.03, warp=4.0, seed=0.0, honed=False, stretch=(1.0, 2.2, 1.0), cloud=0.06,
-           density=1.0, halo=0.22, angle=0.35, crisp=False):
+           density=1.0, halo=0.22, angle=0.35, crisp=False, breakup=0.0):
     """Veined marble. The veins are the edges of a few large, warped cells (cracks that run across the slab and branch),
     a finer network between them and hairline cracks, each fading in and out, with a soft halo round the main veins
     and a cloudy ground. vein: the main veins' colour; vein2: the fine network's. vein_width ~ 0.01 (hairline) ..
     0.05 (bold). stretch lengthens the cells along y (the run of the slab on a worktop), so veins flow one way.
-    crisp: veins of even strength with a sharp edge (calcite in a black stone, Nero Marquina), not soft-centred ones."""
+    crisp: veins of even strength with a sharp edge (calcite in a black stone, Nero Marquina), not soft-centred ones.
+    breakup 0..1: how far the veins break off along their length, so they flow and stop rather than closing into cells."""
     nb = NB("marble")
     tc = nb.n("ShaderNodeTexCoord")
     mp = nb.n("ShaderNodeMapping")
@@ -422,8 +423,8 @@ def marble(base=(0.82, 0.80, 0.77), vein=(0.30, 0.29, 0.28), vein2=(0.55, 0.52, 
         fn = nb.noise(off, scale=fade_scale, detail=2.0, rough=0.5)
         fm = nb.n("ShaderNodeMapRange")
         nb.link(fn, fm, 'Fac', 0)
-        fm.inputs[1].default_value = 0.5 - fade * 0.25
-        fm.inputs[2].default_value = 0.5 + fade * 0.12
+        fm.inputs[1].default_value = (0.5 - fade * 0.25) * (1 - breakup) + 0.43 * breakup
+        fm.inputs[2].default_value = (0.5 + fade * 0.12) * (1 - breakup) + 0.6 * breakup
         fm.inputs[3].default_value = 0.0
         fm.inputs[4].default_value = 1.0
         return nb.math('MULTIPLY', sharp, fm), wmul, vo

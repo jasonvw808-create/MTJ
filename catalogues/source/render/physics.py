@@ -36,6 +36,20 @@ def _world(ob, dg):
     return v, p
 
 
+def support_points(members, meshes):
+    """The points a prop can rest on: the lower part of each of its pieces (a lemon's side against a bowl's curve, a
+    plate's slope, a pot's base), never its upper part, so it cannot hang by its rim from an edge."""
+    pts = []
+    for o in members:
+        v = meshes[o.name][0]
+        if not v:
+            continue
+        oz0, oz1 = min(p.z for p in v), max(p.z for p in v)
+        cut = oz0 + max(0.004, 0.4 * (oz1 - oz0))
+        pts += [p for p in v if p.z <= cut]
+    return sorted(pts, key=lambda p: p.z)[:1200]
+
+
 def settle(ctx, order=None, gap=0.0004, max_drop=0.25, verbose=False):
     """Drop every loose prop onto what is under it. Props are settled lowest first, so fruit lands on the bowl and
     then on the fruit already in it; a prop whose base is inside its support is lifted out."""
@@ -65,8 +79,7 @@ def settle(ctx, order=None, gap=0.0004, max_drop=0.25, verbose=False):
         if not verts:
             continue
         z0 = min(v.z for v in verts)
-        # every point of the prop counts (a lemon's side against a bowl's curve, a plate's slope), the lowest first
-        low = sorted(verts, key=lambda v: v.z)[:600]
+        low = support_points(members, meshes)
         lo = Vector((min(v.x for v in verts), min(v.y for v in verts), z0))
         hi = Vector((max(v.x for v in verts), max(v.y for v in verts), max(v.z for v in verts)))
         # the supports: everything else whose box lies under this prop's footprint
@@ -88,7 +101,7 @@ def settle(ctx, order=None, gap=0.0004, max_drop=0.25, verbose=False):
         # for each low point, the surface it should rest on: straight down from just inside the prop; but if that
         # first meets the underside of something, the point is buried in it, and its top (straight up) is the surface
         best = None
-        step = max(1, len(low) // 150)
+        step = max(1, len(low) // 200)
         for v in low[::step]:
             hit, nor, idx, dist = tree.ray_cast(v + Vector((0, 0, 0.001)), Vector((0, 0, -1)), max_drop)
             if hit is None:
@@ -127,7 +140,9 @@ def clear_of(ctx, faces, margin=0.004, verbose=False):
             continue
         push = 0.0
         for (yf, z0, z1, x0, x1) in faces:
-            inside = [v.y for v in verts if z0 <= v.z <= z1 and x0 <= v.x <= x1]
+            # a prop standing level with a face's top or foot (a pot on the sill at the splashback's top) is not in
+            # front of it
+            inside = [v.y for v in verts if z0 + 0.003 < v.z < z1 - 0.003 and x0 <= v.x <= x1]
             if inside:
                 push = max(push, max(inside) - (yf - margin))
         if push > 0:

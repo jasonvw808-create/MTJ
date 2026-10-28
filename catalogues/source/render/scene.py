@@ -4,7 +4,8 @@ import math
 import sys
 import bpy
 from mathutils import Vector
-from . import common, geo, mats, props, kitchen, physics
+from . import common, geo, kit, mats, props, kitchen, physics
+from .steel_data import STEEL
 
 
 def build_sink(kind, model, variant):
@@ -70,7 +71,10 @@ def compose(R, quality="preview"):
                                    mullions=win.get("mullions", 1), transoms=win.get("transoms", 0), reveal=0.15)
             # the reveal's sides, head and the sill
             rm = win.get("reveal_mat", wall_mat)
-            objs.append(geo.box(win["x0"] - 0.0, wall_y, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"], name="sill", mat=win.get("sill", rm)))
+            # the sill: a board a little proud of the wall below (level with it, its top would be in that wall's
+            # shadow) and running 2 cm out over the splashback
+            objs.append(geo.box(win["x0"] - 0.0, wall_y - 0.02, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"] + 0.003, name="sill",
+                                mat=win.get("sill", rm), bevel=0.002))
             objs.append(geo.box(win["x0"] - 0.01, wall_y, win["z0"], win["x0"], wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
             objs.append(geo.box(win["x1"], wall_y, win["z0"], win["x1"] + 0.01, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
             objs.append(geo.box(win["x0"], wall_y, win["z1"], win["x1"], wall_y + 0.15, win["z1"] + 0.01, name="rev_t", mat=rm))
@@ -114,6 +118,11 @@ def compose(R, quality="preview"):
     # lights & world
     L = R["light"]
     L(ctx)
+    # a dark sink (Pearl Black, Nano Black) gets a photographer's soft fill, so its stone or steel reads
+    dark = R.get("variant") == "pearl" or (R["kind"] != "granite" and STEEL[R["model"]]["finish"] == "nano_black")
+    fill = R.get("sink_fill", 60 if dark else 0)
+    if fill:
+        kit.sink_fill(ctx, fill)
     # camera
     cam = R["camera"]
     tgt = Vector((sx + cam.get("tx", 0.0), sy + cam.get("ty", 0.0), H + cam.get("tz", -0.05)))

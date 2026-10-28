@@ -142,7 +142,7 @@ def audit(name, tol=0.0015):
         pts = sorted((pt for n in members for pt in data[n]["v"]), key=lambda v: v.z)
         zmin = pts[0].z
         low = [pt for pt in pts if pt.z < zmin + 0.0008]
-        under = [gap_under(pt, g)[0] for pt in low[::max(1, len(low) // 24)]]
+        under = [gap_under(pt, g, reach=3.0)[0] for pt in low[::max(1, len(low) // 24)]]
         under = min((u for u in under if u is not None), default=None)
         if g not in loose:
             # fixed things (a tap, a knob, a lamp): only a lowest point hanging over something counts
@@ -150,9 +150,11 @@ def audit(name, tol=0.0015):
                 floats += 1
                 print(f"{name:18s} FLOAT {g:28s} gap={under * 1000:6.1f} mm over the surface under it", flush=True)
             continue
-        # a resting thing must rest on something: the nearest surface under it, however far down
+        # a resting thing must rest on something, with its lower part (as physics.settle has it): the nearest surface
+        # under that, however far down
+        sup = physics.support_points([bpy.data.objects[n] for n in members], {n: (data[n]["v"], None) for n in members})
         touch, on = None, None
-        for pt in pts[:600][::4]:
+        for pt in sup[::max(1, len(sup) // 200)]:
             gp, what = gap_under(pt, g, reach=3.0)
             if gp is not None and (touch is None or gp < touch):
                 touch, on = gp, what

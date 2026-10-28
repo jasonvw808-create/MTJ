@@ -187,7 +187,8 @@ def cached(fn):
 
 GRANITE_COLOURS = {
     # base albedo, fleck albedo, fleck density, roughness
-    "pearl": ((0.020, 0.020, 0.021), (0.16, 0.16, 0.165), 0.06, 0.52),
+    # Pearl Black: a deep charcoal, as photographed (about 3% of the white ground the product photograph stands on)
+    "pearl": ((0.028, 0.028, 0.030), (0.16, 0.16, 0.165), 0.06, 0.52),
     "pure": ((0.80, 0.79, 0.77), (0.60, 0.60, 0.59), 0.035, 0.52),
     "titan": ((0.33, 0.335, 0.345), (0.68, 0.68, 0.69), 0.07, 0.50),
 }
@@ -361,11 +362,12 @@ def emission(col=(1.0, 0.8, 0.6), strength=10.0):
 @cached
 def marble(base=(0.82, 0.80, 0.77), vein=(0.30, 0.29, 0.28), vein2=(0.55, 0.52, 0.48), rough=0.12,
            scale=1.0, vein_width=0.03, warp=4.0, seed=0.0, honed=False, stretch=(1.0, 2.2, 1.0), cloud=0.06,
-           density=1.0, halo=0.22, angle=0.35):
+           density=1.0, halo=0.22, angle=0.35, crisp=False):
     """Veined marble. The veins are the edges of a few large, warped cells (cracks that run across the slab and branch),
     a finer network between them and hairline cracks, each fading in and out, with a soft halo round the main veins
     and a cloudy ground. vein: the main veins' colour; vein2: the fine network's. vein_width ~ 0.01 (hairline) ..
-    0.05 (bold). stretch lengthens the cells along y (the run of the slab on a worktop), so veins flow one way."""
+    0.05 (bold). stretch lengthens the cells along y (the run of the slab on a worktop), so veins flow one way.
+    crisp: veins of even strength with a sharp edge (calcite in a black stone, Nero Marquina), not soft-centred ones."""
     nb = NB("marble")
     tc = nb.n("ShaderNodeTexCoord")
     mp = nb.n("ShaderNodeMapping")
@@ -402,12 +404,20 @@ def marble(base=(0.82, 0.80, 0.77), vein=(0.30, 0.29, 0.28), vein2=(0.55, 0.52, 
         wn = nb.noise(off, scale=cells * 0.9, detail=2.0, rough=0.5)
         wmul = nb.n("ShaderNodeMapRange")
         nb.link(wn, wmul, 'Fac', 0)
-        wmul.inputs[3].default_value = width * 0.12
-        wmul.inputs[4].default_value = width * 1.9
-        # 1 on the edge, 0 a width away
+        wmul.inputs[3].default_value = width * (0.15 if crisp else 0.12)
+        wmul.inputs[4].default_value = width * (1.35 if crisp else 1.9)
+        # 1 on the edge, 0 a width away: soft-centred, or (crisp) full across and falling off only at its edge
         div = nb.math('DIVIDE', vo, wmul, a_out='Distance')
-        inv = nb.math('SUBTRACT', 1.0, div, clamp=True)
-        sharp = nb.math('POWER', inv, 2.2)
+        if crisp:
+            sharp = nb.n("ShaderNodeMapRange", interpolation_type='SMOOTHSTEP')
+            nb.link(div, sharp, 0, 0)
+            sharp.inputs[1].default_value = 0.55
+            sharp.inputs[2].default_value = 1.0
+            sharp.inputs[3].default_value = 1.0
+            sharp.inputs[4].default_value = 0.0
+        else:
+            inv = nb.math('SUBTRACT', 1.0, div, clamp=True)
+            sharp = nb.math('POWER', inv, 2.2)
         # some stretches fade out altogether
         fn = nb.noise(off, scale=fade_scale, detail=2.0, rough=0.5)
         fm = nb.n("ShaderNodeMapRange")

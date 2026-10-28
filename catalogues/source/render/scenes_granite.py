@@ -66,8 +66,8 @@ def gst6045():
         kit.garden(ctx, y0=yw + 0.2, seed=5, col=(0.10, 0.17, 0.06), ground=False)
         kit.outside_glow(ctx, 2.2)
         # on the sill: herbs and a jug
-        props.herb_pot("sill1", -0.42, yw + 0.06, win["z0"], r=0.055, h=0.09, pot_mat=mats.ceramic(C(180, 110, 80), matte=True), seed=7)
-        props.herb_pot("sill2", 0.38, yw + 0.06, win["z0"], r=0.05, h=0.085, pot_mat=cer, seed=9)
+        props.herb_pot("sill1", -0.42, yw + 0.045, win["z0"], r=0.041, h=0.075, pot_mat=mats.ceramic(C(180, 110, 80), matte=True), seed=7)
+        props.herb_pot("sill2", 0.38, yw + 0.045, win["z0"], r=0.041, h=0.075, pot_mat=cer, seed=9)
         # worktop: a ceramic bowl of pears to the left, plates and a towel to the right, utensils
         kit.fruit_bowl(ctx, kit.left(ctx, 0.28), sy + 0.02, cer, r=0.14, fruit=("pear", "pear", "lemon"))
         props.plate_stack("pl", kit.right(ctx, 0.25), sy + 0.08, H, r=0.12, n=4, mat=mats.ceramic(C(240, 238, 232)))
@@ -165,7 +165,8 @@ def gsu6045():
 
 # ── GSU 7545 · Pure White — emerald lacquer and black marble, an island at night ──
 def gsu7545():
-    nero = mats.marble(base=(0.014, 0.014, 0.015), vein=(0.30, 0.30, 0.29), vein2=(0.05, 0.05, 0.05), rough=0.14, scale=0.45, vein_width=0.006, warp=4.5, seed=5.0, density=0.75, halo=0.06)
+    nero = mats.marble(base=(0.014, 0.014, 0.015), vein=(0.42, 0.41, 0.40), vein2=(0.15, 0.15, 0.15), rough=0.14, scale=0.45, vein_width=0.0035, warp=4.5, seed=5.0, density=0.75,
+                       halo=0.0, crisp=True)
     green = mats.paint(C(22, 58, 46), rough=0.35, coat=0.15)
     plaster = mats.plaster(C(214, 208, 196), var=0.04, rough=0.9, scale=0.4, bump=0.06)
     brass = mats.metal("brass_polished")

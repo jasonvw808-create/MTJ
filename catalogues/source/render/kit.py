@@ -92,6 +92,15 @@ def golden(ctx, side=1, sun_elev=13, sun_azim=None, sun_power=4.5, sun_k=3300, r
                           energy=fill, color=kelvin(fill_k), spread=150)
 
 
+def sink_fill(ctx, energy=60, k=5800, size=(1.4, 0.9)):
+    """A soft, neutral light over the front of the sink, as a photographer's bounce: it lifts the inside of a dark bowl
+    so its stone or steel reads true (Pearl Black a charcoal, not brown, in a warm room), and the polished waste
+    covers shine as photographed. Behind the camera's side, it shows in no reflection on the worktop."""
+    sx, sy, H = ctx["sx"], ctx["sy"], ctx["H"]
+    return common.area_light("sink_fill", (sx, sy - 0.9, H + 1.5), (sx, sy + 0.05, H - 0.1), size=size, energy=energy,
+                             color=kelvin(k), spread=120)
+
+
 def portal(ctx, win):
     """An area light filling the window opening, marked as a portal so the sky's light is found."""
     yw = ctx["wall_y"]

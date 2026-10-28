@@ -92,7 +92,7 @@ def lps8643a():
         kit.fruit_bowl(ctx, kit.left(ctx, 0.28), sy + 0.03, mats.ceramic(C(236, 232, 222), speck=0.04), r=0.14, fruit=("lemon", "lemon", "lemon", "lemon", "lime"))
         kit.branches(ctx, kit.right(ctx, 0.32), sy + 0.12, mats.ceramic(C(170, 95, 60), matte=True), h=0.3, r=0.08, leaf=(0.18, 0.22, 0.14), seed=21, n_leaves=170, style=2)
         props.bottle("ob", kit.right(ctx, 0.6), yw - 0.12, H, h=0.3, r=0.034, glass=mats.glass((0.4, 0.55, 0.35)), liquid=mats.liquid_oil(), cap=mats.paint(C(150, 110, 70), 0.6, texture=0))
-        props.herb_pot("sill", 0.36, yw + 0.06, win["z0"], r=0.055, h=0.1, pot_mat=mats.ceramic(C(180, 100, 60), matte=True), seed=23)
+        props.herb_pot("sill", 0.36, yw + 0.045, win["z0"], r=0.041, h=0.075, pot_mat=mats.ceramic(C(180, 100, 60), matte=True), seed=23)
 
     def light(ctx):
         kit.natural(ctx, side=-1, power=120, sun=True, sun_elev=34, sun_azim=165, sun_power=6.0, room=0.3, back_window=win)
@@ -157,8 +157,8 @@ def lps10050a():
             egg = props._ellipsoid(f"egg{i}", kit.left(ctx, 0.3) + dx, sy + 0.06 + dy, H + 0.045, 0.03, 0.022, 0.022, mats.fruit(C(220, 190, 160), 0.6, 0.02, 100), None)
             egg.rotation_euler = (0, 0, a)
             props.rest([egg])
-        props.herb_pot("sill1", -0.5, yw + 0.06, win["z0"], r=0.05, h=0.09, seed=29)
-        props.herb_pot("sill2", 0.48, yw + 0.06, win["z0"], r=0.05, h=0.09, seed=31)
+        props.herb_pot("sill1", -0.5, yw + 0.045, win["z0"], r=0.041, h=0.075, seed=29)
+        props.herb_pot("sill2", 0.48, yw + 0.045, win["z0"], r=0.041, h=0.075, seed=31)
         props.towel("tw", kit.left(ctx, 0.55), sy - 0.1, H, w=0.25, d=0.15, t=0.01, color=C(214, 206, 190), rot=0.12)
 
     def light(ctx):
@@ -324,7 +324,7 @@ def wl18():
         kit.garden(ctx, y0=yw + 0.3, seed=14, col=(0.12, 0.19, 0.07), n=10, ground=False)
         kit.outside_glow(ctx, 2.2)
         for i, x in enumerate((-0.75, -0.25, 0.3)):
-            props.herb_pot(f"sill{i}", x, yw + 0.06, win["z0"], r=0.05, h=0.085, seed=40 + i, pot_mat=mats.ceramic(C(236, 234, 228), matte=True))
+            props.herb_pot(f"sill{i}", x, yw + 0.045, win["z0"], r=0.041, h=0.075, seed=40 + i, pot_mat=mats.ceramic(C(236, 234, 228), matte=True))
         props.bottle("jug", kit.left(ctx, 0.25), sy + 0.06, H, h=0.24, r=0.05, glass=mats.glass())
         props.branch("jug_br", kit.left(ctx, 0.25), sy + 0.06, H + 0.22, height=0.35, leaf_col=(0.16, 0.26, 0.1), n_leaves=90, seed=45)
         kit.board_with(ctx, kit.right(ctx, 0.3), sy + 0.0, rot=0.1, wood="oak", fruit="lemon", n=2)

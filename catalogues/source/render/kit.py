@@ -56,6 +56,42 @@ def daylight(ctx, sun_elev=32, sun_azim=200, sun_power=4.0, sun_k=5400, sky=1.0,
         common.area_light("top", (sx + 0.1, sy - 0.25, H + 1.35), (sx, sy, H - 0.1), size=(0.8, 0.6), energy=top, color=kelvin(top_k))
 
 
+def natural(ctx, side=-1, power=320, k=5900, size=(1.8, 1.9), dist=2.3, front=-0.7, height=1.05, room=1.0, sat=0.7,
+            sun=False, sun_elev=30, sun_azim=None, sun_power=3.0, sun_k=5300, sun_angle=1.6, back_window=None, window_power=None):
+    """Daylight as an interior photograph has it. The room round the kitchen is a photographed one (an HDR image, so
+    light comes softly from every open side and steel and stone reflect a real room); a tall window off to one side
+    (side=-1 left, +1 right) gives the light its direction and the shadows their fall; sun=True adds sunlight from
+    that side, sun_azim as for daylight(). back_window: a window in the back wall (the recipe's window dict), lit as
+    the sky beyond it."""
+    sx, sy, H = ctx["sx"], ctx["sy"], ctx["H"]
+    common.world_hdri(ctx["sc"], "lebombo_1k", strength=room, light_from=(side, -0.55), sat=sat)
+    common.area_light("window", (sx + side * dist, sy + front, H + height), (sx, sy + 0.05, H + 0.05), size=size,
+                      energy=power, color=kelvin(k), spread=150)
+    if sun:
+        az = sun_azim if sun_azim is not None else (270 if side < 0 else 90)
+        common.sun("sun", elev=sun_elev, azim=az, energy=sun_power, color=kelvin(sun_k), angle=sun_angle)
+    if back_window:
+        win = back_window
+        w, h = win["x1"] - win["x0"], win["z1"] - win["z0"]
+        ob = common.area_light("sky", ((win["x0"] + win["x1"]) / 2, ctx["wall_y"] + 0.17, (win["z0"] + win["z1"]) / 2),
+                               ((win["x0"] + win["x1"]) / 2, ctx["wall_y"] - 2.0, (win["z0"] + win["z1"]) / 2 - 0.4),
+                               size=(w, h), energy=window_power or 180 * w * h, color=kelvin(7000), spread=170)
+        ob.visible_glossy = False
+
+
+def golden(ctx, side=1, sun_elev=13, sun_azim=None, sun_power=4.5, sun_k=3300, room=0.45, sat=0.65, fill=110, fill_k=4600,
+           tint=(1.0, 0.94, 0.86)):
+    """Late afternoon: a low warm sun rakes across the worktop from one side and draws long shadows, the room round it
+    a little dimmer and warmer. Warm and dramatic, but the sink stays in the light."""
+    sx, sy, H = ctx["sx"], ctx["sy"], ctx["H"]
+    common.world_hdri(ctx["sc"], "lebombo_1k", strength=room, light_from=(side, -0.4), sat=sat, tint=tint)
+    az = sun_azim if sun_azim is not None else (100 if side > 0 else 260)
+    common.sun("sun", elev=sun_elev, azim=az, energy=sun_power, color=kelvin(sun_k), angle=1.2)
+    if fill:
+        common.area_light("window", (sx + side * 2.4, sy - 0.5, H + 0.9), (sx, sy, H), size=(1.6, 1.6),
+                          energy=fill, color=kelvin(fill_k), spread=150)
+
+
 def portal(ctx, win):
     """An area light filling the window opening, marked as a portal so the sky's light is found."""
     yw = ctx["wall_y"]
@@ -92,8 +128,19 @@ def outside_wall(ctx, y=4.0, mat=None):
 
 # ── wall cabinets, shelves ─────────────────────────────────────────────────
 
+def overhead(ctx, x0, x1, y0, y1, z):
+    """Note something hanging over the worktop (a shelf, wall cabinets) that plants must stay under."""
+    ctx.setdefault("overhead", []).append((x0, x1, y0, y1, z))
+
+
+def back_face(ctx, y_face, z0, z1, x0=-9.0, x1=9.0):
+    """Note a surface at the back of the worktop (a ledge, an upstand) that taps and props must stay in front of."""
+    ctx.setdefault("back_faces", []).append((y_face, z0, z1, x0, x1))
+
+
 def uppers(ctx, x0, x1, z0, z1, style, depth=0.34, door_w=0.5, led=None):
     yw = ctx["wall_y"]
+    overhead(ctx, x0, x1, yw - depth, yw, z0)
     cm = style["cab_mat"]
     geo.box(x0, yw - depth + 0.02, z0, x1, yw, z1, name="upper_body", mat=cm)
     n = max(1, int(round((x1 - x0) / door_w)))
@@ -108,6 +155,10 @@ def uppers(ctx, x0, x1, z0, z1, style, depth=0.34, door_w=0.5, led=None):
 
 def shelf(ctx, x0, x1, z, depth=0.26, mat=None, t=0.04, led=None, brackets=None):
     yw = ctx["wall_y"]
+    overhead(ctx, x0, x1, yw - depth, yw, z - t - (0.13 if brackets else 0.0))
+    if ctx.get("splash") and z - t < ctx["splash"]["top"]:
+        yw -= ctx["splash"]["t"]      # on the face of the tiles, not into them
+        depth -= ctx["splash"]["t"]
     kitchen.shelf(x0, x1, z, yw, depth, mat, None, t=t, brackets=brackets)
     if led:
         kitchen.led_strip(x0 + 0.02, x1 - 0.02, z - t - 0.001, yw - 0.03, None, color=kelvin(led[1]), strength=led[0])
@@ -121,10 +172,14 @@ def shelf_items(ctx, x0, x1, z, seed=1, kinds=("vase", "bowl", "plates", "jar", 
     y = y if y is not None else yw - 0.13
     pal = palette or [mats.ceramic((0.78, 0.74, 0.66), matte=True, speck=0.05), mats.ceramic((0.12, 0.11, 0.10), rough=0.35),
                       mats.ceramic((0.62, 0.50, 0.38), matte=True)]
+    # how far right of x each thing reaches: the last one stops short of the shelf's end (a cabinet, an upright)
+    reach = dict(vase=0.075, vase2=0.055, bowl=0.14, plates=0.15, jar=0.045, books=0.18, cups=0.19, plant=0.08, bottle=0.03, gap=0.0)
     x = x0 + 0.12
     i = 0
     while x < x1 - 0.12 and i < 40:
         k = kinds[i % len(kinds)]
+        if x + reach[k] > x1 - 0.02:
+            break
         m = pal[rnd.randrange(len(pal))]
         if k == "vase":
             props.vase(f"sv{i}", x, y, z, h=rnd.uniform(0.18, 0.3), r=rnd.uniform(0.05, 0.075), neck=0.025, mat=m, style=0)
@@ -145,9 +200,10 @@ def shelf_items(ctx, x0, x1, z, seed=1, kinds=("vase", "bowl", "plates", "jar", 
             props.book_stack(f"sbk{i}", x + 0.05, y, z, n=rnd.randint(2, 4), seed=seed + i, rot=0.0)
             x += 0.28
         elif k == "cups":
+            # a cup's handle reaches 6.6 cm to its right: the next cup stands clear of it
             for j in range(2):
-                props.cup(f"sc{i}{j}", x + j * 0.1, y, z, mat=m)
-            x += 0.24
+                props.cup(f"sc{i}{j}", x + j * 0.125, y, z, mat=m)
+            x += 0.27
         elif k == "plant":
             props.herb_pot(f"sh{i}", x, y, z, r=0.06, h=0.1, pot_mat=m, seed=seed + i)
             x += 0.2
@@ -172,16 +228,62 @@ def board_with(ctx, x, y, rot=0.15, wood="walnut", w=0.44, d=0.3, fruit="lemon",
 def fruit_bowl(ctx, x, y, mat, r=0.13, fruit=("lemon", "lime", "lemon", "lime"), h=0.08):
     H = ctx["H"]
     props.bowl("fbowl", x, y, H, r=r, h=h, mat=mat)
-    offs = [(-0.035, 0.0), (0.04, 0.02), (0.0, -0.045), (0.05, -0.04), (-0.05, 0.045)]
+    # a ring of fruit round the middle, lemons lying along it, spaced by their own sizes so no two touch; any more go
+    # on top, where physics.settle lets them come to rest on the ring
+    n = len(fruit)
+    ring = min(n, 4)
+    ang = [2 * math.pi * i / ring + 0.4 for i in range(ring)]
+    rot = [a + math.pi / 2 for a in ang]
+
+    def reach(i, t):
+        """How far fruit i reaches from its middle toward direction t (its outline as an ellipse, a lemon's tip in)."""
+        fa, fb = props.FRUIT_REACH[fruit[i]]
+        c = math.cos(t - rot[i]) / fa
+        d = math.sin(t - rot[i]) / fb
+        return 1.0 / math.sqrt(c * c + d * d)
+
+    rr = 0.0
+    if ring > 1:
+        rr = 0.035
+        while rr < r * 0.6:
+            p = [(rr * math.cos(a), rr * math.sin(a)) for a in ang]
+            ok = True
+            for i in range(ring):
+                j = (i + 1) % ring
+                t = math.atan2(p[j][1] - p[i][1], p[j][0] - p[i][0])
+                if math.dist(p[i], p[j]) < reach(i, t) + reach(j, t + math.pi) + 0.005:
+                    ok = False
+            if ok:
+                break
+            rr += 0.001
     for i, k in enumerate(fruit):
-        dx, dy = offs[i % len(offs)]
-        props.lemon(f"ff{i}", x + dx, y + dy, H + 0.022, kind=k, s=0.85 if k != "apple" else 0.9, rot=i)
+        if i < ring:
+            dx, dy, zz, rt = rr * math.cos(ang[i]), rr * math.sin(ang[i]), H + 0.03, rot[i]
+        else:
+            # one more goes in the middle, settling into the ring; more than one spread round it
+            a = 2 * math.pi * (i - ring) / max(1, n - ring) + 1.2
+            off = 0.0 if n - ring == 1 else 0.012
+            dx, dy, zz, rt = off * math.cos(a), off * math.sin(a), H + 0.09, i * 1.3
+        props.lemon(f"ff{i}", x + dx, y + dy, zz, kind=k, s=0.85 if k != "apple" else 0.9, rot=rt)
 
 
-def branches(ctx, x, y, vase_mat, h=0.32, r=0.08, leaf=(0.12, 0.15, 0.09), seed=3, height=0.5, style=0, n_leaves=140, z=None):
+def branches(ctx, x, y, vase_mat, h=0.32, r=0.08, leaf=(0.12, 0.15, 0.09), seed=3, height=0.5, style=0, n_leaves=140, z=None, name="bv"):
     z = ctx["H"] if z is None else z
-    props.vase("bv", x, y, z, h=h, r=r, neck=0.032, mat=vase_mat, style=style)
-    props.branch("br", x, y, z + h - 0.04, height=height, leaf_col=leaf, n_leaves=n_leaves, seed=seed)
+    props.vase(name, x, y, z, h=h, r=r, neck=0.032, mat=vase_mat, style=style)
+    # the branches stop short of a shelf or wall cabinet above them (they lean up to ~0.3 m out)
+    top = z + h - 0.04
+    for (x0, x1, y0, y1, zb) in ctx.get("overhead", []):
+        if x0 - 0.3 < x < x1 + 0.3 and y0 - 0.3 < y < y1 + 0.3 and zb > top:
+            height = min(height, (zb - top - 0.08) / 1.02)
+    props.branch(name + "_br", x, y, top, height=max(0.12, height), leaf_col=leaf, n_leaves=n_leaves, seed=seed, wall_y=wall_face(ctx))
+
+
+def wall_face(ctx):
+    """The frontmost surface behind the worktop: the splashback's face, or the wall's."""
+    y = ctx["wall_y"]
+    if ctx.get("splash"):
+        y -= ctx["splash"]["t"]
+    return y
 
 
 def oil_and_salt(ctx, x, y, glass_col=(0.5, 0.42, 0.25)):

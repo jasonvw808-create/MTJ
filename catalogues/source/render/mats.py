@@ -187,42 +187,53 @@ def cached(fn):
 
 GRANITE_COLOURS = {
     # base albedo, fleck albedo, fleck density, roughness
-    "pearl": ((0.020, 0.020, 0.021), (0.16, 0.16, 0.165), 0.06, 0.42),
-    "pure": ((0.80, 0.79, 0.77), (0.60, 0.60, 0.59), 0.035, 0.50),
-    "titan": ((0.33, 0.335, 0.345), (0.68, 0.68, 0.69), 0.07, 0.46),
+    "pearl": ((0.020, 0.020, 0.021), (0.16, 0.16, 0.165), 0.06, 0.52),
+    "pure": ((0.80, 0.79, 0.77), (0.60, 0.60, 0.59), 0.035, 0.52),
+    "titan": ((0.33, 0.335, 0.345), (0.68, 0.68, 0.69), 0.07, 0.50),
 }
 
 
 @cached
 def granite_composite(colour):
+    """Granite composite: quartz sand bound in resin. A fine sandy grain over the whole face, small specks of the
+    lighter (or darker) quartz, a few larger flecks, a matt surface with a soft sheen."""
     base, fleck, dens, rough = GRANITE_COLOURS[colour]
     nb = NB("granite_" + colour)
     co = nb.coord('Object', 1.0)
-    # fine quartz flecks: a small-scale voronoi thresholded into specks
-    vo = nb.voronoi(co, scale=900.0, feature='F1')
-    specks = nb.ramp(vo, [(0.0, 1.0), (dens, 1.0), (dens + 0.04, 0.0), (1.0, 0.0)], src_out='Distance')
-    nz = nb.noise(co, scale=180.0, detail=3.0, rough=0.6)
-    mott = nb.ramp(nz, [(0.35, 0.0), (0.65, 1.0)])
-    base2 = tuple(c * 1.12 for c in base)
-    col = nb.mix(base, base2, mott)
-    col2 = nb.mix(col, fleck, specks)
-    nz2 = nb.noise(co, scale=2400.0, detail=2.0, rough=0.5)
-    bmp = nb.bump(nz2, strength=0.05, distance=0.0002)
-    p = nb.principled(Roughness=rough, Specular_IOR_Level=0.45)
-    nb.link(col2, p, 0, 'Base Color')
-    nb.link(bmp, p, 0, 'Normal')
-    # a faint sheen like the resin's surface
-    nb.set(p, 'Coat Weight', 0.08)
-    nb.set(p, 'Coat Roughness', 0.25)
+    # the sand: dense tiny cells, each a little lighter or darker
+    sand = nb.voronoi(co, scale=2600.0, feature='F1')
+    sand_c = nb.ramp(sand, [(0.0, tuple(c * 0.86 for c in base)), (0.5, base), (1.0, tuple(min(1, c * 1.12 + 0.004) for c in base))], src_out='Color')
+    # specks and the odd larger fleck
+    vo = nb.voronoi(co, scale=950.0, feature='F1')
+    specks = nb.ramp(vo, [(0.0, 1.0), (dens, 1.0), (dens + 0.05, 0.0), (1.0, 0.0)], src_out='Distance')
+    vo2 = nb.voronoi(co, scale=320.0, feature='F1')
+    flecks = nb.ramp(vo2, [(0.0, 0.8), (dens * 0.45, 0.8), (dens * 0.45 + 0.03, 0.0), (1.0, 0.0)], src_out='Distance')
+    nz = nb.noise(co, scale=60.0, detail=3.0, rough=0.6)
+    mott = nb.ramp(nz, [(0.3, 0.0), (0.7, 1.0)])
+    c0 = nb.mix(sand_c, tuple(c * 1.06 for c in base), mott, blend='MIX')
+    c1 = nb.mix(c0, fleck, specks)
+    c2 = nb.mix(c1, tuple(min(1, f * 1.15) for f in fleck), flecks)
+    # matt with a soft sheen; the grains catch the light
+    gn = nb.noise(co, scale=900.0, detail=2.0, rough=0.5)
+    gr = nb.n("ShaderNodeMapRange")
+    nb.link(gn, gr, 'Fac', 0)
+    gr.inputs[3].default_value = rough * 0.85
+    gr.inputs[4].default_value = rough * 1.2
+    p = nb.principled(Specular_IOR_Level=0.42)
+    nb.link(c2, p, 0, 'Base Color')
+    nb.link(gr, p, 0, 'Roughness')
+    b = nb.bump(sand, strength=0.22, distance=0.00015, h_out='Distance')
+    nb.link(b, p, 0, 'Normal')
+    nb.set(p, 'Coat Weight', 0.05)
+    nb.set(p, 'Coat Roughness', 0.35)
     return nb.finish(p)
-
 
 STEEL = {
     #               base colour              rough  aniso  brush
     "satin":        ((0.56, 0.56, 0.56), 0.30, 0.75, 1.0),
     "mat_polished": ((0.60, 0.60, 0.60), 0.27, 0.40, 0.6),
     "electroplate": ((0.66, 0.66, 0.66), 0.10, 0.25, 0.3),
-    "nano_black":   ((0.040, 0.040, 0.043), 0.30, 0.65, 1.0),
+    "nano_black":   ((0.105, 0.105, 0.11), 0.24, 0.6, 1.0),
     "brushed_trim": ((0.55, 0.55, 0.55), 0.28, 0.7, 1.0),
 }
 
@@ -349,43 +360,96 @@ def emission(col=(1.0, 0.8, 0.6), strength=10.0):
 
 @cached
 def marble(base=(0.82, 0.80, 0.77), vein=(0.30, 0.29, 0.28), vein2=(0.55, 0.52, 0.48), rough=0.12,
-           scale=1.0, vein_width=0.03, warp=4.0, seed=0.0, honed=False, stretch=(1.0, 2.2, 1.0), cloud=0.06):
-    """Veined marble: thin veins along the contours of warped noise (ridged), softer secondary veins,
-    a faint cloudiness. vein_width ~ 0.01 (hairline) .. 0.05 (bold)."""
+           scale=1.0, vein_width=0.03, warp=4.0, seed=0.0, honed=False, stretch=(1.0, 2.2, 1.0), cloud=0.06,
+           density=1.0, halo=0.22, angle=0.35):
+    """Veined marble. The veins are the edges of a few large, warped cells (cracks that run across the slab and branch),
+    a finer network between them and hairline cracks, each fading in and out, with a soft halo round the main veins
+    and a cloudy ground. vein: the main veins' colour; vein2: the fine network's. vein_width ~ 0.01 (hairline) ..
+    0.05 (bold). stretch lengthens the cells along y (the run of the slab on a worktop), so veins flow one way."""
     nb = NB("marble")
     tc = nb.n("ShaderNodeTexCoord")
     mp = nb.n("ShaderNodeMapping")
     nb.link(tc, mp, 'Object', 'Vector')
     mp.inputs['Scale'].default_value = tuple(v * scale for v in stretch)
-    mp.inputs['Location'].default_value = (seed, seed * 0.7, seed * 1.3)
-    warpn = nb.noise(mp, scale=1.1, detail=4.0, rough=0.55)
-    vm = nb.n("ShaderNodeVectorMath", operation='SCALE')
-    nb.link(warpn, vm, 'Color', 0)
-    vm.inputs['Scale'].default_value = warp * 0.25
-    add = nb.n("ShaderNodeVectorMath", operation='ADD')
-    nb.link(mp, add, 0, 0)
-    nb.link(vm, add, 0, 1)
+    mp.inputs['Location'].default_value = (seed * 1.37, seed * 0.71, seed * 1.13)
+    mp.inputs['Rotation'].default_value = (0.0, 0.0, angle)   # veins on the diagonal, as slabs are cut
 
-    def ridge(sc, det, w, strength):
-        nz = nb.noise(add, scale=sc, detail=det, rough=0.58)
-        d = nb.math('SUBTRACT', nz, 0.5)
-        a = nb.math('ABSOLUTE', d)
-        r = nb.ramp(a, [(0.0, strength), (w, strength * 0.5), (w * 2.6, 0.0), (1.0, 0.0)], interp='EASE')
-        return r
+    def warped(vec, sc, amount, det=3.0):
+        nz = nb.noise(vec, scale=sc, detail=det, rough=0.55)
+        sub = nb.n("ShaderNodeVectorMath", operation='SUBTRACT')
+        nb.link(nz, sub, 'Color', 0)
+        sub.inputs[1].default_value = (0.5, 0.5, 0.5)
+        sc_ = nb.n("ShaderNodeVectorMath", operation='SCALE')
+        nb.link(sub, sc_, 0, 0)
+        sc_.inputs['Scale'].default_value = amount
+        add = nb.n("ShaderNodeVectorMath", operation='ADD')
+        nb.link(vec, add, 0, 0)
+        nb.link(sc_, add, 0, 1)
+        return add
 
-    v1 = ridge(1.4, 5.0, vein_width * 0.35, 0.9)
-    v2 = ridge(3.6, 4.0, vein_width * 0.22, 0.45)
-    cl = nb.noise(add, scale=3.0, detail=3.0, rough=0.6)
-    clr = nb.ramp(cl, [(0.35, 0.0), (0.7, 1.0)])
+    p1 = warped(mp, 0.45, warp * 0.24, 2.0)
+    p2 = warped(p1, 1.7, warp * 0.085, 4.0)
+
+    def veins(vec, cells, width, fade_scale, fade, seed_off):
+        off = nb.n("ShaderNodeVectorMath", operation='ADD')
+        nb.link(vec, off, 0, 0)
+        off.inputs[1].default_value = (seed_off, seed_off * 0.6, seed_off * 0.3)
+        vo = nb.n("ShaderNodeTexVoronoi")
+        vo.feature = 'DISTANCE_TO_EDGE'
+        nb.set(vo, 'Scale', cells)
+        nb.link(off, vo, 0, 'Vector')
+        # width varies along the vein
+        wn = nb.noise(off, scale=cells * 0.9, detail=2.0, rough=0.5)
+        wmul = nb.n("ShaderNodeMapRange")
+        nb.link(wn, wmul, 'Fac', 0)
+        wmul.inputs[3].default_value = width * 0.12
+        wmul.inputs[4].default_value = width * 1.9
+        # 1 on the edge, 0 a width away
+        div = nb.math('DIVIDE', vo, wmul, a_out='Distance')
+        inv = nb.math('SUBTRACT', 1.0, div, clamp=True)
+        sharp = nb.math('POWER', inv, 2.2)
+        # some stretches fade out altogether
+        fn = nb.noise(off, scale=fade_scale, detail=2.0, rough=0.5)
+        fm = nb.n("ShaderNodeMapRange")
+        nb.link(fn, fm, 'Fac', 0)
+        fm.inputs[1].default_value = 0.5 - fade * 0.25
+        fm.inputs[2].default_value = 0.5 + fade * 0.12
+        fm.inputs[3].default_value = 0.0
+        fm.inputs[4].default_value = 1.0
+        return nb.math('MULTIPLY', sharp, fm), wmul, vo
+
+    main, wmain, vo_main = veins(p2, 2.2 * density, vein_width * 1.4, 1.1, 1.7, 0.0)
+    fine, _, _ = veins(p2, 6.5 * density, vein_width * 0.5, 2.0, 2.0, 11.3)
+    hair, _, _ = veins(p1, 17.0 * density, vein_width * 0.2, 3.5, 2.2, 23.7)
+    # a soft halo either side of the main veins
+    hdiv = nb.math('DIVIDE', vo_main, nb.math('MULTIPLY', wmain, 7.0), a_out='Distance')
+    hinv = nb.math('SUBTRACT', 1.0, hdiv, clamp=True)
+    hal = nb.math('MULTIPLY', nb.math('POWER', hinv, 3.0), halo)
+    # cloudy ground
+    cl = nb.noise(p1, scale=2.2, detail=5.0, rough=0.62)
+    clr = nb.ramp(cl, [(0.3, 0.0), (0.72, 1.0)])
     c0 = nb.mix(base, tuple(min(1, c * (1 - cloud)) for c in base), clr)
-    c1 = nb.mix(c0, vein2, v2)
-    c2 = nb.mix(c1, vein, v1)
+    c1 = nb.mix(c0, tuple(b + (v - b) * 0.3 for b, v in zip(base, vein)), hal)
+    c2 = nb.mix(c1, vein2, nb.math('MULTIPLY', hair, 0.45))
+    c3 = nb.mix(c2, vein2, nb.math('MULTIPLY', fine, 0.7))
+    c4 = nb.mix(c3, vein, main)
     rr = rough if not honed else max(rough, 0.32)
-    p = nb.principled(Roughness=rr, Specular_IOR_Level=0.5)
-    nb.link(c2, p, 0, 'Base Color')
-    nz = nb.noise(mp, scale=300.0, detail=2.0)
-    b = nb.bump(nz, strength=0.03 if honed else 0.01, distance=0.0003)
-    nb.link(b, p, 0, 'Normal')
+    # polish is never perfectly even: a faint drift in the gloss
+    gn = nb.noise(mp, scale=3.0, detail=3.0, rough=0.6)
+    gr = nb.n("ShaderNodeMapRange")
+    nb.link(gn, gr, 'Fac', 0)
+    gr.inputs[3].default_value = rr * 0.8
+    gr.inputs[4].default_value = rr * 1.3
+    p = nb.principled(Specular_IOR_Level=0.5)
+    nb.link(c4, p, 0, 'Base Color')
+    nb.link(gr, p, 0, 'Roughness')
+    # veins sit a hair lower on a honed face; fine crystalline grain
+    nz = nb.noise(mp, scale=420.0, detail=2.0)
+    b1 = nb.bump(nz, strength=0.035 if honed else 0.012, distance=0.0002)
+    inv_b = nb.math('SUBTRACT', 1.0, main)
+    b2 = nb.bump(inv_b, strength=0.15 if honed else 0.04, distance=0.0002)
+    nb.link(b1, b2, 'Normal', 'Normal')
+    nb.link(b2, p, 0, 'Normal')
     return nb.finish(p)
 
 
@@ -420,57 +484,85 @@ def terrazzo(base=(0.78, 0.76, 0.72), chips=((0.45, 0.42, 0.38), (0.88, 0.86, 0.
 
 @cached
 def concrete(base=(0.42, 0.41, 0.39), rough=0.62, scale=1.0, pores=True, tone=0.12):
+    """Cast concrete or microcement: a soft cloudy tone, faint trowel sweeps, fine aggregate and (cast) small air
+    holes. tone: how strongly the clouding shows."""
     nb = NB("concrete")
     co = nb.coord('Object', scale)
-    n1 = nb.noise(co, scale=3.0, detail=5.0, rough=0.62)
-    n2 = nb.noise(co, scale=25.0, detail=4.0, rough=0.6)
-    r1 = nb.ramp(n1, [(0.3, 0.0), (0.7, 1.0)])
-    dark = tuple(c * (1 - tone) for c in base)
-    light = tuple(min(1, c * (1 + tone)) for c in base)
+    n1 = nb.noise(co, scale=1.1, detail=4.0, rough=0.55)
+    r1 = nb.ramp(n1, [(0.3, 0.0), (0.7, 1.0)], interp='EASE')
+    dark = tuple(c * (1 - tone * 0.55) for c in base)
+    light = tuple(min(1, c * (1 + tone * 0.45)) for c in base)
     c = nb.mix(dark, light, r1)
-    c2 = nb.mix(c, tuple(cc * 0.9 for cc in base), n2, blend='MULTIPLY')
-    sh = nb.principled(Roughness=rough)
+    # trowel sweeps: long soft strokes
+    tc = nb.n("ShaderNodeTexCoord")
+    st = nb.n("ShaderNodeMapping")
+    nb.link(tc, st, 'Object', 'Vector')
+    st.inputs['Scale'].default_value = (2.5 * scale, 14.0 * scale, 14.0 * scale)
+    st.inputs['Rotation'].default_value = (0.0, 0.0, 0.5)
+    sw = nb.noise(st, scale=1.0, detail=3.0, rough=0.5)
+    swr = nb.ramp(sw, [(0.35, 0.0), (0.65, 1.0)])
+    c1 = nb.mix(c, tuple(cc * 0.95 for cc in base), nb.math('MULTIPLY', swr, 0.5), blend='MIX')
+    # fine aggregate
+    ag = nb.voronoi(co, scale=520.0, feature='F1')
+    agm = nb.ramp(ag, [(0.0, 1.0), (0.05, 1.0), (0.09, 0.0), (1.0, 0.0)], src_out='Distance')
+    agc = nb.ramp(ag, [(0.0, tuple(cc * 0.8 for cc in base)), (1.0, tuple(min(1, cc * 1.15) for cc in base))], src_out='Color')
+    c2 = nb.mix(c1, agc, nb.math('MULTIPLY', agm, 0.6))
+    gr = nb.n("ShaderNodeMapRange")
+    nb.link(n1, gr, 'Fac', 0)
+    gr.inputs[3].default_value = rough * 0.9
+    gr.inputs[4].default_value = min(1.0, rough * 1.12)
+    sh = nb.principled()
+    nb.link(gr, sh, 0, 'Roughness')
+    fine = nb.noise(co, scale=700.0, detail=2.0)
+    b0 = nb.bump(fine, strength=0.05, distance=0.0003)
     if pores:
-        vo = nb.voronoi(co, scale=420.0, feature='F1')
-        pm = nb.ramp(vo, [(0.0, 0.0), (0.06, 0.0), (0.12, 1.0), (1.0, 1.0)], src_out='Distance')
-        c3 = nb.mix(c2, tuple(cc * 0.55 for cc in base), pm, blend='MIX')
-        # pores are where pm is low: invert by mixing order
-        c3b = nb.mix(tuple(cc * 0.5 for cc in base), c2, pm)
-        nb.link(c3b, sh, 0, 'Base Color')
-        b = nb.bump(pm, strength=0.25, distance=0.0006)
-        b2 = nb.bump(n2, strength=0.06, distance=0.001, normal=None)
-        nb.link(b2, b, 'Normal', 'Normal')
+        vo = nb.voronoi(co, scale=300.0, feature='F1')
+        pm = nb.ramp(vo, [(0.0, 0.0), (0.035, 0.0), (0.06, 1.0), (1.0, 1.0)], src_out='Distance')
+        c3 = nb.mix(tuple(cc * 0.45 for cc in base), c2, pm)
+        nb.link(c3, sh, 0, 'Base Color')
+        b = nb.bump(pm, strength=0.3, distance=0.0006)
+        nb.link(b0, b, 'Normal', 'Normal')
         nb.link(b, sh, 0, 'Normal')
     else:
         nb.link(c2, sh, 0, 'Base Color')
+        nb.link(b0, sh, 0, 'Normal')
     return nb.finish(sh)
-
 
 @cached
 def travertine(base=(0.66, 0.58, 0.47), rough=0.45):
-    """Filled travertine: soft cloudy bands laid along x, scattered dark pores and short streaks."""
+    """Filled, honed travertine: fine bands laid along the slab, soft clouding, small elongated pits."""
     nb = NB("travertine")
     tc = nb.n("ShaderNodeTexCoord")
     st = nb.n("ShaderNodeMapping")
     nb.link(tc, st, 'Object', 'Vector')
-    st.inputs['Scale'].default_value = (1.0, 3.2, 1.0)
-    n1 = nb.noise(st, scale=3.0, detail=5.0, rough=0.62, distortion=0.4)
-    bands = nb.ramp(n1, [(0.3, 0.0), (0.5, 0.45), (0.7, 1.0)])
-    c = nb.mix(tuple(x * 0.9 for x in base), tuple(min(1, x * 1.06) for x in base), bands)
-    n2 = nb.noise(st, scale=14.0, detail=4.0, rough=0.5)
-    c1 = nb.mix(c, tuple(x * 0.94 for x in base), n2, blend='MULTIPLY')
+    st.inputs['Scale'].default_value = (0.6, 7.0, 7.0)
+    w = nb.noise(st, scale=1.0, detail=2.0, rough=0.5)
+    vm = nb.n("ShaderNodeVectorMath", operation='SCALE')
+    nb.link(w, vm, 'Color', 0)
+    vm.inputs['Scale'].default_value = 0.6
+    add = nb.n("ShaderNodeVectorMath", operation='ADD')
+    nb.link(st, add, 0, 0)
+    nb.link(vm, add, 0, 1)
+    wave = nb.n("ShaderNodeTexWave", wave_type='BANDS', bands_direction='Y', wave_profile='SIN')
+    nb.set(wave, 'Scale', 1.3)
+    nb.set(wave, 'Distortion', 4.0)
+    nb.set(wave, 'Detail', 4.0)
+    nb.link(add, wave, 0, 'Vector')
+    bands = nb.ramp(wave, [(0.0, 0.0), (0.5, 0.5), (1.0, 1.0)], src_out='Fac')
+    c = nb.mix(tuple(x * 0.93 for x in base), tuple(min(1, x * 1.04) for x in base), bands)
+    cl = nb.noise(st, scale=0.7, detail=4.0, rough=0.6)
+    c1 = nb.mix(c, tuple(x * 0.96 for x in base), nb.ramp(cl, [(0.3, 0.0), (0.7, 1.0)]))
     st2 = nb.n("ShaderNodeMapping")
     nb.link(tc, st2, 'Object', 'Vector')
-    st2.inputs['Scale'].default_value = (1.0, 4.0, 1.0)
-    vo = nb.voronoi(st2, scale=55.0, feature='F1')
-    pits = nb.ramp(vo, [(0.0, 1.0), (0.06, 1.0), (0.1, 0.0), (1.0, 0.0)], src_out='Distance')
-    c2 = nb.mix(c1, tuple(x * 0.55 for x in base), pits)
+    st2.inputs['Scale'].default_value = (1.0, 5.0, 5.0)
+    vo = nb.voronoi(st2, scale=40.0, feature='F1')
+    pits = nb.ramp(vo, [(0.0, 1.0), (0.05, 1.0), (0.085, 0.0), (1.0, 0.0)], src_out='Distance')
+    c2 = nb.mix(c1, tuple(x * 0.62 for x in base), nb.math('MULTIPLY', pits, 0.8))
     p = nb.principled(Roughness=rough)
     nb.link(c2, p, 0, 'Base Color')
-    b = nb.bump(pits, strength=0.25, distance=0.0008)
+    b = nb.bump(pits, strength=0.2, distance=0.0006)
     nb.link(b, p, 0, 'Normal')
     return nb.finish(p)
-
 
 @cached
 def quartz(base=(0.86, 0.85, 0.83), speck=(0.55, 0.54, 0.52), dens=0.05, rough=0.18, scale=500.0):
@@ -572,18 +664,28 @@ def paint(col, rough=0.5, sheen=0.0, coat=0.0, texture=0.02):
 
 @cached
 def plaster(col=(0.70, 0.66, 0.60), var=0.08, rough=0.85, scale=1.0, bump=0.12):
+    """Limewash or polished plaster: a soft cloudiness, overlapping trowel or brush sweeps, a fine sandy tooth."""
     nb = NB("plaster")
     co = nb.coord('Object', scale)
-    n1 = nb.noise(co, scale=1.8, detail=5.0, rough=0.6)
-    n2 = nb.noise(co, scale=14.0, detail=4.0, rough=0.55)
-    r1 = nb.ramp(n1, [(0.3, 0.0), (0.7, 1.0)])
-    c = nb.mix(tuple(x * (1 - var) for x in col), tuple(min(1, x * (1 + var)) for x in col), r1)
+    n1 = nb.noise(co, scale=1.4, detail=5.0, rough=0.6)
+    r1 = nb.ramp(n1, [(0.28, 0.0), (0.72, 1.0)], interp='EASE')
+    c = nb.mix(tuple(x * (1 - var) for x in col), tuple(min(1, x * (1 + var * 0.8)) for x in col), r1)
+    tc = nb.n("ShaderNodeTexCoord")
+    st = nb.n("ShaderNodeMapping")
+    nb.link(tc, st, 'Object', 'Vector')
+    st.inputs['Scale'].default_value = (3.0 * scale, 3.0 * scale, 3.0 * scale)
+    sw = nb.noise(st, scale=2.5, detail=6.0, rough=0.65, distortion=1.2)
+    swr = nb.ramp(sw, [(0.4, 0.0), (0.6, 1.0)])
+    c1 = nb.mix(c, tuple(x * (1 - var * 0.6) for x in col), nb.math('MULTIPLY', swr, 0.35))
     p = nb.principled(Roughness=rough)
-    nb.link(c, p, 0, 'Base Color')
+    nb.link(c1, p, 0, 'Base Color')
+    n2 = nb.noise(co, scale=14.0, detail=4.0, rough=0.55)
     b = nb.bump(n2, strength=bump, distance=0.002)
+    fine = nb.noise(co, scale=500.0, detail=2.0)
+    b2 = nb.bump(fine, strength=0.06, distance=0.0003)
+    nb.link(b2, b, 'Normal', 'Normal')
     nb.link(b, p, 0, 'Normal')
     return nb.finish(p)
-
 
 @cached
 def tile(col=(0.80, 0.80, 0.78), grout=(0.55, 0.53, 0.50), w=0.15, h=0.075, gap=0.002, rough=0.08, var=0.08,
@@ -622,6 +724,11 @@ def tile(col=(0.80, 0.80, 0.78), grout=(0.55, 0.53, 0.50), w=0.15, h=0.075, gap=
     nb.set(br2, 'Color2', (1, 1, 1))
     nb.link(comb, br2, 0, 'Vector')
     tone = nb.ramp(br2, [(0.0, tuple(x * (1 - var) for x in col)), (1.0, tuple(min(1, x * (1 + var)) for x in col) if col2 is None else col2)], src_out='Color')
+    if zellige:
+        # hand-glazed: the glaze pools and thins across each tile
+        gz = nb.noise(comb, scale=28.0, detail=3.0, rough=0.55)
+        gzr = nb.ramp(gz, [(0.3, 0.0), (0.7, 1.0)])
+        tone = nb.mix(tone, tuple(x * (1 - var * 1.4) for x in col), nb.math('MULTIPLY', gzr, 0.6))
     c = nb.mix(tone, grout, br, fac_out='Fac')
     p = nb.principled(Roughness=rough)
     nb.link(c, p, 0, 'Base Color')

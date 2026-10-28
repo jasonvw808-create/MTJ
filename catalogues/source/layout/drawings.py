@@ -341,16 +341,19 @@ def _emit(d, s, ox, oy):
     return out
 
 
-def svg(kind, model, box_w=86.0, box_h=72.0, width_label=None, max_scale=None):
+def svg(kind, model, box_w=86.0, box_h=72.0, width_label=None, max_scale=None, plan_only=False, scale=None, dims=True):
     """The model's drawing fitted into box_w x box_h (page mm). kind: 'granite' or 'steel'.
-    Returns (svg string, scale) — scale as page mm per product mm."""
+    plan_only: the plan view without the front view; scale: a fixed scale (page mm per product mm), so
+    several drawings can be compared. Returns (svg string, scale)."""
     if kind == "granite":
         plan, (W, D) = plan_granite(model)
         elev, Hh = None, None
     else:
         plan, (W, D) = plan_steel(model)
         elev, (_, Hh) = elevation_steel(model)
-    pad_l, pad_r, pad_t = 1.0, 11.0, 6.5
+    if plan_only:
+        elev, Hh = None, None
+    pad_l, pad_r, pad_t = (1.0, 11.0, 6.5) if dims else (0.3, 0.3, 0.3)
     gap = 9.0
     avail_w = box_w - pad_l - pad_r
     avail_h = box_h - pad_t - (gap + 2.0 if elev else 2.0)
@@ -358,10 +361,15 @@ def svg(kind, model, box_w=86.0, box_h=72.0, width_label=None, max_scale=None):
     s = min(avail_w / W, avail_h / total_h)
     if max_scale:
         s = min(s, max_scale)
+    if scale:
+        s = scale
     ox = pad_l + W / 2 * s + (avail_w - W * s) / 2 * 0.0
     oy = pad_t + D / 2 * s
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {_fmt(box_w)} {_fmt(box_h)}" width="{_fmt(box_w)}mm" height="{_fmt(box_h)}mm" class="drawing">']
     out += _emit(plan, s, ox, oy)
+    if not dims:
+        out.append('</svg>')
+        return "\n".join(out), s
     wl = width_label if width_label is not None else str(W)
     out += _dim_h(-W / 2, W / 2, pad_t - 3.0, wl, s, ox, oy)
     out += _dim_v(-D / 2, D / 2, ox + W / 2 * s + 3.2, str(D), s, ox, oy)

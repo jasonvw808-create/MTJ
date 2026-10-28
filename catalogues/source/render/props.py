@@ -28,6 +28,14 @@ def _join(objs, name):
     return [objs[0]]
 
 
+def rest(objs):
+    """Mark objects as things that rest on a surface, for physics.settle (taps, handles and lamps are never marked)."""
+    for o in objs:
+        if o is not None and hasattr(o, "keys"):
+            o["rest"] = 1
+    return objs
+
+
 def place(objs, loc=(0, 0, 0), rot=0.0, pivot=(0, 0, 0)):
     """Rotate a group about z round `pivot` and move it."""
     c, s = math.cos(rot), math.sin(rot)
@@ -100,7 +108,7 @@ def faucet_square(name, x, y, z, height=0.30, reach=0.22, mat=None, col=None, tu
     objs.append(geo.box(x - s, y - s, z + 0.005, x + s, y + s, z + height, name=name + "_col", mat=mat, collection=col, bevel=0.0025))
     objs.append(geo.box(x - 0.011, y - reach, z + height - 0.03, x + 0.011, y - s + 0.002, z + height - 0.006, name=name + "_spout", mat=mat, collection=col, bevel=0.0025))
     objs.append(geo.box(x - 0.008, y - reach + 0.003, z + height - 0.0315, x + 0.008, y - reach + 0.025, z + height - 0.029, name=name + "_aer", mat=mats.metal("gunmetal"), collection=col))
-    objs.append(geo.box(x - 0.006, y - 0.004, z + height, x + 0.006, y + 0.075, z + height + 0.008, name=name + "_lever", mat=mat, collection=col, bevel=0.002))
+    objs.append(geo.box(x + s - 0.002, y - 0.006, z + height - 0.012, x + s + 0.07, y + 0.006, z + height - 0.004, name=name + "_lever", mat=mat, collection=col, bevel=0.002))
     if turn:
         place(objs, rot=turn, pivot=(x, y, z))
     return objs
@@ -164,7 +172,7 @@ def board(name, x, y, z, w=0.42, d=0.26, t=0.022, rot=0.0, wood="oak", col=None,
     for o in objs:
         o.location = (x, y, z)
         o.rotation_euler = (0, 0, rot)
-    return objs
+    return rest(objs)
 
 
 def vessel(name, x, y, z, profile, mat, col=None, n=64, thick=0.004):
@@ -173,10 +181,13 @@ def vessel(name, x, y, z, profile, mat, col=None, n=64, thick=0.004):
     outer = list(profile)
     inner = [(max(0.0, r - thick), h) for (r, h) in reversed(outer[1:])]
     inner[-1] = (0.0, outer[0][1] + thick) if inner else (0, thick)
-    prof = [(0.0, outer[0][1])] + outer + inner
+    # a rounded lip, from the outer rim over to the inner one, as thrown or blown things have
+    (ro, ho), (ri, hi) = outer[-1], inner[0]
+    lip = [(ro - (ro - ri) * 0.12, ho + thick * 0.3), (ro - (ro - ri) * 0.5, ho + thick * 0.45), (ri + (ro - ri) * 0.12, hi + thick * 0.3)]
+    prof = [(0.0, outer[0][1])] + outer + lip + inner
     ob = geo.lathe(prof, n=n, name=name, mat=mat, collection=col, cx=0, cy=0, z=0)
     ob.location = (x, y, z)
-    return [ob]
+    return rest([ob])
 
 
 def bowl(name, x, y, z, r=0.12, h=0.075, mat=None, col=None):
@@ -231,7 +242,8 @@ def cup(name, x, y, z, r=0.04, h=0.085, mat=None, col=None, handle=True):
 def plate_stack(name, x, y, z, r=0.13, n=4, mat=None, col=None):
     objs = []
     for i in range(n):
-        objs += vessel(f"{name}{i}", x, y, z + i * 0.017, [(r * 0.55, 0.0), (r * 0.6, 0.004), (r * 0.82, 0.008), (r, 0.018)], mat, col, thick=0.0035)
+        # one group (name_0, name_1 …), nested as plates sit: a plate's thickness plus its rim's slope apart
+        objs += vessel(f"{name}_{i}", x, y, z + i * 0.0068, [(r * 0.55, 0.0), (r * 0.6, 0.004), (r * 0.82, 0.008), (r, 0.018)], mat, col, thick=0.0035)
     return objs
 
 
@@ -240,7 +252,7 @@ def wine_glass(name, x, y, z, col=None):
     gm = mats.glass()
     prof = [(0.0, 0.0), (0.038, 0.0), (0.038, 0.002), (0.004, 0.006), (0.0035, 0.10), (0.022, 0.115), (0.04, 0.15), (0.042, 0.19), (0.04, 0.215)]
     ob = geo.lathe(prof + [(0.038, 0.215), (0.039, 0.19), (0.037, 0.152), (0.02, 0.12), (0.0, 0.112)], n=48, name=name, mat=gm, collection=col, cx=x, cy=y, z=z)
-    return [ob]
+    return rest([ob])
 
 
 def tumbler(name, x, y, z, r=0.036, h=0.095, col=None, mat=None):
@@ -268,6 +280,12 @@ def _ellipsoid(name, x, y, z, rx, ry, rz, mat, col, seg=32, ring=16):
     return ob
 
 
+# how far each fruit reaches from its middle, along and across its length, at the size fruit_bowl sets it (s 0.85,
+# apples 0.9): a lemon's tip included
+FRUIT_REACH = {"lemon": (0.049 * 0.85, 0.03 * 0.85), "lime": (0.03 * 0.85, 0.028 * 0.85), "orange": (0.04 * 0.85, 0.04 * 0.85),
+               "apple": (0.04 * 0.9, 0.04 * 0.9), "pear": (0.038, 0.038)}
+
+
 def lemon(name, x, y, z, s=1.0, col=None, kind="lemon", rot=0.0):
     if kind == "lemon":
         m = mats.fruit((0.80, 0.56, 0.04), 0.35, 0.25, 420)
@@ -275,27 +293,56 @@ def lemon(name, x, y, z, s=1.0, col=None, kind="lemon", rot=0.0):
         ob.rotation_euler = (0, 0, rot)
         tip = _ellipsoid(name + "_tip", 0, 0, 0, 0.006 * s, 0.005 * s, 0.005 * s, m, col, 12, 8)
         tip.location = (x + 0.043 * s * math.cos(rot), y + 0.043 * s * math.sin(rot), z + 0.03 * s)
-        return [ob, tip]
+        return rest([ob, tip])
     if kind == "lime":
         m = mats.fruit((0.12, 0.30, 0.03), 0.4, 0.2, 420)
-        return [_ellipsoid(name, x, y, z + 0.026 * s, 0.03 * s, 0.028 * s, 0.026 * s, m, col)]
+        return rest([_ellipsoid(name, x, y, z + 0.026 * s, 0.03 * s, 0.028 * s, 0.026 * s, m, col)])
     if kind == "orange":
         m = mats.fruit((0.82, 0.30, 0.02), 0.45, 0.35, 380)
-        return [_ellipsoid(name, x, y, z + 0.037 * s, 0.04 * s, 0.04 * s, 0.037 * s, m, col)]
+        return rest([_ellipsoid(name, x, y, z + 0.037 * s, 0.04 * s, 0.04 * s, 0.037 * s, m, col)])
     if kind == "apple":
         m = mats.fruit((0.38, 0.55, 0.08) if s > 0 else (0.5, 0.05, 0.03), 0.3, 0.05, 200)
         ob = _ellipsoid(name, x, y, z + 0.036 * abs(s), 0.04 * abs(s), 0.04 * abs(s), 0.036 * abs(s), m, col)
         stem = geo.tube([(x, y, z + 0.066 * abs(s)), (x + 0.004, y, z + 0.082 * abs(s))], 0.0018, 8, name=name + "_stem", mat=mats.wood("walnut"), collection=col)
-        return [ob, stem]
+        return rest([ob, stem])
     if kind == "pear":
         m = mats.fruit((0.55, 0.52, 0.12), 0.45, 0.15, 300)
         ob = geo.lathe([(0.0, 0.0), (0.03, 0.006), (0.038, 0.03), (0.03, 0.06), (0.018, 0.085), (0.008, 0.1), (0.0, 0.103)], n=32, name=name, mat=m, collection=col, cx=x, cy=y, z=z)
-        return [ob]
+        return rest([ob])
     raise ValueError(kind)
 
 
-def branch(name, x, y, z, height=0.55, spread=0.3, leaf_col=(0.16, 0.2, 0.12), n_leaves=90, seed=1, col=None, leaf_len=0.05, leaf_w=0.012, stems=3, lean=0.0):
-    """Olive/eucalyptus-like branches in a vase: thin stems, many small leaves."""
+def _leaf(bm, p, d, side, ll, ww, fold=0.25, droop=0.15, shape=0.5):
+    """One leaf into a bmesh: a blade from p along d, `side` across it, folded along the midrib and drooping toward
+    the tip. shape: where along the blade it is widest (0.35 olive .. 0.55 bay)."""
+    up = side.cross(d).normalized()
+    if up.z < 0:
+        up = -up
+    def at(t, k):   # k: -1 .. 1 across the blade
+        w = ww * (math.sin(math.pi * min(1.0, t / (2 * shape))) if t < shape else math.cos(math.pi / 2 * (t - shape) / (1 - shape)))
+        c = p + d * (ll * t) - up * (droop * ll * t * t)
+        return c + side * (k * w / 2) + up * (fold * ww * (1 - abs(k)) * 0.5)
+    ts = (0.0, 0.25, 0.5, 0.75, 1.0)
+    rows = []
+    for t in ts:
+        if t in (0.0, 1.0):
+            rows.append([bm.verts.new(at(t, 0.0))])
+        else:
+            rows.append([bm.verts.new(at(t, k)) for k in (-1.0, 0.0, 1.0)])
+    base, tip = rows[0][0], rows[-1][0]
+    bm.faces.new((base, rows[1][0], rows[1][1]))
+    bm.faces.new((base, rows[1][1], rows[1][2]))
+    for a, b in ((rows[1], rows[2]), (rows[2], rows[3])):
+        bm.faces.new((a[0], b[0], b[1], a[1]))
+        bm.faces.new((a[1], b[1], b[2], a[2]))
+    bm.faces.new((rows[3][0], tip, rows[3][1]))
+    bm.faces.new((rows[3][1], tip, rows[3][2]))
+
+
+def branch(name, x, y, z, height=0.55, spread=0.3, leaf_col=(0.16, 0.2, 0.12), n_leaves=90, seed=1, col=None, leaf_len=0.05, leaf_w=0.012, stems=3, lean=0.0,
+           wall_y=None):
+    """Olive/eucalyptus-like branches in a vase: thin stems, many small leaves. wall_y: a wall behind, which the
+    stems and leaves lean away from."""
     rnd = random.Random(seed)
     stem_m = mats.wood("walnut", rough=0.7)
     leaf_m = mats.leaf(leaf_col, 0.5)
@@ -305,6 +352,8 @@ def branch(name, x, y, z, height=0.55, spread=0.3, leaf_col=(0.16, 0.2, 0.12), n
     bm = bmesh.new()
     for s in range(stems):
         a = rnd.uniform(0, 2 * math.pi)
+        if wall_y is not None and wall_y - y < 0.45:
+            a = rnd.uniform(math.pi * 1.1, math.pi * 1.9)      # toward the room
         tilt = rnd.uniform(0.15, 0.45)
         pts = []
         cx, cy, cz = x, y, z
@@ -327,19 +376,15 @@ def branch(name, x, y, z, height=0.55, spread=0.3, leaf_col=(0.16, 0.2, 0.12), n
             ang = rnd.uniform(0, 2 * math.pi)
             up = rnd.uniform(-0.6, 0.6)
             d = Vector((math.cos(ang), math.sin(ang), up)).normalized()
+            if wall_y is not None and p.y + d.y * leaf_len * 1.3 > wall_y - 0.012:
+                d = Vector((d.x, -abs(d.y), d.z)).normalized()
             side = d.cross(Vector((0, 0, 1)))
             if side.length < 1e-3:
                 side = Vector((1, 0, 0))
             side.normalize()
             ll = leaf_len * rnd.uniform(0.7, 1.2)
             ww = leaf_w * rnd.uniform(0.8, 1.2)
-            tip = p + d * ll
-            mid = p + d * ll * 0.45
-            v0 = bm.verts.new(p)
-            v1 = bm.verts.new(mid + side * ww / 2 + Vector((0, 0, 0.002)))
-            v2 = bm.verts.new(tip)
-            v3 = bm.verts.new(mid - side * ww / 2 + Vector((0, 0, 0.002)))
-            bm.faces.new((v0, v1, v2, v3))
+            _leaf(bm, p, d, side, ll, ww, fold=rnd.uniform(0.15, 0.35), droop=rnd.uniform(0.05, 0.25), shape=0.42)
     bm.to_mesh(me)
     bm.free()
     for p in me.polygons:
@@ -368,10 +413,7 @@ def herb_pot(name, x, y, z, r=0.06, h=0.1, pot_mat=None, col=None, seed=3, leaf_
         side.normalize()
         ll = rnd.uniform(0.018, 0.032)
         ww = ll * 0.6
-        tip = p + d * ll
-        mid = p + d * ll * 0.5
-        vs = [bm.verts.new(p), bm.verts.new(mid + side * ww / 2), bm.verts.new(tip), bm.verts.new(mid - side * ww / 2)]
-        bm.faces.new(vs)
+        _leaf(bm, p, d, side, ll, ww, fold=0.3, droop=0.2, shape=0.45)
     bm.to_mesh(me)
     bm.free()
     objs.append(geo.new_object(name + "_leaves", me, col, mats.leaf(leaf_col)))
@@ -388,12 +430,13 @@ def book_stack(name, x, y, z, n=3, col=None, seed=5, rot=0.0, palette=None):
         d = rnd.uniform(0.13, 0.17)
         t = rnd.uniform(0.018, 0.035)
         c = pal[rnd.randrange(len(pal))]
-        ob = geo.box(-w / 2, -d / 2, 0, w / 2, d / 2, t, name=f"{name}{i}", mat=mats.paint(c, 0.6, texture=0), collection=col, bevel=0.002)
-        pages = geo.box(-w / 2 + 0.003, -d / 2 - 0.0005, 0.002, w / 2 - 0.0005, d / 2 - 0.003, t - 0.002, name=f"{name}{i}p", mat=mats.paper(), collection=col)
+        # the stack is one group (name_0, name_0_p, name_1 …): it rests as a whole
+        ob = geo.box(-w / 2, -d / 2, 0, w / 2, d / 2, t, name=f"{name}_{i}", mat=mats.paint(c, 0.6, texture=0), collection=col, bevel=0.002)
+        pages = geo.box(-w / 2 + 0.003, -d / 2 - 0.0005, 0.002, w / 2 - 0.0005, d / 2 - 0.003, t - 0.002, name=f"{name}_{i}_p", mat=mats.paper(), collection=col)
         for o in (ob, pages):
             o.location = (x, y, zz)
             o.rotation_euler = (0, 0, rot + rnd.uniform(-0.12, 0.12))
-        objs += [ob, pages]
+        objs += rest([ob, pages])
         zz += t
     return objs
 
@@ -403,7 +446,7 @@ def towel(name, x, y, z, w=0.3, d=0.2, t=0.012, col=None, color=(0.75, 0.70, 0.6
     ob = geo.box(-w / 2, -d / 2, 0, w / 2, d / 2, t, name=name, mat=mats.linen(color), collection=col, bevel=0.005, segments=3)
     ob.location = (x, y, z)
     ob.rotation_euler = (0, 0, rot)
-    return [ob]
+    return rest([ob])
 
 
 def pendant(name, x, y, z_ceiling, drop=0.8, shade="dome", r=0.18, mat=None, col=None, light_power=40.0, color=(1.0, 0.78, 0.55), glow=True):

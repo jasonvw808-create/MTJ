@@ -120,6 +120,97 @@ def world_sky(sc, sun_elev=25, sun_rot=135, strength=1.0, air=1.0, dust=1.0, ozo
     return w
 
 
+HDRI_DIR = os.path.join(os.path.dirname(__file__), "hdri")
+# where each image's brightest light comes from, as u across the image (0..1): Lebombo's window
+HDRI_BRIGHT_U = {"lebombo_1k": 0.65}
+
+
+def world_hdri(sc, name="lebombo_1k", strength=1.0, light_from=None, rot=0.0, sat=0.8, tint=(1.0, 1.0, 1.0)):
+    """A photographed room round the kitchen (CC0 HDR images, render/hdri): soft light from every side and real
+    reflections in steel, stone and glass. light_from=(dx, dy) turns the image so its brightest light (a window) lies
+    that way from the sink: (-1, -0.3) is from the left, a little in front. sat < 1 calms the colour of its floor."""
+    w = bpy.data.worlds.new("hdri")
+    sc.world = w
+    w.use_nodes = True
+    nt = w.node_tree
+    nt.nodes.clear()
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    mp = nt.nodes.new("ShaderNodeMapping")
+    nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
+    if light_from is not None:
+        # the image's u maps to the angle atan2(y, x) = 2*pi*(1 - u); a Mapping turn of t moves angle a to a + t
+        a_bright = 2 * math.pi * (1 - HDRI_BRIGHT_U.get(name, 0.5))
+        rot = a_bright - math.atan2(light_from[1], light_from[0])
+    mp.inputs["Rotation"].default_value = (0.0, 0.0, rot)
+    env = nt.nodes.new("ShaderNodeTexEnvironment")
+    env.image = bpy.data.images.load(os.path.join(HDRI_DIR, name + ".hdr"), check_existing=True)
+    nt.links.new(mp.outputs["Vector"], env.inputs["Vector"])
+    hs = nt.nodes.new("ShaderNodeHueSaturation")
+    hs.inputs["Saturation"].default_value = sat
+    nt.links.new(env.outputs["Color"], hs.inputs["Color"])
+    mix = nt.nodes.new("ShaderNodeMix")
+    mix.data_type = 'RGBA'
+    mix.blend_type = 'MULTIPLY'
+    [s for s in mix.inputs if s.name == "Factor" and s.enabled][0].default_value = 1.0
+    ins = [s for s in mix.inputs if s.enabled and s.type == 'RGBA']
+    nt.links.new(hs.outputs["Color"], ins[0])
+    ins[1].default_value = (*tint, 1.0)
+    bg = nt.nodes.new("ShaderNodeBackground")
+    bg.inputs[1].default_value = strength
+    nt.links.new([s for s in mix.outputs if s.enabled][0], bg.inputs[0])
+    out = nt.nodes.new("ShaderNodeOutputWorld")
+    nt.links.new(bg.outputs[0], out.inputs[0])
+    return w
+
+
+def post(sc, bloom=0.06, threshold=1.6, dispersion=0.0035, vignette=0.14):
+    """What a lens adds to a photograph, kept small: highlights that bloom a little, a trace of colour at the edges,
+    corners slightly darker."""
+    ng = bpy.data.node_groups.new("post", "CompositorNodeTree")
+    ng.interface.new_socket("Image", in_out='OUTPUT', socket_type='NodeSocketColor')
+    sc.compositing_node_group = ng
+    sc.render.use_compositing = True
+    sc.render.compositor_device = 'CPU'      # no GPU here
+    sc.render.compositor_precision = 'FULL'
+    rl = ng.nodes.new("CompositorNodeRLayers")
+    out = ng.nodes.new("NodeGroupOutput")
+    img = rl.outputs["Image"]
+    if bloom:
+        g = ng.nodes.new("CompositorNodeGlare")
+        g.inputs["Type"].default_value = 'Bloom'
+        g.inputs["Quality"].default_value = 'High'
+        g.inputs["Threshold"].default_value = threshold
+        g.inputs["Strength"].default_value = bloom
+        g.inputs["Size"].default_value = 0.7
+        ng.links.new(img, g.inputs["Image"])
+        img = g.outputs["Image"]
+    if dispersion:
+        ld = ng.nodes.new("CompositorNodeLensdist")
+        ld.inputs["Dispersion"].default_value = dispersion
+        ng.links.new(img, ld.inputs["Image"])
+        img = ld.outputs["Image"]
+    if vignette:
+        em = ng.nodes.new("CompositorNodeEllipseMask")
+        em.inputs["Size"].default_value = (1.25, 1.25)
+        bl = ng.nodes.new("CompositorNodeBlur")
+        bl.inputs["Size"].default_value = (sc.render.resolution_x * 0.35, sc.render.resolution_x * 0.35)
+        ng.links.new(em.outputs["Mask"], bl.inputs["Image"])
+        mr = ng.nodes.new("ShaderNodeMapRange")
+        mr.inputs["To Min"].default_value = 1.0 - vignette
+        mr.inputs["To Max"].default_value = 1.0
+        ng.links.new(bl.outputs["Image"], mr.inputs["Value"])
+        mx = ng.nodes.new("ShaderNodeMix")
+        mx.data_type = 'RGBA'
+        mx.blend_type = 'MULTIPLY'
+        [s for s in mx.inputs if s.name == "Factor" and s.enabled][0].default_value = 1.0
+        ins = [s for s in mx.inputs if s.enabled and s.type == 'RGBA']
+        ng.links.new(img, ins[0])
+        ng.links.new(mr.outputs["Result"], ins[1])
+        img = [s for s in mx.outputs if s.enabled][0]
+    ng.links.new(img, out.inputs[0])
+    return ng
+
+
 def look_at(ob, target):
     d = Vector(target) - ob.location
     ob.rotation_euler = d.to_track_quat('-Z', 'Y').to_euler()

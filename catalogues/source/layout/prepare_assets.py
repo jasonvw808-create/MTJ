@@ -20,10 +20,16 @@ STEEL = ["lps5040", "lps7540a", "lps8643a", "lps9643a", "lps10050a", "wl03", "wl
          "w8050tss", "w8050tsb", "w8245tdb", "w8550tdg", "w10050tsg"]
 # extra views (covers, intros, range openers, closing page); each falls back to a hero if not rendered
 EXTRA = {"cover_granite": "gdu8145", "cover_stainless": "w7646uss", "intro_granite": "gsu7545", "intro_stainless": "w7546tsbn",
-         "opener_pressed": "lps9643a", "opener_hand": "w8050tsb", "closing": "w5050tsb", "notes_stainless": "wl18", "index_granite": "gst6045"}
+         "opener_pressed": "lps9643a", "opener_hand": "w8050tsb", "closing": "w5050tsb", "notes_stainless": "wl18", "index_granite": "gst6045",
+         "closing_granite": "gsu8045"}
 # the colour and finish pages: a detail of each from one of the kitchens (render, crop round the sink's own box)
 DETAIL = {"colour": {"pearl": "gdu8145", "pure": "gsu7545", "titan": "gsu8045"},
-          "finish": {"Mat Polished": "lps9643a", "Electroplate": "wl05a", "Satin": "w7646uss", "Nano Black": "w8050tsb"}}
+          "finish": {"Mat Polished": "lps9643a", "Electroplate": "wl05a", "Satin": "w7646uss", "Nano Black": "w8050tsb"},
+          # the installation page (granite) and the two ranges (stainless): the sink and its edge, a little wider than the sink
+          "install": {"gsu7545": "gsu7545", "gst6045": "gst6045"},
+          "range": {"Pressed": "lps8643a", "Hand Made": "w8050tss"}}
+# per group: the window's width as a share of the sink's, and its height : width
+CROP = {"colour": (0.46, 84 / 56), "finish": (0.6, 58 / 87), "install": (1.12, 62 / 87), "range": (1.1, 52 / 87)}
 
 sub = "img-print" if PRINT else "img-screen"
 D = lambda *p: os.path.join(out, sub, *p)
@@ -75,7 +81,7 @@ for name in GRANITE + STEEL:
     # the sink as seen is centred about 40 % of the way down it
     cx, cy = (bb["x0"] + bb["x1"]) / 2, bb["y0"] + 0.4 * (bb["y1"] - bb["y0"])
     # the feature page's hero box keeps the full width: only the height is cropped; keep the sink in view
-    box_aspect = (216 / 169) if PRINT else (210 / 166)
+    box_aspect = (216 / 159) if PRINT else (210 / 156)
     vis = min(1.0, (im.width / im.height) / box_aspect)
     if vis < 1.0:
         top = min(max(cy - vis / 2, 0.0), 1 - vis)
@@ -128,8 +134,19 @@ for f, slug, box in (("Mat Polished", "lps-7540-a", (0.68, 0.30, 0.92, 0.54)), (
     save(crop, D("finish", f.replace(" ", "-").lower() + ".jpg"))
     finish[f] = R("finish", f.replace(" ", "-").lower() + ".jpg")
 
+
+
+def foot_light(im, band):
+    """Whether a full-page photograph is light along its foot, where the folio sits on it (the lowest `band` of its
+    height, its middle 85% across): a light foot takes dark type."""
+    W, H = im.size
+    foot = im.crop((int(W * 0.075), int(H * (1 - band)), int(W * 0.925), H)).convert("L")
+    px = sorted(foot.resize((200, max(2, round(200 * foot.height / foot.width)))).tobytes())
+    return px[len(px) // 2] / 255 > 0.5
+
+
 # extra views
-extra, extra_pos = {}, {}
+extra, extra_pos, extra_light = {}, {}, {}
 for k, fallback in EXTRA.items():
     src = render_path(k) or render_path(fallback)
     if not src:
@@ -137,9 +154,11 @@ for k, fallback in EXTRA.items():
     im = load(src)
     save(im, D("extra", k + ".jpg"), COVER_W)
     extra[k] = R("extra", k + ".jpg")
+    # a full-page photograph carries the folio in its lowest 7%
+    extra_light[k] = foot_light(im, 0.07)
 
 # details for the colour and finish pages
-details = {"colour": {}, "finish": {}}
+details = {g: {} for g in DETAIL}
 os.makedirs(D("detail"), exist_ok=True)
 for group, table in DETAIL.items():
     for key, name in table.items():
@@ -151,8 +170,8 @@ for group, table in DETAIL.items():
         bb = m["bbox"] if m else dict(x0=0.3, x1=0.7, y0=0.4, y1=0.75)
         # a square-ish window on the middle of the sink, a little larger than half its width
         bw = (bb["x1"] - bb["x0"]) * im.width
-        w = bw * (0.46 if group == "colour" else 0.6)
-        h = w * (84 / 56 if group == "colour" else 58 / 87)
+        w = min(im.width, bw * CROP[group][0])
+        h = min(im.height, w * CROP[group][1])
         cx = (bb["x0"] + bb["x1"]) / 2 * im.width
         cy = (bb["y0"] + 0.4 * (bb["y1"] - bb["y0"])) * im.height   # see the thumbnails above
         x0 = min(max(cx - w / 2, 0), im.width - w)
@@ -183,10 +202,14 @@ open(D("mark-light.svg"), "w").write(mark)
 common = dict(heroes=heroes, thumbs=thumbs, products=products, hero_pos=hero_pos, stone=stone,
               logo_light=R("logo-light.png"), logo_ink=R("logo-ink.png"), mark_light=R("mark-light.svg"))
 assets["granite"] = dict(common, cover=extra.get("cover_granite"), intro=extra.get("intro_granite"), swatch=swatch, colour_prod=colour_prod,
-                         colour_detail=details["colour"], strip=extra.get("index_granite"), cover_pos="center 60%", intro_pos="center 55%")
+                         colour_detail=details["colour"], strip=extra.get("index_granite"), cover_pos="center 60%", intro_pos="center 55%",
+                         install=details["install"], closing=extra.get("closing_granite"),
+                         closing_light=extra_light.get("closing_granite", False))
 assets["stainless"] = dict(common, cover=extra.get("cover_stainless"), intro=extra.get("intro_stainless"), finish=finish,
                            finish_detail=details["finish"], strip=extra.get("notes_stainless"),
                            opener_pressed=extra.get("opener_pressed"), opener_hand=extra.get("opener_hand"), closing=extra.get("closing"),
+                           range_img=details["range"],
+                           closing_light=extra_light.get("closing", False),
                            cover_pos="center 60%", intro_pos="center 55%")
 json.dump(assets, open(os.path.join(out, f"assets-{mode}.json"), "w"), indent=1)
 print("assets:", len(heroes), "heroes,", len(products), "photos")

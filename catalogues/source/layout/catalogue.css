@@ -121,9 +121,10 @@ h1, h2, h3 { margin: 0; font-weight: 300; }
 .opener .op-models { font-family: var(--display); font-weight: 400; font-size: 6.6pt; letter-spacing: .14em; text-transform: uppercase; line-height: 2.1; color: rgba(243,239,232,.8); }
 
 /* ── model feature page ──────────────────────────────────────────────── */
-.feature .hero { left: 0; right: 0; top: 0; height: calc(var(--bleed) + 166mm); }
-.feature .hero-cap { position: absolute; right: 15mm; top: 157mm; font-family: var(--display); font-size: 5.4pt; letter-spacing: .22em; text-transform: uppercase; color: rgba(246,242,235,.82); text-shadow: 0 0 2mm rgba(0,0,0,.35); }
-.feature .panel { position: absolute; left: 15mm; right: 15mm; top: 175.5mm; bottom: 17mm; }
+.feature .hero { left: 0; right: 0; top: 0; height: calc(var(--bleed) + 156mm); }
+/* the setting, under the photograph (on it, it would be lost on a light kitchen) */
+.feature .hero-cap { position: absolute; right: 15mm; top: 158.6mm; font-family: var(--display); font-size: 5.4pt; letter-spacing: .22em; text-transform: uppercase; color: var(--mute); }
+.feature .panel { position: absolute; left: 15mm; right: 15mm; top: 164mm; bottom: 17mm; }
 .feature .ph-row { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 4.6mm; border-bottom: .2mm solid var(--hair); }
 .feature .code { font-family: var(--display); font-weight: 300; font-size: 29pt; letter-spacing: .07em; line-height: 1; margin: 2.6mm 0 2.4mm; white-space: nowrap; color: var(--ink); }
 .feature .desc { font-size: 8pt; color: var(--ink2); margin: 0; }
@@ -134,7 +135,20 @@ h1, h2, h3 { margin: 0; font-weight: 300; }
 .feature .chip.on .nm { color: var(--ink); }
 .feature .chip .nm::after { content: ''; display: block; margin-top: 1mm; width: 100%; border-top: .3mm solid transparent; }
 .feature .chip.on .nm::after { border-top-color: var(--accent); }
-.feature .cols { display: grid; grid-template-columns: 84mm 1fr; column-gap: 10mm; margin-top: 5mm; }
+.feature .cols { display: grid; grid-template-columns: 84mm 1fr; column-gap: 10mm; margin-top: 4mm; }
+/* at a glance: the model's layout, how it fits, its size and its colours or finish, as small pictures */
+.feature .glance { display: grid; column-gap: 6mm; justify-content: space-between; align-items: center; padding: 3mm 0; border-bottom: .2mm solid var(--hair); }
+.feature .gl { display: flex; align-items: center; gap: 2.4mm; }
+.feature .gl-ic { flex: none; display: flex; align-items: center; min-width: 8mm; }
+.feature .gl-ic svg.drawing { display: block; }
+.feature .gl-k { font-family: var(--display); font-weight: 500; font-size: 4.9pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); white-space: nowrap; }
+.feature .gl-v { font-size: 7.3pt; color: var(--ink); margin-top: .6mm; white-space: nowrap; }
+.feature .gl-v .tbc { color: var(--accent); }
+.ico { display: block; width: 9.6mm; height: 6.4mm; stroke: var(--ink2); stroke-width: 1.05; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ico circle { fill: var(--ink2); stroke: none; }
+.ico.big { width: 21mm; height: 14mm; stroke-width: .7; }
+.gl-dots { display: inline-flex; gap: 1.1mm; }
+.gl-dots i { display: inline-block; width: 3.4mm; height: 3.4mm; border-radius: 50%; border: .15mm solid rgba(0,0,0,.25); }
 .feature dl.specs { margin: 0; }
 .feature dl.specs div { display: grid; grid-template-columns: 25mm 1fr; column-gap: 3mm; padding: 1.55mm 0; border-bottom: .15mm solid var(--hair); align-items: baseline; }
 .feature dl.specs dt { font-family: var(--display); font-weight: 500; font-size: 5.5pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
@@ -177,10 +191,65 @@ h1, h2, h3 { margin: 0; font-weight: 300; }
 .back .bk-foot { position: absolute; left: 15mm; right: 15mm; bottom: 14mm; text-align: center; font-size: 6pt; line-height: 1.6; color: #8f877d; }
 .full-img { left: 0; right: 0; top: 0; bottom: 0; }
 /* a soft shade under the folio wherever it sits on a photograph */
-.full-img::after, .ix-strip::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--bleed) + 26mm);
+.full-img::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--bleed) + 26mm);
   background: linear-gradient(to top, rgba(18,17,16,.58), rgba(18,17,16,.3) 45%, rgba(18,17,16,0)); }
 
 /* an image across the foot of a text page (index, notes) */
-.ix-strip { left: 0; right: 0; bottom: 0; height: calc(var(--bleed) + 104mm); }
-.with-strip .folio { color: rgba(236,231,223,.75); }
-.with-strip .folio .num { color: var(--bone); }
+/* an image band across a text page, running off both sides and stopping above the folio, which stays on the paper */
+.ix-strip { left: 0; right: 0; bottom: calc(var(--bleed) + 16mm); height: 100mm; }
+/* a photograph light at its foot takes the folio in ink, with no shade */
+.page.foot-light .folio { color: var(--mute); }
+.page.foot-light .folio .num { color: var(--ink); }
+.page.foot-light .full-img::after { display: none; }
+
+/* ── compare: sizes and layouts to one scale ─────────────────────────── */
+.compare .ov-head { position: absolute; left: 15mm; right: 15mm; top: 17mm; display: flex; justify-content: space-between; align-items: flex-end; }
+.compare .ov-head .body { max-width: 74mm; text-align: right; margin: 0; }
+.compare .cmp-body { position: absolute; left: 15mm; right: 15mm; top: 50mm; display: flex; flex-wrap: wrap; column-gap: 8mm; row-gap: 6mm; align-items: flex-start; }
+.compare .cmp-group { min-width: 0; }
+.compare .cmp-h { margin: 0 0 2.6mm; padding-bottom: 1.4mm; border-bottom: .15mm solid var(--hair); color: var(--accent); }
+.compare .cmp-h .tbc { color: var(--accent); }
+.compare .cmp-row { display: flex; flex-wrap: wrap; column-gap: 5mm; row-gap: 3.5mm; align-items: flex-end; }
+.compare .cmp { display: block; color: inherit; text-decoration: none; }
+.compare .cmp svg { display: block; }
+.compare .cmp-meta { display: flex; justify-content: space-between; align-items: baseline; margin-top: .6mm; padding-right: 9mm; }
+.compare .cmp .code { font-family: var(--display); font-weight: 500; font-size: 6.4pt; letter-spacing: .08em; color: var(--ink); white-space: nowrap; }
+.compare .cmp .pg { font-size: 6pt; color: var(--mute); margin-left: 2mm; }
+/* the key to the drawings' marks, above the folio */
+.compare .legend { position: absolute; left: 15mm; right: 15mm; bottom: 17mm; display: flex; align-items: center; gap: 6mm; padding-top: 2.6mm; border-top: .15mm solid var(--hair); }
+.compare .legend .label { margin: 0; white-space: nowrap; }
+.compare .lg-row { display: grid; grid-template-columns: repeat(4, max-content); column-gap: 7mm; row-gap: 1.6mm; }
+.compare .lg-i { display: inline-flex; align-items: center; gap: 1.6mm; font-size: 6.4pt; color: var(--ink2); white-space: nowrap; }
+.compare .lg-g { display: block; flex: none; }
+
+/* ── granite installation ────────────────────────────────────────────── */
+.install .sw-head, .ranges .sw-head, .included .sw-head { position: absolute; left: 15mm; right: 15mm; top: 17mm; }
+.install .sw-head .lede, .ranges .sw-head .lede, .included .sw-head .lede { max-width: 120mm; margin: 5mm 0 0; font-size: 9.5pt; }
+.install .ins-grid { position: absolute; left: 15mm; right: 15mm; top: 64mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.install .ins-img { height: 62mm; background-size: cover; background-position: center; }
+.install .ins-ic { margin: 7mm 0 3mm; }
+.install h3 { font-family: var(--display); font-weight: 300; font-size: 15pt; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 3mm; }
+.install .body { margin: 0; max-width: 80mm; }
+.ins-links { display: flex; flex-direction: column; border-top: .15mm solid var(--hair); }
+.ins-links a { display: flex; justify-content: space-between; align-items: baseline; padding: 1.7mm 0; border-bottom: .15mm solid var(--hair); text-decoration: none; color: var(--ink);
+  font-family: var(--display); font-weight: 500; font-size: 7pt; letter-spacing: .08em; }
+.ins-links a .pg { font-family: var(--text); font-weight: 400; letter-spacing: 0; color: var(--mute); }
+
+/* ── stainless: the two ranges ───────────────────────────────────────── */
+.ranges .rg-imgs { position: absolute; left: 15mm; right: 15mm; top: 58mm; height: 46mm; display: grid; grid-template-columns: 36mm 1fr 1fr; column-gap: 6mm; }
+.ranges .rg-imgs div { background-size: cover; background-position: center; }
+.ranges table.rg { position: absolute; left: 15mm; right: 15mm; top: 108mm; width: 180mm; border-collapse: collapse; table-layout: fixed; }
+.ranges table.rg th, .ranges table.rg td { text-align: left; vertical-align: top; padding: 2.2mm 6mm 2.2mm 0; border-bottom: .15mm solid var(--hair); font-size: 7.5pt; color: var(--ink2); line-height: 1.5; }
+.ranges table.rg th { width: 36mm; font-family: var(--display); font-weight: 500; font-size: 5.6pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); padding-top: 2.7mm; }
+.ranges table.rg th.h { width: auto; font-size: 12pt; font-weight: 300; letter-spacing: .12em; color: var(--ink); padding-top: 1mm; border-bottom: .25mm solid var(--ink2); }
+.ranges table.rg tr:first-child th { border-bottom: .25mm solid var(--ink2); }
+.ranges table.rg td .tbc { color: var(--accent); }
+.ranges .rg-note { position: absolute; left: 15mm; right: 15mm; bottom: 20mm; margin: 0; font-size: 6.6pt; color: var(--mute); }
+
+/* ── stainless: included with the sink ───────────────────────────────── */
+.included .inc-grid { position: absolute; left: 15mm; right: 15mm; top: 58mm; display: grid; row-gap: 6mm; }
+.included .inc { display: grid; grid-template-columns: 114mm 1fr; column-gap: 8mm; align-items: center; padding-bottom: 6mm; border-bottom: .15mm solid var(--hair); }
+.included .inc-phs { display: grid; grid-template-columns: 1fr 1fr; column-gap: 4mm; }
+.included .inc-ph { height: 46mm; background-size: contain; background-position: center; background-repeat: no-repeat; }
+.included h3 { font-family: var(--display); font-weight: 300; font-size: 13pt; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 3.5mm; }
+.included .inc-note { position: absolute; left: 15mm; right: 15mm; bottom: 20mm; margin: 0; font-size: 6.8pt; line-height: 1.55; color: var(--mute); max-width: 150mm; }

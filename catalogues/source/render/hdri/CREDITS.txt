@@ -1,0 +1,3 @@
+HDR environment image used for the renders' ambient light and reflections: "Lebombo" from Poly Haven
+(polyhaven.com, formerly HDRI Haven), released CC0 (public domain). This is the 1k version as mirrored in
+github.com/pmndrs/drei-assets.

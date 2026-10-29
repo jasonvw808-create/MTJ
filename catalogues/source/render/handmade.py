@@ -197,11 +197,13 @@ def build(model, col=None):
     holes = []
     outline = geo.rrect(-W / 2, W / 2, -D / 2, D / 2, cr, n_corner=12, n_side=(30, 18))
     bowl_rects = []
+    seat = plate   # how far the sink's top stands above the worktop it rests on
     if d.get("top") == "glass":
         # W 10050 TSG: a black glass top over a satin body; the bowl under an opening in the glass, the wing grooved
         op = d["opening"]
         gx0, gx1, gy0, gy1 = _rect_m(op["rect"])
         gp = d["glass_plate"] * M
+        seat = gp + plate   # the glass on the body, the body on the worktop
         open_pts = geo.rrect(gx0, gx1, gy0, gy1, op["r"] * M, n_corner=10, n_side=(24, 14))
         glass = geo.slab(outline, [open_pts], -gp, 0.0, name=model + "_glass", mat=mats.black_glass(), collection=col, bevel=0.0025, bevel_segments=2)
         objs.append(glass)
@@ -286,5 +288,11 @@ def build(model, col=None):
         rr = (d["bowls"][0]["shape"]["r"] + 3) * M
         cut = [geo.rrect(rx0, rx1, ry0, ry1, rr)]
     else:
-        cut = [geo.rrect(-W / 2 + 0.02, W / 2 - 0.02, -D / 2 + 0.02, D / 2 - 0.02, 0.008)]
-    return dict(objects=objs, cutout=cut, mount=mount, flange=plate, outline=outline, size=(W, D), depth=d["height"] * M)
+        # the rim rests on the worktop round a cut-out 20 mm in from its edge, or wider where a bowl or recess reaches
+        # further out (W 7546 TSBN, W 8550 TDG): nothing of the sink passes through the stone
+        cx0 = min([-W / 2 + 0.02] + [r[0] - 0.003 for r in bowl_rects])
+        cx1 = max([W / 2 - 0.02] + [r[1] + 0.003 for r in bowl_rects])
+        cy0 = min([-D / 2 + 0.02] + [r[2] - 0.003 for r in bowl_rects])
+        cy1 = max([D / 2 - 0.02] + [r[3] + 0.003 for r in bowl_rects])
+        cut = [geo.rrect(cx0, cx1, cy0, cy1, 0.008)]
+    return dict(objects=objs, cutout=cut, mount=mount, flange=seat, outline=outline, size=(W, D), depth=d["height"] * M)

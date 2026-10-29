@@ -32,4 +32,7 @@ fin granite-screen-id   "${G}_ID"       "Maju Terus Jaya — Koleksi Bak Cuci Da
 fin granite-print-id    "${G}_ID_PRINT" "Maju Terus Jaya — Koleksi Bak Cuci Dapur Granit — Volume 01 (cetak)" print id
 fin stainless-screen-id "${S}_ID"       "Maju Terus Jaya — Koleksi Bak Cuci Dapur Stainless Steel — Volume 02" screen id
 fin stainless-print-id  "${S}_ID_PRINT" "Maju Terus Jaya — Koleksi Bak Cuci Dapur Stainless Steel — Volume 02 (cetak)" print id
+# every model once, every printed spec, index entry, page and bookmark against the website's own records (the
+# photographs' folder sits in the folder extract.js wrote them to)
+$PY "$HERE/verify_specs.py" "$(dirname "$PHOTOS")" "$WORK" "$OUT"
 ls -la "$OUT"

@@ -16,7 +16,7 @@ sys.path.insert(0, here)
 from build import GRANITE_SHOW, COLOUR_NAME  # noqa: E402
 
 EDITORIAL = ["cover_granite", "cover_stainless", "intro_granite", "intro_stainless", "opener_pressed", "opener_hand",
-             "closing", "notes_stainless", "index_granite"]
+             "closing", "closing_granite", "notes_stainless", "index_granite"]
 
 
 def load(p):

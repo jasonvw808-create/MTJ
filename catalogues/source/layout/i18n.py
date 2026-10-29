@@ -233,6 +233,67 @@ ID = {
     "The collection: Hand Made": "Koleksi: Hand Made",
     "Pressed range": "Rangkaian Pressed",
     "Hand Made range": "Rangkaian Hand Made",
+    # the comparison pages (sizes and layouts, installation, the two ranges, what is included)
+    "Compare": "Perbandingan",
+    "Sizes and Layouts": "Ukuran dan Tata Letak",
+    "Sizes and layouts": "Ukuran dan tata letak",
+    "Sizes and layouts · 1 of 2": "Ukuran dan tata letak · 1 dari 2",
+    "Sizes and layouts · 2 of 2": "Ukuran dan tata letak · 2 dari 2",
+    "Sizes and layouts: Pressed": "Ukuran dan tata letak: Pressed",
+    "Sizes and layouts: Hand Made": "Ukuran dan tata letak: Hand Made",
+    "Every model drawn to the same scale, 1:15 on the printed page, grouped by its bowls.":
+        "Setiap model digambar dengan skala yang sama, 1:15 pada halaman cetak, dikelompokkan menurut ruangnya.",
+    "Every model drawn to the same scale, 1:25 on the printed page, grouped by its bowls.":
+        "Setiap model digambar dengan skala yang sama, 1:25 pada halaman cetak, dikelompokkan menurut ruangnya.",
+    "Layout": "Tata letak",
+    "Undermount and Top-mount": "Undermount dan Top-mount",
+    # the key to the drawings on the sizes pages
+    "Key": "Keterangan",
+    "Outline · overall size": "Garis luar · dimensi keseluruhan",
+    "Inset Edge": "Inset Edge",
+    "Bowl": "Ruang",
+    "Bowl floor, for reference": "Dasar ruang, sebagai acuan",
+    "Ledge": "Undakan",
+    "Ledge, floor step": "Undakan, undakan dasar",
+    "Drain": "Lubang pembuangan",
+    "Tap hole": "Lubang keran",
+    "Drainboard": "Papan tiris",
+    "Glass wing grooves": "Alur sayap kaca",
+    "Glass cover": "Penutup kaca",
+    "The granite sinks are made for one of two installations, as listed for each model.":
+        "Bak cuci granit dibuat untuk salah satu dari dua cara pemasangan, sesuai yang tercantum untuk setiap model.",
+    "Fitted under the worktop: the worktop's own edge runs round the bowl.":
+        "Dipasang di bawah meja dapur: tepi meja dapur itu sendiri mengelilingi ruang bak.",
+    "Set into a cut-out from above: the sink's rim rests on the worktop.":
+        "Dimasukkan ke lubang meja dapur dari atas: bibir bak cuci bertumpu di atas meja dapur.",
+    "Pearl Black · Pure White · Titanium Grey (GST 7546: Pearl Black and Pure White only)":
+        "Hitam Mutiara · Putih Murni · Abu Titanium (GST 7546: hanya Hitam Mutiara dan Putih Murni)",
+    "GDU 8145 · GSU 6045 · GSU 7545 · GSU 8045": "GDU 8145 · GSU 6045 · GSU 7545 · GSU 8045",
+    "GST 6045 · GST 7546": "GST 6045 · GST 7546",
+    "The shop's granite sink listings": "Daftar bak cuci granit toko",
+    "Each model has a page of its own: the sink installed in a kitchen, its specifications, and a drawing of its "
+    "overall dimensions and bowl layout. Sizes, layouts and the two installations are compared at the front.":
+        "Setiap model memiliki halamannya sendiri: bak cuci yang terpasang di sebuah dapur, spesifikasinya, serta gambar "
+        "dimensi keseluruhan dan tata letak ruangnya. Ukuran, tata letak dan kedua cara pemasangan dibandingkan di bagian depan.",
+    "Each model has a page of its own: the sink installed in a kitchen, its specifications as listed in the "
+    "Price List 2024, and a drawing of its overall dimensions and bowl layout. The ranges, finishes and sizes are compared at the front.":
+        "Setiap model memiliki halamannya sendiri: bak cuci yang terpasang di sebuah dapur, spesifikasinya sesuai "
+        "Price List 2024, serta gambar dimensi keseluruhan dan tata letak ruangnya. Rangkaian, finishing dan ukuran dibandingkan di bagian depan.",
+    "Stainless steel 201": "Stainless steel 201",
+    "Stainless steel 201 or 304": "Stainless steel 201 atau 304",
+    "Overall height": "Tinggi keseluruhan",
+    "Two ranges": "Dua rangkaian",
+    "Pressed and Hand Made": "Pressed dan Hand Made",
+    "The two ranges side by side, as listed in the Price List 2024.": "Kedua rangkaian berdampingan, sesuai yang tercantum dalam Price List 2024.",
+    "Thickness, layout and height are as listed for each model; see the model pages and the index.":
+        "Ketebalan, tata letak dan tinggi sesuai yang tercantum untuk setiap model; lihat halaman model dan indeks.",
+    "Supplied with the sink": "Disertakan dengan bak cuci",
+    "Four hand made models come with an accessory listed in the Price List 2024, each shown here on the product photograph.":
+        "Empat model hand made dilengkapi aksesori yang tercantum dalam Price List 2024, masing-masing ditampilkan di sini pada foto produknya.",
+    "Other fittings seen in some product photographs — knife holders, soap dispensers, control knobs, rinsers and control panels — "
+    "are not listed in the price list. They are marked † on their model pages, to be confirmed.":
+        "Perlengkapan lain yang terlihat pada beberapa foto produk — tempat pisau, dispenser sabun, kenop kontrol, pembilas gelas dan "
+        "panel kontrol — tidak tercantum dalam daftar harga. Perlengkapan tersebut diberi tanda † pada halaman modelnya, menunggu konfirmasi.",
 }
 
 # sentences with numbers or names in them
@@ -243,6 +304,7 @@ TEMPLATES = {
         "volume": "Volume {vol}",
         "n_models_missing": "{n} models — not available for {models}",
         "n_models": "{n} models",
+        "n_colours": "{n} colours",
         "the_range": "The range · {n} models",
         "range_steel": "{ranges} · stainless steel {grades}",
         "and": " and ",
@@ -260,6 +322,7 @@ TEMPLATES = {
         "volume": "Volume {vol}",
         "n_models_missing": "{n} model — tidak tersedia untuk {models}",
         "n_models": "{n} model",
+        "n_colours": "{n} warna",
         "the_range": "Rangkaian · {n} model",
         "range_steel": "{ranges} · stainless steel {grades}",
         "and": " dan ",

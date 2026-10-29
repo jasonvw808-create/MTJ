@@ -14,7 +14,7 @@ def C(r, g, b):
 def gdu8145():
     stone = mats.marble(base=(0.50, 0.45, 0.38), vein=(0.22, 0.19, 0.16), vein2=(0.38, 0.34, 0.29), rough=0.36, scale=0.55, vein_width=0.014, warp=3.0, seed=2.0, honed=True)
     oak = mats.wood("smoked_oak", along='Z', rough=0.5, seed=1.3)
-    plaster = mats.plaster((0.075, 0.069, 0.062), var=0.05, rough=0.9, scale=0.35, bump=0.08)
+    plaster = mats.plaster(C(150, 136, 120), var=0.05, rough=0.9, scale=0.35, bump=0.08)
     brass = mats.metal("brass")
     cer = mats.ceramic((0.75, 0.70, 0.62), matte=True, speck=0.06)
     cer2 = mats.ceramic((0.10, 0.09, 0.085), rough=0.4)
@@ -38,7 +38,7 @@ def gdu8145():
         props.soap_pump("sp", sx + 0.27, kit.behind(ctx, 0.07), H, mat=mats.glass((0.45, 0.33, 0.18)), pump=brass)
 
     def light(ctx):
-        kit.moody(ctx)
+        kit.golden(ctx, side=1, sun_elev=21, sun_azim=80, sun_power=5.5, sun_k=3600, room=0.55, fill=120)
 
     return dict(model="GDU 8145", kind="granite", variant="pearl", layout="island", island_depth=1.0, run=(-1.35, 1.35),
                 height=0.91, thick=0.04, counter=stone, edge="eased", back_y=1.95,
@@ -46,8 +46,8 @@ def gdu8145():
                 floor=mats.wood("smoked_oak", along='X', rough=0.6, scale=0.5), wall=plaster,
                 tap=dict(kind="gooseneck", finish="brass", gap=0.06, height=0.36, reach=0.22),
                 build=[build], light=light,
-                camera=dict(dist=2.35, elev=27, azim=-21, lens=42, fstop=2.4, tz=0.06, ty=0.5),
-                exposure=-1.9)
+                camera=dict(dist=2.4, elev=30, azim=-20, lens=50, fstop=2.8, tz=0.06, ty=0.45),
+                exposure=-0.9)
 
 
 # ── GST 6045 · Pure White — a Nordic morning: oak worktop, sage shaker, a window ──
@@ -66,8 +66,8 @@ def gst6045():
         kit.garden(ctx, y0=yw + 0.2, seed=5, col=(0.10, 0.17, 0.06), ground=False)
         kit.outside_glow(ctx, 2.2)
         # on the sill: herbs and a jug
-        props.herb_pot("sill1", -0.42, yw + 0.06, win["z0"], r=0.055, h=0.09, pot_mat=mats.ceramic(C(180, 110, 80), matte=True), seed=7)
-        props.herb_pot("sill2", 0.38, yw + 0.06, win["z0"], r=0.05, h=0.085, pot_mat=cer, seed=9)
+        props.herb_pot("sill1", -0.42, yw + 0.045, win["z0"], r=0.041, h=0.075, pot_mat=mats.ceramic(C(180, 110, 80), matte=True), seed=7)
+        props.herb_pot("sill2", 0.38, yw + 0.045, win["z0"], r=0.041, h=0.075, pot_mat=cer, seed=9)
         # worktop: a ceramic bowl of pears to the left, plates and a towel to the right, utensils
         kit.fruit_bowl(ctx, kit.left(ctx, 0.28), sy + 0.02, cer, r=0.14, fruit=("pear", "pear", "lemon"))
         props.plate_stack("pl", kit.right(ctx, 0.25), sy + 0.08, H, r=0.12, n=4, mat=mats.ceramic(C(240, 238, 232)))
@@ -77,8 +77,7 @@ def gst6045():
         kit.shelf_items(ctx, -1.75, -0.8, 1.62, seed=11, kinds=("plates", "cups", "jar"), palette=[cer, mats.ceramic(C(240, 238, 232))])
 
     def light(ctx):
-        kit.daylight(ctx, sun_elev=26, sun_azim=205, sun_power=4.5, sun_k=5800, sky=1.0, fill=14, top=10)
-        kit.portal(ctx, win)
+        kit.natural(ctx, side=-1, power=130, sun=True, sun_elev=27, sun_azim=200, sun_power=6.0, sun_k=5600, room=0.3, back_window=win)
 
     return dict(model="GST 6045", kind="granite", variant="pure", layout="window", run=(-1.9, 1.9), depth=0.64, wall_y=0.32,
                 height=0.91, thick=0.038, counter=oak, edge="eased",
@@ -87,7 +86,7 @@ def gst6045():
                 splash=dict(mat=zel, h=0.48),
                 tap=dict(kind="gooseneck", where="taphole", hole=(0.0, 0.1944), finish="brass", height=0.34, reach=0.2),
                 build=[build], light=light,
-                camera=dict(dist=2.05, elev=32, azim=17, lens=38, fstop=4.0, tz=0.05, ty=0.25),
+                camera=dict(dist=2.3, elev=30, azim=16, lens=45, fstop=3.2, tz=0.05, ty=0.25),
                 exposure=-1.2, look="AgX - Base Contrast")
 
 
@@ -95,7 +94,7 @@ def gst6045():
 def gst7546():
     conc = mats.concrete(base=C(178, 175, 168), rough=0.55, tone=0.08)
     black = mats.paint(C(26, 26, 27), rough=0.5, texture=0.0)
-    wallc = mats.concrete(base=C(120, 118, 114), rough=0.8, tone=0.1, pores=False)
+    wallc = mats.concrete(base=C(182, 178, 170), rough=0.8, tone=0.1, pores=False)
     steelb = mats.metal("black")
     oak = mats.wood("oak", along='X', contrast=0.5)
     cer = mats.ceramic(C(236, 233, 226), rough=0.2)
@@ -114,7 +113,7 @@ def gst7546():
         kit.branches(ctx, kit.right(ctx, 0.62), yw - 0.16, mats.ceramic(C(30, 30, 30), rough=0.5), h=0.28, r=0.07, leaf=(0.35, 0.30, 0.18), seed=8, n_leaves=110)
 
     def light(ctx):
-        kit.moody(ctx, key_dir=(-1.6, -0.5, 1.5), key_power=210, key_k=5600, fill=14, world=(0.012, 0.012, 0.012), rim_power=20, top=24)
+        kit.natural(ctx, side=-1, power=170, sun=True, sun_elev=27, sun_azim=290, sun_power=6.0, room=0.3)
 
     return dict(model="GST 7546", kind="granite", variant="pearl", layout="wall", run=(-1.7, 1.7), depth=0.64, wall_y=0.32,
                 height=0.92, thick=0.025, counter=conc, edge="square",
@@ -122,36 +121,36 @@ def gst7546():
                 floor=mats.concrete(base=C(90, 88, 84), rough=0.5), wall=wallc,
                 splash=dict(mat=conc, h=0.62),
                 tap=None, build=[build], light=light,
-                camera=dict(dist=1.95, elev=37, azim=16, lens=44, fstop=3.2, tz=0.04, ty=0.2),
-                exposure=-1.7)
+                camera=dict(dist=2.1, elev=35, azim=15, lens=50, fstop=3.2, tz=0.04, ty=0.2),
+                exposure=-1.25)
 
 
-# ── GSU 6045 · Titanium Grey — Japandi: pale ash, white quartz, limewash ──
+# ── GSU 6045 · Titanium Grey — Japandi: pale ash, white quartz, limewash, soft morning light ──
 def gsu6045():
-    quartz = mats.quartz(base=C(232, 229, 222), speck=C(170, 165, 158), dens=0.035, rough=0.3)
+    quartz = mats.quartz(base=C(234, 231, 224), speck=C(176, 171, 164), dens=0.035, rough=0.28)
     ash = mats.wood("ash", along='Z', rough=0.55, contrast=0.4)
-    lime = mats.plaster(C(222, 214, 200), var=0.04, rough=0.92, scale=0.5, bump=0.06)
-    blk = mats.metal("black")
+    lime = mats.plaster(C(224, 216, 202), var=0.05, rough=0.92, scale=0.5, bump=0.06)
     cer = mats.ceramic(C(205, 196, 182), matte=True, speck=0.08)
     cer2 = mats.ceramic(C(92, 80, 70), matte=True)
+    cer3 = mats.ceramic(C(232, 226, 214), rough=0.3)
 
     def build(ctx):
         H, sx, sy, yw = ctx["H"], ctx["sx"], ctx["sy"], ctx["wall_y"]
-        # a low oak ledge along the splash
-        geo.box(-1.5, yw - 0.1, H + 0.14, 1.5, yw, H + 0.16, name="ledge", mat=mats.wood("light_oak", along='X', contrast=0.4))
-        props.vase("lv1", -0.95, yw - 0.05, H + 0.16, h=0.16, r=0.05, mat=cer, style=2)
-        props.cup("lc1", -0.75, yw - 0.05, H + 0.16, r=0.035, h=0.07, mat=cer2, handle=False)
-        props.bowl("lb1", 0.82, yw - 0.05, H + 0.16, r=0.07, h=0.045, mat=cer)
-        # a teapot-ish jar, cups and a tray on the left; a branch on the right
+        # a slim oak shelf well above the tap, a few pieces on it
+        kit.shelf(ctx, -1.45, -0.25, H + 0.62, depth=0.17, mat=mats.wood("light_oak", along='X', contrast=0.4), t=0.03)
+        props.vase("lv1", -1.15, yw - 0.08, H + 0.62, h=0.16, r=0.05, mat=cer, style=2)
+        props.cup("lc1", -0.92, yw - 0.08, H + 0.62, r=0.035, h=0.07, mat=cer2, handle=False)
+        props.bowl("lb1", -0.62, yw - 0.08, H + 0.62, r=0.065, h=0.045, mat=cer3)
+        # a tea tray on the left; a jug of branches and a towel on the right
         props.board("tray", kit.left(ctx, 0.3), sy + 0.02, H, w=0.36, d=0.24, t=0.018, rot=0.05, wood="light_oak", handle=False)
-        props.jar("tea", kit.left(ctx, 0.36), sy + 0.03, H + 0.018, r=0.055, h=0.11, mat=cer2, lid=cer2)
-        props.cup("c1", kit.left(ctx, 0.22), sy - 0.03, H + 0.018, r=0.032, h=0.06, mat=cer, handle=False)
-        props.cup("c2", kit.left(ctx, 0.16), sy + 0.06, H + 0.018, r=0.032, h=0.06, mat=cer, handle=False)
-        kit.branches(ctx, kit.right(ctx, 0.35), sy + 0.1, cer, h=0.22, r=0.06, leaf=(0.14, 0.17, 0.08), seed=12, height=0.42, style=1, n_leaves=90)
+        props.jar("tea", kit.left(ctx, 0.37), sy + 0.04, H + 0.02, r=0.055, h=0.11, mat=cer2, lid=cer2)
+        props.cup("c1", kit.left(ctx, 0.22), sy - 0.03, H + 0.02, r=0.032, h=0.06, mat=cer, handle=False)
+        props.cup("c2", kit.left(ctx, 0.17), sy + 0.06, H + 0.02, r=0.032, h=0.06, mat=cer, handle=False)
+        kit.branches(ctx, kit.right(ctx, 0.36), sy + 0.12, cer, h=0.22, r=0.06, leaf=(0.14, 0.17, 0.08), seed=12, height=0.42, style=1, n_leaves=90)
         props.towel("tw", kit.right(ctx, 0.62), sy - 0.06, H, w=0.26, d=0.14, t=0.009, color=C(170, 160, 142), rot=-0.05)
 
     def light(ctx):
-        kit.daylight(ctx, sun_elev=30, sun_azim=250, sun_power=3.2, sky=0.9, key_dir=(-1.8, -0.4, 1.2), key_power=110, key_k=6000, fill=12, top=10)
+        kit.natural(ctx, side=-1, power=150, sun=True, sun_elev=28, sun_azim=290, sun_power=7.0, room=0.25)
 
     return dict(model="GSU 6045", kind="granite", variant="titan", layout="wall", run=(-1.6, 1.6), depth=0.64, wall_y=0.32,
                 height=0.9, thick=0.02, counter=quartz, edge="square",
@@ -160,15 +159,16 @@ def gsu6045():
                 splash=dict(mat=lime, h=0.7),
                 tap=dict(kind="gooseneck", finish="black", gap=0.05, height=0.32, reach=0.19),
                 build=[build], light=light,
-                camera=dict(dist=1.75, elev=41, azim=-11, lens=48, fstop=4.0, tz=0.0, ty=0.12),
+                camera=dict(dist=2.0, elev=33, azim=-14, lens=55, fstop=2.8, tz=0.04, ty=0.12),
                 exposure=-1.3, look="AgX - Base Contrast")
 
 
 # ── GSU 7545 · Pure White — emerald lacquer and black marble, an island at night ──
 def gsu7545():
-    nero = mats.marble(base=(0.014, 0.014, 0.015), vein=(0.30, 0.30, 0.29), vein2=(0.06, 0.06, 0.06), rough=0.14, scale=0.6, vein_width=0.008, warp=3.5, seed=5.0)
+    nero = mats.marble(base=(0.014, 0.014, 0.015), vein=(0.42, 0.41, 0.40), vein2=(0.15, 0.15, 0.15), rough=0.14, scale=0.45, vein_width=0.0035, warp=4.5, seed=5.0, density=0.75,
+                       halo=0.0, crisp=True)
     green = mats.paint(C(22, 58, 46), rough=0.35, coat=0.15)
-    plaster = mats.plaster(C(70, 74, 66), var=0.04, rough=0.9, scale=0.4, bump=0.06)
+    plaster = mats.plaster(C(214, 208, 196), var=0.04, rough=0.9, scale=0.4, bump=0.06)
     brass = mats.metal("brass_polished")
     cer = mats.ceramic(C(236, 232, 224), rough=0.2)
 
@@ -186,7 +186,7 @@ def gsu7545():
         props.wine_glass("wg2", kit.right(ctx, 0.27), sy - 0.06, H)
 
     def light(ctx):
-        kit.moody(ctx, key_dir=(-1.6, -0.8, 1.6), key_power=170, key_k=4600, fill=8, world=(0.004, 0.005, 0.0045), rim_power=24, rim_k=2800, top=18)
+        kit.natural(ctx, side=1, power=190, sun=True, sun_elev=25, sun_azim=68, sun_power=5.5, room=0.32)
 
     return dict(model="GSU 7545", kind="granite", variant="pure", layout="island", island_depth=1.0, run=(-1.3, 1.3),
                 height=0.91, thick=0.03, counter=nero, edge="eased", back_y=1.95,
@@ -194,8 +194,8 @@ def gsu7545():
                 floor=mats.wood("walnut", along='X', scale=0.5), wall=plaster,
                 tap=dict(kind="gooseneck", finish="brass_polished", gap=0.06, height=0.37, reach=0.22),
                 build=[build], light=light,
-                camera=dict(dist=2.2, elev=30, azim=19, lens=42, fstop=2.8, tz=0.05, ty=0.45),
-                exposure=-1.8)
+                camera=dict(dist=2.35, elev=30, azim=19, lens=50, fstop=2.8, tz=0.05, ty=0.42),
+                exposure=-1.2)
 
 
 # ── GSU 8045 · Titanium Grey — travertine and terracotta in late sun ──
@@ -213,13 +213,13 @@ def gsu8045():
         kit.shelf_items(ctx, -1.6, -0.55, 1.6, seed=41, kinds=("jar", "bowl", "vase"), palette=[cer, mats.ceramic(C(150, 80, 50), matte=True)])
         # bread on a board, oil, oranges
         props.board("bd", kit.left(ctx, 0.32), sy, H, w=0.5, d=0.3, t=0.03, rot=-0.1, wood="oak")
-        loaf = props._ellipsoid("loaf", kit.left(ctx, 0.3), sy + 0.01, H + 0.075, 0.13, 0.075, 0.05, mats.fruit(C(150, 95, 45), 0.7, 0.6, 120), None)
-        kit.oil_and_salt(ctx, kit.left(ctx, 0.62), yw - 0.14)
+        props.towel("tw", kit.left(ctx, 0.3), sy - 0.02, H + 0.03, w=0.28, d=0.16, t=0.012, color=C(214, 200, 178), rot=-0.12)
+        kit.oil_and_salt(ctx, kit.left(ctx, 0.78), yw - 0.11)
         kit.fruit_bowl(ctx, kit.right(ctx, 0.3), sy + 0.05, cer, r=0.14, fruit=("orange", "orange", "orange", "lime"))
         props.vase("jug", kit.right(ctx, 0.62), yw - 0.15, H, h=0.26, r=0.075, neck=0.04, mat=mats.ceramic(C(160, 85, 50), matte=True), style=2)
 
     def light(ctx):
-        kit.daylight(ctx, sun_elev=16, sun_azim=75, sun_power=5.0, sun_k=3600, sky=0.6, key_dir=(1.8, -0.3, 1.1), key_power=70, key_k=4200, fill=10, top=8, top_k=4200)
+        kit.golden(ctx, side=1, sun_elev=15, sun_azim=72, sun_power=5.5, sun_k=3600, room=0.42, fill=100)
 
     return dict(model="GSU 8045", kind="granite", variant="titan", layout="wall", run=(-1.7, 1.7), depth=0.64, wall_y=0.32,
                 height=0.91, thick=0.03, counter=trav, edge="eased",
@@ -228,8 +228,10 @@ def gsu8045():
                 splash=dict(mat=terra, h=0.58),
                 tap=dict(kind="bridge", finish="nickel", gap=0.055, height=0.3, reach=0.2),
                 build=[build], light=light,
-                camera=dict(dist=1.9, elev=34, azim=18, lens=44, fstop=3.5, tz=0.03, ty=0.18),
-                exposure=-1.5)
+                camera=dict(dist=2.1, elev=33, azim=17, lens=50, fstop=3.2, tz=0.03, ty=0.18),
+                exposure=-1.1,
+                # a gentle neutral fill: the Titanium Grey reads grey in the evening light, the sun's shadows kept
+                sink_fill=12)
 
 
 RECIPES = {"gdu8145": gdu8145, "gst6045": gst6045, "gst7546": gst7546, "gsu6045": gsu6045, "gsu7545": gsu7545, "gsu8045": gsu8045}

@@ -4,7 +4,8 @@ import math
 import sys
 import bpy
 from mathutils import Vector
-from . import common, geo, mats, props, kitchen
+from . import common, geo, kit, mats, props, kitchen, physics
+from .steel_data import STEEL
 
 
 def build_sink(kind, model, variant):
@@ -27,7 +28,7 @@ def compose(R, quality="preview"):
              final=dict(res=R.get("res", (2000, 1600)), samples=R.get("samples", 112), threshold=0.025))[quality]
     common.cycles(sc, samples=q["samples"], res=q["res"], threshold=q["threshold"], look=R.get("look", "AgX - Medium High Contrast"),
                   exposure=R.get("exposure", 0.0))
-    ctx = dict(sc=sc, R=R)
+    ctx = dict(sc=sc, R=R, back_faces=[], overhead=[])
     sink = build_sink(R["kind"], R["model"], R.get("variant"))
     ctx["sink"] = sink
     W, D = sink["size"]
@@ -68,18 +69,26 @@ def compose(R, quality="preview"):
         if win:
             objs += kitchen.window(win["x0"], win["x1"], win["z0"], win["z1"], wall_y, win["frame"], None,
                                    mullions=win.get("mullions", 1), transoms=win.get("transoms", 0), reveal=0.15)
-            # the reveal's sides, head and the sill
+            # the reveal's sides, head and the sill, each standing 2 mm proud of the wall it lines (flush with it, its face
+            # would be in that wall's shadow and render black)
             rm = win.get("reveal_mat", wall_mat)
-            objs.append(geo.box(win["x0"] - 0.0, wall_y, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"], name="sill", mat=win.get("sill", rm)))
-            objs.append(geo.box(win["x0"] - 0.01, wall_y, win["z0"], win["x0"], wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
-            objs.append(geo.box(win["x1"], wall_y, win["z0"], win["x1"] + 0.01, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
-            objs.append(geo.box(win["x0"], wall_y, win["z1"], win["x1"], wall_y + 0.15, win["z1"] + 0.01, name="rev_t", mat=rm))
+            # the sill: a board a little proud of the wall below (level with it, its top would be in that wall's
+            # shadow) and running 2 cm out over the splashback
+            objs.append(geo.box(win["x0"] - 0.0, wall_y - 0.02, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"] + 0.003, name="sill",
+                                mat=win.get("sill", rm), bevel=0.002))
+            objs.append(geo.box(win["x0"] - 0.008, wall_y, win["z0"], win["x0"] + 0.002, wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
+            objs.append(geo.box(win["x1"] - 0.002, wall_y, win["z0"], win["x1"] + 0.008, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
+            objs.append(geo.box(win["x0"], wall_y, win["z1"] - 0.002, win["x1"], wall_y + 0.15, win["z1"] + 0.008, name="rev_t", mat=rm))
     side = R.get("side_wall")
     if side:
         x = side["x"]
         objs.append(geo.box(x - 0.1 if x > 0 else x, -6, 0, x if x > 0 else x + 0.1, wall_y + 0.2, 3.2, name="side_wall", mat=side["mat"]))
     if R.get("ceiling", True):
-        objs.append(geo.box(-6, -6, R.get("ceiling_z", 2.75), 6, 6, R.get("ceiling_z", 2.75) + 0.05, name="ceiling", mat=R.get("ceiling_mat") or mats.paint((0.7, 0.68, 0.64), 0.9, texture=0)))
+        # the room's own ceiling, not one that runs on for metres: daylight from the side comes in under its edge,
+        # as through a tall window in the side wall
+        cx0, cx1 = min(run[0], -2.4) - 0.3, max(run[1], 2.4) + 0.3
+        objs.append(geo.box(cx0, -3.2, R.get("ceiling_z", 2.75), cx1, wall_y + 0.2, R.get("ceiling_z", 2.75) + 0.05, name="ceiling",
+                            mat=R.get("ceiling_mat") or mats.paint((0.7, 0.68, 0.64), 0.9, texture=0)))
     # splashback
     sp = R.get("splash")
     if sp and layout != "island":
@@ -87,7 +96,16 @@ def compose(R, quality="preview"):
         objs.append(geo.box(run[0] if sp.get("full_width") is None else sp["full_width"][0], wall_y - sp.get("t", 0.012), H,
                             run[1] if sp.get("full_width") is None else sp["full_width"][1], wall_y, H + h, name="splash", mat=sp["mat"]))
         ctx["splash"] = dict(t=sp.get("t", 0.012), top=H + h)
+        ctx["back_faces"].append((wall_y - sp.get("t", 0.012), H, H + h, run[0], run[1]))
     ctx["wall_y"] = wall_y
+    if layout != "island":
+        win = R.get("window") if wall_mat is not None else None
+        if win:
+            # the wall round its window: what stands in the opening (on the sill) is not in front of the wall
+            ctx["back_faces"] += [(wall_y, 0.0, win["z0"] - 0.002, -9.0, 9.0), (wall_y, win["z1"], 3.2, -9.0, 9.0),
+                                  (wall_y, win["z0"], win["z1"], -9.0, win["x0"]), (wall_y, win["z0"], win["z1"], win["x1"], 9.0)]
+        else:
+            ctx["back_faces"].append((wall_y, 0.0, 3.2, -9.0, 9.0))
     # the scene's own additions: back run, shelves, uppers, props, lights
     for fn in R.get("build", []):
         fn(ctx)
@@ -95,9 +113,17 @@ def compose(R, quality="preview"):
     tap = R.get("tap")
     if tap:
         place_tap(ctx, tap)
+    # nothing floats, nothing is sunk into what it stands on or against
+    physics.clear_of(ctx, ctx["back_faces"])
+    physics.settle(ctx)
     # lights & world
     L = R["light"]
     L(ctx)
+    # a dark sink (Pearl Black, Nano Black) gets a photographer's soft fill, so its stone or steel reads
+    dark = R.get("variant") == "pearl" or (R["kind"] != "granite" and STEEL[R["model"]]["finish"] == "nano_black")
+    fill = R.get("sink_fill", 60 if dark else 0)
+    if fill:
+        kit.sink_fill(ctx, fill)
     # camera
     cam = R["camera"]
     tgt = Vector((sx + cam.get("tx", 0.0), sy + cam.get("ty", 0.0), H + cam.get("tz", -0.05)))
@@ -108,7 +134,13 @@ def compose(R, quality="preview"):
                   fstop=cam.get("fstop", 4.0), shift=(cam.get("sx", 0.0), cam.get("sy", 0.0)))
     if cam.get("roll"):
         sc.camera.rotation_euler.rotate_axis('Z', math.radians(cam["roll"]))
+    if R.get("post", True):
+        common.post(sc, **(R["post"] if isinstance(R.get("post"), dict) else {}))
     return ctx
+
+
+# how far behind its centre each kind of tap reaches (base, cross handles)
+TAP_REAR = dict(gooseneck=0.027, pulldown=0.028, square=0.026, bridge=0.037)
 
 
 def place_tap(ctx, tap):
@@ -130,6 +162,14 @@ def place_tap(ctx, tap):
         x = sx + tap.get("dx", 0.0)
         y = sy + D / 2 + tap.get("gap", 0.05)
         z = H
+        # in front of whatever stands behind it (the wall, the splashback, a ledge or an upstand), with room to spare
+        rear = TAP_REAR.get(kind, 0.03)
+        top = H + tap.get("height", 0.36) + 0.02
+        for (yf, z0, z1, x0, x1) in ctx.get("back_faces", []):
+            if z0 < top and z1 > H and x0 < x + 0.12 and x1 > x - 0.12 and y + rear + 0.004 > yf:
+                y = yf - rear - 0.004
+        if y - rear < sy + D / 2 - 0.004:
+            print(f"WARNING tap: no room for the {kind} tap between the sink and the back ({(y - sy - D / 2) * 1000:.0f} mm)")
     fn = dict(gooseneck=props.faucet_gooseneck, pulldown=props.faucet_pulldown, square=props.faucet_square, bridge=props.faucet_bridge)[kind]
     kw = dict(mat=m)
     if "height" in tap:

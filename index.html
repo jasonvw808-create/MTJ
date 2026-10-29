@@ -14753,11 +14753,11 @@ const KS_DIR = "catalogue/";
 const KS_IMG = (name) => KS_DIR + "img/" + name;
 const KS_EDITION = { en: "October 2026", id: "Oktober 2026" };
 /* pages and size of each PDF, written in when the files are put in the folder (catalogues/source/layout/publish_site.py) */
-const KS_PDF_META = {"granite-en":{"pages":12,"bytes":2219024},"granite-id":{"pages":12,"bytes":2218127},"stainless-en":{"pages":36,"bytes":6347686},"stainless-id":{"pages":36,"bytes":6349883}};
+const KS_PDF_META = {"granite-en":{"pages":16,"bytes":2486876},"granite-id":{"pages":16,"bytes":2485355},"stainless-en":{"pages":40,"bytes":6314925},"stainless-id":{"pages":40,"bytes":6315051}};
 /* and what is on each page of a PDF (the same in both languages), written in with them: a model's code, or the page of
    the catalogue read here with the same contents (cover, overview, colours or finishes, index) — null where there is
    none; and the three pages of the look inside (img/pages/<doc>-<lang>-1…3.jpg) */
-const KS_PDF_PAGES = {"granite":{"peek":[1,3,5],"pages":["cover",null,"overview","colours","GDU 8145","GST 6045","GST 7546","GSU 6045","GSU 7545","GSU 8045","index",null]},"stainless":{"peek":[1,4,7],"pages":["cover",null,"finishes","overview-pressed","overview-handmade",null,"LPS 5040","LPS 7540 A","LPS 8643 A","LPS 9643 A","LPS 10050 A","WL 03","WL 05 A","WL 07","WL 11","WL 12","WL 18",null,"W 5050 TSB","W 6045 TSS","W 6045 TSB","W 7546 TSB","W 7546 TSBN","W 7646 USS","W 7646 USB","W 7845 UDS","W 7845 UDB","W 8050 TSS","W 8050 TSB","W 8245 TDB","W 8550 TDG","W 10050 TSG","index",null,null,null]}};
+const KS_PDF_PAGES = {"granite":{"peek":[1,3,7],"pages":["cover",null,"overview","colours",null,null,"GDU 8145","GST 6045","GST 7546","GSU 6045","GSU 7545","GSU 8045","index",null,null,null]},"stainless":{"peek":[1,5,11],"pages":["cover",null,"finishes",null,"overview-pressed","overview-handmade",null,null,null,null,"LPS 5040","LPS 7540 A","LPS 8643 A","LPS 9643 A","LPS 10050 A","WL 03","WL 05 A","WL 07","WL 11","WL 12","WL 18",null,"W 5050 TSB","W 6045 TSS","W 6045 TSB","W 7546 TSB","W 7546 TSBN","W 7646 USS","W 7646 USB","W 7845 UDS","W 7845 UDB","W 8050 TSS","W 8050 TSB","W 8245 TDB","W 8550 TDG","W 10050 TSG","index",null,null,null]}};
 const KS_LANGS = ["en", "id"];
 /* two catalogues, one for each material — granite and stainless steel are never in the same one */
 const KS_DOCS = {

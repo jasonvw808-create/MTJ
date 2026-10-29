@@ -29,6 +29,8 @@ Where the English edition prints "TBC", the Indonesian prints "?" with the same 
 
 The website (`index.html`, published with GitHub Pages) offers the presentation editions in English and Indonesian from the `catalogue/` folder beside it. They are stored there under the file names the site expects, with three page images of each for its "Look inside" panel. `layout/publish_site.py` copies the files there. It also writes their page counts, file sizes and every model's page number into `index.html`, so "View in the catalogue" opens the right page. See `catalogue/HOW-TO-UPDATE.txt`.
 
+Changes go live by themselves. GitHub Pages republishes the site whenever `main` changes. Every change pushed to a `claude/…` branch is merged into `main` by `.github/workflows/publish-to-website.yml`, so it goes live too, about a minute later. A branch that conflicts with `main` is not merged; the run in the Actions tab shows why. To stop automatic publishing, delete that file or disable the workflow in the Actions tab.
+
 ## What's inside each volume
 
 - **Cover.** A full-bleed kitchen image with the collection's title set large.

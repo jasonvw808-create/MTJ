@@ -29,7 +29,8 @@ TO UPDATE THEM
    PDF's page count and file size (KS_PDF_META) and every model's page number (KS_PDF_PAGES), so that
    "View in the catalogue" opens the right page.
 
-3. Commit and push. GitHub Pages publishes the site from the main branch.
+3. Commit and push. GitHub Pages publishes the site from the main branch. A change pushed to a claude/...
+   branch goes live by itself: .github/workflows/publish-to-website.yml merges it into main.
 
 If you replace a PDF by hand instead, keep the same file name. Then update its page count and file size in
 KS_PDF_META in index.html, and the model page numbers in KS_PDF_PAGES if any models moved to different pages.

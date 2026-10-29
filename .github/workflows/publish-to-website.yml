@@ -10,8 +10,7 @@ on:
     branches: ["claude/**"]
 
 permissions:
-  contents: write   # to merge the branch into main
-  pages: write      # to ask GitHub Pages to rebuild the site
+  contents: write   # to merge the branch into main; the push to main makes GitHub Pages rebuild the site
 
 concurrency:
   group: publish-to-website
@@ -28,7 +27,6 @@ jobs:
           fetch-depth: 0
 
       - name: Merge the branch into main
-        id: merge
         env:
           BRANCH: ${{ github.ref_name }}
         run: |
@@ -41,10 +39,3 @@ jobs:
           fi
           git merge --no-ff --no-edit -m "Publish $BRANCH to the website" "origin/$BRANCH"
           git push origin HEAD:main
-          echo "merged=true" >> "$GITHUB_OUTPUT"
-
-      - name: Rebuild the website
-        if: steps.merge.outputs.merged == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api --method POST "repos/${{ github.repository }}/pages/builds" || echo "GitHub Pages rebuilds from main by itself"

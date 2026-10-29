@@ -1,0 +1,50 @@
+# Publish to the website: every change pushed to a claude/... branch goes live.
+# The branch is merged into main, and GitHub Pages publishes main (in about a minute).
+# A branch that conflicts with main is not merged: main stays as it is, and the run shows the conflict.
+# Changes made directly on main need nothing: GitHub Pages publishes them by itself.
+# To stop publishing automatically, delete this file, or disable the workflow in the repository's Actions tab.
+name: Publish to the website
+
+on:
+  push:
+    branches: ["claude/**"]
+
+permissions:
+  contents: write   # to merge the branch into main
+  pages: write      # to ask GitHub Pages to rebuild the site
+
+concurrency:
+  group: publish-to-website
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Merge the branch into main
+        id: merge
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
+          if git merge-base --is-ancestor "origin/$BRANCH" HEAD; then
+            echo "main already has every change on $BRANCH"
+            exit 0
+          fi
+          git merge --no-ff --no-edit -m "Publish $BRANCH to the website" "origin/$BRANCH"
+          git push origin HEAD:main
+          echo "merged=true" >> "$GITHUB_OUTPUT"
+
+      - name: Rebuild the website
+        if: steps.merge.outputs.merged == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${{ github.repository }}/pages/builds" || echo "GitHub Pages rebuilds from main by itself"

@@ -1167,6 +1167,121 @@
   .kc-stainless .kc-table td { padding-top: 1.55mm; padding-bottom: 1.55mm; }
   .kc-index-note { max-width: 130mm; margin: 5mm 0 0; font-size: 6.6pt; line-height: 1.55; color: var(--kc-grey); }
   .kc-index-logo { position: absolute; left: 0; bottom: 0; display: block; height: 6.5mm; width: auto; }
+
+  /* ── THE CATALOGUE PAGE (#/catalogue, .cl) ─────────────────────────────────────────────────────────────────
+     A charcoal stage in both themes: the dark theme's own values are held here, so every utility inside follows
+     them, and the cards, in warm ivory, hold light values in turn. Champagne (the dark theme's accent) for the small
+     type and the rules; a light serif for the headlines, as in the two catalogues; Inter for the rest. The bar runs
+     over the stage as it does over the home page's hero (36 + 96 px), so the opening leaves room for it. */
+  .cl { --bone: 21 20 18; --shell: 28 27 24; --concrete: 35 33 30; --ink: 240 238 233; --mute: 158 154 147;
+        --line: 48 46 42; --accent: 201 168 124; color-scheme: dark;
+        --cl-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+        background: rgb(var(--bone)); color: rgb(var(--ink)); }
+  .cl-eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: rgb(var(--accent)); }
+
+  /* the opening, centred under the bar */
+  .cl-intro { padding: 188px 0 56px; text-align: center; }
+  .cl-intro h1 { max-width: 1100px; margin: 22px auto 0; font-family: var(--cl-serif); font-weight: 300; font-size: clamp(40px, 5.2vw, 72px);
+                 line-height: 1.05; letter-spacing: -.014em; font-variation-settings: "opsz" 60; text-wrap: balance; }
+  .cl-lede { max-width: 640px; margin: 24px auto 0; font-size: 16px; line-height: 1.7; color: rgb(var(--mute)); text-wrap: balance; }
+  .cl-rule { width: 44px; height: 1px; margin: 36px auto 0; background: rgb(var(--accent) / .45); }
+
+  /* the collections: the room filters and the count, then a card for each */
+  .cl-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px;
+             margin-bottom: 30px; padding-bottom: 22px; border-bottom: 1px solid rgb(var(--line)); }
+  .cl-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .cl-label { display: none; margin-right: 12px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute) / .75); }
+  .cl-chip { height: 38px; padding: 0 17px; border: 1px solid rgb(var(--line)); border-radius: 999px; font-size: 12.5px; font-weight: 500;
+             letter-spacing: .02em; color: rgb(var(--ink) / .86); transition: background-color .4s, border-color .4s, color .4s; }
+  .cl-chip:hover { border-color: rgb(var(--ink) / .45); color: rgb(var(--ink)); }
+  .cl-chip[aria-pressed="true"] { background: #F3EFE8; border-color: #F3EFE8; color: #1B1A18; }
+  .cl-count { font-size: 13px; letter-spacing: .02em; color: rgb(var(--mute)); }
+  .cl-count b { font-weight: 500; color: rgb(var(--ink)); }
+
+  .cl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .cl-card { --bone: 243 239 232; --shell: 236 231 222; --ink: 27 26 24; --mute: 103 99 92; --line: 223 216 204; --accent: 126 100 64;
+             color-scheme: light; display: flex; flex-direction: column; border-radius: 2px; overflow: hidden;
+             background: rgb(var(--bone)); color: rgb(var(--ink));
+             box-shadow: inset 0 1px 0 rgb(255 255 255 / .04), 0 30px 60px -32px rgb(0 0 0 / .75); }
+  .cl-media { position: relative; aspect-ratio: 4 / 5; background: #E7E1D7; }
+  .cl-media img, .cl-media .ph-fallback { display: block; width: 100%; height: 100%; object-fit: cover;
+             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cl-card:hover .cl-media img { transform: scale(1.035); }
+  .cl-body { display: flex; flex: 1; flex-direction: column; padding: 24px 24px 0; }
+  .cl-tag { display: flex; align-items: baseline; gap: 12px; font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute)); }
+  .cl-no { font-family: var(--cl-serif); font-size: 15px; letter-spacing: 0; color: rgb(var(--accent)); }
+  .cl-card h2 { margin-top: 12px; font-family: var(--cl-serif); font-weight: 400; font-size: 28px; line-height: 1.12; letter-spacing: -.005em;
+                font-variation-settings: "opsz" 36; }
+  .cl-desc { display: block; min-height: 3.1em; margin-top: 10px; font-size: 14.5px; line-height: 1.55; color: rgb(var(--mute)); text-wrap: balance; }
+  .cl-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 24px; padding: 18px 0 22px;
+            border-top: 1px solid rgb(var(--line)); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
+  .cl-go { display: grid; flex-shrink: 0; place-items: center; width: 34px; height: 34px; border: 1px solid #CDBFA8; border-radius: 50%; color: rgb(var(--accent));
+           transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cl-card:hover .cl-go, .cl-card:focus-visible .cl-go { background: rgb(var(--ink)); border-color: rgb(var(--ink)); color: rgb(var(--bone)); }
+
+  /* the two kitchen sink catalogues */
+  .cl-dl { margin-top: 104px; border-top: 1px solid rgb(var(--line)); border-bottom: 1px solid rgb(var(--line)); background: rgb(var(--shell)); }
+  .cl-dl-in { display: grid; align-items: center; gap: 48px; padding-top: 72px; padding-bottom: 76px; }
+  .cl-dl h2 { max-width: 600px; margin-top: 20px; text-wrap: balance; font-family: var(--cl-serif); font-weight: 300; font-size: clamp(32px, 3.3vw, 46px); line-height: 1.12;
+              letter-spacing: -.008em; font-variation-settings: "opsz" 48; }
+  .cl-body-text { max-width: 46ch; margin-top: 22px; font-size: 16px; line-height: 1.7; color: rgb(var(--mute)); }
+  .cl-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 32px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--accent)); }
+  .cl-also { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 18px; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgb(var(--mute)); }
+  .cl-also a { color: rgb(var(--ink) / .8); transition: color .3s; }
+  .cl-also a:hover { color: rgb(var(--ink)); }
+  .cl-books { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 640px; }
+  .cl-book { container-type: inline-size; }
+  .cl-cover { display: block; aspect-ratio: 210 / 297; overflow: hidden; background: rgb(var(--concrete));
+              box-shadow: 0 2px 0 rgb(255 255 255 / .03), 0 28px 50px -22px rgb(0 0 0 / .8); }
+  .cl-cover img, .cl-cover .ph-fallback { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cl-cover:hover img { transform: scale(1.02); }
+  .cl-meta { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 18px; }
+  .cl-name { font-family: var(--cl-serif); font-size: 19px; line-height: 1.2; }
+  /* a book wide enough for its name and its two buttons on one line */
+  @container (min-width: 290px) {
+    .cl-meta { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+    .cl-name { font-size: 21px; }
+  }
+  .cl-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cl-facts { grid-column: 1 / -1; font-size: 12px; letter-spacing: .02em; color: rgb(var(--mute)); text-wrap: balance; }
+  .cl-btn { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px; border: 1px solid rgb(var(--line)); white-space: nowrap;
+            font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgb(var(--ink) / .86);
+            transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cl-btn:hover { border-color: rgb(var(--ink) / .6); color: rgb(var(--ink)); }
+  .cl-btn.cl-solid { border-color: #F3EFE8; background: #F3EFE8; color: #1B1A18; }
+  .cl-btn.cl-solid:hover { border-color: rgb(var(--ink) / .6); background: transparent; color: rgb(var(--ink)); }
+
+  /* the services around them */
+  .cl-svc { display: grid; grid-template-columns: minmax(0, 1fr); padding: 40px 0 56px; }
+  .cl-svc > div { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-top: 1px solid rgb(var(--line)); }
+  .cl-svc > div:first-child { border-top: 0; }
+  .cl-svc svg { margin-top: 2px; color: rgb(var(--accent)); }
+  .cl-svc h3 { font-family: var(--cl-serif); font-weight: 400; font-size: 21px; line-height: 1.25; letter-spacing: -.005em; }
+  .cl-svc p { margin-top: 6px; font-size: 14.5px; line-height: 1.6; color: rgb(var(--mute)); text-wrap: balance; }
+  .cl-svc a { margin-top: 12px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--accent)); }
+
+  @media (min-width: 560px) {
+    .cl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cl-books { gap: 32px; }
+  }
+  @media (min-width: 768px) {
+    .cl-intro { padding: 232px 0 76px; }
+    .cl-lede { font-size: 17px; }
+    .cl-label { display: inline; }
+  }
+  @media (min-width: 1024px) {
+    .cl-dl { margin-top: 128px; }
+    .cl-dl-in { padding-top: 96px; padding-bottom: 96px; }
+    .cl-books { gap: 40px; }
+    .cl-svc { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 72px 0 80px; }
+    .cl-svc > div { padding: 0 40px; border-top: 0; border-left: 1px solid rgb(var(--line)); }
+    .cl-svc > div:first-child { padding-left: 0; border-left: 0; }
+  }
+  /* four cards across once each is wide enough for its line of action; the catalogues beside their text */
+  @media (min-width: 1200px) {
+    .cl-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+    .cl-dl-in { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: 80px; }
+  }
 </style>
 </head>
 <body>
@@ -10358,10 +10473,11 @@ const SiteHeader = () => {
   useEffect(() => { setMega(null); setMobile(false); setSearch(false); setAccount(false); },
     [route.side, route.name, route.slug, route.cat, route.id, route.q, route.view]);
 
-  /* Only the brand home runs its hero under a transparent bar. Everywhere
-     else — the shop included — the bar is solid, so the second line has
-     something to sit on. */
-  const overHero = !shop && route.name === "home";
+  /* Only the brand home and the catalogue run under a transparent bar: the
+     home page's hero, the catalogue's charcoal stage. Everywhere else — the
+     shop included — the bar is solid, so the second line has something to
+     sit on. */
+  const overHero = !shop && (route.name === "home" || route.name === "catalogue");
   const solid = !overHero || scrolled || !!mega;
 
   const on = (n) => n.id === "shop" ? shop
@@ -12888,77 +13004,177 @@ const AboutPage = () => {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CATALOGUE
-   A page for the printed range: each volume as a large plate, with what is in
-   it and a way to ask for a copy. The files themselves are placeholders — no
-   PDF is shipped with this prototype.
+   The catalogue's landing page: the collections as cards, the two kitchen
+   sink catalogues to view or download, and the services around them. It is
+   set on a charcoal stage in both themes (.cl in the stylesheet), which the
+   bar runs over as it does over the home page's hero.
+   A collection is one entry in CL_COLLECTIONS: the grid gives it a card (a
+   fifth starts a new row), and the room filters and the count follow. Its
+   picture is in img/collections/, 800 × 1000. Only the kitchen sinks are the
+   shop's own so far: the other three pictures are studio images standing in
+   for its photographs, and their links go to the nearest part of the shop.
    ═══════════════════════════════════════════════════════════════════════════ */
-const VOLUMES = [
-  { id: "kitchen", ks: true, img: 9, tone: "#F4F3F0", year: "2026",
-    title: { en: "Kitchen Sink Catalogues", id: "Katalog Bak Cuci Dapur" },
-    body:  { en: "Two catalogues, one for each material: the Granite Kitchen Sink Collection and the Stainless Steel Kitchen Sink Collection — every model with its photographs, colours or finish, dimensions and specifications.",
-             id: "Dua katalog, satu untuk setiap material: Koleksi Bak Cuci Dapur Granit dan Koleksi Bak Cuci Dapur Stainless Steel — setiap model dengan foto, warna atau finishing, dimensi dan spesifikasinya." },
-    meta:  null },
-  { id: "bathroom", img: 12, tone: "#C9C4BC", year: "2026",
-    title: { en: "The Bathroom Volume", id: "Volume Kamar Mandi" },
-    body:  { en: "Porcelain, brass and stone, with the dimensions and rough-in drawings an installer will ask for.",
-             id: "Porselen, kuningan dan batu, lengkap dengan dimensi dan gambar instalasi yang akan diminta teknisi." },
-    meta:  { en: "72 pages · 18 MB", id: "72 halaman · 18 MB" } },
-  { id: "surfaces", img: 14, tone: "#D2CEC6", year: "2025",
-    title: { en: "Surfaces & Finishes", id: "Permukaan & Finishing" },
-    body:  { en: "The six finishes we specify, shown at full scale against the light they will actually live in.",
-             id: "Enam finishing yang kami tentukan, ditampilkan ukuran penuh di bawah cahaya yang nanti menaunginya." },
-    meta:  { en: "48 pages · 12 MB", id: "48 halaman · 12 MB" } },
+const CL_COLLECTIONS = [
+  { id: "kitchen-sinks", rooms: ["kitchen"], to: "#/shop/kitchen-sinks", img: "img/collections/kitchen-sinks.jpg",
+    tag:   { en: "Kitchen", id: "Dapur" },
+    title: { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
+    body:  { en: "Granite and stainless steel collections", id: "Koleksi granit dan stainless steel" },
+    alt:   { en: "The GDU 8145 granite double-bowl sink in Pearl Black", id: "Bak cuci granit dua ruang GDU 8145, Hitam Mutiara" } },
+  { id: "sanitaryware", rooms: ["bathroom"], to: "#/shop/c/bathroom", img: "img/collections/sanitaryware.jpg",
+    tag:   { en: "Bathroom", id: "Kamar Mandi" },
+    title: { en: "Sanitaryware", id: "Saniter" },
+    body:  { en: "Clean, lasting forms for the bathroom", id: "Bentuk yang bersih dan awet untuk kamar mandi" },
+    alt:   { en: "A white back-to-wall toilet with a brass flush plate", id: "Kloset putih back-to-wall dengan tombol flush kuningan" } },
+  { id: "faucets", rooms: ["kitchen", "bathroom"], to: "#/shop/search/mixer", img: "img/collections/faucets.jpg",
+    tag:   { en: "Kitchen & Bath", id: "Dapur & Kamar Mandi" },
+    title: { en: "Faucets", id: "Keran" },
+    body:  { en: "Mixers and taps for kitchen and bath", id: "Mixer dan keran untuk dapur dan kamar mandi" },
+    alt:   { en: "A brushed brass gooseneck mixer on a block of black marble", id: "Keran leher angsa kuningan sikat di atas balok marmer hitam" } },
+  { id: "accessories", rooms: ["kitchen", "bathroom"], to: "#/shop/c/hardware", img: "img/collections/accessories.jpg",
+    tag:   { en: "Details", id: "Detail" },
+    title: { en: "Accessories", id: "Aksesori" },
+    body:  { en: "Small pieces, chosen with the same care", id: "Detail kecil, dipilih dengan perhatian yang sama" },
+    alt:   { en: "A soap dispenser, a tumbler, a soap dish and an olive sprig on a walnut tray", id: "Dispenser sabun, gelas, tempat sabun dan ranting zaitun di atas nampan kayu walnut" } },
+];
+/* the rooms the collections can be filtered by; a collection names the rooms it belongs to */
+const CL_ROOMS = [
+  { id: null,       label: { en: "All collections", id: "Semua koleksi" } },
+  { id: "kitchen",  label: { en: "Kitchen",  id: "Dapur" } },
+  { id: "bathroom", label: { en: "Bathroom", id: "Kamar Mandi" } },
+];
+const CL_LEDE = {
+  en: "Explore kitchen and bathroom solutions made to feel at home — from granite and stainless steel sinks to sanitaryware, faucets and the details that complete a room.",
+  id: "Jelajahi solusi dapur dan kamar mandi yang terasa seperti di rumah sendiri — dari bak cuci granit dan stainless steel hingga saniter, keran, dan detail yang melengkapi sebuah ruangan.",
+};
+const CL_SERVICES = [
+  { icon: "truck", to: "#/services",
+    title: { en: "Complimentary delivery", id: "Gratis pengiriman" },
+    body:  { en: "Across Jabodetabek, in 2–4 working days.", id: "Se-Jabodetabek, dalam 2–4 hari kerja." },
+    link:  { en: "Delivery details", id: "Detail pengiriman" } },
+  { icon: "cube", to: "#/virtual-showroom",
+    title: { en: "Virtual showroom", id: "Showroom virtual" },
+    body:  { en: "Walk through the collections, room by room.", id: "Jelajahi koleksi, ruang demi ruang." },
+    link:  { en: "Enter the showroom", id: "Masuk ke showroom" } },
+  { icon: "chat", to: "#/contact",
+    title: { en: "Help choosing", id: "Bantuan memilih" },
+    body:  { en: "Questions about a size, finish or model? Ask us.", id: "Ada pertanyaan soal ukuran, finishing, atau model? Tanyakan kepada kami." },
+    link:  { en: "Contact us", id: "Hubungi kami" } },
 ];
 
-const CataloguePage = () => {
-  const { t, x, lang } = useStore();
-  const [sent, setSent] = useState(null);
+/* one of the two kitchen sink catalogues: its cover, which opens it here on the website, and its two ways — View and
+   PDF (or, where the files are not beside the page, Read) */
+const ClBook = ({ doc, n, lang, files }) => {
+  const { x } = useStore();
+  const read = files === "missing";
+  const title = x(KS_DOCS[doc].title);
   return (
-    <>
-      <PageHead trail={[{ label: t("home"), to: "#/" }, { label: t("catalogue") }]}
-        title={x({ en: "Catalogue", id: "Katalog" })}
-        sub={x({ en: "Three volumes, printed once a year and posted free anywhere in Indonesia. Every product in them is one we stock — there is no aspirational section at the back.",
-                 id: "Tiga volume, dicetak setahun sekali dan dikirim gratis ke seluruh Indonesia. Setiap produk di dalamnya adalah yang kami sediakan — tidak ada bagian angan-angan di halaman belakang." })} />
+    <figure className="cl-book" data-cl-book={doc + "-" + lang}>
+      <a {...(read ? ksDocLink(doc, lang, files) : ksViewLink(doc, lang))} className="cl-cover"
+        aria-label={(read ? x({ en: "Read the catalogue", id: "Baca katalog" }) : x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })) + ": " + title}>
+        <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-1.jpg")} alt={title} tone="#2B2926" className="no-dim" />
+      </a>
+      <figcaption className="cl-meta">
+        <span className="cl-name">{x(doc === "granite" ? { en: "Granite", id: "Granit" } : { en: "Stainless Steel", id: "Stainless Steel" })}</span>
+        <span className="cl-acts">
+          {read ? (
+            <a {...ksDocLink(doc, lang, files)} className="cl-btn cl-solid"><KsIcon name="book" size={14} />{x({ en: "Read", id: "Baca" })}</a>
+          ) : (<>
+            <a {...ksViewLink(doc, lang)} className="cl-btn cl-solid" aria-label={x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })}>
+              {x({ en: "View", id: "Lihat" })}
+            </a>
+            <a {...ksDocLink(doc, lang, files)} className="cl-btn" aria-label={x({ en: "Download the PDF", id: "Unduh PDF" })}>
+              <KsIcon name="download" size={14} />PDF
+            </a>
+          </>)}
+        </span>
+        <span className="cl-facts">{"Volume 0" + (n + 1) + " · " + ksPdfLine(doc, lang, files)}</span>
+      </figcaption>
+    </figure>
+  );
+};
 
-      <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[170px]">
-        <div className="flex flex-col gap-[90px] md:gap-[150px]">
-          {VOLUMES.map((v, n) => (
-            <Reveal key={v.id} className="block">
-              <div className={"grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16 " + (n % 2 ? "md:[direction:rtl]" : "")}>
-                <div className={"md:col-span-7 " + (n % 2 ? "md:[direction:ltr]" : "")}>
-                  <div className="frame aspect-[4/3] w-full bg-concrete">
-                    {v.ks ? <KsSinkSet name="web-collection" layout="grid-3" className="h-full w-full px-[7%]" />
-                       : <Photo src={v.src || IMG(v.img, 1600)} alt={x(v.title)} tone={v.tone} className="h-full w-full object-cover" />}
-                  </div>
-                </div>
-                <div className={"md:col-span-5 " + (n % 2 ? "md:[direction:ltr]" : "")}>
-                  <Eyebrow className="mb-7">{v.year}</Eyebrow>
-                  <h2 className="max-w-[14ch] text-[32px] font-medium leading-[1.14] text-ink md:text-[46px]">{x(v.title)}</h2>
-                  <p className="mt-8 max-w-[42ch] text-[15.5px] leading-[1.8] text-mute">{x(v.body)}</p>
-                  <p className="mt-6 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">{v.ks ? x({ en: "Two PDF catalogues", id: "Dua katalog PDF" }) : x(v.meta)}</p>
-                  {v.ks ? <KsVolumeActions /> : (
-                  <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4">
-                    <button onClick={() => setSent(v.id)}
-                      className="group/l inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-                      <span className="u">{t("requestCopy")}</span>
-                      <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-                    </button>
-                    <a href={`#/shop/c/${v.id === "surfaces" ? "paint" : v.id}`} className="u text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
-                      {t("shopTheRange")}
-                    </a>
-                  </div>
-                  )}
-                  <p aria-live="polite" className={"mt-5 text-[13.5px] text-mute transition-opacity duration-500 " + (sent === v.id ? "opacity-100" : "opacity-0")}>
-                    {x({ en: "Thank you — tell us where to post it on the contact page.",
-                         id: "Terima kasih — beri tahu alamat pengirimannya di halaman kontak." })}
-                  </p>
-                </div>
-              </div>
-            </Reveal>
+const CataloguePage = () => {
+  const { x, lang } = useStore();
+  const files = useKsFiles();
+  const [room, setRoom] = useState(null);
+  const L = lang === "id" ? "id" : "en", other = L === "id" ? "en" : "id";
+  const shown = CL_COLLECTIONS.filter((c) => !room || c.rooms.includes(room));
+  useKsMeta(x({ en: "Catalogue", id: "Katalog" }), x(CL_LEDE));
+  return (
+    <div className="cl">
+      <section className="cl-intro mx-auto max-w-site px-5 md:px-10">
+        <Reveal className="cascade">
+          <p className="cl-eyebrow">{x({ en: "The Catalogue", id: "Katalog" })}</p>
+          <h1>{x({ en: "Thoughtful design for everyday living.", id: "Desain yang cermat untuk keseharian." })}</h1>
+          <p className="cl-lede">{x(CL_LEDE)}</p>
+          <div className="cl-rule" />
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-site px-5 md:px-10" aria-label={x({ en: "Collections", id: "Koleksi" })}>
+        <div className="cl-head">
+          <div className="cl-filters" role="group" aria-label={x({ en: "Show the collections for a room", id: "Tampilkan koleksi untuk satu ruangan" })}>
+            <span className="cl-label">{x({ en: "Browse", id: "Telusuri" })}</span>
+            {CL_ROOMS.map((r) => (
+              <button key={r.id || "all"} type="button" className="cl-chip" aria-pressed={room === r.id} onClick={() => setRoom(r.id)}>{x(r.label)}</button>
+            ))}
+          </div>
+          <p className="cl-count" aria-live="polite">
+            <b>{shown.length}</b> {L === "id" ? "koleksi" : shown.length === 1 ? "collection" : "collections"}
+          </p>
+        </div>
+        <Reveal still className="cl-grid cascade">
+          {shown.map((c) => (
+            <a key={c.id} href={c.to} className="cl-card" data-cl-card={c.id}>
+              <Media className="cl-media"><Photo src={c.img} alt={x(c.alt)} tone="#E7E1D7" className="no-dim" /></Media>
+              <span className="cl-body">
+                <span className="cl-tag"><span className="cl-no">{String(CL_COLLECTIONS.indexOf(c) + 1).padStart(2, "0")}</span>{x(c.tag)}</span>
+                <h2>{x(c.title)}</h2>
+                <span className="cl-desc">{x(c.body)}</span>
+                <span className="cl-cta">{x({ en: "Explore collection", id: "Jelajahi koleksi" })}<span className="cl-go"><Icon name="arrow" size={15} /></span></span>
+              </span>
+            </a>
           ))}
+        </Reveal>
+      </section>
+
+      <section className="cl-dl" aria-label={x({ en: "Kitchen sink catalogues", id: "Katalog bak cuci dapur" })}>
+        <div className="cl-dl-in mx-auto max-w-site px-5 md:px-10">
+          <Reveal className="cl-text cascade">
+            <p className="cl-eyebrow">{x({ en: "Kitchen sink catalogues · 2026", id: "Katalog bak cuci dapur · 2026" })}</p>
+            <h2>{x({ en: "Every model, specification and drawing, in one place.", id: "Setiap model, spesifikasi, dan gambar teknis dalam satu tempat." })}</h2>
+            <p className="cl-body-text">{x({ en: "Two volumes, granite and stainless steel, with a page for every sink: the kitchen it is shown in, its listed specifications and a technical drawing. In English and Indonesian.",
+                                             id: "Dua volume, granit dan stainless steel, dengan satu halaman untuk setiap bak cuci: dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya. Dalam bahasa Inggris dan Indonesia." })}</p>
+            <a href="#/shop/kitchen-sinks" className="cl-link group/l">
+              <span className="u">{x({ en: "Browse them online", id: "Lihat secara online" })}</span>
+              <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
+            </a>
+            <p className="cl-also">
+              <span>{L === "id" ? "Also in English:" : "Juga dalam Bahasa Indonesia:"}</span>
+              {KS_DOC_LIST.map((d) => <a key={d} {...ksDocLink(d, other, files)} className="u">{tx(KS_DOCS[d].short, other)}</a>)}
+            </p>
+          </Reveal>
+          <Reveal still className="cl-books cascade">
+            {KS_DOC_LIST.map((d, n) => <ClBook key={d} doc={d} n={n} lang={L} files={files} />)}
+          </Reveal>
         </div>
       </section>
-    </>
+
+      <section className="mx-auto max-w-site px-5 md:px-10" aria-label={x({ en: "Services", id: "Layanan" })}>
+        <Reveal still className="cl-svc cascade">
+          {CL_SERVICES.map((s) => (
+            <div key={s.to}>
+              {s.icon === "cube" ? <KsIcon name="cube" size={26} /> : <Icon name={s.icon} size={26} />}
+              <div>
+                <h3>{x(s.title)}</h3>
+                <p>{x(s.body)}</p>
+                <a href={s.to} className="u">{x(s.link)}</a>
+              </div>
+            </div>
+          ))}
+        </Reveal>
+      </section>
+    </div>
   );
 };
 
@@ -16112,32 +16328,6 @@ const KS_NAV_CARDS = [
   { set: "web-steel", eyebrow: { en: "Stainless steel", id: "Stainless steel" }, title: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Dapur Stainless Steel" }, to: "#/shop/kitchen-sinks/stainless-steel" },
 ];
 
-/* ═══ on the Catalogue page (#/catalogue): the kitchen volume is now the real, downloadable catalogue ═══ */
-const KsVolumeActions = () => {
-  const { x, lang } = useStore();
-  const files = useKsFiles();
-  const other = lang === "id" ? "en" : "id";
-  return (
-    <div className="mt-10" data-ks-volume="">
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-        <a href="#/shop/kitchen-sinks" className="group/l inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-          <span className="u">{x({ en: "Browse it online", id: "Lihat secara online" })}</span>
-          <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-        </a>
-      </div>
-      <div className="mt-8 border-t border-line">
-        {KS_DOC_LIST.map((d) => <KsPdfLink key={d} doc={d} lang={lang} variant="row">{x(KS_DOCS[d].title)}</KsPdfLink>)}
-      </div>
-      <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-medium uppercase tracking-[0.08em] text-mute">
-        <span>{lang === "id" ? "Also in English:" : "Juga dalam Bahasa Indonesia:"}</span>
-        {KS_DOC_LIST.map((d) => (
-          <a key={d} {...ksDocLink(d, other, files)} className="u text-ink/80 hover:text-ink">{tx(KS_DOCS[d].short, other)}</a>
-        ))}
-      </p>
-    </div>
-  );
-};
-
 /* ═══ on the shop's own list of granite or stainless sinks: the way to the catalogue ═══ */
 const KsListNote = ({ kind }) => {
   const { x, lang } = useStore();
@@ -16827,7 +17017,7 @@ const Shell = () => {
   const route = useRoute();
   if (route.name === "ksPrint") return <KsPrint doc={route.doc} lang={route.lang} page={route.page} />;
   const shop = route.side === "shop";
-  const flush = !shop && route.name === "home";       // the brand hero runs under the bar
+  const flush = !shop && (route.name === "home" || route.name === "catalogue");   // the brand hero, and the catalogue's stage, run under the bar
   return (
     <div data-side={route.side} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
       <SiteHeader />

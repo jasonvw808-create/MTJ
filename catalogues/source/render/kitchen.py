@@ -146,16 +146,21 @@ def window(x0, x1, z0, z1, y, frame_mat, col, mullions=1, reveal=0.1, sill_mat=N
     rm = sill_mat or frame_mat
     for (a, b, c, d) in ((x0 - 0.002, x0, z0, z1), (x1, x1 + 0.002, z0, z1)):
         pass
+    # The bars butt against each other rather than overlap: two bars overlapping with their faces in one plane
+    # shadow each other, and the overlap renders as a black square.
     objs.append(geo.box(x0, yy, z0, x0 + fw, yy + 0.05, z1, name="win_frame_l", mat=frame_mat, collection=col, bevel=0.002))
     objs.append(geo.box(x1 - fw, yy, z0, x1, yy + 0.05, z1, name="win_frame_r", mat=frame_mat, collection=col, bevel=0.002))
-    objs.append(geo.box(x0, yy, z0, x1, yy + 0.05, z0 + fw, name="win_frame_b", mat=frame_mat, collection=col, bevel=0.002))
-    objs.append(geo.box(x0, yy, z1 - fw, x1, yy + 0.05, z1, name="win_frame_t", mat=frame_mat, collection=col, bevel=0.002))
-    for i in range(1, mullions + 1):
-        xm = x0 + (x1 - x0) * i / (mullions + 1)
-        objs.append(geo.box(xm - 0.018, yy, z0, xm + 0.018, yy + 0.05, z1, name="win_mullion", mat=frame_mat, collection=col, bevel=0.002))
+    objs.append(geo.box(x0 + fw, yy, z0, x1 - fw, yy + 0.05, z0 + fw, name="win_frame_b", mat=frame_mat, collection=col, bevel=0.002))
+    objs.append(geo.box(x0 + fw, yy, z1 - fw, x1 - fw, yy + 0.05, z1, name="win_frame_t", mat=frame_mat, collection=col, bevel=0.002))
+    xs = [x0 + (x1 - x0) * i / (mullions + 1) for i in range(1, mullions + 1)]
+    for xm in xs:
+        objs.append(geo.box(xm - 0.018, yy, z0 + fw, xm + 0.018, yy + 0.05, z1 - fw, name="win_mullion", mat=frame_mat, collection=col, bevel=0.002))
+    # a transom runs in pieces between the uprights
+    edges = [x0 + fw] + [v for xm in xs for v in (xm - 0.018, xm + 0.018)] + [x1 - fw]
     for i in range(1, transoms + 1):
         zm = z0 + (z1 - z0) * i / (transoms + 1)
-        objs.append(geo.box(x0, yy, zm - 0.015, x1, yy + 0.05, zm + 0.015, name="win_transom", mat=frame_mat, collection=col, bevel=0.002))
+        for a, b in zip(edges[0::2], edges[1::2]):
+            objs.append(geo.box(a, yy, zm - 0.015, b, yy + 0.05, zm + 0.015, name="win_transom", mat=frame_mat, collection=col, bevel=0.002))
     if glass:
         g = mats.glass((0.98, 0.99, 0.99), 0.0)
         objs.append(geo.box(x0 + fw, yy + 0.024, z0 + fw, x1 - fw, yy + 0.028, z1 - fw, name="win_glass", mat=g, collection=col))

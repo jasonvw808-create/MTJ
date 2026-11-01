@@ -91,23 +91,26 @@ EDITION = "2026"
 
 # ── what each model page shows (the facts themselves come from data.json) ──
 GRANITE_SHOW = {
-    "GDU 8145": dict(recipe="gdu8145", colour="pearl", setting="Honed marble · smoked oak"),
-    "GST 6045": dict(recipe="gst6045", colour="pure", setting="White oak worktop · sage cabinetry"),
-    "GST 7546": dict(recipe="gst7546", colour="pearl", setting="Concrete · black cabinetry"),
-    "GSU 6045": dict(recipe="gsu6045", colour="titan", setting="White quartz · slatted ash"),
-    "GSU 7545": dict(recipe="gsu7545", colour="pure", setting="Black marble · emerald lacquer"),
-    "GSU 8045": dict(recipe="gsu8045", colour="titan", setting="Travertine · terracotta tile"),
+    "GDU 8145": dict(recipe="gdu8145", colour="pearl", setting="Limestone island · taupe cabinetry"),
+    "GST 6045": dict(recipe="gst6045", colour="pure", setting="Limestone · sage shaker"),
+    "GST 7546": dict(recipe="gst7546", colour="pearl", setting="Limestone · charcoal cabinetry"),
+    "GSU 6045": dict(recipe="gsu6045", colour="titan", setting="Light quartz · greige cabinetry"),
+    "GSU 7545": dict(recipe="gsu7545", colour="pure", setting="Limestone island · olive cabinetry"),
+    "GSU 8045": dict(recipe="gsu8045", colour="titan", setting="Limestone · clay cabinetry"),
 }
 STEEL_SETTING = {
-    "LPS 5040": "Terrazzo · powder-blue cabinetry", "LPS 7540 A": "Oak worktop · white shaker", "LPS 8643 A": "Limestone · blue zellige",
-    "LPS 9643 A": "Concrete · black cabinetry", "LPS 10050 A": "Oak worktop · slate-blue shaker", "WL 03": "Terrazzo · teak slats",
-    "WL 05 A": "White marble · navy shaker", "WL 07": "White quartz · walnut · ochre tile", "WL 11": "Terrazzo island · grey-blue shaker",
-    "WL 12": "Microcement", "WL 18": "White quartz · light oak", "W 5050 TSB": "Honed marble · walnut",
-    "W 6045 TSS": "White quartz · white oak", "W 6045 TSB": "Concrete · ochre lacquer", "W 7546 TSB": "Limestone · smoked oak",
-    "W 7546 TSBN": "Grey porcelain · charcoal gloss", "W 7646 USS": "Black stone · white tile", "W 7646 USB": "White quartz · fluted oak",
-    "W 7845 UDS": "Honed grey marble · greige", "W 7845 UDB": "Calacatta marble · oxblood lacquer", "W 8050 TSS": "White quartz · white lacquer",
-    "W 8050 TSB": "Limestone · walnut", "W 8245 TDB": "White marble · pale blue shaker", "W 8550 TDG": "Grey porcelain island",
-    "W 10050 TSG": "Warm quartz · charcoal cabinetry",
+    "LPS 5040": "Light quartz · mist-blue cabinetry", "LPS 7540 A": "Limestone · stone-grey shaker",
+    "LPS 8643 A": "Limestone · chalk-white shaker", "LPS 9643 A": "Limestone · charcoal cabinetry",
+    "LPS 10050 A": "Limestone · ink-blue shaker", "WL 03": "Light quartz · sand cabinetry", "WL 05 A": "Limestone · sage shaker",
+    "WL 07": "Light quartz · clay cabinetry", "WL 11": "Limestone island · slate-blue shaker",
+    "WL 12": "Limestone · greige cabinetry", "WL 18": "Limestone · mushroom cabinetry",
+    "W 5050 TSB": "Limestone · olive cabinetry", "W 6045 TSS": "Light quartz · chalk-white cabinetry",
+    "W 6045 TSB": "Limestone · mushroom cabinetry", "W 7546 TSB": "Limestone · taupe cabinetry",
+    "W 7546 TSBN": "Light quartz · charcoal cabinetry", "W 7646 USS": "Limestone · stone-grey cabinetry",
+    "W 7646 USB": "Light quartz · greige cabinetry", "W 7845 UDS": "Limestone · mushroom shaker",
+    "W 7845 UDB": "Limestone island · oxblood shaker", "W 8050 TSS": "Light quartz · chalk-white cabinetry",
+    "W 8050 TSB": "Limestone · mocha cabinetry", "W 8245 TDB": "Limestone · mist-blue shaker",
+    "W 8550 TDG": "Light quartz island · stone-grey cabinetry", "W 10050 TSG": "Limestone · ink-blue cabinetry",
 }
 COLOUR_NAME = {"pearl": "Pearl Black", "pure": "Pure White", "titan": "Titanium Grey"}
 COLOUR_DOT = {"pearl": "#1f1f1f", "pure": "#f2f1ee", "titan": "#a9abab"}

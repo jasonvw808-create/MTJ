@@ -70,7 +70,12 @@ def inside(tree, p, dirs=(Vector((1, 0.013, 0.007)), Vector((-0.011, 1, 0.017)),
 def audit(name, tol=0.0015):
     common.reset()
     mats._cache.clear()
+    from render import calm
+    if calm.enabled():
+        calm.begin(name)
     R = scenes.RECIPES[name]()
+    if calm.enabled():
+        R = calm.restyle(name, R)
     ctx = scene.compose(R, "preview")
     sink = {o.name for o in ctx["sink"]["objects"]}
     loose = set(physics.loose_groups(ctx))

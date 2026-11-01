@@ -76,9 +76,11 @@ def compose(R, quality="preview"):
             # shadow) and running 2 cm out over the splashback
             objs.append(geo.box(win["x0"] - 0.0, wall_y - 0.02, win["z0"] - 0.03, win["x1"], wall_y + 0.15, win["z0"] + 0.003, name="sill",
                                 mat=win.get("sill", rm), bevel=0.002))
-            objs.append(geo.box(win["x0"] - 0.008, wall_y, win["z0"], win["x0"] + 0.002, wall_y + 0.15, win["z1"], name="rev_l", mat=rm))
-            objs.append(geo.box(win["x1"] - 0.002, wall_y, win["z0"], win["x1"] + 0.008, wall_y + 0.15, win["z1"], name="rev_r", mat=rm))
-            objs.append(geo.box(win["x0"], wall_y, win["z1"] - 0.002, win["x1"], wall_y + 0.15, win["z1"] + 0.008, name="rev_t", mat=rm))
+            # They stop at the opening's edge: run on into the wall, their front faces would lie in the wall's own face and
+            # render as a black line round the opening. The sides stop under the head.
+            objs.append(geo.box(win["x0"], wall_y, win["z0"], win["x0"] + 0.002, wall_y + 0.15, win["z1"] - 0.002, name="rev_l", mat=rm))
+            objs.append(geo.box(win["x1"] - 0.002, wall_y, win["z0"], win["x1"], wall_y + 0.15, win["z1"] - 0.002, name="rev_r", mat=rm))
+            objs.append(geo.box(win["x0"], wall_y, win["z1"] - 0.002, win["x1"], wall_y + 0.15, win["z1"], name="rev_t", mat=rm))
     side = R.get("side_wall")
     if side:
         x = side["x"]

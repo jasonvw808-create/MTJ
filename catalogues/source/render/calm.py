@@ -302,7 +302,7 @@ def restyle(name, R):
     win = R.get("window")
     if win:
         win = dict(win)
-        if win["frame"].name.startswith("wood"):
+        if win["frame"].name.startswith("wood") or _coloured(win["frame"]):
             win["frame"] = mats.metal("black")
         win["sill"] = m["ledge"]
         win["reveal_mat"] = m["wall"]
@@ -364,5 +364,16 @@ def _is_dark_core(mat):
         bsdf = [n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'][0]
         c = bsdf.inputs['Base Color'].default_value
         return max(c[0], c[1], c[2]) < 0.05
+    except Exception:
+        return False
+
+
+def _coloured(mat):
+    """A frame painted a colour rather than black, grey or white: it went with a tiled scheme that is gone."""
+    try:
+        bsdf = [n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'][0]
+        c = bsdf.inputs['Base Color'].default_value
+        hi, lo = max(c[0], c[1], c[2]), min(c[0], c[1], c[2])
+        return hi > 0 and (hi - lo) / hi > 0.3
     except Exception:
         return False

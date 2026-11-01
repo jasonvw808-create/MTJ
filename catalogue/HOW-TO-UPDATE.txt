@@ -29,6 +29,8 @@ TO UPDATE THEM
    PDF's page count and file size (KS_PDF_META) and every model's page number (KS_PDF_PAGES), so that
    "View in the catalogue" opens the right page.
 
+   The edition shown beside the catalogues (KS_EDITION in index.html, e.g. "November 2026") is set by hand.
+
 3. Commit and push. GitHub Pages publishes the site from the main branch. A change pushed to a claude/...
    branch goes live by itself: .github/workflows/publish-to-website.yml merges it into main.
 

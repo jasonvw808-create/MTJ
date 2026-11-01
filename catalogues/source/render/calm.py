@@ -388,7 +388,9 @@ def _remap(ctx):
                 else:
                     slot.material = m["paint"]
             elif base in PAINTED and mat.name.startswith(("paint", "plaster", "concrete", "marble", "travertine", "terrazzo", "tile")):
-                dark = mat.name.startswith("paint") and _is_dark_core(mat)
+                # near-black stays on a door's core and the recessed plinth; on a front it was a colour (W 8550 TDG's
+                # charcoal back run), and the front takes the kitchen's own
+                dark = base in ("door_core", "plinth") and mat.name.startswith("paint") and _is_dark_core(mat)
                 if not dark:
                     slot.material = m["paint"]
             elif base in ("worktop",) and not mat.name.startswith(("limestone", "quartz")):

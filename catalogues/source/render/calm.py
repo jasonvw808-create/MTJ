@@ -142,7 +142,7 @@ def begin(name):
         return door0(x0, x1, z0, z1, yf, style, mat, col, handle=handle, hmat=hmat, hpos=hpos, t=t, gap=gap)
     kitchen.door = door
     # the small things of a lived-in kitchen: not placed
-    for f in ("board", "bottle", "soap_pump", "wine_glass", "towel", "plate_stack", "book_stack", "jar", "cup"):
+    for f in ("board", "bottle", "soap_pump", "wine_glass", "tumbler", "towel", "plate_stack", "book_stack", "jar", "cup"):
         setattr(props, f, _guard(_orig(props, f), allow=False))
     for f in ("board_with", "oil_and_salt"):
         _orig(kit, f)
@@ -152,6 +152,9 @@ def begin(name):
     props.vase = _guard(_orig(props, "vase"))
     props.bowl = _guard(_orig(props, "bowl"))
     props.herb_pot = _guard(_orig(props, "herb_pot"))
+    props.vessel = _guard(_orig(props, "vessel"))
+    props.branch = _stem(_orig(props, "branch"))
+    kit.garden = _free(_orig(kit, "garden"))
     kit.fruit_bowl = _group(_orig(kit, "fruit_bowl"))
     kit.branches = _group(_orig(kit, "branches"))
     _orig(kit, "shelf_items")
@@ -160,6 +163,8 @@ def begin(name):
     shelf0, uppers0 = _orig(kit, "shelf"), _orig(kit, "uppers")
     kit.shelf = lambda ctx, *a, **kw: shelf0(ctx, *a, **dict(kw, led=None))
     kit.uppers = lambda ctx, *a, **kw: uppers0(ctx, *a, **dict(kw, led=None))
+    _orig(kitchen, "led_strip")
+    kitchen.led_strip = _noop
     # every light: soft daylight from the same side
     kit.natural = _calm_light(_orig(kit, "natural"))
     for f in ("golden", "daylight", "moody"):
@@ -191,6 +196,8 @@ def _guard(fn, allow=True):
             if fn.__name__ == "lemon" and bowl and (x - bowl[0]) ** 2 + (y - bowl[1]) ** 2 < bowl[2] ** 2:
                 return fn(name, x, y, z, *a, **kw)
             return []
+        if 0.005 < z - CUR.get("H", 0.91) < 0.05:  # it stood on a board or a tray, which is left out
+            return []
         w = _where(z)
         if w == "worktop":
             if CUR["worktop"] >= 1:
@@ -206,7 +213,36 @@ def _guard(fn, allow=True):
             if CUR["shelf"] >= 3:
                 return []
             CUR["shelf"] += 1
-        return fn(name, x, y, z, *a, **kw)
+        CUR.setdefault("kept", []).append((x, y))
+        # what it is made of (a bowl is a vessel, a herb pot a vessel and leaves) comes with it
+        was = CUR.get("in_group")
+        CUR["in_group"] = True
+        try:
+            return fn(name, x, y, z, *a, **kw)
+        finally:
+            CUR["in_group"] = was
+    return wrap
+
+
+def _stem(fn):
+    """A branch stands in a vessel: in a styling group, or in a pot or vase that was kept at the same spot. One whose
+    jug or bottle was left out is not placed."""
+    def wrap(name, x, y, z, *a, **kw):
+        if CUR.get("in_group") or any((x - kx) ** 2 + (y - ky) ** 2 < 0.03 ** 2 for kx, ky in CUR.get("kept", [])):
+            return fn(name, x, y, z, *a, **kw)
+        return []
+    return wrap
+
+
+def _free(fn):
+    """Something outside the room (trees beyond a window): placed as it was, outside the styling budgets."""
+    def wrap(ctx, *a, **kw):
+        was = CUR.get("in_group")
+        CUR["in_group"] = True
+        try:
+            return fn(ctx, *a, **kw)
+        finally:
+            CUR["in_group"] = was
     return wrap
 
 
@@ -227,8 +263,9 @@ def _group(fn):
 
 
 def _shelf_items(ctx, x0, x1, z, seed=1, kinds=None, palette=None, y=None):
-    """Two or three pieces of plain stoneware on a shelf, well apart."""
-    if CUR["shelf"] >= 3:
+    """Two or three pieces of plain stoneware on a shelf, well apart. A row along the back of the worktop is not
+    placed: the worktop keeps its one piece."""
+    if CUR["shelf"] >= 3 or _where(z) == "worktop":
         return
     yw = ctx["wall_y"]
     y = y if y is not None else yw - 0.12

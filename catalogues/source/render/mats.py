@@ -590,6 +590,82 @@ def quartz(base=(0.86, 0.85, 0.83), speck=(0.55, 0.54, 0.52), dens=0.05, rough=0
 
 
 @cached
+def limestone(base=(0.66, 0.60, 0.49), rough=0.5, flecks=0.5, bands=0.3, seed=0.0, joints=None, grout=None, along='XY'):
+    """Honed limestone, warm ivory: soft clouding in two sizes, faint broken bedding lines, a fine sandy grain and,
+    gathered in places, small shell fragments (a little darker, a few lighter); matt with a soft sheen, never a vein.
+    joints=(w, h, gap): laid as large tiles (a floor, in the plane `along`), each a shade apart, with fine joints in
+    `grout`."""
+    nb = NB("limestone")
+    co = nb.coord('Object', 1.0, loc=(seed * 3.1, seed * 1.7, seed * 2.3))
+    sh = lambda k: tuple(min(1.0, x * k) for x in base)
+    # clouding: broad soft patches, and smaller ones within them
+    cl = nb.noise(co, scale=2.2, detail=4.0, rough=0.6)
+    c = nb.mix(sh(0.93), sh(1.045), nb.ramp(cl, [(0.25, 0.0), (0.75, 1.0)], interp='EASE'))
+    cl2 = nb.noise(co, scale=7.0, detail=3.0, rough=0.55)
+    c = nb.mix(c, sh(0.95), nb.math('MULTIPLY', nb.ramp(cl2, [(0.5, 0.0), (0.8, 1.0)]), 0.5))
+    if bands:
+        # bedding: thin, broken lines along the slab, a little darker
+        tc = nb.n("ShaderNodeTexCoord")
+        st = nb.n("ShaderNodeMapping")
+        nb.link(tc, st, 'Object', 'Vector')
+        st.inputs['Scale'].default_value = (0.35, 1.0, 1.0)
+        st.inputs['Location'].default_value = (seed, seed * 0.5, 0.0)
+        wave = nb.n("ShaderNodeTexWave", wave_type='BANDS', bands_direction='Y', wave_profile='SIN')
+        nb.set(wave, 'Scale', 2.6)
+        nb.set(wave, 'Distortion', 4.0)
+        nb.set(wave, 'Detail', 4.0)
+        nb.link(st, wave, 0, 'Vector')
+        br = nb.ramp(wave, [(0.0, 0.0), (0.86, 0.0), (1.0, 1.0)], src_out='Fac')
+        broken = nb.ramp(nb.noise(co, scale=3.0, detail=2.0), [(0.4, 0.0), (0.6, 1.0)])
+        c = nb.mix(c, sh(1 - 0.16 * bands), nb.math('MULTIPLY', br, broken))
+    # a fine sandy grain
+    gr = nb.noise(co, scale=260.0, detail=2.0, rough=0.6)
+    c = nb.mix(c, sh(0.955), nb.ramp(gr, [(0.4, 0.0), (0.8, 1.0)]))
+    if flecks:
+        # small shell fragments, gathered in places rather than spread evenly
+        where = nb.ramp(nb.noise(co, scale=2.8, detail=2.0), [(0.48, 0.0), (0.66, 1.0)])
+        vo = nb.voronoi(co, scale=55.0)
+        dots = nb.ramp(vo, [(0.0, 1.0), (0.07, 1.0), (0.12, 0.0), (1.0, 0.0)], src_out='Distance')
+        c = nb.mix(c, sh(0.74), nb.math('MULTIPLY', nb.math('MULTIPLY', dots, where), 0.85 * flecks))
+        vo2 = nb.voronoi(co, scale=90.0, rand=0.9)
+        dots2 = nb.ramp(vo2, [(0.0, 1.0), (0.05, 1.0), (0.09, 0.0), (1.0, 0.0)], src_out='Distance')
+        c = nb.mix(c, sh(1.08), nb.math('MULTIPLY', nb.math('MULTIPLY', dots2, where), 0.7 * flecks))
+    hb = gr
+    if joints:
+        w, h, gap = joints
+        tcj = nb.n("ShaderNodeTexCoord")
+        sep = nb.n("ShaderNodeSeparateXYZ")
+        nb.link(tcj, sep, 'Object', 0)
+        comb = nb.n("ShaderNodeCombineXYZ")
+        nb.link(sep, comb, along[0], 'X')
+        nb.link(sep, comb, along[1], 'Y')
+        brk = nb.n("ShaderNodeTexBrick")
+        brk.offset = 0.5
+        nb.set(brk, 'Scale', 1.0)
+        nb.set(brk, 'Mortar Size', gap)
+        nb.set(brk, 'Mortar Smooth', 0.2)
+        nb.set(brk, 'Brick Width', w)
+        nb.set(brk, 'Row Height', h)
+        nb.set(brk, 'Bias', 0.0)
+        nb.set(brk, 'Color1', (0.96, 0.96, 0.96))
+        nb.set(brk, 'Color2', (1.04, 1.04, 1.04))
+        nb.set(brk, 'Mortar', (0, 0, 0))
+        nb.link(comb, brk, 0, 'Vector')
+        c = nb.mix(c, brk, 1.0, blend='MULTIPLY', b_out='Color')
+        c = nb.mix(c, grout or sh(0.76), brk, fac_out='Fac')
+        hb = nb.math('ADD', nb.math('MULTIPLY', gr, 0.15), nb.math('SUBTRACT', 1.0, brk, b_out='Fac'))
+    rr = nb.n("ShaderNodeMapRange")
+    nb.link(gr, rr, 'Fac', 0)
+    rr.inputs[3].default_value = rough - 0.06
+    rr.inputs[4].default_value = rough + 0.08
+    p = nb.principled(Roughness=rough)
+    nb.link(c, p, 0, 'Base Color')
+    nb.link(rr, p, 0, 'Roughness')
+    nb.link(nb.bump(hb, strength=0.06 if not joints else 0.4, distance=0.0005 if not joints else 0.0012), p, 0, 'Normal')
+    return nb.finish(p)
+
+
+@cached
 def soapstone(base=(0.07, 0.075, 0.075), vein=(0.22, 0.23, 0.22), rough=0.4):
     return marble(base=base, vein=vein, vein2=tuple(c * 1.4 for c in base), rough=rough, vein_width=0.02, warp=3.0, seed=3.3, honed=True)
 

@@ -116,6 +116,8 @@ def compose(R, quality="preview"):
     # nothing floats, nothing is sunk into what it stands on or against
     physics.clear_of(ctx, ctx["back_faces"])
     physics.settle(ctx)
+    for fn in R.get("after_build", []):
+        fn(ctx)
     # lights & world
     L = R["light"]
     L(ctx)
@@ -201,10 +203,14 @@ def sink_bbox(ctx):
 def main():
     name, out = sys.argv[1], sys.argv[2]
     quality = sys.argv[3] if len(sys.argv) > 3 else "preview"
-    from . import scenes
+    from . import scenes, calm
     common.reset()
     mats._cache.clear()
+    if calm.enabled():
+        calm.begin(name)
     R = scenes.RECIPES[name]()
+    if calm.enabled():
+        R = calm.restyle(name, R)
     ctx = compose(R, quality)
     if len(sys.argv) > 4 and sys.argv[4] == "blend":
         bpy.ops.wm.save_as_mainfile(filepath=out.replace(".png", ".blend"))

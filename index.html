@@ -12544,7 +12544,7 @@ const ProductPage = ({ slug }) => {
         </div>
 
         <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-[150px]">
+          <div className="lg:sticky lg:top-[186px]">
             {p.tag ? <p className="mb-5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-accent">{x(p.tag)}</p> : null}
             <Eyebrow>{p.model ? x(p.range || catLabel(p.cat)) : x(lineLabel(p.line))}</Eyebrow>
             <h1 className="mt-7 text-[38px] font-medium leading-[1.08] md:text-[52px]">{p.model || x(p.name)}</h1>
@@ -15515,6 +15515,11 @@ const ksNearest = (m, n = 4) => ksModels(ksKindOfModel(m)).filter((o) => o.key !
   .sort((a, b) => ((a.bowls !== m.bowls) - (b.bowls !== m.bowls)) || Math.abs(ksWidth(a) - ksWidth(m)) - Math.abs(ksWidth(b) - ksWidth(m)))
   .slice(0, n);
 
+/* each model in a kitchen: the catalogue's visualisation of it, web-sized in img/kitchens/<model>.webp (from
+   catalogues/images/) — and, for a granite model, the colour it is shown in there */
+const KS_KITCHEN = {"gdu-8145":"pearl","gst-6045":"pure","gst-7546":"pearl","gsu-6045":"titan","gsu-7545":"pure","gsu-8045":"titan","lps-10050-a":"","lps-5040":"","lps-7540-a":"","lps-8643-a":"","lps-9643-a":"","w-10050-tsg":"","w-5050-tsb":"","w-6045-tsb":"","w-6045-tss":"","w-7546-tsbn":"","w-7546-tsb":"","w-7646-usb":"","w-7646-uss":"","w-7845-udb":"","w-7845-uds":"","w-8050-tsb":"","w-8050-tss":"","w-8245-tdb":"","w-8550-tdg":"","wl-03":"","wl-05-a":"","wl-07":"","wl-11":"","wl-12":"","wl-18":""};
+const ksKitchen = (m) => { const k = m ? ksModelKey(m) : null; return k && k in KS_KITCHEN ? { src: "img/kitchens/" + k + ".webp", colour: KS_KITCHEN[k] || null } : null; };
+
 /* a few models chosen to open the collection — one of each kind of sink, not best sellers (no sales are known) */
 const KS_SELECTED = [["granite", "GDU 8145", "pearl"], ["granite", "GSU 7545", "pure"], ["stainless-steel", "W 7546 TSBN"], ["stainless-steel", "WL 18"]];
 
@@ -16404,14 +16409,17 @@ const KsProduct = ({ kind, model, colour }) => {
   const m = useMemo(() => ksFindModel(kind, model), [kind, model]);
   const first = m ? Math.max(0, m.rows.findIndex((r) => ksColourKey(m, r) === colour)) : 0;
   const [i, setI] = useState(first);
-  useEffect(() => { setI(first); }, [kind, model]);
+  const [view, setView] = useState("photo");   // the photograph, or the model in a kitchen
+  useEffect(() => { setI(first); setView("photo"); }, [kind, model]);
   const row = m ? m.rows[i] || m.rows[0] : null;
   useKsMeta(m ? m.model + " — " + x(K.label) : null, row ? x(row.desc) : null);
   if (!K || !m) return <NotFound />;
 
   const granite = m.kind === "granite";
   /* a colour chosen here is said in the address too, so the page can be shared as it is seen */
-  const pick = (n) => { setI(n); try { window.history.replaceState(null, "", ksDetailHref(m, m.rows[n])); } catch (e) { /* the address stays */ } };
+  const pick = (n) => { setI(n); setView("photo"); try { window.history.replaceState(null, "", ksDetailHref(m, m.rows[n])); } catch (e) { /* the address stays */ } };
+  const kit = ksKitchen(m);
+  const kitShown = kit ? (granite ? (F[kit.colour] ? x(F[kit.colour].name) : "") : x(m.finish.name)) : "";
   const [W, D, H] = m.dims;
   const size = m.dimsNote ? x({ en: "1000* × " + D + " × " + H + " mm — width to be confirmed", id: "1000* × " + D + " × " + H + " mm — lebar menunggu konfirmasi" })
                           : m.dims.filter(Boolean).join(" × ") + " mm";
@@ -16475,19 +16483,39 @@ const KsProduct = ({ kind, model, colour }) => {
       </div>
 
       <section className="mx-auto grid max-w-site grid-cols-1 gap-10 px-5 pb-20 pt-8 md:px-10 md:pb-28 md:pt-12 lg:grid-cols-12 lg:gap-16">
-        {/* the pictures: the product's photograph — for a granite model, one in each of its colours */}
+        {/* the pictures: the product's photograph — for a granite model, one in each of its colours — and the model in
+            a kitchen, the catalogue's visualisation of it. */}
         <div className="lg:col-span-7">
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F4F3F0]" data-ks-main="photo">
-            <Photo key={"p" + row.slug} src={pImg(row, 0, 1400)} alt={x(row.name)} tone={PLATE} eager className="no-dim absolute inset-0 h-full w-full object-contain p-[4%]" />
+          <div className={"relative aspect-[4/3] w-full overflow-hidden " + (view === "kitchen" && kit ? "bg-concrete" : "bg-[#F4F3F0]")} data-ks-main={view === "kitchen" && kit ? "kitchen" : "photo"}>
+            {view === "kitchen" && kit ? (
+              <>
+                <Photo key="kitchen" src={kit.src} tone="#292929" eager className="absolute inset-0 h-full w-full object-cover"
+                  alt={m.model + " — " + x({ en: "in a kitchen (visualisation)", id: "di dapur (visualisasi)" })} />
+                <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-5 pb-4 pt-12 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/90">
+                  {x({ en: "Visualisation", id: "Visualisasi" })}{kitShown ? " · " + kitShown : ""}
+                </span>
+              </>
+            ) : (
+              <Photo key={"p" + row.slug} src={pImg(row, 0, 1400)} alt={x(row.name)} tone={PLATE} eager className="no-dim absolute inset-0 h-full w-full object-contain p-[4%]" />
+            )}
           </div>
-          {granite && m.rows.length > 1 ? (
-            <div className="mt-4 flex gap-3" role="group" aria-label={x({ en: "Colours", id: "Warna" })} data-ks-thumbs="">
-              {m.rows.map((r, n) => (
-                <button key={r.slug} onClick={() => pick(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)}
-                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-[#F4F3F0] transition-colors duration-300 md:h-[88px] md:w-[112px] " + (n === i ? "border-ink" : "border-line hover:border-mute")}>
+          {(granite && m.rows.length > 1) || kit ? (
+            <div className="mt-4 flex flex-wrap gap-3" role="group" aria-label={x({ en: "Pictures", id: "Gambar" })} data-ks-thumbs="">
+              {(granite ? m.rows : [row]).map((r, n) => (
+                <button key={r.slug} onClick={() => pick(granite ? n : i)} aria-pressed={view === "photo" && (granite ? n === i : true)}
+                  aria-label={granite ? x(r.colour) : x({ en: "Photograph", id: "Foto" })} title={granite ? x(r.colour) : x({ en: "Photograph", id: "Foto" })}
+                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-[#F4F3F0] transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "photo" && (granite ? n === i : true) ? "border-ink" : "border-line hover:border-mute")}>
                   <img src={pImg(r, 0, 300)} alt="" className="no-dim h-full w-full object-contain p-2" draggable="false" />
                 </button>
               ))}
+              {kit ? (
+                <button onClick={() => setView("kitchen")} aria-pressed={view === "kitchen"} data-ks-kitchen-thumb=""
+                  aria-label={x({ en: "In a kitchen (visualisation)", id: "Di dapur (visualisasi)" })} title={x({ en: "In a kitchen (visualisation)", id: "Di dapur (visualisasi)" })}
+                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-concrete transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "kitchen" ? "border-ink" : "border-line hover:border-mute")}>
+                  <img src={kit.src} alt="" loading="lazy" className="h-full w-full object-cover" draggable="false" />
+                  <span className="absolute inset-x-0 bottom-0 bg-black/55 py-1 text-center text-[9px] font-semibold uppercase tracking-[0.12em] text-white">{x({ en: "Kitchen", id: "Dapur" })}</span>
+                </button>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -16609,12 +16637,27 @@ const KsShopMeta = ({ p }) => {
   useKsMeta(title, k ? x(p.desc) : null);
   const m = k ? ksBySlug(p.slug) : null;
   if (!m) return null;
+  const href = ksDetailHref(m, m.rows.find((r) => r.slug === p.slug));
+  const kit = ksKitchen(m);
   return (
-    <a href={ksDetailHref(m, m.rows.find((r) => r.slug === p.slug))} data-ks-catlink=""
-      className="group/l mt-8 inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-      <span className="u">{x({ en: "Technical drawing and catalogue page", id: "Gambar teknis dan halaman katalog" })}</span>
-      <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
-    </a>
+    <>
+      {kit ? (
+        <a href={href} className="group mt-10 flex items-center gap-5 border-t border-line pt-7" data-ks-kitchen-link="">
+          <span className="relative block h-[84px] w-[112px] shrink-0 overflow-hidden bg-concrete">
+            <img src={kit.src} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1200ms] ease-quiet group-hover:scale-[1.05]" draggable="false" />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "In a kitchen", id: "Di dapur" })}</span>
+            <span className="mt-2 block text-[15px] leading-[1.5] text-ink">{x({ en: "See it in a kitchen — the catalogue's visualisation, on its page", id: "Lihat di dapur — visualisasi dari katalog, di halamannya" })}</span>
+          </span>
+        </a>
+      ) : null}
+      <a href={href} data-ks-catlink=""
+        className="group/l mt-8 inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+        <span className="u">{x({ en: "Technical drawing and catalogue page", id: "Gambar teknis dan halaman katalog" })}</span>
+        <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
+      </a>
+    </>
   );
 };
 

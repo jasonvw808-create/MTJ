@@ -11069,102 +11069,6 @@ const ShopFooter = () => {
   );
 };
 
-const Hero = () => {
-  const { t, x } = useStore();
-  /* The photograph falls behind the page as it scrolls away — it moves down
-     as the page moves up, so the frame's top edge only ever opens off the
-     top of the screen, never on it. */
-  const par = useParallax(110);
-  return (
-    <section className="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-concrete">
-      <Media className="absolute inset-0">
-        <div ref={par} className="par absolute inset-0">
-          <Photo src={IMG(9, 2000)} alt={t("heroAlt")} tone="#CFCBC2" eager
-            className="drift h-full w-full object-cover object-[58%_center]" />
-        </div>
-      </Media>
-      {/* two thin gradients rather than one heavy scrim, so the photograph
-          keeps its own contrast and only the type gets a ground */}
-      <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-black/55 via-black/14 to-transparent" />
-      <div className="absolute inset-x-0 top-0 h-[26%] bg-gradient-to-b from-black/28 to-transparent" />
-
-      <div className="on-dark absolute inset-0 mx-auto flex max-w-site flex-col justify-end px-5 pb-[15vh] md:px-10 md:pb-[13vh]">
-        <div className="w-full max-w-[900px] text-white">
-          <Reveal className="block" delay={60}>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-white/80">{x(TAGLINE)}</p>
-          </Reveal>
-          <Reveal className="mt-6 block md:mt-8" delay={120}>
-            <h1 className="max-w-[9ch] text-[56px] font-medium leading-[1.05] md:text-[104px]">
-              <span className="rise"><span>{x({ en: "The art of", id: "Seni" })}</span></span>
-              <span className="rise"><span>{x({ en: "living well", id: "menghuni" })}</span></span>
-            </h1>
-          </Reveal>
-          <Reveal className="mt-8 block md:mt-10" delay={300}>
-            <p className="max-w-[46ch] text-[15.5px] leading-[1.8] text-white/85">
-              {x({ en: "Kitchens, bathrooms and surfaces — specified once, fitted properly, and left to age well.",
-                   id: "Dapur, kamar mandi dan permukaan — dipilih sekali, dipasang benar, dan dibiarkan menua dengan baik." })}
-            </p>
-          </Reveal>
-          <Reveal className="mt-10 block md:mt-12" delay={400}>
-            <a href="#/shop/c/kitchen"
-              className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-white/70 pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-white transition-[background-color,color,border-color] duration-700 ease-quiet hover:border-white hover:bg-white hover:text-[#1A1A1A]">
-              {t("exploreCollection")}
-              <span className="transition-transform duration-700 ease-quiet group-hover/cta:translate-x-1.5"><Icon name="arrow" size={16} /></span>
-            </a>
-          </Reveal>
-        </div>
-      </div>
-
-      {/* a quiet cue that the page continues */}
-      <div className="pointer-events-none absolute bottom-9 left-1/2 hidden -translate-x-1/2 items-center gap-4 text-white/70 md:flex">
-        <span className="text-[10.5px] font-semibold uppercase tracking-[0.11em]">{t("scroll")}</span>
-        <span className="block h-[38px] w-px overflow-hidden bg-white/25">
-          <span className="scroll-tick block h-[14px] w-px bg-white/90" />
-        </span>
-      </div>
-    </section>
-  );
-};
-
-const Intro = () => {
-  const { x } = useStore();
-  return (
-    <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
-      <Reveal className="mx-auto max-w-[640px] text-center">
-        <p className="text-[23px] font-medium leading-[1.55] text-ink md:text-[28px]">
-          {x({ en: "A building materials house for people who intend to stay — where a tap, a basin and a square metre of stone are chosen with the same care as the room itself.",
-               id: "Rumah bahan bangunan untuk mereka yang berniat tinggal lama — di mana keran, wastafel dan satu meter persegi batu dipilih secermat ruangannya sendiri." })}
-        </p>
-      </Reveal>
-    </section>
-  );
-};
-
-const RoomGrid = () => {
-  const { t, x } = useStore();
-  return (
-    <section className="w-full">
-      <Reveal still>
-        <div className="cascade grid grid-cols-1 gap-[2px] md:grid-cols-3">
-          {ROOMS.map((c, n) => (
-            <a key={c.cat} href={`#/shop/c/${c.cat}`} className="group relative block overflow-hidden bg-concrete">
-              <Media className="aspect-[4/5] w-full overflow-hidden" delay={n * 80}>
-                <Photo src={c.img} alt={x(c.title)} tone={c.tone} className="h-full w-full object-cover transition-transform duration-[800ms] ease-quiet group-hover:scale-[1.03]" />
-              </Media>
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/45 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-8 text-white md:p-10">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-white/80">{x(c.eyebrow)}</p>
-                <h3 className="mt-3 text-[36px] font-medium leading-[1.14] md:text-[40px]">{x(c.title)}</h3>
-                <span className="u-static mt-5 inline-block text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("discover")}</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </Reveal>
-    </section>
-  );
-};
-
 /* ═══════════════════════════════════════════════════════════════════════════
    COLLECTIONS
    One head and three layouts, so five product sections on one page can share
@@ -11288,31 +11192,6 @@ const StoryBlock = ({ flip = false, eyebrow, title, body, note, links = [], img,
           ) : null}
         </Reveal>
       </div>
-    </section>
-  );
-};
-
-/* A full-bleed statement between sections — one picture, one sentence, and a
-   great deal of air. It is the page taking a breath. */
-const Statement = ({ img, tone, quote, attrib }) => {
-  const { x } = useStore();
-  const par = useParallax(70);
-  return (
-    <section className="relative w-full overflow-hidden bg-concrete">
-      <Media className="relative h-[76vh] min-h-[460px] w-full">
-        <div ref={par} className="par absolute inset-x-0 -top-[6%] h-[112%]">
-          <Photo src={img} alt="" tone={tone} className="h-full w-full object-cover" />
-        </div>
-        <div className="absolute inset-0 bg-black/38" />
-        <div className="on-dark absolute inset-0 mx-auto flex max-w-site items-center px-5 md:px-10">
-          <Reveal still className="cascade w-full">
-            <p className="max-w-[18ch] text-[30px] font-medium leading-[1.18] text-white md:text-[52px]">
-              <span className="rise"><span>{x(quote)}</span></span>
-            </p>
-            {attrib ? <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.11em] text-white/70">{x(attrib)}</p> : null}
-          </Reveal>
-        </div>
-      </Media>
     </section>
   );
 };
@@ -11642,50 +11521,6 @@ const GraniteShowcase = () => {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOME
-   Brand, then products, then the shop. The page alternates a product section
-   against an editorial one throughout, so a visitor is never scrolling past
-   a third grid in a row.
-   ═══════════════════════════════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════════════════════════════════════
-   THE DOOR
-   One band, placed where the brand story has finished making its case. It is
-   the only place on the brand site that asks for a sale, which is why it can
-   afford to take up a whole screen.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const ShopDoor = () => {
-  const { t, x } = useStore();
-  const par = useParallax(64);
-  return (
-    <section className="relative w-full overflow-hidden bg-concrete">
-      <Media className="relative h-[78vh] min-h-[480px] w-full">
-        <div ref={par} className="par absolute inset-x-0 -top-[6%] h-[112%]">
-          <Photo src={IMG(7, 2000)} alt="" tone={TONE[2]} className="h-full w-full object-cover" />
-        </div>
-        <div className="absolute inset-0 bg-black/44" />
-        <div className="on-dark absolute inset-0 mx-auto flex max-w-site items-center px-5 md:px-10">
-          <Reveal still className="cascade w-full max-w-[760px]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-white/75">{t("shop")}</p>
-            <h2 className="mt-7 max-w-[13ch] text-[38px] font-medium leading-[1.08] text-white md:text-[64px]">
-              <span className="rise"><span>{x({ en: "Buy it in the shop", id: "Beli di toko kami" })}</span></span>
-            </h2>
-            <p className="mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-white/85">
-              {x({ en: "Thirty-five products with prices, stock and delivery — a separate shopping experience, carrying the same range you have just been reading about.",
-                   id: "Tiga puluh lima produk lengkap dengan harga, stok dan pengiriman — pengalaman belanja tersendiri, dengan rangkaian yang baru saja Anda baca." })}
-            </p>
-            <a href="#/shop"
-              className="group/cta mt-11 inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-white bg-white pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-[#1A1A1A] transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-white">
-              {t("enterShop")}
-              <span className="transition-transform duration-700 ease-quiet group-hover/cta:translate-x-1.5"><Icon name="arrow" size={16} /></span>
-            </a>
-          </Reveal>
-        </div>
-      </Media>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════════════════════
    HOME  (brand side) — dark luxury
    Set on charcoal in both themes: the shell carries [data-lux] while this page
    is open, and the .lx-* rules in the stylesheet draw the new sections. The
@@ -12010,9 +11845,8 @@ const LxClose = () => {
 };
 
 /* The page itself. While it is open the ground behind it is dark too ([data-lux-page] on the root). The earlier
-   home page's opening, statement, room tiles, collections block, quote band and shop door are replaced by the
-   sections above (their words and links carried into them); Hero, Intro, RoomGrid, Statement and ShopDoor are
-   kept below as they were, unused, until the new page is approved. */
+   home page's opening, statement, room tiles, collections block, quote band and shop door were replaced by the
+   sections above, their words and links carried into them (approved, November 2026). */
 const HomePage = () => {
   useEffect(() => {
     const root = document.documentElement;

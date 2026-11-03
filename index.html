@@ -1320,6 +1320,20 @@
      rules draw in its own ink and bronze. */
   [data-side] main h1, [data-side] main h2 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.012em; }
   .font-serif-lx { font-family: var(--lx-serif); letter-spacing: -0.01em; }
+  /* back to the top: centred over the support button (56 px, 20 px in), above the compare tray when it is open */
+  .to-top { position: fixed; right: 26px; bottom: 88px; z-index: 85; display: grid; place-items: center; width: 44px; height: 44px;
+    border: 1px solid rgb(var(--line)); border-radius: 50%; background: rgb(var(--bone) / .86); color: rgb(var(--ink));
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transform: translateY(10px); pointer-events: none;
+    transition: opacity .4s var(--lx-ease), transform .4s var(--lx-ease), bottom .4s var(--lx-ease), border-color .3s, color .3s; }
+  .to-top.is-on { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top.is-tray { bottom: 154px; }
+  .to-top:hover, .to-top:focus-visible { border-color: rgb(var(--accent)); color: rgb(var(--accent)); }
+  @media (min-width: 768px) { .to-top { right: 34px; bottom: 96px; } .to-top.is-tray { bottom: 164px; } }
+  @media print { .to-top, .skip-link { display: none; } }
+  /* straight to the content: out of sight until a keyboard reaches it */
+  .skip-link { position: fixed; left: 16px; top: 12px; z-index: 300; padding: 12px 18px; background: rgb(var(--ink)); color: rgb(var(--bone));
+    font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; transform: translateY(-200%); transition: transform .2s; }
+  .skip-link:focus, .skip-link:focus-visible { transform: none; outline: 2px solid rgb(var(--accent)); outline-offset: 2px; }
   [data-side] [data-eyebrow] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .26em; }
   [data-side] [data-bar="solid"] { background-color: rgb(var(--bone) / .9);
     -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); }
@@ -1337,7 +1351,7 @@
   /* a field that needs attention: its rule and its message in a muted red, 6.1:1 on paper and 7.6:1 on charcoal */
   :root { --err: 164 61 46; }
   :root[data-theme="dark"], [data-lux] { --err: 226 150 132; }
-  input.f-err { border-color: rgb(var(--err)) !important; }
+  :is(input, textarea).f-err { border-color: rgb(var(--err)) !important; }
   .f-err-msg { display: block; margin-top: 8px; font-size: 12px; line-height: 1.5; color: rgb(var(--err)); }
 
   /* ── the parts every section shares ── */
@@ -9176,6 +9190,7 @@ const sanitise = (boot) => {
     saved:  Array.isArray(boot.saved) ? boot.saved.filter(known).slice(0, 200) : [],
     orders: Array.isArray(boot.orders) ? boot.orders.filter((o) => o && typeof o.id === "string").slice(0, 20) : [],
     recent: Array.isArray(boot.recent) ? boot.recent.filter((r) => typeof r === "string").slice(0, 5) : [],
+    viewed: Array.isArray(boot.viewed) ? boot.viewed.filter(known).slice(0, 12) : [],
   };
 };
 
@@ -9236,6 +9251,7 @@ const StoreProvider = ({ children }) => {
   const [saved, setSaved]     = useState(BOOT.saved);
   const [orders, setOrders]   = useState(BOOT.orders);
   const [recent, setRecent]   = useState(BOOT.recent);
+  const [viewed, setViewed]   = useState(BOOT.viewed);   // product pages opened here, newest first
   const [sort, setSort]       = useState(BOOT.sort);
   const [compare, setCompare] = useState(BOOT.compare);
   const [drawer, setDrawer]   = useState(null);           // transient: never persisted
@@ -9250,8 +9266,8 @@ const StoreProvider = ({ children }) => {
   }, []);
 
   /* one write per change, merged so the theme is never clobbered */
-  useEffect(() => { persist({ lang, items, saved, orders, recent, sort, compare }); },
-    [lang, items, saved, orders, recent, sort, compare]);
+  useEffect(() => { persist({ lang, items, saved, orders, recent, viewed, sort, compare }); },
+    [lang, items, saved, orders, recent, viewed, sort, compare]);
 
   /* Changing language replaces every word on the page in a single render.
      This covers that moment: the shell dips, the words change while it is
@@ -9282,7 +9298,7 @@ const StoreProvider = ({ children }) => {
 
   const forget = useCallback(() => {
     forgetStore();
-    setItems([]); setSaved([]); setOrders([]); setRecent([]); setCompare([]);
+    setItems([]); setSaved([]); setOrders([]); setRecent([]); setViewed([]); setCompare([]);
   }, []);
 
   const COMPARE_MAX = 4;
@@ -9325,6 +9341,12 @@ const StoreProvider = ({ children }) => {
     setSaved((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
   }, []);
 
+  /* a product page was opened: it goes to the front of the list (one entry per product, twelve at most) */
+  const noteViewed = useCallback((slug) => {
+    if (!slug || !bySlug(slug)) return;
+    setViewed((prev) => (prev[0] === slug ? prev : [slug, ...prev.filter((v) => v !== slug)].slice(0, 12)));
+  }, []);
+
   const remember = useCallback((q) => {
     const v = q.trim();
     if (v.length < 2) return;
@@ -9341,7 +9363,7 @@ const StoreProvider = ({ children }) => {
     finishName: (v) => { const f = finishOf(v); return f ? tx(f.name, lang) : String(v == null ? "" : v); },
     pairDraft, setPairDraft, manual: pairDraft || PUBLISHED,
     items: detailed, count, subtotal, add, setQty, changeQty, remove, clear,
-    saved, toggleSaved, orders, setOrders, recent, remember, sort, setSort,
+    saved, toggleSaved, orders, setOrders, recent, remember, viewed, noteViewed, sort, setSort,
     compare, toggleCompare, dropCompare, clearCompare, compareMax: 4,
     drawer, setDrawer, toast, say, forget, storageOK: !!SAFE_STORAGE,
   };
@@ -10052,7 +10074,9 @@ const searchAll = (q, lang) => {
   const n = norm(q);
   if (n.length < 2) return { products: [], cats: [], stores: [], posts: [], total: 0 };
   const terms = n.split(/\s+/).filter(Boolean);
-  const hit = (hay) => terms.every((t) => hay.includes(t));
+  const tight = (v) => v.replace(/[\s\-·.]+/g, "");
+  const tq = tight(n);
+  const hit = (hay) => terms.every((t) => hay.includes(t)) || (tq.length >= 3 && tight(hay).includes(tq));
 
   const products = CATALOG.filter((p) => hit(productHaystack(p)));
   const cats  = CATS.filter((c) => hit([...bag(c.label), c.id].join(" ")));
@@ -12042,6 +12066,8 @@ const ShopHome = () => {
         </div>
       </section>
 
+      <RecentlyViewed tone="bone" />
+
       <Collection layout="rail" tone="shell"
         eyebrow={{ en: "Selected", id: "Pilihan" }}
         title={{ en: "Featured products", id: "Produk pilihan" }}
@@ -12488,6 +12514,8 @@ const ProductPage = ({ slug }) => {
 
   useEffect(() => { setFinish(p ? x(p.finishes[0].name) : null); }, [slug, lang]);
   useEffect(() => { setQty(1); setShot(0); }, [slug]);
+  const { noteViewed } = useStore();
+  useEffect(() => { if (p) noteViewed(p.slug); }, [slug]);
 
   /* What completes this product, in the finish chosen above it — pick the
      tap in black and the sink offered beneath it is the Pearl Black one. If
@@ -12707,7 +12735,27 @@ const ProductPage = ({ slug }) => {
           </Reveal>
         </section>
       ) : null}
+      <RecentlyViewed exclude={p.slug} tone="shell" />
     </>
+  );
+};
+
+/* What this visitor has looked at lately, newest first — kept in this browser only, like the bag. Nothing shows
+   until there is something to show. */
+const RecentlyViewed = ({ exclude = null, tone = "bone" }) => {
+  const { viewed } = useStore();
+  const items = useMemo(() => {
+    const ex = exclude ? bySlug(exclude) : null, seen = new Set(ex ? [ex.model || ex.slug] : []), out = [];
+    viewed.forEach((s) => { const p = bySlug(s); const k = p && (p.model || p.slug); if (p && !seen.has(k)) { seen.add(k); out.push(p); } });
+    return out.slice(0, 8);
+  }, [viewed, exclude]);
+  if (!items.length) return null;
+  return (
+    <div data-recent="">
+      <Collection layout="rail" tone={tone} items={items}
+        eyebrow={{ en: "Recently viewed", id: "Terakhir dilihat" }}
+        title={{ en: "Pick up where you left off", id: "Lanjutkan dari yang terakhir" }} />
+    </div>
   );
 };
 
@@ -13576,12 +13624,23 @@ const ContactPage = () => {
   const [f, setF] = useState({ name: "", email: "", phone: "", msg: ksAbout });
   const [touched, setTouched] = useState(false);
   const [done, setDone] = useState(false);
-  const valid = f.name.trim().length > 1 && /.+@.+\..+/.test(f.email) && f.msg.trim().length > 4;
+  const errs = {
+    name:  f.name.trim().length < 2 ? x({ en: "Please enter your name.", id: "Mohon isi nama Anda." }) : null,
+    email: !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim()) ? x({ en: "Please enter an email address we can answer.", id: "Mohon isi alamat email untuk balasan kami." }) : null,
+    msg:   f.msg.trim().length < 5 ? x({ en: "Please write a few words — what can we help with?", id: "Mohon tulis beberapa kata — apa yang bisa kami bantu?" }) : null,
+  };
+  const bad = Object.keys(errs).filter((k) => errs[k]);
+  const valid = !bad.length;
+  const err = (k) => (touched ? errs[k] : null);
 
   const submit = (e) => {
     e.preventDefault();
     setTouched(true);
-    if (!valid) return;
+    if (!valid) {
+      const el = document.querySelector('[name="ct-' + bad[0] + '"]');
+      if (el) { el.scrollIntoView({ block: "center", behavior: motionAllowed() ? "smooth" : "auto" }); el.focus({ preventScroll: true }); }
+      return;
+    }
     setDone(true);
     say(t("messageSent"));
   };
@@ -13634,16 +13693,18 @@ const ContactPage = () => {
                   </div>
                 ) : (
                   <form onSubmit={submit} noValidate className="flex flex-col gap-7">
-                    <Field label={t("name")} value={f.name} onChange={(v) => setF({ ...f, name: v })} required autoComplete="name" />
-                    <Field label={t("email")} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} required autoComplete="email" />
-                    <Field label={t("phone")} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} autoComplete="tel" />
+                    <Field label={t("name")} value={f.name} onChange={(v) => setF({ ...f, name: v })} required autoComplete="name" name="ct-name" error={err("name")} />
+                    <Field label={t("email")} type="email" value={f.email} onChange={(v) => setF({ ...f, email: v })} required autoComplete="email" name="ct-email" error={err("email")} />
+                    <Field label={x({ en: "Phone (optional)", id: "Telepon (opsional)" })} value={f.phone} onChange={(v) => setF({ ...f, phone: v })} autoComplete="tel" name="ct-phone" />
                     <label className="block">
                       <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("message")}</span>
-                      <textarea rows={4} value={f.msg} onChange={(e) => setF({ ...f, msg: e.target.value })} required
-                        className="w-full resize-none border-b border-line bg-transparent py-2 text-[13.5px] font-medium text-ink transition-colors duration-500 placeholder:text-mute/85 focus:border-ink focus:outline-none" />
+                      <textarea rows={4} value={f.msg} onChange={(e) => setF({ ...f, msg: e.target.value })} required name="ct-msg"
+                        aria-invalid={err("msg") ? true : undefined} aria-describedby={err("msg") ? "ct-msg-err" : undefined}
+                        className={"w-full resize-none border-b border-line bg-transparent py-2 text-[13.5px] font-medium text-ink transition-colors duration-500 placeholder:text-mute/85 focus:border-ink focus:outline-none" + (err("msg") ? " f-err" : "")} />
+                      {err("msg") ? <span id="ct-msg-err" className="f-err-msg">{err("msg")}</span> : null}
                     </label>
                     {touched && !valid ? (
-                      <p className="text-[13px] text-accent">{t("checkFields")}</p>
+                      <p role="status" className="text-[13px]" style={{ color: "rgb(var(--err))" }}>{t("checkFields")}</p>
                     ) : null}
                     <Action type="submit">{t("send")}</Action>
                   </form>
@@ -16448,6 +16509,8 @@ const KsProduct = ({ kind, model, colour }) => {
   const [i, setI] = useState(first);
   const [view, setView] = useState("photo");   // the photograph, or the model in a kitchen
   useEffect(() => { setI(first); setView("photo"); }, [kind, model]);
+  const { noteViewed } = useStore();
+  useEffect(() => { if (m) noteViewed((m.rows[first] || m.rows[0]).slug); }, [kind, model]);
   const row = m ? m.rows[i] || m.rows[0] : null;
   useKsMeta(m ? m.model + " — " + x(K.label) : null, row ? x(row.desc) : null);
   if (!K || !m) return <NotFound />;
@@ -16652,6 +16715,7 @@ const KsProduct = ({ kind, model, colour }) => {
           {ksNearest(m, 4).map((o, n) => <Reveal key={o.key} delay={n * 60} className="block h-full"><KsCard m={o} /></Reveal>)}
         </div>
       </section>
+      <RecentlyViewed exclude={row.slug} tone="shell" />
       <KsNotes />
     </div>
   );
@@ -17443,6 +17507,38 @@ const SupportWidget = () => {
    decides which header, which footer, and how much room the fixed chrome
    needs above the page. The bag drawer and the compare tray belong to the
    store, so they are only mounted there. */
+/* Back to the top: a small round button that comes up once the page is two screens long behind you, stacked
+   over the support button (and above the compare tray when it is open). */
+const BackToTop = () => {
+  const { x, compare } = useStore();
+  const route = useRoute();
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const f = () => setOn(window.scrollY > window.innerHeight * 1.5);
+    f(); window.addEventListener("scroll", f, { passive: true });
+    return () => window.removeEventListener("scroll", f);
+  }, []);
+  const tray = compare.length > 0 && route.name !== "compare";
+  return (
+    <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: motionAllowed() ? "smooth" : "auto" })}
+      aria-label={x({ en: "Back to top", id: "Kembali ke atas" })} title={x({ en: "Back to top", id: "Kembali ke atas" })}
+      tabIndex={on ? 0 : -1} aria-hidden={on ? undefined : true} data-to-top=""
+      className={"to-top" + (on ? " is-on" : "") + (tray ? " is-tray" : "")}>
+      <span className="rotate-180"><Icon name="down" size={16} /></span>
+    </button>
+  );
+};
+/* For a keyboard: the first thing a Tab reaches, and only seen then — it moves the focus past the bar to the page */
+const SkipLink = () => {
+  const { x } = useStore();
+  return (
+    <button type="button" className="skip-link" data-skip=""
+      onClick={() => { const m = document.querySelector("main"); if (m) { m.setAttribute("tabindex", "-1"); m.focus(); } }}>
+      {x({ en: "Skip to content", id: "Langsung ke konten" })}
+    </button>
+  );
+};
+
 const Shell = () => {
   const route = useRoute();
   if (route.name === "ksPrint") return <KsPrint doc={route.doc} lang={route.lang} page={route.page} />;
@@ -17451,6 +17547,7 @@ const Shell = () => {
   const lux = !shop && route.name === "home";   // the home page is set on charcoal in both themes ([data-lux], .lx-* in the stylesheet)
   return (
     <div data-side={route.side} data-lux={lux ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
+      <SkipLink />
       <SiteHeader />
       {/* The dip that covers a change of language runs on the page and on
           the bar separately rather than on this wrapper: an element mid-way
@@ -17463,6 +17560,7 @@ const Shell = () => {
       </div>
       {shop ? <BagDrawer /> : null}
       {shop ? <CompareTray /> : null}
+      <BackToTop />
       <SupportWidget />
       <Toast />
     </div>

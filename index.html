@@ -1282,6 +1282,228 @@
     .cl-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
     .cl-dl-in { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: 80px; }
   }
+
+  /* ── THE HOME PAGE (#/, [data-lux]) ─────────────────────────────────────────────────────────────────────
+     Dark luxury: the home page is set on charcoal in both themes, as the catalogue page and the showroom are. The
+     palette is held on the shell while the home page is open, so the bar, its menus, the sections kept from the
+     earlier home page and the footer all follow it without a class of their own:
+       #171717 the ground · #222222 the second ground · #292929 a card · #3A3835 the rules
+       #F5F0E8 the type (15.8:1 on the ground) · #A8A29A the quieter type (7.1:1) · #B69A72 bronze (6.7:1)
+     Bronze is kept for the small type, the hairlines and the hover states — never a fill at rest. Headlines are set
+     in Source Serif 4 at its lightest, as in the two catalogues; everything else stays in Inter. Every movement is
+     the site's own (Reveal, Media, .rise, the drift), so reduced motion takes them all away in one place. */
+  [data-lux] {
+    --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41;
+    --ink: 245 240 232; --mute: 168 162 154; --line: 58 56 53; --accent: 182 154 114;
+    --lx-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+    --lx-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    color-scheme: dark;
+  }
+  /* behind the page, too, so an overscroll or a short window never shows the light theme's paper */
+  :root[data-lux-page], :root[data-lux-page] body { background: #171717; color-scheme: dark; }
+  /* the mark in light whatever the theme; photographs at full strength — each one carries its own shade here */
+  :root [data-lux] .logo-ink { display: none; }
+  :root [data-lux] .logo-light { display: block; }
+  :root [data-lux] img:not(.no-dim) { filter: none; }
+  :root [data-lux] .ph-fallback { filter: brightness(.32) saturate(.5); }
+  :root [data-lux] .grain::before { filter: invert(1); opacity: .04; }
+  [data-lux] ::selection { background: rgb(var(--accent) / .32); color: rgb(var(--ink)); }
+  /* the sections kept from the earlier home page: their grounds on the second tone, their headlines in the serif */
+  [data-lux] main section.bg-concrete { background-color: rgb(var(--shell)); }
+  [data-lux] main h1, [data-lux] main h2 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.012em; }
+  [data-lux] main h3 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.01em; }
+  [data-lux] main [data-eyebrow] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .26em; }
+  [data-lux] main > section.max-w-site + section.max-w-site { padding-top: 0; }
+  /* a rail that scrolls sideways on a phone keeps its first card off the edge of the screen */
+  @media (max-width: 767.98px) { [data-lux] main .snap-x { scroll-padding-inline: 20px; } }
+
+  /* the bar: clear over the photograph, charcoal once the page moves under it — translucent, so the page reads on
+     beneath it. Its seven places keep their order and their names; they are set a little wider and lighter, and the
+     line that marks the one you are on (or the one under the pointer) is drawn in bronze. */
+  [data-lux] [data-bar="solid"] { background-color: rgb(23 23 23 / .9);
+    -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); }
+  [data-lux] [data-nav] { font-weight: 500; letter-spacing: .16em; }
+  [data-lux] [data-bar] nav .u::after { background: rgb(var(--accent)); height: 1px; bottom: -5px; }
+  /* the veil behind an open menu dims the page, as it does on a light one (the type colour is ivory here) */
+  [data-lux] .bg-ink\/20 { background-color: rgb(0 0 0 / .5); }
+  [data-lux] [data-bar="clear"] [data-nav]:not([aria-current="page"]) { opacity: .78; }
+  /* the phone's menu: the same seven places, in the serif, large enough to land a thumb on */
+  [data-lux] [data-nav-mobile] { font-family: var(--lx-serif); font-weight: 300; font-size: 26px; letter-spacing: -0.01em; }
+  [data-lux] [data-nav-mobile="shop"] { color: rgb(var(--accent)); }
+
+  /* the footer: the same columns and the same links, on the ground, with the column names in bronze */
+  [data-lux] footer [data-ft="label"] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .22em; }
+  [data-lux] footer [data-ft="about"] { color: rgb(var(--mute)); }
+  [data-lux] footer a.u::after { background: rgb(var(--accent)); }
+
+  /* ── the parts every section shares ── */
+  .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
+  .lx-section { position: relative; padding: 96px 0; background: rgb(var(--bone)); }
+  .lx-section.lx-alt { background: rgb(var(--shell)); }
+  .lx-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: rgb(var(--accent)); }
+  .lx-h2 { margin-top: 22px; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(36px, 4.6vw, 66px);
+    line-height: 1.06; letter-spacing: -0.014em; color: rgb(var(--ink)); text-wrap: balance; }
+  .lx-lede { max-width: 46ch; font-size: 16px; line-height: 1.75; color: rgb(var(--mute)); }
+  .lx-head { display: grid; gap: 26px; margin-bottom: 52px; }
+  .lx-head-links { display: flex; flex-wrap: wrap; gap: 14px 32px; margin-top: 26px; }
+  /* a way on, in words: a short bronze rule under it that runs the full width when you reach it */
+  .lx-link { display: inline-flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 600; letter-spacing: .2em;
+    text-transform: uppercase; color: rgb(var(--ink)); }
+  .lx-link-t { position: relative; padding-bottom: 7px; }
+  .lx-link-t::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgb(var(--accent));
+    transform: scaleX(.3); transform-origin: left center; transition: transform .7s var(--lx-ease); }
+  .lx-link svg { margin-top: -7px; transition: transform .7s var(--lx-ease); }
+  .lx-link:hover .lx-link-t::after, .lx-link:focus-visible .lx-link-t::after,
+  .lx-hover:hover .lx-link-t::after, .lx-hover:focus-visible .lx-link-t::after { transform: scaleX(1); }
+  .lx-link:hover svg, .lx-hover:hover .lx-link svg, .lx-hover:focus-visible .lx-link svg { transform: translateX(6px); }
+  /* a way on, as a button: ivory, or a hairline over a photograph; the next colour wipes across from the left */
+  .lx-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .lx-btn { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center;
+    justify-content: center; gap: 14px; height: 54px; padding: 0 26px 0 30px; border: 1px solid #F5F0E8; background: #F5F0E8;
+    color: #171717; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap;
+    transition: color .6s var(--lx-ease), border-color .6s var(--lx-ease); }
+  .lx-btn::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(var(--accent));
+    transform: scaleX(0); transform-origin: right center; transition: transform .7s var(--lx-ease); }
+  .lx-btn:hover::before, .lx-btn:focus-visible::before { transform: scaleX(1); transform-origin: left center; }
+  .lx-btn:hover, .lx-btn:focus-visible { border-color: rgb(var(--accent)); }
+  .lx-btn svg { transition: transform .7s var(--lx-ease); }
+  .lx-btn:hover svg, .lx-btn:focus-visible svg { transform: translateX(5px); }
+  .lx-btn-ghost { border-color: rgb(245 240 232 / .5); background: transparent; color: #F5F0E8; }
+  .lx-btn-ghost::before { background: #F5F0E8; }
+  .lx-btn-ghost:hover, .lx-btn-ghost:focus-visible { border-color: #F5F0E8; color: #171717; }
+  /* a picture inside a link moves in slowly when the link is reached */
+  .lx-zoom { transition: transform 1.6s var(--lx-ease); }
+  .lx-hover:hover .lx-zoom, .lx-hover:focus-visible .lx-zoom { transform: scale(1.045); }
+  .lx-fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── 1 · the opening ── */
+  .lx-hero { position: relative; isolation: isolate; overflow: hidden; height: 100svh; min-height: 640px; background: #171717; }
+  .lx-hero-media { position: absolute; inset: 0; }
+  .lx-hero-media img { object-position: 50% 42%; }
+  /* the shade: deep where the words are, open where the sink is, and down to the ground at the foot of the frame */
+  .lx-hero-shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgb(23 23 23 / .7) 0%, rgb(23 23 23 / 0) 26%),
+                linear-gradient(0deg, rgb(23 23 23 / .97) 0%, rgb(23 23 23 / .8) 34%, rgb(23 23 23 / .25) 64%, rgb(23 23 23 / .35) 100%); }
+  .lx-hero-in { position: relative; z-index: 1; display: flex; height: 100%; max-width: 1600px; margin: 0 auto;
+    padding: 0 20px 92px; flex-direction: column; justify-content: flex-end; }
+  .lx-display { margin-top: 22px; max-width: 16ch; font-family: var(--lx-serif); font-weight: 300;
+    font-size: clamp(46px, 7.2vw, 112px); line-height: 1.02; letter-spacing: -0.022em; color: #F5F0E8; }
+  .lx-hero-lede { margin-top: 26px; max-width: 44ch; font-size: 16px; line-height: 1.75; color: rgb(245 240 232 / .84); }
+  .lx-hero .lx-actions { margin-top: 36px; }
+  .lx-hero .lx-eyebrow { color: rgb(var(--accent)); }
+  .lx-cue { position: absolute; bottom: 36px; left: 50%; z-index: 1; display: none; align-items: center; gap: 16px;
+    transform: translateX(-50%); color: rgb(245 240 232 / .62); pointer-events: none; }
+
+  /* ── 2 · the collections ── */
+  .lx-cats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .lx-cat { position: relative; isolation: isolate; display: block; overflow: hidden; aspect-ratio: 4 / 5; background: rgb(var(--concrete)); }
+  .lx-cat .media { position: absolute; inset: 0; }
+  .lx-cat-shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgb(23 23 23 / .5) 0%, rgb(23 23 23 / 0) 24%),
+                linear-gradient(0deg, rgb(23 23 23 / .94) 0%, rgb(23 23 23 / .62) 40%, rgb(23 23 23 / .12) 72%, rgb(23 23 23 / 0) 100%); }
+  .lx-cat-no { position: absolute; top: 24px; left: 24px; z-index: 1; font-family: var(--lx-serif); font-size: 15px; color: rgb(var(--accent)); }
+  .lx-cat-in { position: absolute; inset: auto 0 0 0; z-index: 1; padding: 26px 24px; }
+  .lx-cat-title { margin-top: 12px; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(30px, 2.9vw, 46px);
+    line-height: 1.05; letter-spacing: -0.012em; color: #F5F0E8; }
+  .lx-cat-text { margin-top: 10px; max-width: 34ch; font-size: 14.5px; line-height: 1.6; color: rgb(245 240 232 / .76); }
+  .lx-cat .lx-link { margin-top: 22px; color: #F5F0E8; }
+
+  /* ── 3 · featured: a row of four that scrolls sideways on a phone ── */
+  .lx-products { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 16px; overflow-x: auto;
+    scroll-snap-type: x mandatory; margin: 0 -20px; padding: 0 20px 4px; scroll-padding: 0 20px;
+    scrollbar-width: none; -ms-overflow-style: none; }
+  .lx-products::-webkit-scrollbar { display: none; }
+  .lx-product { display: flex; flex-direction: column; scroll-snap-align: start; }
+  .lx-product-media { position: relative; display: block; overflow: hidden; aspect-ratio: 1 / 1; background: rgb(var(--concrete)); }
+  .lx-product-kind { display: block; margin-top: 22px; font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgb(var(--mute)); }
+  .lx-product-name { margin-top: 10px; font-family: var(--lx-serif); font-weight: 300; font-size: 28px; line-height: 1.1; color: rgb(var(--ink)); }
+  .lx-product-meta { display: block; margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: rgb(var(--mute)); }
+  .lx-product-price { display: block; margin-top: 12px; font-size: 15px; font-weight: 500; letter-spacing: .01em; color: rgb(var(--ink)); font-variant-numeric: tabular-nums; }
+  .lx-product .lx-link { margin-top: auto; padding-top: 22px; }
+
+  /* ── 4 · the house ── */
+  .lx-brand { display: grid; gap: 48px; align-items: center; }
+  .lx-brand-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: rgb(var(--concrete)); }
+  .lx-brand-media .par { position: absolute; inset: -6% 0; }
+  .lx-brand-lead { margin-top: 30px; max-width: 30ch; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(22px, 1.9vw, 28px);
+    line-height: 1.45; color: rgb(var(--ink)); }
+  .lx-brand-body { margin-top: 22px; max-width: 52ch; font-size: 15.5px; line-height: 1.85; color: rgb(var(--mute)); }
+  .lx-brand-note { margin-top: 24px; padding-left: 18px; border-left: 1px solid rgb(var(--accent)); font-size: 14px; line-height: 1.7; color: rgb(var(--ink) / .86); }
+  .lx-brand .lx-actions { margin-top: 38px; }
+
+  /* ── 5 · inspiration: a magazine spread ── */
+  .lx-mag { display: grid; grid-template-columns: minmax(0, 1fr); gap: 52px; }
+  .lx-mag-media { position: relative; display: block; overflow: hidden; background: rgb(var(--concrete)); }
+  .lx-mag-a .lx-mag-media { aspect-ratio: 5 / 4; }
+  .lx-mag-b .lx-mag-media { aspect-ratio: 4 / 5; }
+  .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
+  .lx-mag-cap { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; margin-top: 20px; }
+  .lx-mag-no { grid-row: span 2; font-family: var(--lx-serif); font-size: 15px; line-height: 1.5; color: rgb(var(--accent)); }
+  .lx-mag-label { font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--ink)); }
+  .lx-mag-text { font-size: 14px; line-height: 1.65; color: rgb(var(--mute)); }
+  .lx-quote { font-family: var(--lx-serif); font-weight: 300; font-size: clamp(28px, 2.7vw, 42px); line-height: 1.24;
+    letter-spacing: -0.01em; color: rgb(var(--ink)); text-wrap: balance; }
+  .lx-quote::before { content: ''; display: block; width: 44px; height: 1px; margin-bottom: 30px; background: rgb(var(--accent)); }
+  .lx-quote-by { margin-top: 24px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute)); }
+
+  /* ── 7 · the close ── */
+  .lx-close { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: 78svh; background: #171717; }
+  .lx-close .media, .lx-close .par { position: absolute; inset: 0; }
+  .lx-close .par { inset: -8% 0; }
+  .lx-close-shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgb(23 23 23 / .92) 0%, rgb(23 23 23 / .72) 45%, rgb(23 23 23 / .86) 100%); }
+  .lx-close-in { position: relative; z-index: 1; width: 100%; padding-top: 112px; padding-bottom: 112px; text-align: center; }
+  .lx-close .lx-h2 { margin-left: auto; margin-right: auto; max-width: 21ch; color: #F5F0E8; }
+  .lx-close .lx-actions { justify-content: center; margin-top: 44px; }
+  .lx-close-rule { width: 44px; height: 1px; margin: 34px auto 0; background: rgb(var(--accent)); }
+
+  @media (max-width: 479.98px) {
+    .lx-actions .lx-btn { width: 100%; }
+  }
+  @media (min-width: 640px) {
+    .lx-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lx-cat:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+    .lx-products { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 52px 24px; overflow: visible; margin: 0; padding: 0; }
+  }
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    .lx-brand-media { aspect-ratio: 16 / 11; }
+    .lx-mag { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 28px; align-items: center; }
+    .lx-mag-a, .lx-mag-c { grid-column: 1 / -1; }
+    .lx-mag-a .lx-mag-media, .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
+  }
+  @media (min-width: 768px) {
+    .lx-wrap { padding: 0 40px; }
+    .lx-section { padding: 144px 0; }
+    .lx-head { margin-bottom: 72px; }
+    .lx-hero-in { padding: 0 40px; justify-content: center; }
+    .lx-hero-in > .reveal { margin-top: 64px; }
+    .lx-hero-shade { background: linear-gradient(180deg, rgb(23 23 23 / .7) 0%, rgb(23 23 23 / 0) 24%),
+      linear-gradient(90deg, rgb(23 23 23 / .93) 0%, rgb(23 23 23 / .74) 32%, rgb(23 23 23 / .2) 62%, rgb(23 23 23 / .08) 100%),
+      linear-gradient(0deg, rgb(23 23 23 / 1) 0%, rgb(23 23 23 / 0) 22%); }
+    .lx-hero-media img { object-position: 62% 50%; }
+    .lx-cue { display: flex; }
+    .lx-cat-no { top: 34px; left: 40px; }
+    .lx-cat-in { padding: 40px; }
+    .lx-close-in { padding-top: 150px; padding-bottom: 150px; }
+  }
+  @media (min-width: 1024px) {
+    .lx-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 64px; margin-bottom: 84px; }
+    .lx-head > :last-child { padding-bottom: 6px; }
+    .lx-cats { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 16px; height: clamp(640px, 54vw, 880px); }
+    .lx-cat, .lx-cat:first-child { aspect-ratio: auto; }
+    .lx-cat:first-child { grid-column: auto; grid-row: 1 / span 2; }
+    .lx-brand { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 96px; }
+    .lx-mag { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 96px 32px; align-items: start; }
+    .lx-mag-a { grid-column: 1 / span 7; }
+    .lx-mag-b { grid-column: 9 / span 4; margin-top: 22%; }
+    .lx-mag-q { grid-column: 1 / span 5; align-self: center; padding-right: 24px; }
+    .lx-mag-c { grid-column: 6 / span 7; }
+  }
+  @media (min-width: 1200px) {
+    .lx-products { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+  }
 </style>
 </head>
 <body>
@@ -9499,7 +9721,7 @@ const useParallax = (strength = 40) => {
 };
 
 const Eyebrow = ({ children, className = "" }) => (
-  <p className={"text-[11px] font-semibold uppercase tracking-[0.11em] text-mute " + className}>{children}</p>
+  <p data-eyebrow="" className={"text-[11px] font-semibold uppercase tracking-[0.11em] text-mute " + className}>{children}</p>
 );
 
 const Action = ({ children, onClick, disabled, type = "button", className = "" }) => (
@@ -10490,7 +10712,7 @@ const SiteHeader = () => {
 
   return (
     <>
-      <div onMouseLeave={() => setMega(null)}
+      <div onMouseLeave={() => setMega(null)} data-bar={solid ? "solid" : "clear"}
         className={"fixed inset-x-0 top-0 z-[80] transition-[background-color,color] duration-500 ease-quiet " + (solid ? "bg-bone text-ink" : "bg-transparent text-white")}>
         <div className="lang-fade"><AnnouncementBar solid={solid} /></div>
 
@@ -10687,7 +10909,7 @@ const BrandFooter = () => {
             </p>
           </div>
           <div className="md:col-span-3 md:col-start-7">
-            <p className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("contactUs")}</p>
+            <p data-ft="label" className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("contactUs")}</p>
             <ul className="flex flex-col gap-3.5 text-[14px] leading-[1.6] text-mute">
               {/* PLACEHOLDER — invented contact details */}
               <li><a href="#/contact" className="u text-ink">+62 21 7199 0018</a></li>
@@ -10696,7 +10918,7 @@ const BrandFooter = () => {
             </ul>
           </div>
           <div className="md:col-span-3">
-            <p className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("stores")}</p>
+            <p data-ft="label" className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("stores")}</p>
             <ul className="flex flex-col gap-3.5 text-[14px] leading-[1.6] text-mute">
               {STORES.slice(0, 3).map((s) => (
                 <li key={s.id}><a href="#/contact" className="u text-ink">{s.name}</a> — {x(s.city)}</li>
@@ -10710,7 +10932,7 @@ const BrandFooter = () => {
         <div className="hidden grid-cols-4 gap-10 py-[80px] md:grid">
           {FOOTER.map((c, n) => (
             <div key={n}>
-              <p className="mb-8 text-[11px] font-semibold uppercase tracking-[0.11em] text-ink">{x(c.label)}</p>
+              <p data-ft="label" className="mb-8 text-[11px] font-semibold uppercase tracking-[0.11em] text-ink">{x(c.label)}</p>
               <ul className="flex flex-col gap-[15px]">
                 {c.items.map((i, m) => (
                   <li key={m}><a href={i.to || i.href || "#/"} className="u text-[14px] text-mute transition-colors duration-300 hover:text-ink">{x(i.label)}</a></li>
@@ -11268,7 +11490,7 @@ const JournalRail = () => {
     <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
       <Reveal still className="cascade mb-12 flex items-end justify-between md:mb-16">
         <div>
-          <Eyebrow>{x({ en: "Ideas & Inspiration", id: "Ide & Inspirasi" })}</Eyebrow>
+          <Eyebrow>{x({ en: "Journal", id: "Artikel" })}</Eyebrow>
           <h2 className="mt-7 text-[36px] font-medium leading-[1.14] md:text-[48px]">{lang === "id" ? "Dari " + BRAND_SHORT : "Inside " + BRAND_SHORT}</h2>
         </div>
         <div className="flex items-center gap-6">
@@ -11464,51 +11686,355 @@ const ShopDoor = () => {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOME  (brand side)
-   No prices, no product grid, no add-to-cart. The brand site makes a case;
-   the shop takes the money. Collections appear here as photography with a
-   way through, and the one commercial moment is the door at the end.
+   HOME  (brand side) — dark luxury
+   Set on charcoal in both themes: the shell carries [data-lux] while this page
+   is open, and the .lx-* rules in the stylesheet draw the new sections. The
+   order: the opening, the collections, a few products, the house, rooms to
+   imagine — then the parts of the earlier home page that do something of
+   their own (the room you can shop, the specimen wall and its sample box, the
+   services, the journal, the newsletter) — and the way on.
+   Pictures: the house's own renders of its kitchen sinks, web-sized in
+   img/home/ (from catalogues/images/). Where the house has none yet — the
+   bathroom and the building materials — the pictures the earlier home page
+   used for them are kept.
+   Products: the kitchen sinks only, since the rest of CATALOG is still the
+   placeholder written to show the layout. A price is shown only where one was
+   supplied — the stainless steel price list's; the granite prices are
+   placeholders, so a granite sink shows none.
    ═══════════════════════════════════════════════════════════════════════════ */
-const HomePage = () => (
-  <>
-    <Hero />
-    <Intro />
+const LX_IMG = (name) => "img/home/" + name;
 
-    <StoryBlock
-      eyebrow={{ en: "Our Story", id: "Kisah Kami" }}
-      title={{ en: "A house built on one question", id: "Rumah yang dibangun dari satu pertanyaan" }}
-      body={{ en: "Will this still be good in ten years? It is the only test a product has to pass to reach our floor, and most do not. What survives it is a narrow range — fewer taps than our competitors, fewer tiles, fewer of almost everything.",
-              id: "Apakah ini masih akan baik sepuluh tahun lagi? Itulah satu-satunya ujian yang harus dilewati sebuah produk untuk sampai ke lantai kami, dan sebagian besar gagal. Yang bertahan adalah rangkaian yang ringkas — lebih sedikit keran dari pesaing kami, lebih sedikit keramik, lebih sedikit hampir segalanya." }}
-      note={{ en: "We have been answering it in Jakarta since 1998.",
-              id: "Kami sudah menjawabnya di Jakarta sejak 1998." }}
-      links={[{ label: { en: "Read our story", id: "Baca kisah kami" }, to: "#/about" }]}
-      img={IMG(12, 1600)} tone={TONE[3]} ratio="aspect-[4/5]" />
-
-    <RoomGrid />
-
-    <StoryBlock flip
-      eyebrow={{ en: "The Collections", id: "Koleksi" }}
-      title={{ en: "Seven ranges, kept short", id: "Tujuh rangkaian, dibuat ringkas" }}
-      body={{ en: "Kitchen, bathroom, surfaces, lighting, hardware, paint — and six granite sinks that have their own following. Each range is short enough that every product in it has been chosen rather than merely stocked.",
-              id: "Dapur, kamar mandi, permukaan, pencahayaan, perkakas, cat — dan enam bak cuci granit yang punya penggemarnya sendiri. Setiap rangkaian cukup ringkas sehingga tiap produknya dipilih, bukan sekadar disediakan." }}
-      links={[{ label: { en: "See the collections", id: "Lihat koleksi" }, to: "#/products" },
-              { label: { en: "Download the catalogue", id: "Unduh katalog" }, to: "#/catalogue" }]}
-      img={IMG(9, 1600)} tone={TONE[0]} ratio="aspect-[5/6]" />
-
-    <Finishes />
-
-    <Statement img={IMG(17, 2000)} tone={TONE[1]}
-      quote={{ en: "A room is finished when nothing in it asks for attention.",
-               id: "Sebuah ruangan selesai ketika tidak ada satu pun di dalamnya yang menuntut perhatian." }}
-      attrib={{ en: "Maju Terus Jaya — House of Materials", id: "Maju Terus Jaya — Rumah Material" }} />
-
-    <InSitu />
-    <Services />
-    <ShopDoor />
-    <JournalRail />
-    <Newsletter />
-  </>
+/* a way on, in words: the label over a short bronze rule, and an arrow */
+const LxLinkText = ({ children }) => (
+  <><span className="lx-link-t">{children}</span><Icon name="arrow" size={14} /></>
 );
+/* a way on, as a button: ivory, or (ghost) a hairline */
+const LxButton = ({ to, ghost = false, children }) => (
+  <a href={to} className={"lx-btn" + (ghost ? " lx-btn-ghost" : "")}>
+    <span>{children}</span><Icon name="arrow" size={15} />
+  </a>
+);
+
+/* ── 1 · the opening: W 7845 UDB, in a kitchen of oxblood and brass ── */
+const LxHero = () => {
+  const { t, x } = useStore();
+  const par = useParallax(110);
+  return (
+    <section className="lx-hero">
+      <Media className="lx-hero-media">
+        <div ref={par} className="par absolute inset-0">
+          {/* a narrower crop for a phone held upright, so the tap and the bowl stay in the frame */}
+          <picture>
+            <source media="(max-width: 767px)" srcSet={LX_IMG("hero-tall.webp")} />
+            <img ref={markReady} onLoad={(e) => e.currentTarget.setAttribute("data-ready", "")}
+              src={LX_IMG("hero-wide.webp")} loading="eager" decoding="async" draggable="false" className="drift lx-fill"
+              alt={x({ en: "The W 7845 UDB double bowl sink in Nano Black, with a brass mixer, in a kitchen of oxblood cabinets",
+                       id: "Bak cuci dua ruang W 7845 UDB warna Nano Black, dengan keran kuningan, di dapur berkabinet merah marun" })} />
+          </picture>
+        </div>
+      </Media>
+      <div className="lx-hero-shade" />
+
+      <div className="lx-hero-in on-dark">
+        <Reveal delay={80}>
+          <p className="lx-eyebrow rv">{BRAND}</p>
+          <h1 className="lx-display">
+            <span className="rise"><span>{x({ en: "Elevate Your", id: "Sempurnakan" })}</span></span>{" "}
+            <span className="rise"><span>{x({ en: "Living Spaces.", id: "Ruang Hunian Anda." })}</span></span>
+          </h1>
+          <p className="lx-hero-lede rv rv-3">
+            {x({ en: "Discover thoughtfully selected materials and products that bring elegance, functionality, and lasting quality to your spaces.",
+                 id: "Temukan material dan produk pilihan yang menghadirkan keanggunan, fungsi, dan kualitas yang tahan lama untuk ruang Anda." })}
+          </p>
+          <div className="lx-actions rv rv-4">
+            <LxButton to="#/products">{x({ en: "Explore Our Collection", id: "Jelajahi Koleksi Kami" })}</LxButton>
+            <LxButton to="#/about" ghost>{x({ en: "Discover MTJ", id: "Kenali MTJ" })}</LxButton>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* a quiet cue that the page continues */}
+      <div className="lx-cue" aria-hidden="true">
+        <span className="text-[10.5px] font-semibold uppercase tracking-[0.11em]">{t("scroll")}</span>
+        <span className="block h-[38px] w-px overflow-hidden bg-white/25">
+          <span className="scroll-tick block h-[14px] w-px bg-white/90" />
+        </span>
+      </div>
+    </section>
+  );
+};
+
+/* ── 2 · the collections: one large card and two beside it ── */
+const LX_CATS = [
+  { id: "kitchen-sinks", to: "#/shop/kitchen-sinks", img: LX_IMG("cat-kitchen-sinks.webp"), tone: "#3A3631",
+    eyebrow: { en: "Kitchen", id: "Dapur" },
+    title:   { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
+    body:    { en: "Granite composite and stainless steel, single and double bowl.",
+               id: "Komposit granit dan stainless steel, satu dan dua ruang." } },
+  { id: "bathroom", to: "#/shop/c/bathroom", img: IMG(5, 1400), tone: TONE[1],
+    eyebrow: { en: "Bathroom", id: "Kamar Mandi" },
+    title:   { en: "Bathroom & Sanitary", id: "Kamar Mandi & Sanitasi" },
+    body:    { en: "Sanitaryware, basins and fittings for the bathroom.",
+               id: "Saniter, wastafel dan perlengkapan untuk kamar mandi." } },
+  { id: "materials", to: "#/shop/c/flooring", img: IMG(11, 1400), tone: TONE[2],
+    eyebrow: { en: "Surfaces", id: "Permukaan" },
+    title:   { en: "Building Materials", id: "Bahan Bangunan" },
+    body:    { en: "Flooring and wall surfaces.", id: "Permukaan lantai dan dinding." } },
+];
+
+const LxCategories = () => {
+  const { x } = useStore();
+  return (
+    <section className="lx-section" aria-labelledby="lx-cats-h">
+      <div className="lx-wrap">
+        <Reveal className="lx-head">
+          <div>
+            <p className="lx-eyebrow rv">{x({ en: "The Collections", id: "Koleksi" })}</p>
+            <h2 id="lx-cats-h" className="lx-h2"><span className="rise"><span>{x({ en: "Explore by space", id: "Jelajahi menurut ruang" })}</span></span></h2>
+          </div>
+          <div>
+            <p className="lx-lede rv rv-2">
+              {x({ en: "Kitchen sinks in granite composite and stainless steel, sanitaryware for the bathroom, and materials for the rest of the house.",
+                   id: "Bak cuci dapur dari komposit granit dan stainless steel, saniter untuk kamar mandi, dan material untuk bagian rumah lainnya." })}
+            </p>
+            <div className="lx-head-links rv rv-3">
+              <a href="#/products" className="lx-link"><LxLinkText>{x({ en: "See the collections", id: "Lihat koleksi" })}</LxLinkText></a>
+              <a href="#/catalogue" className="lx-link"><LxLinkText>{x({ en: "Download the catalogue", id: "Unduh katalog" })}</LxLinkText></a>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal still className="lx-cats cascade">
+          {LX_CATS.map((c, n) => (
+            <a key={c.id} href={c.to} className="lx-cat lx-hover" data-lx-cat={c.id}>
+              <Media delay={n * 90}><Photo src={c.img} alt="" tone={c.tone} className="lx-fill lx-zoom" /></Media>
+              <div className="lx-cat-shade" />
+              <span className="lx-cat-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
+              <div className="lx-cat-in">
+                <p className="lx-eyebrow">{x(c.eyebrow)}</p>
+                <h3 className="lx-cat-title">{x(c.title)}</h3>
+                <p className="lx-cat-text">{x(c.body)}</p>
+                <span className="lx-link"><LxLinkText>{x({ en: "Explore Collection", id: "Jelajahi Koleksi" })}</LxLinkText></span>
+              </div>
+            </a>
+          ))}
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+/* ── 3 · featured: the models the collection opens with (KS_SELECTED), each in its kitchen ── */
+const LX_FEATURE_IMG = { "GDU 8145": "feat-gdu-8145.webp", "GSU 7545": "feat-gsu-7545.webp",
+                         "W 7546 TSBN": "feat-w-7546-tsbn.webp", "WL 18": "feat-wl-18.webp" };
+const lxFeatured = () => KS_SELECTED.map(([kind, model, colour]) => {
+  const m = ksModels(kind).find((mm) => mm.model === model);
+  if (!m) return null;
+  return { m, row: (colour && m.rows.find((r) => r.colourId === colour)) || m.rows[0] };
+}).filter(Boolean);
+
+const LxProduct = ({ m, row }) => {
+  const { x, lang } = useStore();
+  const pic = LX_FEATURE_IMG[m.model];
+  /* the price list's price for a stainless steel sink; the granite prices were never supplied */
+  const price = m.kind !== "granite" && row.price ? rp(row.price) : null;
+  return (
+    <a href={ksDetailHref(m, row)} className="lx-product lx-hover" data-lx-product={m.model}>
+      <span className="lx-product-media">
+        {pic
+          ? <Photo src={LX_IMG(pic)} alt="" tone="#292929" className="lx-fill lx-zoom" />
+          : <Photo src={pImg(row, 0, 900)} alt="" tone={PLATE} className="no-dim lx-fill lx-zoom bg-[#F4F3F0] object-contain p-[10%]" />}
+      </span>
+      <span className="lx-product-kind">{ksTypeName(m, lang)}</span>{" "}
+      <h3 className="lx-product-name">{m.model}</h3>{" "}
+      <span className="lx-product-meta">{(m.kind === "granite" ? x(row.colour) : x(m.finish.name)) + " · " + ksSize(m, lang)}</span>{" "}
+      {price ? <><span className="lx-product-price">{price}</span>{" "}</> : null}
+      <span className="lx-link"><LxLinkText>{x({ en: "View Product", id: "Lihat Produk" })}</LxLinkText></span>
+    </a>
+  );
+};
+
+const LxFeatured = () => {
+  const { x } = useStore();
+  const items = lxFeatured();
+  if (!items.length) return null;
+  return (
+    <section className="lx-section lx-alt" aria-labelledby="lx-feat-h">
+      <div className="lx-wrap">
+        <Reveal className="lx-head">
+          <div>
+            <p className="lx-eyebrow rv">{x({ en: "Featured", id: "Pilihan" })}</p>
+            <h2 id="lx-feat-h" className="lx-h2"><span className="rise"><span>{x({ en: "Selected from the collection", id: "Pilihan dari koleksi" })}</span></span></h2>
+          </div>
+          <div>
+            <p className="lx-lede rv rv-2">
+              {x({ en: "Kitchen sinks from the range, in granite composite and stainless steel — each shown in a kitchen of its own.",
+                   id: "Bak cuci dapur dari koleksi kami, dari komposit granit dan stainless steel — masing-masing ditampilkan di dapurnya sendiri." })}
+            </p>
+            <div className="lx-head-links rv rv-3">
+              <a href="#/shop/kitchen-sinks" className="lx-link"><LxLinkText>{x({ en: "View all kitchen sinks", id: "Lihat semua bak cuci dapur" })}</LxLinkText></a>
+            </div>
+          </div>
+        </Reveal>
+        <Reveal still className="lx-products cascade">
+          {items.map(({ m, row }) => <LxProduct key={m.model} m={m} row={row} />)}
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+/* ── 4 · the house: the home page's own words about it, beside GSU 8045 in Titanium Grey ── */
+const LxBrand = () => {
+  const { x } = useStore();
+  const par = useParallax(40);
+  return (
+    <section className="lx-section" aria-labelledby="lx-brand-h">
+      <div className="lx-wrap lx-brand">
+        <Media className="lx-brand-media">
+          <div ref={par} className="par">
+            <Photo src={LX_IMG("brand.webp")} tone="#3A3631" className="lx-fill"
+              alt={x({ en: "The GSU 8045 granite sink in Titanium Grey", id: "Bak cuci granit GSU 8045 warna Abu Titanium" })} />
+          </div>
+        </Media>
+        <Reveal>
+          <p className="lx-eyebrow rv">{x({ en: "Our Story", id: "Kisah Kami" })}</p>
+          <h2 id="lx-brand-h" className="lx-h2"><span className="rise"><span>{x({ en: "A house built on one question", id: "Rumah yang dibangun dari satu pertanyaan" })}</span></span></h2>
+          <p className="lx-brand-lead rv rv-2">
+            {x({ en: "A building materials house for people who intend to stay — where a tap, a basin and a square metre of stone are chosen with the same care as the room itself.",
+                 id: "Rumah bahan bangunan untuk mereka yang berniat tinggal lama — di mana keran, wastafel dan satu meter persegi batu dipilih secermat ruangannya sendiri." })}
+          </p>
+          <p className="lx-brand-body rv rv-3">
+            {x({ en: "Will this still be good in ten years? It is the only test a product has to pass to reach our floor, and most do not. What survives it is a narrow range — fewer taps than our competitors, fewer tiles, fewer of almost everything.",
+                 id: "Apakah ini masih akan baik sepuluh tahun lagi? Itulah satu-satunya ujian yang harus dilewati sebuah produk untuk sampai ke lantai kami, dan sebagian besar gagal. Yang bertahan adalah rangkaian yang ringkas — lebih sedikit keran dari pesaing kami, lebih sedikit keramik, lebih sedikit hampir segalanya." })}
+          </p>
+          <p className="lx-brand-note rv rv-4">
+            {x({ en: "We have been answering it in Jakarta since 1998.", id: "Kami sudah menjawabnya di Jakarta sejak 1998." })}
+          </p>
+          <div className="lx-actions rv rv-5">
+            <LxButton to="#/about" ghost>{x({ en: "Discover More", id: "Selengkapnya" })}</LxButton>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+/* one picture of the spread, with its number, its name and a line under it */
+const LxMagTile = ({ tile, n }) => {
+  const { x } = useStore();
+  return (
+    <figure className={tile.cls}>
+      <a href={tile.to} className="lx-hover block">
+        <Media className="lx-mag-media" delay={n * 90}><Photo src={tile.img} alt="" tone="#292929" className="lx-fill lx-zoom" /></Media>
+        <figcaption className="lx-mag-cap">
+          <span className="lx-mag-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
+          <span className="lx-mag-label">{x(tile.label)}</span>{" "}
+          <span className="lx-mag-text">{x(tile.text)}</span>
+        </figcaption>
+      </a>
+    </figure>
+  );
+};
+
+/* ── 5 · rooms to imagine: a magazine spread — a kitchen, a bathroom, a material, and the house's own line ── */
+const LxInspiration = () => {
+  const { x } = useStore();
+  const model = (name) => ksModels("stainless-steel").find((mm) => mm.model === name);
+  const tdg = model("W 8550 TDG"), lps = model("LPS 9643 A");
+  const tiles = [
+    { cls: "lx-mag-a", img: LX_IMG("inspire-kitchen.webp"), to: tdg ? ksDetailHref(tdg) : "#/shop/kitchen-sinks",
+      label: { en: "Modern kitchens", id: "Dapur modern" },
+      text:  { en: "W 8550 TDG, hand made in stainless steel, on a light quartz island.",
+               id: "W 8550 TDG, hand made dari stainless steel, di atas meja island kuarsa terang." } },
+    { cls: "lx-mag-b", img: "img/collections/sanitaryware.jpg", to: "#/shop/c/bathroom",
+      label: { en: "Bathrooms", id: "Kamar mandi" },
+      text:  { en: "Clean, lasting forms for the bathroom.", id: "Bentuk yang bersih dan awet untuk kamar mandi." } },
+    { cls: "lx-mag-c", img: LX_IMG("inspire-material.webp"), to: lps ? ksDetailHref(lps) : "#/shop/kitchen-sinks",
+      label: { en: "Materials", id: "Material" },
+      text:  { en: "Mat polished stainless steel — the drainer of the LPS 9643 A.",
+               id: "Stainless steel mat polished — papan tiris LPS 9643 A." } },
+  ];
+  return (
+    <section className="lx-section lx-alt" aria-labelledby="lx-insp-h">
+      <div className="lx-wrap">
+        <Reveal className="lx-head">
+          <div>
+            <p className="lx-eyebrow rv">{x({ en: "Interior Inspiration", id: "Inspirasi Interior" })}</p>
+            <h2 id="lx-insp-h" className="lx-h2"><span className="rise"><span>{x({ en: "Imagine it in your home", id: "Bayangkan di rumah Anda" })}</span></span></h2>
+          </div>
+          <div>
+            <p className="lx-lede rv rv-2">
+              {x({ en: "Kitchens, bathrooms and the materials around them — a few rooms to start from.",
+                   id: "Dapur, kamar mandi, dan material di sekitarnya — beberapa ruangan sebagai titik awal." })}
+            </p>
+            <div className="lx-head-links rv rv-3">
+              <a href="#/virtual-showroom" className="lx-link"><LxLinkText>{x({ en: "Enter the virtual showroom", id: "Masuk ke showroom virtual" })}</LxLinkText></a>
+            </div>
+          </div>
+        </Reveal>
+        <Reveal still className="lx-mag cascade">
+          <LxMagTile tile={tiles[0]} n={0} />
+          <LxMagTile tile={tiles[1]} n={1} />
+          <blockquote className="lx-mag-q">
+            <p className="lx-quote">{x({ en: "A room is finished when nothing in it asks for attention.",
+                                          id: "Sebuah ruangan selesai ketika tidak ada satu pun di dalamnya yang menuntut perhatian." })}</p>
+            <p className="lx-quote-by">{x({ en: "Maju Terus Jaya — House of Materials", id: "Maju Terus Jaya — Rumah Material" })}</p>
+          </blockquote>
+          <LxMagTile tile={tiles[2]} n={2} />
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+/* ── 7 · the way on: GST 7546 under a deep shade ── */
+const LxClose = () => {
+  const { x } = useStore();
+  const par = useParallax(60);
+  return (
+    <section className="lx-close" aria-labelledby="lx-close-h">
+      <Media><div ref={par} className="par"><Photo src={LX_IMG("closing.webp")} alt="" tone="#292929" className="lx-fill" /></div></Media>
+      <div className="lx-close-shade" />
+      <Reveal className="lx-close-in lx-wrap on-dark">
+        <p className="lx-eyebrow rv">{BRAND}</p>
+        <h2 id="lx-close-h" className="lx-h2"><span className="rise"><span>{x({ en: "Find the Perfect Elements for Your Space.", id: "Temukan Elemen yang Tepat untuk Ruang Anda." })}</span></span></h2>
+        <div className="lx-close-rule rv rv-2" />
+        <div className="lx-actions rv rv-3">
+          <LxButton to="#/shop/all">{x({ en: "Explore Products", id: "Jelajahi Produk" })}</LxButton>
+          <LxButton to="#/contact" ghost>{x({ en: "Contact Us", id: "Hubungi Kami" })}</LxButton>
+        </div>
+      </Reveal>
+    </section>
+  );
+};
+
+/* The page itself. While it is open the ground behind it is dark too ([data-lux-page] on the root). The earlier
+   home page's opening, statement, room tiles, collections block, quote band and shop door are replaced by the
+   sections above (their words and links carried into them); Hero, Intro, RoomGrid, Statement and ShopDoor are
+   kept below as they were, unused, until the new page is approved. */
+const HomePage = () => {
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute("data-lux-page", "");
+    return () => root.removeAttribute("data-lux-page");
+  }, []);
+  return (
+    <>
+      <LxHero />
+      <LxCategories />
+      <LxFeatured />
+      <LxBrand />
+      <LxInspiration />
+      <InSitu />
+      <Finishes />
+      <Services />
+      <JournalRail />
+      <Newsletter />
+      <LxClose />
+    </>
+  );
+};
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ACCOUNT  (shop side)
@@ -17018,8 +17544,9 @@ const Shell = () => {
   if (route.name === "ksPrint") return <KsPrint doc={route.doc} lang={route.lang} page={route.page} />;
   const shop = route.side === "shop";
   const flush = !shop && (route.name === "home" || route.name === "catalogue");   // the brand hero, and the catalogue's stage, run under the bar
+  const lux = !shop && route.name === "home";   // the home page is set on charcoal in both themes ([data-lux], .lx-* in the stylesheet)
   return (
-    <div data-side={route.side} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
+    <div data-side={route.side} data-lux={lux ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
       <SiteHeader />
       {/* The dip that covers a change of language runs on the page and on
           the bar separately rather than on this wrapper: an element mid-way

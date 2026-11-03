@@ -18,12 +18,35 @@
     if (!t) t = "dark";
     document.documentElement.setAttribute("data-theme", t);
   })();
+  /* A visit that opens on the home page asks for its first picture now, while the app is still on its way, so the
+     picture is there when the page is: the phone's crop on a narrow screen, as the <picture> chooses. A visit that
+     opens deeper in asks for nothing. */
+  (function () {
+    var h = location.hash;
+    if (h && h !== "#" && h !== "#/") return;
+    var l = document.createElement("link");
+    l.rel = "preload"; l.as = "image"; l.type = "image/webp";
+    l.href = window.matchMedia && window.matchMedia("(max-width: 767px)").matches ? "img/home/hero-tall.webp" : "img/home/hero-wide.webp";
+    document.head.appendChild(l);
+  })();
 </script>
-<title>JSM — Supermarket Bahan Bangunan</title>
+<title>Maju Terus Jaya — Supermarket Bahan Bangunan</title>
+<meta name="description" content="Maju Terus Jaya — kitchen sinks in granite composite and stainless steel, bathroom and building materials. Discover thoughtfully selected materials and products that bring elegance, functionality, and lasting quality to your spaces." />
+<meta name="theme-color" content="#171717" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Maju Terus Jaya" />
+<meta property="og:title" content="Maju Terus Jaya — Elevate Your Living Spaces." />
+<meta property="og:description" content="Discover thoughtfully selected materials and products that bring elegance, functionality, and lasting quality to your spaces." />
+<meta property="og:url" content="https://jasonvw808-create.github.io/MTJ/" />
+<meta property="og:image" content="https://jasonvw808-create.github.io/MTJ/img/home/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,200..400&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -11332,31 +11355,6 @@ const InSitu = () => {
   );
 };
 
-const EditorialSplit = ({ flip = false, eyebrow, title, body, links, img, tone }) => {
-  const { x } = useStore();
-  return (
-    <section className="w-full">
-      <Reveal>
-        <div className="grid grid-cols-1 items-stretch lg:grid-cols-2">
-          <div className={"aspect-[4/5] w-full overflow-hidden bg-concrete md:aspect-[16/11] lg:aspect-auto lg:min-h-[640px] " + (flip ? "lg:order-2" : "")}>
-            <Photo src={img} alt={x(title)} tone={tone} className="h-full w-full object-cover" />
-          </div>
-          <div className={"flex items-center bg-shell " + (flip ? "lg:order-1" : "")}>
-            <div className="mx-auto w-full max-w-[520px] px-5 py-20 md:px-16 md:py-28">
-              <Eyebrow>{x(eyebrow)}</Eyebrow>
-              <h2 className="mt-7 text-[38px] font-medium leading-[1.08] md:text-[52px]">{x(title)}</h2>
-              <p className="mt-8 max-w-[55ch] text-[15.5px] leading-[1.8] text-mute">{x(body)}</p>
-              <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-                {links.map((l, n) => (<a key={n} href={l.to} className="u text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink">{x(l.label)}</a>))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Reveal>
-    </section>
-  );
-};
-
 const Services = () => {
   const { x } = useStore();
   return (
@@ -11441,101 +11439,6 @@ const Newsletter = () => {
             {sent ? t("requestSent") : x({ en: "By subscribing you agree to our Privacy Policy.", id: "Dengan berlangganan Anda menyetujui Kebijakan Privasi kami." })}
           </p>
         </Reveal>
-      </div>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   GRANITE SHOWCASE
-   The sink category gets its own treatment rather than a row of cards: one
-   large photograph that changes with the colourway you pick, the six models
-   listed beside it, and the specification underneath. The images are the
-   seventeen supplied photographs — nothing here is generated or substituted.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const GraniteShowcase = () => {
-  const { t, x } = useStore();
-  const sinks = useMemo(() => CATALOG.filter((p) => p.cat === "sinks"), []);
-  const models = useMemo(() => modelsIn(sinks), [sinks]);
-  const [model, setModel] = useState(models[0]);
-  const variants = useMemo(() => sinks.filter((p) => p.model === model), [sinks, model]);
-  const [vi, setVi] = useState(0);
-  const current = variants[Math.min(vi, variants.length - 1)] || sinks[0];
-  useEffect(() => { setVi(0); }, [model]);
-
-  return (
-    <section className="w-full bg-shell py-[110px] md:py-[170px]">
-      <div className="mx-auto max-w-site px-5 md:px-10">
-        <SectionHead
-          eyebrow={{ en: "The Collection", id: "Koleksi" }}
-          title={{ en: "Granite kitchen sinks", id: "Bak cuci granit" }}
-          lede={{ en: "Six models cast from quartz composite at eighty per cent mineral content, cured slowly so the surface takes heat, stains and a dropped pan without complaint.",
-                  id: "Enam model dari komposit kuarsa dengan kandungan mineral delapan puluh persen, dikeraskan perlahan agar permukaannya tahan panas, noda dan panci yang terjatuh." }}
-          to="#/shop/c/sinks" linkLabel={t("viewAll")} />
-
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-14">
-          {/* the picture */}
-          <Reveal className="md:col-span-7">
-            <a href={`#/shop/p/${current.slug}`} className="group block">
-              <div className={"frame relative aspect-[4/3] w-full " + pPlate(current)}>
-                <Photo key={current.slug} src={pImg(current, 0, 1600)} alt={x(current.name)} tone={pTone(current)}
-                  className={"absolute inset-0 h-full w-full transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.03] " + pFit(current)} />
-              </div>
-            </a>
-            {/* the colourways of the chosen model */}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              {variants.map((v, n) => (
-                <button key={v.slug} onClick={() => setVi(n)} aria-pressed={n === vi}
-                  aria-label={x(v.colour || v.name)} title={x(v.colour || v.name)}
-                  className={"h-[38px] w-[38px] rounded-full border p-[3px] transition-colors duration-500 " +
-                    (n === vi ? "border-ink" : "border-line hover:border-mute")}>
-                  <span className="block h-full w-full rounded-full" style={{ background: v.finishes[0].hex }} />
-                </button>
-              ))}
-              <span className="ml-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
-                {x(current.colour || "")}
-              </span>
-            </div>
-          </Reveal>
-
-          {/* the models, and the specification of whichever is showing */}
-          <Reveal delay={140} className="md:col-span-5">
-            <div className="border-t border-line">
-              {models.map((m) => {
-                const on = m === model;
-                return (
-                  <button key={m} onClick={() => setModel(m)}
-                    className="flex w-full items-baseline justify-between gap-6 border-b border-line py-6 text-left transition-colors duration-500">
-                    <span className={"text-[21px] font-medium tracking-[-0.012em] transition-colors duration-500 " + (on ? "text-ink" : "text-mute hover:text-ink")}>{m}</span>
-                    <span className={"text-[11.5px] font-medium uppercase tracking-[0.08em] transition-opacity duration-500 " + (on ? "text-mute opacity-100" : "opacity-0")}>
-                      {sinks.filter((s) => s.model === m).length} {t("colours")}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("specifications")}</p>
-              <dl className="mt-5 flex flex-col">
-                {(current.spec || []).slice(0, 4).map(([k, v], n) => (
-                  <div key={n} className="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
-                    <dt className="text-[13.5px] text-mute">{x(k)}</dt>
-                    <dd className="text-right text-[13.5px] font-medium text-ink">{x(v)}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="mt-8 flex items-baseline justify-between gap-6">
-                <p className="text-[24px] font-semibold tabular-nums text-ink">{rp(current.price)}</p>
-                <p className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
-                  <span className={"h-[5px] w-[5px] shrink-0 rounded-full " + (stockOf(current) === "inStock" ? "bg-ink" : stockOf(current) === "lowStock" ? "bg-accent" : "bg-line")} />
-                  {t(stockOf(current))}
-                </p>
-              </div>
-              <div className="mt-8"><Action onClick={() => go(`#/shop/p/${current.slug}`)}>{t("viewDetails")}</Action></div>
-            </div>
-          </Reveal>
-        </div>
       </div>
     </section>
   );

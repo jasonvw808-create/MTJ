@@ -1331,7 +1331,14 @@
   [data-side] footer [data-ft="label"] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .22em; }
   [data-side] footer a.u::after { background: rgb(var(--accent)); }
   /* the veil behind an open menu dims the page in the dark too (the type colour it is drawn in is ivory there) */
-  :root[data-theme="dark"] .bg-ink\/20, [data-lux] .bg-ink\/20 { background-color: rgb(0 0 0 / .5); }
+  :root[data-theme="dark"] :is(.bg-ink\/20, .bg-ink\/25, .bg-ink\/30),
+  [data-lux] :is(.bg-ink\/20, .bg-ink\/25, .bg-ink\/30) { background-color: rgb(0 0 0 / .55); }
+  :root[data-theme="dark"] .bg-ink\/80, [data-lux] .bg-ink\/80 { background-color: rgb(0 0 0 / .86); }
+  /* a field that needs attention: its rule and its message in a muted red, 6.1:1 on paper and 7.6:1 on charcoal */
+  :root { --err: 164 61 46; }
+  :root[data-theme="dark"], [data-lux] { --err: 226 150 132; }
+  input.f-err { border-color: rgb(var(--err)) !important; }
+  .f-err-msg { display: block; margin-top: 8px; font-size: 12px; line-height: 1.5; color: rgb(var(--err)); }
 
   /* ── the parts every section shares ── */
   .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
@@ -9718,14 +9725,19 @@ const Action = ({ children, onClick, disabled, type = "button", className = "" }
   </button>
 );
 
-const Field = ({ label, type = "text", value, onChange, required, placeholder, autoComplete, className = "" }) => (
-  <label className={"block " + className}>
-    <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{label}</span>
-    <input type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required}
-      placeholder={placeholder} autoComplete={autoComplete}
-      className="h-11 w-full border-b border-line bg-transparent text-[13.5px] font-medium text-ink transition-colors duration-500 placeholder:text-mute/85 focus:border-ink focus:outline-none" />
-  </label>
-);
+/* A field. Given an error, it says so under itself, and a screen reader hears it with the field. */
+const Field = ({ label, type = "text", value, onChange, required, placeholder, autoComplete, className = "", error = null, name }) => {
+  const eid = React.useId();
+  return (
+    <label className={"block " + className}>
+      <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{label}</span>
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required} name={name}
+        placeholder={placeholder} autoComplete={autoComplete} aria-invalid={error ? true : undefined} aria-describedby={error ? eid : undefined}
+        className={"h-11 w-full border-b border-line bg-transparent text-[13.5px] font-medium text-ink transition-colors duration-500 placeholder:text-mute/85 focus:border-ink focus:outline-none" + (error ? " f-err" : "")} />
+      {error ? <span id={eid} className="f-err-msg">{error}</span> : null}
+    </label>
+  );
+};
 
 const Accordion = ({ title, children, defaultOpen = false }) => {
   const [open, setOpen] = useState(defaultOpen);
@@ -12402,14 +12414,18 @@ const ListPage = ({ cat, view }) => {
    ═══════════════════════════════════════════════════════════════════════════ */
 /* Takes a delta, never a computed value: two clicks in one frame would
    otherwise both read the same stale `value` and land on the same number. */
-const Qty = ({ value, onDelta, label }) => (
+/* the two buttons name what they do, so a screen reader says more than "minus" and "plus" */
+const Qty = ({ value, onDelta, label }) => {
+  const { x } = useStore();
+  return (
   <div className="inline-flex items-center border border-line">
-    <button onClick={() => onDelta(-1)} aria-label="−" className="flex h-11 w-11 items-center justify-center text-mute transition-colors duration-300 hover:text-ink"><Icon name="minus" size={13} /></button>
+    <button onClick={() => onDelta(-1)} aria-label={x({ en: "Decrease quantity", id: "Kurangi jumlah" })} className="flex h-11 w-11 items-center justify-center text-mute transition-colors duration-300 hover:text-ink"><Icon name="minus" size={13} /></button>
     <span className="w-10 text-center text-[12.5px] tabular-nums" aria-label={label}>{value}</span>
-    <button onClick={() => onDelta(1)} aria-label="+" disabled={value >= 99}
+    <button onClick={() => onDelta(1)} aria-label={x({ en: "Increase quantity", id: "Tambah jumlah" })} disabled={value >= 99}
       className={"flex h-11 w-11 items-center justify-center transition-colors duration-300 " + (value >= 99 ? "text-line" : "text-mute hover:text-ink")}><Icon name="plus" size={13} /></button>
   </div>
-);
+  );
+};
 
 /* Click any product image for a larger look. Arrow keys walk a multi-image
    gallery; Escape closes. */
@@ -12831,8 +12847,8 @@ const BagPage = () => {
       <p className="mx-auto mt-8 max-w-[420px] text-[30px] font-medium leading-[1.4] md:text-[36px]">{t("emptyBag")}</p>
       <p className="mx-auto mt-7 max-w-[42ch] text-[15.5px] leading-[1.8] text-mute">{t("emptyBagNote")}</p>
       <div className="mt-12 flex flex-wrap justify-center gap-4">
-        {["kitchen", "bathroom"].map((c) => (
-          <a key={c} href={`#/shop/c/${c}`} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(catLabel(c))}</a>
+        {[["#/shop/kitchen-sinks", { en: "Kitchen sinks", id: "Bak cuci dapur" }], ["#/shop/c/kitchen", catLabel("kitchen")], ["#/shop/c/bathroom", catLabel("bathroom")]].map(([to, label]) => (
+          <a key={to} href={to} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(label)}</a>
         ))}
       </div>
     </div>
@@ -12874,7 +12890,7 @@ const BagPage = () => {
         </div>
 
         <div className="lg:col-span-5 xl:col-span-4">
-          <div className="lg:sticky lg:top-[140px]">
+          <div className="lg:sticky lg:top-[186px]">
             <div className="border border-line p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.11em]">{t("orderSummary")}</p>
               <div className="mt-6 border-t border-line pt-2">
@@ -12921,8 +12937,21 @@ const CheckoutPage = () => {
 
   const shipping = SHIP.find((s) => s.id === ship).price;
   const total = subtotal + shipping;
-  const req = ["name", "phone", "address", "city"];
-  const valid = req.every((k) => f[k].trim().length > 1);
+  /* what each field needs: a name, a number that can be called, an address unless the order is collected in store;
+     an email and a postal code are optional, but if given they have to be whole */
+  const pickup = ship === "pickup";
+  const digits = (v) => (v.match(/\d/g) || []).length;
+  const errs = {
+    name:    f.name.trim().length < 2 ? x({ en: "Please enter your full name.", id: "Mohon isi nama lengkap Anda." }) : null,
+    phone:   digits(f.phone) < 8 ? x({ en: "Please enter a phone number we can call — at least 8 digits.", id: "Mohon isi nomor telepon yang bisa dihubungi — minimal 8 digit." }) : null,
+    email:   f.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim()) ? x({ en: "This email address looks incomplete.", id: "Alamat email ini tampaknya belum lengkap." }) : null,
+    address: !pickup && f.address.trim().length < 5 ? x({ en: "Please enter the delivery address.", id: "Mohon isi alamat pengiriman." }) : null,
+    city:    !pickup && f.city.trim().length < 2 ? x({ en: "Please enter the city.", id: "Mohon isi kota." }) : null,
+    zip:     f.zip.trim() && !/^\d{5}$/.test(f.zip.trim()) ? x({ en: "A postal code has five digits.", id: "Kode pos terdiri dari lima digit." }) : null,
+  };
+  const bad = Object.keys(errs).filter((k) => errs[k]);
+  const valid = !bad.length;
+  const err = (k) => (touched ? errs[k] : null);
 
   if (!items.length) return (
     <div className="mx-auto max-w-site px-5 py-[130px] text-center md:px-10 md:py-[190px]">
@@ -12934,11 +12963,15 @@ const CheckoutPage = () => {
   const submit = (e) => {
     e.preventDefault();
     setTouched(true);
-    if (!valid) return;
+    if (!valid) {
+      const el = document.querySelector('[name="co-' + bad[0] + '"]');
+      if (el) { el.scrollIntoView({ block: "center", behavior: motionAllowed() ? "smooth" : "auto" }); el.focus({ preventScroll: true }); }
+      return;
+    }
     const id = BRAND_SHORT + "-2026-" + String(Math.floor(1000 + Math.random() * 8999));
     const order = {
       id, name: f.name, phone: f.phone, email: f.email,
-      address: `${f.address}, ${f.city}${f.zip ? " " + f.zip : ""}`,
+      address: [f.address.trim(), f.city.trim()].filter(Boolean).join(", ") + (f.zip.trim() ? " " + f.zip.trim() : "") || x(SHIP.find((s) => s.id === "pickup").label),
       ship: SHIP.find((s) => s.id === ship), pay: PAY.find((p) => p.id === pay),
       items: items.map((l) => ({ slug: l.slug, name: l.product.name, material: l.product.material, finish: l.finish, qty: l.qty, price: l.product.price, img: pImg(l.product, 0, 300) })),
       subtotal, shipping, total,
@@ -12971,18 +13004,19 @@ const CheckoutPage = () => {
           <section className="border-t border-line pt-10">
             <Step n="01" title={t("contact")} />
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-              <Field label={t("name")} value={f.name} onChange={set("name")} autoComplete="name" className="sm:col-span-2" />
-              <Field label={t("phone")} type="tel" value={f.phone} onChange={set("phone")} autoComplete="tel" placeholder="08xx xxxx xxxx" />
-              <Field label={t("email")} type="email" value={f.email} onChange={set("email")} autoComplete="email" />
+              <Field label={t("name")} value={f.name} onChange={set("name")} autoComplete="name" className="sm:col-span-2" name="co-name" error={err("name")} />
+              <Field label={t("phone")} type="tel" value={f.phone} onChange={set("phone")} autoComplete="tel" placeholder="08xx xxxx xxxx" name="co-phone" error={err("phone")} />
+              <Field label={x({ en: "Email (optional)", id: "Email (opsional)" })} type="email" value={f.email} onChange={set("email")} autoComplete="email" name="co-email" error={err("email")} />
             </div>
           </section>
 
           <section className="mt-16 border-t border-line pt-10">
             <Step n="02" title={t("address")} />
+            {pickup ? <p className="-mt-3 mb-7 text-[13px] leading-[1.7] text-mute" data-co-pickup="">{x({ en: "Collecting in store — the address is optional.", id: "Ambil di toko — alamat boleh dikosongkan." })}</p> : null}
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-              <Field label={t("address")} value={f.address} onChange={set("address")} autoComplete="street-address" className="sm:col-span-2" />
-              <Field label={t("city")} value={f.city} onChange={set("city")} autoComplete="address-level2" />
-              <Field label={t("zip")} value={f.zip} onChange={set("zip")} autoComplete="postal-code" />
+              <Field label={t("address")} value={f.address} onChange={set("address")} autoComplete="street-address" className="sm:col-span-2" name="co-address" error={err("address")} />
+              <Field label={t("city")} value={f.city} onChange={set("city")} autoComplete="address-level2" name="co-city" error={err("city")} />
+              <Field label={x({ en: "Postal code (optional)", id: "Kode pos (opsional)" })} value={f.zip} onChange={set("zip")} autoComplete="postal-code" name="co-zip" error={err("zip")} />
               <Field label={t("notes")} value={f.notes} onChange={set("notes")} className="sm:col-span-2" />
             </div>
           </section>
@@ -13024,7 +13058,7 @@ const CheckoutPage = () => {
         </div>
 
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-[140px]">
+          <div className="lg:sticky lg:top-[186px]">
             <div className="border border-line p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.11em]">{t("yourOrder")} <span className="text-mute">({String(count).padStart(2, "0")})</span></p>
               <div className="mt-7 flex flex-col gap-6 border-t border-line pt-7">
@@ -13046,8 +13080,11 @@ const CheckoutPage = () => {
                 <SummaryRow label={t("shipping")} value={shipping ? rp(shipping) : t("free")} />
                 <div className="mt-2 border-t border-line pt-2"><SummaryRow label={t("total")} value={rp(total)} strong /></div>
               </div>
-              <div className="mt-8"><Action type="submit" disabled={touched && !valid}>{t("placeOrder")}</Action></div>
-              <p className={"mt-4 text-center text-[11px] text-accent transition-opacity duration-300 " + (touched && !valid ? "opacity-100" : "opacity-0")}>{t("required")}</p>
+              <div className="mt-8"><Action type="submit">{t("placeOrder")}</Action></div>
+              <p role="status" className={"mt-4 text-center text-[12px] leading-[1.6] transition-opacity duration-300 " + (touched && !valid ? "opacity-100" : "opacity-0")} style={{ color: "rgb(var(--err))" }} data-co-status="">
+                {touched && !valid ? (bad.length === 1 ? x({ en: "One field needs attention.", id: "Satu isian perlu diperiksa." })
+                                                       : x({ en: bad.length + " fields need attention.", id: bad.length + " isian perlu diperiksa." })) : t("required")}
+              </p>
             </div>
           </div>
         </div>
@@ -13816,8 +13853,8 @@ const ComparePage = () => {
       <p className="mx-auto mt-8 max-w-[420px] text-[30px] font-medium leading-[1.4] md:text-[36px]">{t("compareEmpty")}</p>
       <p className="mx-auto mt-7 max-w-[44ch] text-[15.5px] leading-[1.8] text-mute">{t("compareEmptySub")}</p>
       <div className="mt-12 flex flex-wrap justify-center gap-4">
-        {["kitchen", "bathroom"].map((c) => (
-          <a key={c} href={`#/shop/c/${c}`} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(catLabel(c))}</a>
+        {[["#/shop/kitchen-sinks", { en: "Kitchen sinks", id: "Bak cuci dapur" }], ["#/shop/c/kitchen", catLabel("kitchen")], ["#/shop/c/bathroom", catLabel("bathroom")]].map(([to, label]) => (
+          <a key={to} href={to} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(label)}</a>
         ))}
       </div>
     </div>

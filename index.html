@@ -6,7 +6,8 @@
 <script>
   /* The theme goes on before the first paint. A page someone left dark
      opens dark, instead of light for the moment the app takes to start;
-     with no choice saved, the device's own setting decides. The app reads
+     with no choice saved, the page opens dark — the house style is dark —
+     and the light theme is one press of the switch away. The app reads
      this attribute back, so the two can never disagree.                  */
   (function () {
     var t = null;
@@ -14,10 +15,7 @@
       var s = JSON.parse(localStorage.getItem("jsm.store.v1") || "null");
       if (s && (s.theme === "dark" || s.theme === "light")) t = s.theme;
     } catch (e) {}
-    if (!t) {
-      try { t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
-      catch (e) { t = "light"; }
-    }
+    if (!t) t = "dark";
     document.documentElement.setAttribute("data-theme", t);
   })();
 </script>
@@ -68,16 +66,16 @@
     color-scheme: light;
   }
   :root[data-theme="dark"] {
-    --bone: 21 20 18;     --shell: 28 27 24;     --concrete: 35 33 30;
-    --ink:  240 238 233;  --mute:  158 154 147;  --line: 48 46 42;
-    --accent: 201 168 124;            /* soft brass — 7.17:1 on concrete */
+    --bone: 23 23 23;     --shell: 34 34 34;     --concrete: 41 41 41;
+    --ink:  245 240 232;  --mute:  168 162 154;  --line: 58 56 53;
+    --accent: 182 154 114;            /* bronze — 5.4:1 on a card, 6.7:1 on the ground */
     color-scheme: dark;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bone: 21 20 18;     --shell: 28 27 24;     --concrete: 35 33 30;
-      --ink:  240 238 233;  --mute:  158 154 147;  --line: 48 46 42;
-      --accent: 201 168 124;
+      --bone: 23 23 23;     --shell: 34 34 34;     --concrete: 41 41 41;
+      --ink:  245 240 232;  --mute:  168 162 154;  --line: 58 56 53;
+      --accent: 182 154 114;
       color-scheme: dark;
     }
   }
@@ -537,12 +535,12 @@
     --sup-shadow: 0 24px 60px -18px rgba(26,26,26,.42), 0 4px 14px rgba(26,26,26,.16);
   }
   :root[data-theme="dark"] {
-    --sup-bg: 38 36 31;
+    --sup-bg: 41 41 41;
     --sup-shadow: 0 24px 60px -18px rgba(0,0,0,.78), 0 4px 14px rgba(0,0,0,.5);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --sup-bg: 38 36 31;
+      --sup-bg: 41 41 41;
       --sup-shadow: 0 24px 60px -18px rgba(0,0,0,.78), 0 4px 14px rgba(0,0,0,.5);
     }
   }
@@ -586,8 +584,8 @@
      tokens. Every state is an attribute on the stage rather than a class,
      so walking about never asks the stylesheet to rebuild.               */
   .vs-stage {
-    --bone: 21 20 18; --shell: 28 27 24; --concrete: 35 33 30;
-    --ink: 240 238 233; --mute: 158 154 147; --line: 54 51 47; --accent: 201 168 124;
+    --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41;
+    --ink: 245 240 232; --mute: 168 162 154; --line: 58 56 53; --accent: 182 154 114;
     --vs-ease: cubic-bezier(0.16, 1, 0.3, 1);
     position: relative; isolation: isolate; overflow: hidden;
     height: clamp(600px, calc(100vh - 112px), 920px);
@@ -1173,8 +1171,8 @@
      them, and the cards, in warm ivory, hold light values in turn. Champagne (the dark theme's accent) for the small
      type and the rules; a light serif for the headlines, as in the two catalogues; Inter for the rest. The bar runs
      over the stage as it does over the home page's hero (36 + 96 px), so the opening leaves room for it. */
-  .cl { --bone: 21 20 18; --shell: 28 27 24; --concrete: 35 33 30; --ink: 240 238 233; --mute: 158 154 147;
-        --line: 48 46 42; --accent: 201 168 124; color-scheme: dark;
+  .cl { --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41; --ink: 245 240 232; --mute: 168 162 154;
+        --line: 58 56 53; --accent: 182 154 114; color-scheme: dark;
         --cl-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
         background: rgb(var(--bone)); color: rgb(var(--ink)); }
   .cl-eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: rgb(var(--accent)); }
@@ -1292,11 +1290,10 @@
      Bronze is kept for the small type, the hairlines and the hover states — never a fill at rest. Headlines are set
      in Source Serif 4 at its lightest, as in the two catalogues; everything else stays in Inter. Every movement is
      the site's own (Reveal, Media, .rise, the drift), so reduced motion takes them all away in one place. */
+  :root { --lx-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif; --lx-ease: cubic-bezier(0.16, 1, 0.3, 1); }
   [data-lux] {
     --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41;
     --ink: 245 240 232; --mute: 168 162 154; --line: 58 56 53; --accent: 182 154 114;
-    --lx-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-    --lx-ease: cubic-bezier(0.16, 1, 0.3, 1);
     color-scheme: dark;
   }
   /* behind the page, too, so an overscroll or a short window never shows the light theme's paper */
@@ -1310,31 +1307,31 @@
   [data-lux] ::selection { background: rgb(var(--accent) / .32); color: rgb(var(--ink)); }
   /* the sections kept from the earlier home page: their grounds on the second tone, their headlines in the serif */
   [data-lux] main section.bg-concrete { background-color: rgb(var(--shell)); }
-  [data-lux] main h1, [data-lux] main h2 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.012em; }
   [data-lux] main h3 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.01em; }
-  [data-lux] main [data-eyebrow] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .26em; }
   [data-lux] main > section.max-w-site + section.max-w-site { padding-top: 0; }
   /* a rail that scrolls sideways on a phone keeps its first card off the edge of the screen */
   @media (max-width: 767.98px) { [data-lux] main .snap-x { scroll-padding-inline: 20px; } }
 
-  /* the bar: clear over the photograph, charcoal once the page moves under it — translucent, so the page reads on
-     beneath it. Its seven places keep their order and their names; they are set a little wider and lighter, and the
-     line that marks the one you are on (or the one under the pointer) is drawn in bronze. */
-  [data-lux] [data-bar="solid"] { background-color: rgb(23 23 23 / .9);
+  /* ── THE HOUSE STYLE, ON EVERY PAGE ([data-side] is the shell; the catalogue's print pages are outside it) ──
+     Headlines in the serif; the small type over them in bronze. The bar: clear over a photograph, the ground once
+     the page moves under it — translucent, so the page reads on beneath it; its places set a little wider and
+     lighter, the line under the one you are on (or the one under the pointer) drawn in bronze. The phone's menu in
+     the serif, large enough to land a thumb on; the footer's column names in bronze. In the light theme the same
+     rules draw in its own ink and bronze. */
+  [data-side] main h1, [data-side] main h2 { font-family: var(--lx-serif); font-weight: 300; letter-spacing: -0.012em; }
+  .font-serif-lx { font-family: var(--lx-serif); letter-spacing: -0.01em; }
+  [data-side] [data-eyebrow] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .26em; }
+  [data-side] [data-bar="solid"] { background-color: rgb(var(--bone) / .9);
     -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); }
-  [data-lux] [data-nav] { font-weight: 500; letter-spacing: .16em; }
-  [data-lux] [data-bar] nav .u::after { background: rgb(var(--accent)); height: 1px; bottom: -5px; }
-  /* the veil behind an open menu dims the page, as it does on a light one (the type colour is ivory here) */
-  [data-lux] .bg-ink\/20 { background-color: rgb(0 0 0 / .5); }
-  [data-lux] [data-bar="clear"] [data-nav]:not([aria-current="page"]) { opacity: .78; }
-  /* the phone's menu: the same seven places, in the serif, large enough to land a thumb on */
-  [data-lux] [data-nav-mobile] { font-family: var(--lx-serif); font-weight: 300; font-size: 26px; letter-spacing: -0.01em; }
-  [data-lux] [data-nav-mobile="shop"] { color: rgb(var(--accent)); }
-
-  /* the footer: the same columns and the same links, on the ground, with the column names in bronze */
-  [data-lux] footer [data-ft="label"] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .22em; }
-  [data-lux] footer [data-ft="about"] { color: rgb(var(--mute)); }
-  [data-lux] footer a.u::after { background: rgb(var(--accent)); }
+  [data-side] [data-nav] { font-weight: 500; letter-spacing: .16em; }
+  [data-side] [data-bar] nav .u::after { background: rgb(var(--accent)); height: 1px; bottom: -5px; }
+  [data-side] [data-bar="clear"] [data-nav]:not([aria-current="page"]) { opacity: .78; }
+  [data-side] [data-nav-mobile] { font-family: var(--lx-serif); font-weight: 300; font-size: 26px; letter-spacing: -0.01em; }
+  [data-side] [data-nav-mobile="shop"] { color: rgb(var(--accent)); }
+  [data-side] footer [data-ft="label"] { color: rgb(var(--accent)); font-weight: 500; letter-spacing: .22em; }
+  [data-side] footer a.u::after { background: rgb(var(--accent)); }
+  /* the veil behind an open menu dims the page in the dark too (the type colour it is drawn in is ivory there) */
+  :root[data-theme="dark"] .bg-ink\/20, [data-lux] .bg-ink\/20 { background-color: rgb(0 0 0 / .5); }
 
   /* ── the parts every section shares ── */
   .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
@@ -9357,16 +9354,12 @@ const reducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const systemTheme = () =>
-  (typeof window !== "undefined" && window.matchMedia &&
-   window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
-
 /* The theme the page opened in. The script in <head> has already put it on
-   the page before the first paint — a saved choice, or the device's — so
+   the page before the first paint — a saved choice, or the house's dark — so
    the app starts from what is on screen and never repaints it at mount. */
 const bootTheme = () => {
   const on = typeof document !== "undefined" ? document.documentElement.getAttribute("data-theme") : null;
-  return on === "dark" || on === "light" ? on : (BOOT.theme || systemTheme());
+  return on === "dark" || on === "light" ? on : (BOOT.theme || "dark");
 };
 
 /* Put a theme on the page in one step. A link, a button or the bar with a
@@ -9539,16 +9532,8 @@ const useTheme = () => {
     me.timer = window.setTimeout(end, dur + 80);
   }, []);
 
-  /* With nothing chosen, the site follows the device — some switch to dark
-     at sunset. There is no button to open a circle from, so the page
-     dissolves from one theme to the other instead. */
-  useEffect(() => {
-    const mq = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
-    if (!mq) return undefined;
-    const onSystem = (e) => { if (!chosen.current) switchTo(e.matches ? "dark" : "light", null); };
-    mq.addEventListener ? mq.addEventListener("change", onSystem) : mq.addListener(onSystem);
-    return () => { mq.removeEventListener ? mq.removeEventListener("change", onSystem) : mq.removeListener(onSystem); };
-  }, [switchTo]);
+  /* With nothing chosen the page stays in the house's dark theme, whatever the
+     device is set to; only the switch changes it (and remembers the choice). */
 
   const toggle = useCallback((ev) => {
     chosen.current = true;
@@ -11026,7 +11011,7 @@ const ShopFooter = () => {
         <div className="hidden grid-cols-4 gap-10 py-[80px] md:grid">
           {SHOP_FOOTER.map((c, n) => (
             <div key={n}>
-              <p className="mb-8 text-[11px] font-semibold uppercase tracking-[0.11em] text-ink">{x(c.label)}</p>
+              <p data-ft="label" className="mb-8 text-[11px] font-semibold uppercase tracking-[0.11em] text-ink">{x(c.label)}</p>
               <ul className="flex flex-col gap-[15px]">
                 {c.items.map((i, m) => (
                   <li key={m}><a href={i.to} className="u text-[14px] text-mute transition-colors duration-300 hover:text-ink">{x(i.label)}</a></li>
@@ -11974,7 +11959,9 @@ const ShopHome = () => {
   const best     = useMemo(() => [...CATALOG].sort((a, b) => b.sold - a.sold).slice(0, 8), []);
   const sinks    = useMemo(() => CATALOG.filter((p) => p.cat === "sinks").slice(0, 3), []);
 
-  const tiles = ["kitchen", "bathroom", "sinks", "flooring", "lighting", "hardware"];
+  /* every category the shop sells, the kitchen sinks among them; a sink category is pictured by a chosen model */
+  const tiles = ["kitchen", "bathroom", "sinks", "steelsinks", "flooring", "lighting", "hardware", "paint"];
+  const lead = { steelsinks: "w-8050-tss" };
 
   return (
     <>
@@ -12020,20 +12007,20 @@ const ShopHome = () => {
           lede={{ en: "Seven ranges, each one short enough that every product in it has been chosen rather than merely stocked.",
                   id: "Tujuh rangkaian, masing-masing cukup ringkas sehingga setiap produk di dalamnya dipilih, bukan sekadar disediakan." }}
           to="#/shop/all" linkLabel={t("allProducts")} />
-        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
           {tiles.map((id, n) => {
             const room = ROOMS.find((r) => r.cat === id);
-            const any  = CATALOG.find((p) => p.cat === id);
+            const any  = (lead[id] && bySlug(lead[id])) || CATALOG.find((p) => p.cat === id);
             const n2   = CATALOG.filter((p) => p.cat === id).length;
             return (
-              <Reveal key={id} delay={(n % 3) * 100}>
-                <a href={`#/shop/c/${id}`} className="group block">
+              <Reveal key={id} delay={(n % 4) * 90}>
+                <a href={`#/shop/c/${id}`} className="group block" data-shop-tile={id}>
                   <div className={"frame aspect-[4/3] w-full " + (room ? "bg-concrete" : pPlate(any))}>
                     <Photo src={room ? room.img : pImg(any, 0, 1200)} alt={x(catLabel(id))} tone={room ? room.tone : pTone(any)}
                       className={"h-full w-full transition-transform duration-[1300ms] ease-quiet group-hover:scale-[1.045] " + (room ? "object-cover" : pFit(any))} />
                   </div>
                   <div className="mt-6 flex items-baseline justify-between gap-5">
-                    <p className="text-[22px] font-medium leading-[1.2] tracking-[-0.014em] text-ink">{x(catLabel(id))}</p>
+                    <p className="font-serif-lx text-[24px] font-light leading-[1.15] text-ink lg:text-[22px]">{x(catLabel(id))}</p>
                     <p className="shrink-0 text-[11.5px] font-medium uppercase tracking-[0.08em] tabular-nums text-mute">{n2} {t("items")}</p>
                   </div>
                 </a>
@@ -12125,6 +12112,9 @@ const ProductsPage = () => {
     { id: "sinks",    img: null, tone: null,
       body: { en: "Six models cast from quartz composite at eighty per cent mineral content, cured slowly so the surface takes heat, stains and a dropped pan without complaint.",
               id: "Enam model dari komposit kuarsa dengan kandungan mineral delapan puluh persen, dikeraskan perlahan agar tahan panas, noda dan panci yang terjatuh." } },
+    /* the twenty-five of the stainless steel price list, pictured by W 8050 TSS */
+    { id: "steelsinks", img: null, tone: null, lead: "w-8050-tss",
+      body: KS_KINDS["stainless-steel"].lede },
     { id: "flooring", img: 14, tone: "#D2CEC6",
       body: { en: "Porcelain and engineered oak, chosen for how they wear rather than how they photograph.",
               id: "Porselen dan kayu ek rekayasa, dipilih dari cara ia menua, bukan dari cara ia difoto." } },
@@ -12153,7 +12143,7 @@ const ProductsPage = () => {
       <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[190px]">
         <div className="flex flex-col gap-[90px] md:gap-[160px]">
           {groups.map((g, n) => {
-            const any = CATALOG.find((p) => p.cat === g.id);
+            const any = (g.lead && bySlug(g.lead)) || CATALOG.find((p) => p.cat === g.id);
             const flip = n % 2 === 1;
             return (
               <Reveal key={g.id} className="block">
@@ -12318,9 +12308,9 @@ const ListPage = ({ cat, view }) => {
         {ksKindOfCat(cat) ? <KsListNote kind={ksKindOfCat(cat)} /> : null}
       </PageHead>
 
-      <div className="sticky top-[112px] z-40 border-y border-line bg-bone">
+      <div className="sticky top-[112px] z-40 border-y border-line bg-bone lg:top-[162px]">
         <div className="mx-auto flex max-w-site items-center justify-between px-5 md:px-10">
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             {filters.map((f) => (
               <button key={f.id} onClick={() => setPanel(panel === f.id ? null : f.id)} aria-expanded={panel === f.id}
                 className="flex h-[52px] items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em]">
@@ -12336,7 +12326,7 @@ const ListPage = ({ cat, view }) => {
               {q ? <button onClick={() => setQ("")} aria-label={t("clear")} className="text-mute hover:text-ink"><Icon name="close" size={12} /></button> : null}
             </label>
           </div>
-          <button onClick={() => setSheet(true)} className="flex h-[52px] items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute md:hidden">
+          <button onClick={() => setSheet(true)} className="flex h-[52px] items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute lg:hidden">
             {t("filter")} {chips.length ? <span className="text-accent">({chips.length})</span> : null}<Icon name="down" size={13} />
           </button>
           <div className="flex items-center gap-3 md:gap-6">
@@ -12369,7 +12359,7 @@ const ListPage = ({ cat, view }) => {
         <p className="mb-6 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute sm:hidden">{results.length} {t("items")}</p>
         {results.length ? (
           /* keyed by sort, so re-ordering replays the stagger and the change is felt */
-          <div key={sort} data-grid="products" className="grid grid-cols-1 gap-x-8 gap-y-[70px] sm:grid-cols-2 md:gap-x-10 md:gap-y-[110px] lg:grid-cols-3 lg:gap-x-14">
+          <div key={sort} data-grid="products" className="grid grid-cols-1 gap-x-8 gap-y-[70px] sm:grid-cols-2 md:gap-x-10 md:gap-y-[110px] lg:grid-cols-3 lg:gap-x-12 xl:grid-cols-4 xl:gap-x-10 xl:gap-y-[96px]">
             {results.map((p, n) => (<Reveal key={p.slug} delay={Math.min(n, 7) * 55}><ProductCard p={p} /></Reveal>))}
           </div>
         ) : (
@@ -12380,7 +12370,7 @@ const ListPage = ({ cat, view }) => {
         )}
       </div>
 
-      <div ref={sheetRef} className={"fixed inset-0 z-[96] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet md:hidden " + (sheet ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0")}>
+      <div ref={sheetRef} className={"fixed inset-0 z-[96] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet lg:hidden " + (sheet ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0")}>
         <div className="flex h-14 items-center justify-between border-b border-line px-5">
           <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("filter")}</span>
           <button onClick={() => setSheet(false)} aria-label={t("close")}><Icon name="close" /></button>
@@ -12725,7 +12715,7 @@ const SearchPage = ({ q }) => {
           </div>
         ) : null}
         {res.products.length ? (
-          <div key={sort} data-grid="products" className="grid grid-cols-1 gap-x-8 gap-y-[70px] sm:grid-cols-2 md:gap-x-10 md:gap-y-[110px] lg:grid-cols-3 lg:gap-x-14">
+          <div key={sort} data-grid="products" className="grid grid-cols-1 gap-x-8 gap-y-[70px] sm:grid-cols-2 md:gap-x-10 md:gap-y-[110px] lg:grid-cols-3 lg:gap-x-12 xl:grid-cols-4 xl:gap-x-10 xl:gap-y-[96px]">
             {res.products.map((p, n) => (<Reveal key={p.slug} delay={Math.min(n, 7) * 60}><ProductCard p={p} /></Reveal>))}
           </div>
         ) : (

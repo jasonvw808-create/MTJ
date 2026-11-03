@@ -589,7 +589,7 @@
     --vs-ease: cubic-bezier(0.16, 1, 0.3, 1);
     position: relative; isolation: isolate; overflow: hidden;
     height: clamp(600px, calc(100vh - 112px), 920px);
-    background: #0d0c0b; color: rgb(var(--ink));
+    background: #171717; color: rgb(var(--ink));
   }
   .vs-stage [hidden] { display: none !important; }
   .vs-stage[data-immersive="true"] { position: fixed; inset: 0; height: auto; z-index: 90; }
@@ -605,13 +605,13 @@
 
   /* the way in */
   .vs-intro { position: absolute; inset: 0; z-index: 2; display: flex; align-items: flex-end;
-    background: linear-gradient(90deg, rgb(13 12 11 / 0.92) 0%, rgb(13 12 11 / 0.72) 32%, rgb(13 12 11 / 0.14) 62%, rgb(13 12 11 / 0) 80%),
-                linear-gradient(0deg, rgb(13 12 11 / 0.72) 0%, rgb(13 12 11 / 0) 48%);
+    background: linear-gradient(90deg, rgb(23 23 23 / 0.92) 0%, rgb(23 23 23 / 0.72) 32%, rgb(23 23 23 / 0.14) 62%, rgb(23 23 23 / 0) 80%),
+                linear-gradient(0deg, rgb(23 23 23 / 0.72) 0%, rgb(23 23 23 / 0) 48%);
     transition: opacity 0.6s var(--vs-ease), visibility 0s; }
   .vs-stage[data-immersive="true"] .vs-intro { opacity: 0; visibility: hidden; transition: opacity 0.45s var(--vs-ease), visibility 0s linear 0.45s; }
   .vs-intro-in { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px 40px; }
   .vs-crumbs { position: absolute; left: 0; right: 0; top: 30px; }
-  .vs-kicker, .vs-place { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(var(--accent)); }
+  .vs-kicker, .vs-place { font-size: 11px; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; color: rgb(var(--accent)); }
   .vs-title { margin-top: 20px; max-width: 12ch; font-size: clamp(40px, 6vw, 84px); font-weight: 500; line-height: 1.02; letter-spacing: -0.02em; }
   .vs-lede { margin-top: 22px; max-width: 46ch; font-size: 15.5px; line-height: 1.8; color: rgb(var(--ink) / 0.72); }
   .vs-keys { margin-top: 28px; display: grid; grid-template-columns: repeat(2, max-content); gap: 12px 36px; }
@@ -621,10 +621,10 @@
     border: 1px solid rgb(var(--ink) / 0.3); font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; color: rgb(var(--ink)); }
   .vs-go { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; }
   .vs-enter { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-    height: 54px; min-width: 250px; padding: 0 30px; border: 1px solid rgb(var(--ink)); background: rgb(var(--ink)); color: #141311;
+    height: 54px; min-width: 250px; padding: 0 30px; border: 1px solid rgb(var(--ink)); background: rgb(var(--ink)); color: #171717;
     font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums;
     transition: background-color 0.5s var(--vs-ease), color 0.5s var(--vs-ease), border-color 0.5s var(--vs-ease); }
-  .vs-enter:hover:not(:disabled) { background: transparent; color: rgb(var(--ink)); }
+  .vs-enter:hover:not(:disabled), .vs-enter:focus-visible:not(:disabled) { background: rgb(var(--accent)); border-color: rgb(var(--accent)); color: #171717; }
   .vs-enter:disabled { cursor: progress; background: rgb(16 15 13 / 0.4); color: rgb(var(--ink) / 0.82); border-color: rgb(var(--ink) / 0.28); }
   .vs-enter-bar { position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: rgb(var(--accent)); transform-origin: left center;
     transform: scaleX(var(--p, 0)); transition: transform 0.3s linear, opacity 0.6s; }
@@ -633,7 +633,7 @@
   .vs-note { margin-top: 22px; max-width: 54ch; padding-left: 14px; border-left: 1px solid rgb(var(--accent) / 0.6); font-size: 13.5px; line-height: 1.7; color: rgb(var(--ink) / 0.75); }
   @media (min-width: 768px) { .vs-intro-in { padding: 0 40px 64px; } }
   @media (max-width: 767px) {
-    .vs-intro { background: linear-gradient(0deg, rgb(13 12 11 / 0.96) 0%, rgb(13 12 11 / 0.88) 52%, rgb(13 12 11 / 0.25) 82%, rgb(13 12 11 / 0) 100%); }
+    .vs-intro { background: linear-gradient(0deg, rgb(23 23 23 / 0.97) 0%, rgb(23 23 23 / 0.94) 62%, rgb(23 23 23 / 0.86) 80%, rgb(23 23 23 / 0.62) 100%); }
     .vs-keys { grid-template-columns: 1fr; gap: 10px; }
     .vs-lede { font-size: 14.5px; line-height: 1.7; }
     .vs-enter { width: 100%; }

@@ -1298,9 +1298,9 @@
     .cl-svc > div { padding: 0 40px; border-top: 0; border-left: 1px solid rgb(var(--line)); }
     .cl-svc > div:first-child { padding-left: 0; border-left: 0; }
   }
-  /* four cards across once each is wide enough for its line of action; the catalogues beside their text */
+  /* three cards across once each is wide enough for its line of action; the catalogues beside their text */
   @media (min-width: 1200px) {
-    .cl-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+    .cl-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
     .cl-dl-in { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: 80px; }
   }
 
@@ -7804,17 +7804,54 @@ const pPlate = (p) => (p.fit === "contain" ? "bg-[#F4F3F0]" : "bg-concrete");
 /* ═══════════════════════════════════════════════════════════════════════════
    DEPARTMENTS  (after Mitra10's structure — restyled, not reproduced)
    ═══════════════════════════════════════════════════════════════════════════ */
+/* The shop's ranges. The site is organised by three collections (COLLECTIONS, below), and these are what
+   they are made of: Sink is the two kitchen sink ranges, Door the UPVC doors, Sanitary & Plumbing its own. */
 const CATS = [
+  { id: "sinks",      label: { en: "Granite Kitchen Sink", id: "Bak Cuci Granit" } },
+  { id: "steelsinks", label: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Stainless Steel" } },
+  { id: "doors",      label: { en: "UPVC Door", id: "Pintu UPVC" } },
+  { id: "sanitary",   label: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" } },
+];
+/* The ranges the site began with, before its three collections. Their sample products are kept in the
+   catalogue below — an old link to one still opens it — but they are no longer listed, searched, suggested
+   or linked to: listed(p) is false for them. Put a range back in CATS to show it again. */
+const CATS_RETIRED = [
   { id: "kitchen",   label: { en: "Kitchen",          id: "Dapur" } },
   { id: "bathroom",  label: { en: "Bathroom",         id: "Kamar Mandi" } },
   { id: "flooring",  label: { en: "Flooring & Wall",  id: "Lantai & Dinding" } },
   { id: "lighting",  label: { en: "Lighting",         id: "Pencahayaan" } },
   { id: "hardware",  label: { en: "Hardware & Tools", id: "Perkakas" } },
   { id: "paint",     label: { en: "Paint & Surfaces", id: "Cat & Finishing" } },
-  { id: "sinks",     label: { en: "Granite Kitchen Sink", id: "Bak Cuci Granit" } },
-  { id: "steelsinks", label: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Stainless Steel" } },
 ];
-const catLabel = (id) => (CATS.find((c) => c.id === id) || { label: id }).label;
+const RETIRED_CATS = new Set(CATS_RETIRED.map((c) => c.id));
+const listed = (p) => !!p && !RETIRED_CATS.has(p.cat);
+const catLabel = (id) => (CATS.find((c) => c.id === id) || CATS_RETIRED.find((c) => c.id === id) || { label: id }).label;
+/* an old link to a retired range lands on the nearest collection (or on everything) */
+const CAT_ALIAS = { bathroom: "sanitary", kitchen: null, flooring: null, lighting: null, hardware: null, paint: null };
+
+/* The three collections: what the menus, the footer and the home page offer, each with its page and its
+   picture. The pictures are the site's own: a sink in one of the catalogue's kitchens, the PT 2602 door in a
+   hallway, a basin and its mixer — rendered alike, in the kitchens' limestone and daylight. */
+const COLLECTIONS = [
+  { id: "sink", cats: ["sinks", "steelsinks"], to: "#/shop/kitchen-sinks", img: "img/home/cat-kitchen-sinks.webp", tone: "#3A3631",
+    label:   { en: "Sink", id: "Bak Cuci" },
+    eyebrow: { en: "Sink", id: "Bak Cuci" },
+    title:   { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
+    body:    { en: "Granite composite and stainless steel, single and double bowl.",
+               id: "Komposit granit dan stainless steel, satu dan dua ruang." } },
+  { id: "door", cats: ["doors"], to: "#/shop/doors", img: "img/home/cat-door.webp", tone: "#BCB3A6",
+    label:   { en: "Door", id: "Pintu" },
+    eyebrow: { en: "Door", id: "Pintu" },
+    title:   { en: "UPVC Doors", id: "Pintu UPVC" },
+    body:    { en: "Wellup UPVC doors: 19 models, from Rp 1.300.000.",
+               id: "Pintu UPVC Wellup: 19 model, mulai Rp 1.300.000." } },
+  { id: "sanitary", cats: ["sanitary"], to: "#/shop/c/sanitary", img: "img/home/cat-sanitary.webp", tone: "#C9C0B2",
+    label:   { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
+    eyebrow: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
+    title:   { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
+    body:    { en: "Basins, mixers and showers for the bathroom and the kitchen.",
+               id: "Wastafel, keran dan shower untuk kamar mandi dan dapur." } },
+];
 
 const LINES = [
   { id: "essential", label: { en: "Essential",  id: "Esensial" } },
@@ -7870,7 +7907,7 @@ const CATALOG = [
            [{en:"Drain",id:"Saluran"}, {en:"90 mm, basket strainer included",id:"90 mm, saringan disertakan"}],
            [{en:"Warranty",id:"Garansi"}, {en:"10 years",id:"10 tahun"}] ] },
 
-  { slug:"tarik-pull-down-mixer", name:"Tarik Pull-Down Mixer", cat:"kitchen", line:"signature",
+  { slug:"tarik-pull-down-mixer", name:"Tarik Pull-Down Mixer", cat:"sanitary", line:"signature",
     price:6200000, unit:"each", imgs:[7,9,8,6],
     material:{ en:"Brushed brass, PVD finish", id:"Kuningan sikat, finishing PVD" },
     desc:{ en:"A pull-down kitchen mixer with a braided hose and a magnetic dock, in a PVD finish that will not tarnish over a wet sink.",
@@ -7893,7 +7930,7 @@ const CATALOG = [
            [{en:"Cut to size",id:"Potong sesuai ukuran"}, {en:"In-store service",id:"Layanan di toko"}] ] },
 
   /* ── BATHROOM ───────────────────────────────────────────────────────── */
-  { slug:"tirta-basin-mixer", name:"Tirta Basin Mixer", cat:"bathroom", line:"signature",
+  { slug:"tirta-basin-mixer", name:"Tirta Basin Mixer", cat:"sanitary", line:"signature",
     price:4750000, unit:"each", tag:{en:"New",id:"Baru"}, isNew:true, imgs:[5,4,14,15],
     material:{ en:"Brushed brass, PVD finish", id:"Kuningan sikat, finishing PVD" },
     desc:{ en:"A tall basin mixer for wall-hung bowls, weighted so the lever falls closed rather than snapping.",
@@ -7904,7 +7941,7 @@ const CATALOG = [
            [{en:"Flow rate",id:"Debit air"}, "5.7 L/min"],
            [{en:"Warranty",id:"Garansi"}, {en:"5 years",id:"5 tahun"}] ] },
 
-  { slug:"sela-wall-hung-basin", name:"Sela Wall-Hung Basin", cat:"bathroom", line:"signature",
+  { slug:"sela-wall-hung-basin", name:"Sela Wall-Hung Basin", cat:"sanitary", line:"signature",
     price:7300000, unit:"each", imgs:[4,14,5,2],
     material:{ en:"Glazed fine porcelain", id:"Porselen halus berglasir" },
     desc:{ en:"A wall-hung basin with a soft inner radius, fired twice and glazed once so the surface stays even at the rim.",
@@ -7915,7 +7952,7 @@ const CATALOG = [
            [{en:"Overflow",id:"Lubang luber"}, {en:"Concealed",id:"Tersembunyi"}],
            [{en:"Warranty",id:"Garansi"}, {en:"10 years",id:"10 tahun"}] ] },
 
-  { slug:"curah-rain-shower", name:"Curah Rain Shower", cat:"bathroom", line:"signature",
+  { slug:"curah-rain-shower", name:"Curah Rain Shower", cat:"sanitary", line:"signature",
     price:8900000, unit:"each", imgs:[14,15,4,5],
     material:{ en:"Brushed steel, 300 mm head", id:"Baja sikat, kepala 300 mm" },
     desc:{ en:"A 300 mm ceiling rose with silicone nozzles that clear by hand, and a thermostatic valve that holds temperature when a tap opens elsewhere.",
@@ -8514,7 +8551,120 @@ const STAINLESS = [
 ];
 CATALOG.push(...STAINLESS);
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   UPVC DOORS — Wellup. Every model and price is the 2026 Wellup Door & Lock
+   price list's, as the shop's owner gave them: the codes (two for some —
+   PT and WL) and the price of each. The list itself — sizes, specifications,
+   the colours by name — was not to hand, so none of that is stated: what a
+   page says beyond the code and the price is what its photographs show (the
+   door's colour, its panels, the list — the bars between the panes — and
+   its colour). Six models came without photographs: they are listed at
+   their price, their picture and colours to follow. No locks are listed.
+   Each photograph is the supplied one, framed alike on the sinks' plate
+   (img/doors, 800 x 1000).
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DOOR_COLOUR = {
+  grey:  { en: "Grey",  id: "Abu-abu" },
+  white: { en: "White", id: "Putih" },
+  red:   { en: "Red",   id: "Merah" },
+};
+const DOOR_LIST = {
+  white: { en: "White list", id: "List putih", word: { en: "white", id: "putih" }, hex: "#F4F4F2" },
+  black: { en: "Black list", id: "List hitam", word: { en: "black", id: "hitam" }, hex: "#1F2023" },
+};
+/* each door colour's swatch, sampled from that model's photographs */
+const DOOR_1XX = { grey: "#565656", white: "#F0EFF2", red: "#7A2921" };
+const DOOR_MODELS = [
+  { code: "PT 109", wl: "WL 002", price: 1300000 },
+  { code: "PT 110", price: 1300000 },
+  { code: "PT 111", price: 1300000, cols: DOOR_1XX, motif: { en: "pink lotus and a striped band", id: "teratai merah muda dan pita bergaris" } },
+  { code: "PT 112", price: 1300000, cols: DOOR_1XX, motif: { en: "yellow leaves on a curling vine", id: "daun kuning pada sulur melengkung" } },
+  { code: "PT 113", price: 1300000, cols: DOOR_1XX, motif: { en: "red peonies on a sweeping curve", id: "peoni merah pada lengkung" } },
+  { code: "PT 114", price: 1300000, cols: DOOR_1XX, motif: { en: "a wave of gold and grey lines", id: "gelombang garis emas dan abu-abu" } },
+  { code: "PT 115", price: 1300000, cols: DOOR_1XX, motif: { en: "white lotus and koi", id: "teratai putih dan ikan koi" } },
+  { code: "PT 116", price: 1300000, cols: DOOR_1XX, motif: { en: "orange flowers on a silver ribbon", id: "bunga oranye pada pita perak" } },
+  { code: "PT 117", price: 1300000, cols: DOOR_1XX, motif: { en: "dolphins under the sea", id: "lumba-lumba di bawah laut" } },
+  { code: "PT 118", price: 1300000, cols: DOOR_1XX, motif: { en: "a climbing rose in white line", id: "mawar merambat bergaris putih" } },
+  { code: "PT 119", price: 1300000, cols: DOOR_1XX, motif: { en: "bare trees and a stepped line", id: "pohon tanpa daun dan garis bertingkat" } },
+  { code: "PT 270", price: 1300000, cols: { grey: "#444547", white: "#ECECEC", red: "#572217" },
+    design: { en: "two moulded panels", id: "dua panel berprofil" } },
+  { code: "PT 290", price: 1500000, cols: { grey: "#4A4C4F", white: "#E2E1E4", red: "#6A1A09" },
+    design: { en: "two louvred panels", id: "dua panel kisi-kisi" } },
+  { code: "PT 409", wl: "WL 004", price: 1300000 },
+  { code: "PT 709", wl: "WL 007", price: 1400000 },
+  { code: "PT 809", wl: "WL 008", price: 1300000 },
+  { code: "PT 909", wl: "WL 010", price: 1300000 },
+  { code: "PT 2601", wl: "WL 016", price: 1425000, cols: { grey: "#3F444E", white: "#EFEFEF", red: "#8B2918" }, lists: ["white", "black"],
+    angles: ["grey-white", "grey-black", "white-white", "white-black", "red-white", "red-black"],
+    design: { en: "six frosted panes above a ribbed lower panel", id: "enam panel buram di atas panel bawah bergaris" } },
+  { code: "PT 2602", wl: "WL 018", price: 1450000, cols: { grey: "#404147", white: "#F1F0F0", red: "#822314" }, lists: ["white", "black"],
+    angles: ["grey-white", "grey-black", "red-white", "red-black"],
+    design: { en: "eight frosted panes above a ribbed lower panel", id: "delapan panel buram di atas panel bawah bergaris" } },
+];
+const doorName = (m) => m.code + (m.wl ? " / " + m.wl : "");
+const doorKey = (m) => m.code.toLowerCase().replace(/\s+/g, "-");
+const doorDesign = (m) => m.design || (m.motif ? { en: "a decorated upper panel — " + m.motif.en + " — above a ribbed lower panel",
+                                                   id: "panel atas bermotif — " + m.motif.id + " — di atas panel bawah bergaris" } : null);
+const doorCap = (v) => ({ en: v.en.charAt(0).toUpperCase() + v.en.slice(1), id: v.id.charAt(0).toUpperCase() + v.id.slice(1) });
+const doorAnd = (list, lang) => list.length < 2 ? list.join("") : list.slice(0, -1).join(", ") + (lang === "id" ? " dan " : " and ") + list[list.length - 1];
+SINK_IMG["door-tbc"] = "img/doors/placeholder.webp";
+const DOORS = [];
+DOOR_MODELS.forEach((m) => {
+  const name = doorName(m), key = doorKey(m), design = doorDesign(m);
+  const codeRow = [{ en: "Code", id: "Kode" }, name];
+  const base = { model: name, code: m.code, wl: m.wl || null, cat: "doors", line: "essential", range: { en: "UPVC Door", id: "Pintu UPVC" },
+    brand: "Wellup", price: m.price, unit: "each", fit: "contain", material: { en: "UPVC", id: "UPVC" },
+    stock: [], ask: true, noRatings: true, rating: 0, reviews: 0, sold: 0, added: "2026-11-05", warrantyYears: 0,
+    warrantyText: { en: "Ask us", id: "Tanyakan kepada kami" } };
+  if (!m.cols) {
+    /* in the price list, not yet photographed */
+    DOORS.push({ ...base, slug: key, name, pending: true, photos: ["door-tbc"],
+      short: { en: "Photo and colours to follow", id: "Foto dan warna menyusul" },
+      desc: { en: "A Wellup UPVC door, " + name + ", in the 2026 price list at " + rp(m.price) + ". Its photographs and colours are to follow — ask us about it.",
+              id: "Pintu UPVC Wellup, " + name + ", dalam daftar harga 2026 seharga " + rp(m.price) + ". Foto dan warnanya menyusul — tanyakan kepada kami." },
+      finishes: [{ id: "door-tbc", name: { en: "Colour to confirm", id: "Warna menyusul" }, hex: "#8C877F" }],
+      feat: [{ en: "UPVC door", id: "Pintu UPVC" }, { en: "Photo to follow", id: "Foto menyusul" }],
+      spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"], codeRow] });
+    return;
+  }
+  const colours = Object.keys(DOOR_COLOUR).filter((c) => m.cols[c]);
+  const variants = m.lists ? colours.flatMap((c) => m.lists.map((l) => [c, l])) : colours.map((c) => [c, null]);
+  const inCols = (lang) => doorAnd(colours.map((c) => DOOR_COLOUR[c][lang].toLowerCase()), lang);
+  variants.forEach(([c, l]) => {
+    const id = c + (l ? "-" + l : ""), slug = key + "-" + c + (l ? "-" + l + "-list" : "");
+    const col = l ? { en: DOOR_COLOUR[c].en + " · " + DOOR_LIST[l].en, id: DOOR_COLOUR[c].id + " · " + DOOR_LIST[l].id } : DOOR_COLOUR[c];
+    const photos = [slug];
+    if (m.angles && m.angles.includes(id)) photos.push(slug + "-angle");
+    photos.forEach((ph) => { SINK_IMG[ph] = "img/doors/" + ph + ".webp"; });
+    const hex = l ? "linear-gradient(135deg, " + m.cols[c] + " 0 50%, " + DOOR_LIST[l].hex + " 50% 100%)" : m.cols[c];
+    const listLine = m.lists ? { en: " The list — the bars between the panes — in white or black.", id: " List — bilah di antara panel — putih atau hitam." } : { en: "", id: "" };
+    DOORS.push({ ...base, slug, name: name + " " + DOOR_COLOUR[c].en + (l ? ", " + DOOR_LIST[l].en : ""),
+      colourId: id, doorCol: c, listCol: l, colour: col, photos,
+      finishes: [{ id: "door-" + id, name: col, hex }],
+      short: doorCap(m.lists ? { en: design.en.split(" above")[0] + " · " + DOOR_LIST[l].en.toLowerCase(), id: design.id.split(" di atas")[0] + " · " + DOOR_LIST[l].id.toLowerCase() }
+                             : m.motif || design),
+      desc: { en: "A Wellup UPVC door, " + name + ": " + design.en + "." + listLine.en + " In " + inCols("en") + ".",
+              id: "Pintu UPVC Wellup, " + name + ": " + design.id + "." + listLine.id + " Dalam warna " + inCols("id") + "." },
+      feat: [{ en: "UPVC door", id: "Pintu UPVC" }, col, doorCap(design)],
+      spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"], codeRow,
+             [{ en: "Colour", id: "Warna" }, DOOR_COLOUR[c]],
+             ...(l ? [[{ en: "List", id: "List" }, DOOR_LIST[l].word]] : []),
+             [{ en: "Design", id: "Desain" }, doorCap(design)]] });
+  });
+});
+CATALOG.push(...DOORS);
+/* the doors, gathered into their models (in the price list's order), for the doors' own page */
+const doorModels = () => DOOR_MODELS.map((m) => {
+  const rows = DOORS.filter((p) => p.code === m.code);
+  const design = doorDesign(m);
+  return { m, key: doorKey(m), name: doorName(m), price: m.price, rows, pending: !m.cols, design,
+           short: m.motif ? doorCap(m.motif) : design ? doorCap(design) : null,
+           colours: m.cols ? Object.keys(DOOR_COLOUR).filter((c) => m.cols[c]) : [] };
+});
+
 const bySlug = (s) => CATALOG.find((p) => p.slug === s);
+/* one product per model (the first of its colourways), for lists where every colourway would crowd it */
+const oneEach = (list) => { const seen = new Set(); return list.filter((p) => { const k = p.model || p.slug; if (seen.has(k)) return false; seen.add(k); return true; }); };
 const modelsIn = (list) => [...new Set(list.map((p) => p.model).filter(Boolean))].sort();
 const unitLabel = (u) => (u === "perM2" ? T.perM2 : u === "perTin" ? T.perTin : null);
 
@@ -8644,7 +8794,7 @@ const poolOf = (sel) => {
 /* never the product itself, never another colour of the same model, never
    something already chosen, and — in a bag — never a second of a kind */
 const blocked = (p, anchor, av) =>
-  p.slug === anchor.slug || av.slugs.has(p.slug) ||
+  !listed(p) || p.slug === anchor.slug || av.slugs.has(p.slug) ||
   (!!p.model && (p.model === anchor.model || av.models.has(p.model))) ||
   (av.kinds.size > 0 && av.kinds.has(kindOf(p)));
 const regard = (p) => (p.rating || 0) * 0.5 + Math.log10(1 + (p.sold || 0)) * 0.25;
@@ -8869,7 +9019,7 @@ const JOURNAL = [
    reaches across the divide is the shop, and it says so. */
 const FOOTER = [
   { label:{en:"Collections",id:"Koleksi"}, items:[
-      ...CATS.slice(0, 4).map((c) => ({ label:c.label, to:"#/products" })),
+      ...COLLECTIONS.map((c) => ({ label:c.label, to:c.to })),
       { label:{en:"All collections",id:"Semua koleksi"}, to:"#/products" } ] },
   { label:{en:"Company",id:"Perusahaan"}, items:[
       { label:{en:"About " + BRAND_SHORT, id:"Tentang " + BRAND_SHORT}, to:"#/about" },
@@ -8889,7 +9039,8 @@ const FOOTER = [
       { label:{en:"New Arrivals",id:"Baru Tiba"}, to:"#/shop/new" },
       { label:{en:"Best Sellers",id:"Terlaris"}, to:"#/shop/best" },
       { label:{en:"Granite Kitchen Sinks",id:"Bak Cuci Granit"}, to:"#/shop/c/sinks" },
-      { label:{en:"Stainless Steel Kitchen Sinks",id:"Bak Cuci Stainless Steel"}, to:"#/shop/c/steelsinks" } ] },
+      { label:{en:"Stainless Steel Kitchen Sinks",id:"Bak Cuci Stainless Steel"}, to:"#/shop/c/steelsinks" },
+      { label:{en:"UPVC Doors",id:"Pintu UPVC"}, to:"#/shop/doors" } ] },
 ];
 
 /* PLACEHOLDER — swap in the real profile URLs and legal pages */
@@ -8929,7 +9080,11 @@ const parseRoute = (hash) => {
      link or bookmark still lands somewhere sensible. */
   const store = (a, b) => {
     if (a === "kitchen-sinks") return shop("kitchenSinks", { kind: b || null, model: parts[(inShop ? 1 : 0) + 2] || null, colour: parts[(inShop ? 1 : 0) + 3] || null, extra: parts[(inShop ? 1 : 0) + 4] || null });
-    if (a === "c")        return shop("list", { cat: b || null });
+    if (a === "c") {
+      const c = b && Object.prototype.hasOwnProperty.call(CAT_ALIAS, b) ? CAT_ALIAS[b] : (b || null);
+      return c === "doors" ? shop("doors") : shop("list", { cat: c });
+    }
+    if (a === "doors")    return shop("doors");
     if (a === "all")      return shop("list", { cat: null });
     if (a === "new")      return shop("list", { cat: null, view: "new" });
     if (a === "best")     return shop("list", { cat: null, view: "best" });
@@ -8949,7 +9104,7 @@ const parseRoute = (hash) => {
 
   if (!a)               return brand("home");
   if (a === "about")    return brand("about");
-  if (a === "products") return brand("products");
+  if (a === "products") return brand("products", { section: b || null });
   if (a === "catalogue")return brand("catalogue");
   if (a === "print" && b === "kitchen-sinks") return brand("ksPrint", { doc: parts[2] || "granite", lang: parts[3] || "en", page: +parts[4] || null });
   if (a === "virtual-showroom" || a === "showroom") return brand("showroom", { slug: b || null });
@@ -10036,18 +10191,18 @@ const ProductCard = ({ p, delay = 0, size = "md", note = null, finish = null, on
               className={"absolute inset-0 h-full w-full opacity-0 transition-opacity duration-[1200ms] ease-quiet group-hover:opacity-100 " + pFit(p)} />
           ) : null}
 
-          {/* the one action worth putting over the picture */}
-          <button onClick={press} aria-disabled={added || undefined} data-card-add
+          {/* the one action worth putting over the picture (not over a door still to be photographed: it is asked about) */}
+          {p.pending ? null : <button onClick={press} aria-disabled={added || undefined} data-card-add
             className={"absolute inset-x-0 bottom-0 z-10 flex h-[46px] items-center justify-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.1em] backdrop-blur-[2px] transition-[opacity,transform,background-color,color] duration-500 ease-quiet " +
               (added
                 ? "translate-y-0 cursor-default bg-bone/[0.92] text-ink"
                 : "translate-y-0 bg-ink/[0.92] text-bone md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100")}>
             {added ? <><Icon name="check" size={14} />{t("inYourBag")}</> : t("addToCart")}
-          </button>
+          </button>}
         </div>
 
         <div className={big ? "pt-7" : "pt-6"}>
-          {note ? <p data-card-note className="mb-2.5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-mute">{note}</p>
+          {note || p.pending ? <p data-card-note className="mb-2.5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-mute">{note || x({ en: "Photo to follow", id: "Foto menyusul" })}</p>
             : p.tag ? <p className="mb-2.5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-accent">{x(p.tag)}</p> : null}
           <p className={"pr-9 font-medium text-ink " + (big ? "text-[21px] tracking-[-0.012em]" : "text-[16px] tracking-[-0.008em]")}>
             {p.model || x(p.name)}
@@ -10101,7 +10256,7 @@ const searchAll = (q, lang) => {
   const tq = tight(n);
   const hit = (hay) => terms.every((t) => hay.includes(t)) || (tq.length >= 3 && tight(hay).includes(tq));
 
-  const products = CATALOG.filter((p) => hit(productHaystack(p)));
+  const products = CATALOG.filter((p) => listed(p) && hit(productHaystack(p)));
   const cats  = CATS.filter((c) => hit([...bag(c.label), c.id].join(" ")));
   const stores = STORES.filter((s) => hit([norm(s.name), ...bag(s.city), norm(s.address), ...bag(s.note)].join(" ")));
   const posts = JOURNAL.filter((j) => hit([...bag(j.title), ...bag(j.text)].join(" ")));
@@ -10562,8 +10717,8 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
                   <div className="overflow-hidden">
                     <ul className="flex flex-col gap-3 pb-6">
                       <li><a href={`#/shop/c/${c.id}`} onClick={onClose} className="text-[12.5px] font-semibold uppercase tracking-[0.08em] text-ink">{t("viewAll")}</a></li>
-                      {CATALOG.filter((p) => p.cat === c.id).map((p) => (
-                        <li key={p.slug}><a href={`#/shop/p/${p.slug}`} onClick={onClose} className="text-[14px] text-mute">{x(p.name)}</a></li>
+                      {oneEach(CATALOG.filter((p) => p.cat === c.id)).map((p) => (
+                        <li key={p.slug}><a href={`#/shop/p/${p.slug}`} onClick={onClose} className="text-[14px] text-mute">{p.model || x(p.name)}</a></li>
                       ))}
                     </ul>
                   </div>
@@ -10628,6 +10783,8 @@ const SHOP_NAV = [
   { id: "kitchenSinks", label: { en: "Kitchen Sink", id: "Bak Cuci Dapur" }, to: "#/shop/kitchen-sinks", panel: "sinks",
     sub: [{ label: { en: "Granite Kitchen Sink", id: "Bak Cuci Dapur Granit" }, to: "#/shop/kitchen-sinks/granite" },
           { label: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Dapur Stainless Steel" }, to: "#/shop/kitchen-sinks/stainless-steel" }] },
+  { id: "doors", label: { en: "Door", id: "Pintu" }, to: "#/shop/doors" },
+  { id: "sanitary", label: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" }, to: "#/shop/c/sanitary" },
   { id: "new",   label: { en: "New Arrivals",   id: "Baru Tiba" },      to: "#/shop/new" },
   { id: "best",  label: { en: "Best Sellers",   id: "Terlaris" },       to: "#/shop/best" },
 ];
@@ -10642,17 +10799,20 @@ const NavPanel = ({ panel, onNavigate, shop }) => {
   const ksLast = useRef(panel);
   if (panel) ksLast.current = panel;
   const ks = (panel || ksLast.current) === "sinks";
-  const byMaterial = FINISH_LIST.map((f) => ({ label: f.name, to: "#/shop/search/" + encodeURIComponent(tx(f.name, lang)) }));
+  /* only the finishes something on sale is offered in */
+  const byMaterial = FINISH_LIST.filter((f) => CATALOG.some((p) => listed(p) && p.finishes.some((g) => g.id === f.id)))
+    .map((f) => ({ label: f.name, to: "#/shop/search/" + encodeURIComponent(tx(f.name, lang)) }));
+  const collections = { label: { en: "Collections", id: "Koleksi" }, items: COLLECTIONS.map((c) => ({ label: c.label, to: c.to })) };
 
   const cols = ks ? ksNavCols(lang) : shop
-    ? [{ label: { en: "By Room", id: "Berdasarkan Ruangan" },
+    ? [{ label: { en: "By Category", id: "Berdasarkan Kategori" },
          items: CATS.map((c) => ({ label: c.label, to: `#/shop/c/${c.id}` })) },
-       { label: { en: "By Material", id: "Berdasarkan Material" }, items: byMaterial }]
-    : [{ label: { en: "Collections", id: "Koleksi" },
-         items: CATS.slice(0, 4).map((c) => ({ label: c.label, to: "#/products" })) },
-       { label: { en: "The Brand", id: "Merek" }, items: [
+       byMaterial.length ? { label: { en: "By Material", id: "Berdasarkan Material" }, items: byMaterial } : collections]
+    : [collections,
+       /* the company and its services: kept apart from what it sells */
+       { label: { en: "The Brand", id: "Tentang Kami" }, items: [
           { label: { en: "Our Story", id: "Kisah Kami" }, to: "#/about" },
-          { label: { en: "Finishes", id: "Finishing" }, to: "#/products" },
+          { label: { en: "Materials & Finishes", id: "Material & Finishing" }, to: "#/products/finishes" },
           { label: { en: "Catalogue", id: "Katalog" }, to: "#/catalogue" },
           { label: { en: "Delivery & Installation", id: "Pengiriman & Pemasangan" }, to: "#/services" },
           { label: { en: "Contact", id: "Kontak" }, to: "#/contact" } ] }];
@@ -10675,16 +10835,19 @@ const NavPanel = ({ panel, onNavigate, shop }) => {
             </ul>
           </div>
         ))}
-        <div className="col-span-6 grid grid-cols-2 gap-8">
-          {(ks ? KS_NAV_CARDS : ROOMS.slice(0, 2)).map((e, n) => (
-            <a key={n} href={e.to || (shop ? `#/shop/c/${e.cat}` : "#/products")} onClick={onNavigate} className="group block">
+        {/* a card for each collection; where the panel is too narrow for three, the third keeps its place
+            in the Collections list and its card waits for a wider window */}
+        <div className={"col-span-6 grid grid-cols-2 gap-8" + (ks ? "" : " xl:grid-cols-3 xl:gap-6")}>
+          {(ks ? KS_NAV_CARDS : COLLECTIONS).map((e, n) => (
+            <a key={n} href={e.to || (shop ? `#/shop/c/${e.cat}` : "#/products")} onClick={onNavigate}
+              className={"group block" + (!ks && n > 1 ? " hidden xl:block" : "")} data-nav-card={ks ? undefined : e.id}>
               <div className="frame in aspect-[4/5] w-full bg-concrete">
                 {e.set ? <KsSinkSet name={e.set} layout="feature" className="h-full w-full px-[9%] transition-transform duration-[1200ms] ease-quiet group-hover:scale-[1.03]" /> : (
                 <Photo src={e.img} alt={x(e.title)} tone={e.tone}
                   className="h-full w-full object-cover transition-transform duration-[1200ms] ease-quiet group-hover:scale-[1.04]" />)}
               </div>
               <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x(e.eyebrow)}</p>
-              <p className="mt-2.5 text-[22px] font-medium leading-[1.25] tracking-[-0.014em] text-ink">{x(e.title)}</p>
+              <p className={"mt-2.5 font-medium leading-[1.25] tracking-[-0.014em] text-ink " + (ks ? "text-[22px]" : "text-[22px] xl:text-[19px]")}>{x(e.title)}</p>
               <span className="u mt-4 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("discover")}</span>
             </a>
           ))}
@@ -10750,6 +10913,8 @@ const SiteHeader = () => {
                   : n.to === "#/" ? (!shop && route.name === "home")
                   : !shop && route.name === n.id.replace("cat", "catalogue");
   const hereShop = (n) => (n.id === "kitchenSinks" && (route.name === "kitchenSinks" || (route.name === "list" && (route.cat === "sinks" || route.cat === "steelsinks")))) ||
+                          (n.id === "doors" && route.name === "doors") ||
+                          (n.id === "sanitary" && route.name === "list" && route.cat === "sanitary") ||
                           (n.id === "new" && route.view === "new") ||
                           (n.id === "best" && route.view === "best") ||
                           (n.id === "all" && route.name === "list" && !route.cat && !route.view);
@@ -11043,7 +11208,8 @@ const SHOP_FOOTER = [
       { label: { en: "New Arrivals", id: "Baru Tiba" },    to: "#/shop/new" },
       { label: { en: "Best Sellers", id: "Terlaris" },     to: "#/shop/best" },
       { label: { en: "Granite Kitchen Sinks", id: "Bak Cuci Granit" }, to: "#/shop/c/sinks" },
-      { label: { en: "Stainless Steel Kitchen Sinks", id: "Bak Cuci Stainless Steel" }, to: "#/shop/c/steelsinks" } ] },
+      { label: { en: "Stainless Steel Kitchen Sinks", id: "Bak Cuci Stainless Steel" }, to: "#/shop/c/steelsinks" },
+      { label: { en: "UPVC Doors", id: "Pintu UPVC" }, to: "#/shop/doors" } ] },
   { label: { en: "Categories", id: "Kategori" },
     items: CATS.slice(0, 6).map((c) => ({ label: c.label, to: `#/shop/c/${c.id}` })) },
   { label: { en: "Customer Service", id: "Layanan Pelanggan" }, items: [
@@ -11249,7 +11415,7 @@ const Finishes = () => {
   const f = FINISH_LIST[active];
 
   return (
-    <section className="grain relative w-full bg-concrete">
+    <section id="finishes" className="grain relative w-full scroll-mt-[90px] bg-concrete">
       <div className="relative mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
         <Reveal still className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="cascade lg:col-span-4">
@@ -11299,7 +11465,7 @@ const InSitu = () => {
   const [i, setI] = useState(0);
   const [hot, setHot] = useState(null);
   const S = SITU[i];
-  const items = S.items.map((it) => ({ ...it, p: bySlug(it.slug) })).filter((it) => it.p);
+  const items = S.items.map((it) => ({ ...it, p: bySlug(it.slug) })).filter((it) => listed(it.p));
   const change = (d) => { setHot(null); setI((v) => (v + d + SITU.length) % SITU.length); };
 
   return (
@@ -11343,7 +11509,7 @@ const InSitu = () => {
             ))}
           </ul>
           <div className="mt-10 flex items-center justify-between">
-            <a href="#/shop/c/kitchen" className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("shopCollection")}</a>
+            <a href="#/shop/all" className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("shopCollection")}</a>
             <div className="flex items-center gap-6">
               <span className="text-[11px] font-semibold tabular-nums tracking-[0.1em] text-mute">{String(i + 1).padStart(2, "0")} / {String(SITU.length).padStart(2, "0")}</span>
               <Arrows onPrev={() => change(-1)} onNext={() => change(1)} />
@@ -11523,23 +11689,8 @@ const LxHero = () => {
   );
 };
 
-/* ── 2 · the collections: one large card and two beside it ── */
-const LX_CATS = [
-  { id: "kitchen-sinks", to: "#/shop/kitchen-sinks", img: LX_IMG("cat-kitchen-sinks.webp"), tone: "#3A3631",
-    eyebrow: { en: "Kitchen", id: "Dapur" },
-    title:   { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
-    body:    { en: "Granite composite and stainless steel, single and double bowl.",
-               id: "Komposit granit dan stainless steel, satu dan dua ruang." } },
-  { id: "bathroom", to: "#/shop/c/bathroom", img: IMG(5, 1400), tone: TONE[1],
-    eyebrow: { en: "Bathroom", id: "Kamar Mandi" },
-    title:   { en: "Bathroom & Sanitary", id: "Kamar Mandi & Sanitasi" },
-    body:    { en: "Sanitaryware, basins and fittings for the bathroom.",
-               id: "Saniter, wastafel dan perlengkapan untuk kamar mandi." } },
-  { id: "materials", to: "#/shop/c/flooring", img: IMG(11, 1400), tone: TONE[2],
-    eyebrow: { en: "Surfaces", id: "Permukaan" },
-    title:   { en: "Building Materials", id: "Bahan Bangunan" },
-    body:    { en: "Flooring and wall surfaces.", id: "Permukaan lantai dan dinding." } },
-];
+/* ── 2 · the collections: one large card and two beside it — the three of COLLECTIONS ── */
+const LX_CATS = COLLECTIONS;
 
 const LxCategories = () => {
   const { x } = useStore();
@@ -11549,12 +11700,12 @@ const LxCategories = () => {
         <Reveal className="lx-head">
           <div>
             <p className="lx-eyebrow rv">{x({ en: "The Collections", id: "Koleksi" })}</p>
-            <h2 id="lx-cats-h" className="lx-h2"><span className="rise"><span>{x({ en: "Explore by space", id: "Jelajahi menurut ruang" })}</span></span></h2>
+            <h2 id="lx-cats-h" className="lx-h2"><span className="rise"><span>{x({ en: "Explore the collections", id: "Jelajahi koleksi" })}</span></span></h2>
           </div>
           <div>
             <p className="lx-lede rv rv-2">
-              {x({ en: "Kitchen sinks in granite composite and stainless steel, sanitaryware for the bathroom, and materials for the rest of the house.",
-                   id: "Bak cuci dapur dari komposit granit dan stainless steel, saniter untuk kamar mandi, dan material untuk bagian rumah lainnya." })}
+              {x({ en: "Kitchen sinks in granite composite and stainless steel, UPVC doors by Wellup, and sanitary and plumbing for the bathroom and the kitchen.",
+                   id: "Bak cuci dapur dari komposit granit dan stainless steel, pintu UPVC Wellup, serta saniter dan perpipaan untuk kamar mandi dan dapur." })}
             </p>
             <div className="lx-head-links rv rv-3">
               <a href="#/products" className="lx-link"><LxLinkText>{x({ en: "See the collections", id: "Lihat koleksi" })}</LxLinkText></a>
@@ -11706,7 +11857,7 @@ const LxInspiration = () => {
       label: { en: "Modern kitchens", id: "Dapur modern" },
       text:  { en: "W 8550 TDG, hand made in stainless steel, on a light quartz island.",
                id: "W 8550 TDG, hand made dari stainless steel, di atas meja island kuarsa terang." } },
-    { cls: "lx-mag-b", img: "img/collections/sanitaryware.jpg", to: "#/shop/c/bathroom",
+    { cls: "lx-mag-b", img: "img/collections/sanitaryware.jpg", to: "#/shop/c/sanitary",
       label: { en: "Bathrooms", id: "Kamar mandi" },
       text:  { en: "Clean, lasting forms for the bathroom.", id: "Bentuk yang bersih dan awet untuk kamar mandi." } },
     { cls: "lx-mag-c", img: LX_IMG("inspire-material.webp"), to: lps ? ksDetailHref(lps) : "#/shop/kitchen-sinks",
@@ -11893,14 +12044,16 @@ const AccountPage = () => {
    ═══════════════════════════════════════════════════════════════════════════ */
 const ShopHome = () => {
   const { t, x } = useStore();
-  const featured = useMemo(() => CATALOG.filter((p) => p.tag || p.isNew).slice(0, 8), []);
-  const arrivals = useMemo(() => [...CATALOG].sort((a, b) => (a.added < b.added ? 1 : -1)).slice(0, 8), []);
-  const best     = useMemo(() => [...CATALOG].sort((a, b) => b.sold - a.sold).slice(0, 8), []);
+  const featured = useMemo(() => CATALOG.filter((p) => listed(p) && (p.tag || p.isNew)).slice(0, 8), []);
+  const arrivals = useMemo(() => oneEach(CATALOG.filter(listed).sort((a, b) => (a.added < b.added ? 1 : -1))).slice(0, 8), []);
+  const best     = useMemo(() => CATALOG.filter(listed).sort((a, b) => b.sold - a.sold).slice(0, 8), []);
   const sinks    = useMemo(() => CATALOG.filter((p) => p.cat === "sinks").slice(0, 3), []);
 
   /* every category the shop sells, the kitchen sinks among them; a sink category is pictured by a chosen model */
-  const tiles = ["kitchen", "bathroom", "sinks", "steelsinks", "flooring", "lighting", "hardware", "paint"];
-  const lead = { steelsinks: "w-8050-tss" };
+  const tiles = CATS.map((c) => c.id);
+  const lead = { steelsinks: "w-8050-tss", doors: "pt-2602-grey-black-list" };
+  /* Sanitary & Plumbing is pictured by its collection's picture */
+  const pic = { sanitary: { img: "img/home/cat-sanitary.webp", tone: "#C9C0B2" } };
 
   return (
     <>
@@ -11923,8 +12076,8 @@ const ShopHome = () => {
             </Reveal>
             <Reveal className="mt-8 block" delay={380}>
               <p className="max-w-[48ch] text-[15.5px] leading-[1.8] text-white/85">
-                {x({ en: "Thirty-five products, held in stock, delivered across Jabodetabek and fitted by our own installers.",
-                     id: "Tiga puluh lima produk, tersedia di gudang, dikirim se-Jabodetabek dan dipasang oleh teknisi kami sendiri." })}
+                {x({ en: "Kitchen sinks, UPVC doors, sanitary and plumbing — delivered across Jabodetabek and fitted by our own installers.",
+                     id: "Bak cuci dapur, pintu UPVC, saniter dan perpipaan — dikirim se-Jabodetabek dan dipasang oleh teknisi kami sendiri." })}
               </p>
             </Reveal>
             <Reveal className="mt-10 block md:mt-12" delay={500}>
@@ -11943,14 +12096,14 @@ const ShopHome = () => {
         <SectionHead
           eyebrow={{ en: "Browse", id: "Jelajahi" }}
           title={{ en: "Shop by category", id: "Belanja per kategori" }}
-          lede={{ en: "Seven ranges, each one short enough that every product in it has been chosen rather than merely stocked.",
-                  id: "Tujuh rangkaian, masing-masing cukup ringkas sehingga setiap produk di dalamnya dipilih, bukan sekadar disediakan." }}
+          lede={{ en: "Four ranges in three collections: sinks, doors, and sanitary and plumbing.",
+                  id: "Empat rangkaian dalam tiga koleksi: bak cuci, pintu, serta saniter dan perpipaan." }}
           to="#/shop/all" linkLabel={t("allProducts")} />
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
           {tiles.map((id, n) => {
-            const room = ROOMS.find((r) => r.cat === id);
+            const room = pic[id] || ROOMS.find((r) => r.cat === id);
             const any  = (lead[id] && bySlug(lead[id])) || CATALOG.find((p) => p.cat === id);
-            const n2   = CATALOG.filter((p) => p.cat === id).length;
+            const n2   = id === "doors" ? DOOR_MODELS.length : CATALOG.filter((p) => p.cat === id).length;
             return (
               <Reveal key={id} delay={(n % 4) * 90}>
                 <a href={`#/shop/c/${id}`} className="group block" data-shop-tile={id}>
@@ -12042,37 +12195,36 @@ const ShopHome = () => {
 const ProductsPage = () => {
   const { t, x } = useStore();
   const par = useParallax(50);
+  /* #/products/finishes: the page, opened at its materials and finishes */
+  const route = useRoute();
+  useEffect(() => {
+    if (route.section !== "finishes") return;
+    const id = setTimeout(() => { const el = document.getElementById("finishes"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" }); }, 160);
+    return () => clearTimeout(id);
+  }, [route.section]);
 
   const groups = [
-    { id: "kitchen",  img: 9,  tone: "#CFCBC2",
-      body: { en: "Sinks, mixers, worktops and the hardware that holds them together — specified as one room rather than six purchases.",
-              id: "Bak cuci, keran, meja kerja dan perangkat yang menyatukannya — dipilih sebagai satu ruangan, bukan enam pembelian." } },
-    { id: "bathroom", img: 12, tone: "#C9C4BC",
-      body: { en: "Porcelain, brass and stone, in the few finishes we are prepared to stand behind for a decade.",
-              id: "Porselen, kuningan dan batu, dalam sedikit finishing yang siap kami pertanggungjawabkan selama sepuluh tahun." } },
     { id: "sinks",    img: null, tone: null,
       body: { en: "Six models cast from quartz composite at eighty per cent mineral content, cured slowly so the surface takes heat, stains and a dropped pan without complaint.",
               id: "Enam model dari komposit kuarsa dengan kandungan mineral delapan puluh persen, dikeraskan perlahan agar tahan panas, noda dan panci yang terjatuh." } },
     /* the twenty-five of the stainless steel price list, pictured by W 8050 TSS */
     { id: "steelsinks", img: null, tone: null, lead: "w-8050-tss",
       body: KS_KINDS["stainless-steel"].lede },
-    { id: "flooring", img: 14, tone: "#D2CEC6",
-      body: { en: "Porcelain and engineered oak, chosen for how they wear rather than how they photograph.",
-              id: "Porselen dan kayu ek rekayasa, dipilih dari cara ia menua, bukan dari cara ia difoto." } },
-    { id: "lighting", img: 17, tone: "#C4BFB6",
-      body: { en: "Warm, dimmable and quiet — light that shows a room rather than announcing itself.",
-              id: "Hangat, bisa diredupkan dan tenang — cahaya yang menampilkan ruangan, bukan dirinya sendiri." } },
-    { id: "hardware", img: 15, tone: "#CBC6BE",
-      body: { en: "Handles, hinges and the fixings that decide whether a good cabinet stays good.",
-              id: "Gagang, engsel dan perangkat yang menentukan apakah lemari yang baik tetap baik." } },
+    /* the doors, pictured by the PT 2602 */
+    { id: "doors", img: null, tone: null, lead: "pt-2602-grey-black-list",
+      body: { en: "Wellup UPVC doors: 19 models, from Rp 1.300.000 — the photographed ones in grey, white and red.",
+              id: "Pintu UPVC Wellup: 19 model, mulai Rp 1.300.000 — yang sudah difoto dalam abu-abu, putih dan merah." } },
+    { id: "sanitary", pic: "img/home/cat-sanitary.webp", tone: "#C9C0B2",
+      body: { en: "Basins, mixers and showers for the bathroom and the kitchen.",
+              id: "Wastafel, keran dan shower untuk kamar mandi dan dapur." } },
   ];
 
   return (
     <>
       <PageHead trail={[{ label: t("home"), to: "#/" }, { label: x({ en: "Products", id: "Produk" }) }]}
         title={x({ en: "Our collections", id: "Koleksi kami" })}
-        sub={x({ en: "Seven ranges, kept deliberately short. Everything here is held in stock and can be bought in the shop.",
-                 id: "Tujuh rangkaian, sengaja dibuat ringkas. Semua yang ada di sini tersedia di gudang dan dapat dibeli di toko." })}>
+        sub={x({ en: "Three collections — sinks, doors, and sanitary and plumbing. Everything here can be bought in the shop.",
+                 id: "Tiga koleksi — bak cuci, pintu, serta saniter dan perpipaan. Semua yang ada di sini dapat dibeli di toko." })}>
         <div className="mt-12">
           <a href="#/shop/all" className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
             {t("shopAll")}
@@ -12090,10 +12242,10 @@ const ProductsPage = () => {
               <Reveal key={g.id} className="block">
                 <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16">
                   <div className={"md:col-span-7 " + (flip ? "md:order-2 md:col-start-6" : "")}>
-                    <div className={"frame aspect-[4/3] w-full " + (g.img ? "bg-concrete" : pPlate(any))}>
-                      <Photo src={g.img ? IMG(g.img, 1600) : pImg(any, 0, 1600)} alt={x(catLabel(g.id))}
+                    <div className={"frame aspect-[4/3] w-full " + (g.img || g.pic ? "bg-concrete" : pPlate(any))}>
+                      <Photo src={g.pic || (g.img ? IMG(g.img, 1600) : pImg(any, 0, 1600))} alt={x(catLabel(g.id))}
                         tone={g.tone || pTone(any)}
-                        className={"h-full w-full " + (g.img ? "object-cover" : pFit(any))} />
+                        className={"h-full w-full " + (g.img || g.pic ? "object-cover" : pFit(any))} />
                     </div>
                   </div>
                   <div className={"md:col-span-4 " + (flip ? "md:order-1 md:col-start-1" : "md:col-start-9")}>
@@ -12184,9 +12336,10 @@ const ListPage = ({ cat, view }) => {
      sinks offers its three colourways and six models rather than the whole
      house palette. */
   const pool = useMemo(() => {
-    if (view === "new")  return [...CATALOG].sort((a, b) => (a.added < b.added ? 1 : a.added > b.added ? -1 : 0)).slice(0, 12);
-    if (view === "best") return [...CATALOG].sort((a, b) => b.sold - a.sold).slice(0, 12);
-    return cat ? CATALOG.filter((p) => p.cat === cat) : CATALOG;
+    const live = CATALOG.filter(listed);
+    if (view === "new")  return oneEach([...live].sort((a, b) => (a.added < b.added ? 1 : a.added > b.added ? -1 : 0))).slice(0, 12);
+    if (view === "best") return [...live].sort((a, b) => b.sold - a.sold).slice(0, 12);
+    return cat ? CATALOG.filter((p) => p.cat === cat) : live;
   }, [cat, view]);
   const poolFinishes = useMemo(() => {
     const seen = new Map();
@@ -12511,7 +12664,7 @@ const ProductPage = ({ slug }) => {
 
             <div className="mt-11">
               <div className="flex items-baseline justify-between">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("finish")}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{p.cat === "doors" ? t("colour") : t("finish")}</p>
                 <p className="text-[11px] tracking-[0.06em] text-ink/80">{finish}</p>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
@@ -12626,7 +12779,7 @@ const ProductPage = ({ slug }) => {
           <Reveal className="mb-12 md:mb-16">
             <Eyebrow>{t("youMayNeed")}</Eyebrow>
             <h2 className="mt-7 text-[32px] font-medium leading-[1.14] md:text-[44px]">
-              {room === "kitchen" ? t("completeKitchen") : room === "bathroom" ? t("completeBathroom") : t("completeRoom")}
+              {p.cat === "doors" ? x({ en: "Other doors", id: "Pintu lainnya" }) : room === "kitchen" ? t("completeKitchen") : room === "bathroom" ? t("completeBathroom") : t("completeRoom")}
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -12689,7 +12842,7 @@ const SearchPage = ({ q }) => {
           <div className="py-20 text-center">
             <p className="text-[27px] font-medium">{t("noSearch")} “{q}”.</p>
             <p className="mx-auto mt-4 max-w-[46ch] text-[13.5px] leading-[1.75] text-mute">{t("searchHint")}</p>
-            <a href="#/shop/c/kitchen" className="u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("viewAll")}</a>
+            <a href="#/shop/all" className="u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("viewAll")}</a>
           </div>
         )}
         {res.stores.length || res.posts.length ? (
@@ -12729,7 +12882,7 @@ const SavedPage = () => {
           <div className="py-16 text-center">
             <p className="text-[30px] font-medium">{t("emptySaved")}</p>
             <p className="mx-auto mt-7 max-w-[42ch] text-[15.5px] leading-[1.8] text-mute">{t("emptySavedNote")}</p>
-            <a href="#/shop/c/kitchen" className="u mt-10 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("keepShopping")}</a>
+            <a href="#/shop/all" className="u mt-10 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("keepShopping")}</a>
           </div>
         )}
       </div>
@@ -12798,7 +12951,7 @@ const BagPage = () => {
       <p className="mx-auto mt-8 max-w-[420px] text-[30px] font-medium leading-[1.4] md:text-[36px]">{t("emptyBag")}</p>
       <p className="mx-auto mt-7 max-w-[42ch] text-[15.5px] leading-[1.8] text-mute">{t("emptyBagNote")}</p>
       <div className="mt-12 flex flex-wrap justify-center gap-4">
-        {[["#/shop/kitchen-sinks", { en: "Kitchen sinks", id: "Bak cuci dapur" }], ["#/shop/c/kitchen", catLabel("kitchen")], ["#/shop/c/bathroom", catLabel("bathroom")]].map(([to, label]) => (
+        {COLLECTIONS.map((c) => [c.to, c.title]).map(([to, label]) => (
           <a key={to} href={to} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(label)}</a>
         ))}
       </div>
@@ -12837,7 +12990,7 @@ const BagPage = () => {
               </div>
             ))}
           </div>
-          <a href="#/shop/c/kitchen" className="u mt-10 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("keepShopping")}</a>
+          <a href="#/shop/all" className="u mt-10 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("keepShopping")}</a>
         </div>
 
         <div className="lg:col-span-5 xl:col-span-4">
@@ -12907,7 +13060,7 @@ const CheckoutPage = () => {
   if (!items.length) return (
     <div className="mx-auto max-w-site px-5 py-[130px] text-center md:px-10 md:py-[190px]">
       <p className="text-[30px] font-medium">{t("emptyBag")}</p>
-      <a href="#/shop/c/kitchen" className="u mt-8 inline-block text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("keepShopping")}</a>
+      <a href="#/shop/all" className="u mt-8 inline-block text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("keepShopping")}</a>
     </div>
   );
 
@@ -13239,7 +13392,7 @@ const ServicesPage = () => {
         </div>
         <div className="mt-16 flex flex-wrap gap-6">
           <a href="#/contact" className="inline-flex h-[46px] min-w-[200px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{t("visitStore")}</a>
-          <a href="#/shop/c/kitchen" className="inline-flex h-[46px] min-w-[200px] items-center justify-center border border-line px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 hover:border-ink hover:text-ink">{t("viewAll")}</a>
+          <a href="#/shop/all" className="inline-flex h-[46px] min-w-[200px] items-center justify-center border border-line px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 hover:border-ink hover:text-ink">{t("viewAll")}</a>
         </div>
       </div>
     </>
@@ -13358,21 +13511,16 @@ const CL_COLLECTIONS = [
     title: { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
     body:  { en: "Granite and stainless steel collections", id: "Koleksi granit dan stainless steel" },
     alt:   { en: "The GDU 8145 granite double-bowl sink in Pearl Black", id: "Bak cuci granit dua ruang GDU 8145, Hitam Mutiara" } },
-  { id: "sanitaryware", rooms: ["bathroom"], to: "#/shop/c/bathroom", img: "img/collections/sanitaryware.jpg",
-    tag:   { en: "Bathroom", id: "Kamar Mandi" },
-    title: { en: "Sanitaryware", id: "Saniter" },
-    body:  { en: "Clean, lasting forms for the bathroom", id: "Bentuk yang bersih dan awet untuk kamar mandi" },
-    alt:   { en: "A white back-to-wall toilet with a brass flush plate", id: "Kloset putih back-to-wall dengan tombol flush kuningan" } },
-  { id: "faucets", rooms: ["kitchen", "bathroom"], to: "#/shop/search/mixer", img: "img/collections/faucets.jpg",
+  { id: "doors", rooms: [], to: "#/shop/doors", img: "img/collections/doors.jpg",
+    tag:   { en: "Door", id: "Pintu" },
+    title: { en: "UPVC Doors", id: "Pintu UPVC" },
+    body:  { en: "19 Wellup models, from Rp 1.300.000", id: "19 model Wellup, mulai Rp 1.300.000" },
+    alt:   { en: "The PT 2602 UPVC door in grey, with a black list", id: "Pintu UPVC PT 2602 abu-abu dengan list hitam" } },
+  { id: "sanitary", rooms: ["kitchen", "bathroom"], to: "#/shop/c/sanitary", img: "img/collections/faucets.jpg",
     tag:   { en: "Kitchen & Bath", id: "Dapur & Kamar Mandi" },
-    title: { en: "Faucets", id: "Keran" },
-    body:  { en: "Mixers and taps for kitchen and bath", id: "Mixer dan keran untuk dapur dan kamar mandi" },
+    title: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
+    body:  { en: "Basins, mixers and showers", id: "Wastafel, keran dan shower" },
     alt:   { en: "A brushed brass gooseneck mixer on a block of black marble", id: "Keran leher angsa kuningan sikat di atas balok marmer hitam" } },
-  { id: "accessories", rooms: ["kitchen", "bathroom"], to: "#/shop/c/hardware", img: "img/collections/accessories.jpg",
-    tag:   { en: "Details", id: "Detail" },
-    title: { en: "Accessories", id: "Aksesori" },
-    body:  { en: "Small pieces, chosen with the same care", id: "Detail kecil, dipilih dengan perhatian yang sama" },
-    alt:   { en: "A soap dispenser, a tumbler, a soap dish and an olive sprig on a walnut tray", id: "Dispenser sabun, gelas, tempat sabun dan ranting zaitun di atas nampan kayu walnut" } },
 ];
 /* the rooms the collections can be filtered by; a collection names the rooms it belongs to */
 const CL_ROOMS = [
@@ -13381,8 +13529,8 @@ const CL_ROOMS = [
   { id: "bathroom", label: { en: "Bathroom", id: "Kamar Mandi" } },
 ];
 const CL_LEDE = {
-  en: "Explore kitchen and bathroom solutions made to feel at home — from granite and stainless steel sinks to sanitaryware, faucets and the details that complete a room.",
-  id: "Jelajahi solusi dapur dan kamar mandi yang terasa seperti di rumah sendiri — dari bak cuci granit dan stainless steel hingga saniter, keran, dan detail yang melengkapi sebuah ruangan.",
+  en: "Explore solutions for the kitchen and the bathroom, made to feel at home — granite and stainless steel sinks, UPVC doors, and sanitary and plumbing.",
+  id: "Jelajahi solusi dapur dan kamar mandi yang terasa seperti di rumah sendiri — bak cuci granit dan stainless steel, pintu UPVC, serta saniter dan perpipaan.",
 };
 const CL_SERVICES = [
   { icon: "truck", to: "#/services",
@@ -13629,7 +13777,7 @@ const NotFound = () => {
       <p className="mx-auto mt-7 max-w-[42ch] text-[15.5px] leading-[1.8] text-mute">{x({ en: "Try the departments, or search for what you need.", id: "Coba jelajahi kategori, atau cari yang Anda butuhkan." })}</p>
       <div className="mt-12 flex flex-wrap justify-center gap-4">
         <a href="#/" className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{t("backHome")}</a>
-        <a href="#/shop/c/kitchen" className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-line px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 hover:border-ink hover:text-ink">{t("viewAll")}</a>
+        <a href="#/shop/all" className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-line px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 hover:border-ink hover:text-ink">{t("viewAll")}</a>
       </div>
     </div>
   );
@@ -13817,7 +13965,7 @@ const ComparePage = () => {
       <p className="mx-auto mt-8 max-w-[420px] text-[30px] font-medium leading-[1.4] md:text-[36px]">{t("compareEmpty")}</p>
       <p className="mx-auto mt-7 max-w-[44ch] text-[15.5px] leading-[1.8] text-mute">{t("compareEmptySub")}</p>
       <div className="mt-12 flex flex-wrap justify-center gap-4">
-        {[["#/shop/kitchen-sinks", { en: "Kitchen sinks", id: "Bak cuci dapur" }], ["#/shop/c/kitchen", catLabel("kitchen")], ["#/shop/c/bathroom", catLabel("bathroom")]].map(([to, label]) => (
+        {COLLECTIONS.map((c) => [c.to, c.title]).map(([to, label]) => (
           <a key={to} href={to} className="inline-flex h-[46px] min-w-[168px] items-center justify-center border border-ink px-8 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x(label)}</a>
         ))}
       </div>
@@ -16684,11 +16832,13 @@ const KsProductDownloads = ({ p }) => {
 /* ask about it: the Contact page, with the product named in the message */
 const KsEnquire = ({ p }) => {
   const { x } = useStore();
-  if (!p || !ksKindOfCat(p.cat)) return null;
+  const door = !!p && p.cat === "doors";
+  if (!p || (!ksKindOfCat(p.cat) && !door)) return null;
   return (
     <a href={"#/contact/" + p.slug} data-ks-enquire=""
       className="mt-3 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
-      <Icon name="chat" size={15} /><span className="u">{x({ en: "Ask about this sink or request a quote", id: "Tanyakan bak cuci ini atau minta penawaran" })}</span>
+      <Icon name="chat" size={15} /><span className="u">{x(door ? { en: "Ask about this door or request a quote", id: "Tanyakan pintu ini atau minta penawaran" }
+                                                               : { en: "Ask about this sink or request a quote", id: "Tanyakan bak cuci ini atau minta penawaran" })}</span>
     </a>
   );
 };
@@ -17163,6 +17313,144 @@ const KsPrint = ({ doc, lang, page = null }) => {
   );
 };
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   UPVC DOORS — the collection's page in the shop (#/shop/doors). Every model
+   in the price list's order, each shown in the colour chosen above it (where
+   it was photographed in that colour) with its code and its price, and a dot
+   for each of its colourways. The six still to be photographed follow, at
+   their prices. Nothing here beyond code and price is from the price list:
+   the rest is what the photographs show.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DoorDots = ({ g }) => {
+  const { x } = useStore();
+  return (
+    <span className="mt-4 flex flex-wrap gap-2" data-door-dots="">
+      {g.rows.map((r) => (
+        <a key={r.slug} href={"#/shop/p/" + r.slug} title={x(r.colour)} aria-label={g.name + " — " + x(r.colour)}
+          className="block h-[20px] w-[20px] rounded-full border border-line p-[2px] transition-colors duration-300 hover:border-ink">
+          <span className="block h-full w-full rounded-full" style={{ background: r.finishes[0].hex, boxShadow: KS_RING }} />
+        </a>
+      ))}
+    </span>
+  );
+};
+const DoorCard = ({ g, col, delay = 0 }) => {
+  const { x } = useStore();
+  /* the colourway to show: the colour chosen (with its white list, where it has one), else its first */
+  const row = g.pending ? g.rows[0] : (g.rows.find((r) => r.doorCol === col && (!r.listCol || r.listCol === "white")) || g.rows[0]);
+  return (
+    <Reveal delay={delay} className="block">
+      <div className="group relative flex flex-col" data-door-card={g.key}>
+        <a href={"#/shop/p/" + row.slug} className="block">
+          <div className="frame relative aspect-[4/5] w-full bg-[#F4F3F0]">
+            <Photo src={pImg(row, 0)} alt={g.pending ? g.name : g.name + " — " + x(row.colour)} tone={PLATE}
+              className="no-dim absolute inset-0 h-full w-full object-contain transition-transform duration-[1300ms] ease-quiet group-hover:scale-[1.035]" />
+          </div>
+          <div className="pt-6">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-mute" data-door-shown="">
+              {g.pending ? x({ en: "Photo to follow", id: "Foto menyusul" }) : x(row.colour)}
+            </p>
+            <p className="mt-2.5 text-[17px] font-medium tracking-[-0.008em] text-ink">{g.name}</p>
+            {g.short ? <p className="mt-2 max-w-[38ch] text-[13.5px] leading-[1.65] text-mute">{x(g.short)}</p> : null}
+            <p className="mt-3 text-[17px] font-semibold tabular-nums text-ink" data-door-price="">{rp(g.price)}</p>
+          </div>
+        </a>
+        {g.pending ? null : <DoorDots g={g} />}
+      </div>
+    </Reveal>
+  );
+};
+const DOOR_SHOW = ["grey", "white", "red"];
+const DoorsPage = () => {
+  const { x, t } = useStore();
+  const [col, setCol] = useState("grey");
+  const groups = useMemo(() => doorModels(), []);
+  const shown = groups.filter((g) => !g.pending), later = groups.filter((g) => g.pending);
+  const low = Math.min(...DOOR_MODELS.map((m) => m.price));
+  useKsMeta(x({ en: "UPVC Doors — Wellup", id: "Pintu UPVC — Wellup" }),
+    x({ en: "Wellup UPVC doors: " + DOOR_MODELS.length + " models, from " + rp(low) + ", each in its colours.",
+        id: "Pintu UPVC Wellup: " + DOOR_MODELS.length + " model, mulai " + rp(low) + ", masing-masing dalam warnanya." }));
+  const toModels = (e) => { e.preventDefault(); const el = document.getElementById("door-models"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" }); };
+  return (
+    <div data-doors-page="">
+      <div className="mx-auto max-w-site px-5 pt-10 md:px-10">
+        <Breadcrumb trail={[{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Door", id: "Pintu" }) }]} />
+      </div>
+      <section className="mx-auto grid max-w-site grid-cols-1 items-center gap-12 px-5 pb-[80px] pt-10 md:px-10 md:pb-[110px] lg:grid-cols-12 lg:gap-16 lg:pt-14">
+        <Reveal className="block lg:col-span-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Door", id: "Pintu" })} · Wellup</p>
+          <h1 className="mt-6 text-[46px] font-medium leading-[1.04] md:text-[72px]">{x({ en: "UPVC Doors", id: "Pintu UPVC" })}</h1>
+          <p className="mt-8 max-w-[44ch] text-[16px] leading-[1.8] text-mute">
+            {x({ en: DOOR_MODELS.length + " models from the 2026 Wellup price list, from " + rp(low) + ". Each is shown in its colours; open one for its colourways and its price.",
+                 id: DOOR_MODELS.length + " model dari daftar harga Wellup 2026, mulai " + rp(low) + ". Masing-masing ditampilkan dalam warnanya; buka satu untuk pilihan warna dan harganya." })}
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-x-9 gap-y-5">
+            <a href="#door-models" onClick={toModels}
+              className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
+              {x({ en: "See the models", id: "Lihat modelnya" })}
+              <span className="transition-transform duration-700 ease-quiet group-hover/cta:translate-x-1.5"><Icon name="arrow" size={16} /></span>
+            </a>
+            <a href="#/contact" className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{x({ en: "Ask about sizes and fitting", id: "Tanyakan ukuran dan pemasangan" })}</a>
+          </div>
+        </Reveal>
+        <div className="lg:col-span-7">
+          <Media className="frame relative mx-auto aspect-[4/5] w-full max-w-[560px] overflow-hidden bg-concrete lg:max-w-none">
+            <Photo src="img/home/cat-door.webp" alt={x({ en: "The PT 2602 door, grey with a black list, in a hallway", id: "Pintu PT 2602, abu-abu dengan list hitam, di sebuah lorong" })}
+              tone="#BCB3A6" eager className="h-full w-full object-cover" />
+          </Media>
+          <p className="mx-auto mt-4 max-w-[560px] text-[11px] font-medium uppercase tracking-[0.08em] text-mute lg:max-w-none">
+            {x({ en: "PT 2602 · grey, black list — visualisation", id: "PT 2602 · abu-abu, list hitam — visualisasi" })}
+          </p>
+        </div>
+      </section>
+
+      <section id="door-models" className="mx-auto max-w-site scroll-mt-[180px] px-5 pb-[100px] md:px-10 md:pb-[140px]" data-door-models="">
+        <KsHead title={x({ en: "The models", id: "Modelnya" })}
+          line={x({ en: shown.length + " models, photographed in their colours. Show them in:", id: shown.length + " model, difoto dalam warnanya. Tampilkan dalam:" })}>
+          <div className="flex flex-wrap gap-3" role="radiogroup" aria-label={x({ en: "Door colour", id: "Warna pintu" })} data-door-colours="">
+            {DOOR_SHOW.map((c) => (
+              <button key={c} type="button" role="radio" aria-checked={col === c} onClick={() => setCol(c)} data-door-colour={c}
+                className={"flex h-[42px] items-center gap-3 border px-4 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " +
+                  (col === c ? "border-ink text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>
+                <span className="h-[14px] w-[14px] shrink-0 rounded-full" style={{ background: DOOR_1XX[c], boxShadow: KS_RING }} />{x(DOOR_COLOUR[c])}
+              </button>
+            ))}
+          </div>
+        </KsHead>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
+          {shown.map((g, n) => <DoorCard key={g.key} g={g} col={col} delay={(n % 4) * 70} />)}
+        </div>
+      </section>
+
+      {later.length ? (
+        <section className="w-full bg-shell py-[90px] md:py-[120px]" data-door-later="">
+          <div className="mx-auto max-w-site px-5 md:px-10">
+            <KsHead title={x({ en: "More models", id: "Model lainnya" })}
+              line={x({ en: "In the price list at these prices; their photographs and colours are to follow. Ask us about any of them.",
+                        id: "Ada di daftar harga dengan harga ini; foto dan warnanya menyusul. Tanyakan kepada kami tentang model mana pun." })}>
+              <a href="#/contact" className="group/l inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+                <span className="u">{x({ en: "Ask us", id: "Tanyakan kepada kami" })}</span>
+                <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
+              </a>
+            </KsHead>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-3 md:gap-x-6 xl:grid-cols-6">
+              {later.map((g, n) => <DoorCard key={g.key} g={g} col={col} delay={(n % 6) * 60} />)}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="mx-auto max-w-site px-5 py-[60px] md:px-10">
+        <p className="max-w-[72ch] text-[13px] leading-[1.75] text-mute">
+          {x({ en: "Codes and prices as in the 2026 Wellup Door & Lock price list. Sizes, fitting and delivery: ask us.",
+               id: "Kode dan harga sesuai daftar harga Wellup Door & Lock 2026. Ukuran, pemasangan dan pengiriman: tanyakan kepada kami." })}
+        </p>
+      </section>
+      <RecentlyViewed tone="bone" />
+    </div>
+  );
+};
+
 const Page = () => {
   const r = useRoute();
   switch (r.name) {
@@ -17170,6 +17458,7 @@ const Page = () => {
     case "products":  return <ProductsPage />;
     case "account":   return <AccountPage />;
     case "list":      return <ListPage key={(r.cat || "") + (r.view || "")} cat={r.cat} view={r.view} />;
+    case "doors":     return <DoorsPage />;
     case "kitchenSinks": return <KitchenSinks key={(r.kind || "all") + "/" + (r.model || "")} kind={r.kind} model={r.model} colour={r.colour} extra={r.extra} />;
     case "product":   return <ProductPage slug={r.slug} />;
     case "search":    return <SearchPage q={r.q} />;

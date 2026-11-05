@@ -12662,6 +12662,18 @@ const ProductPage = ({ slug }) => {
             <p className="mt-6 text-[19px] font-semibold tabular-nums tracking-[-0.01em]">{rp(p.price)}{unit ? <span className="text-mute"> {x(unit)}</span> : null}</p>
             <p className="mt-8 max-w-[55ch] text-[15.5px] leading-[1.8] text-mute">{x(p.desc)}</p>
 
+            {p.pending ? (
+              <div className="mt-11 border-t border-line pt-7" data-door-pending="">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("colour")}</p>
+                <p className="mt-3 max-w-[46ch] text-[14.5px] leading-[1.7] text-mute">
+                  {x({ en: "Its photographs and colours are to follow — ask us about it.", id: "Foto dan warnanya menyusul — tanyakan kepada kami." })}
+                </p>
+                <a href={"#/contact/" + p.slug} data-ks-enquire=""
+                  className="mt-7 inline-flex h-[50px] w-full items-center justify-center border border-ink bg-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-500 ease-quiet hover:bg-transparent hover:text-ink">
+                  {x({ en: "Ask about this model", id: "Tanyakan model ini" })}
+                </a>
+              </div>
+            ) : (<>
             <div className="mt-11">
               <div className="flex items-baseline justify-between">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{p.cat === "doors" ? t("colour") : t("finish")}</p>
@@ -12684,14 +12696,17 @@ const ProductPage = ({ slug }) => {
               </div>
               <p className="pb-3 text-[12.5px] text-mute">{rp(p.price * qty)}</p>
             </div>
+            </>)}
 
             <div className="mt-8">
+              {p.pending ? null : (<>
               <Action onClick={() => add(p, finish, qty)}>{t("addToCart")}</Action>
               <button onClick={() => { add(p, finish, qty); setDrawer(null); go("#/shop/bag"); }}
                 className="mt-3 inline-flex h-[50px] w-full items-center justify-center border border-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">
                 {t("buyNow")}
               </button>
-              <div className="mt-5 flex items-center justify-center gap-8">
+              </>)}
+              <div className={"flex items-center justify-center gap-8 " + (p.pending ? "mt-6" : "mt-5")}>
                 <button onClick={() => toggleSaved(p.slug)} aria-pressed={isSaved}
                   className={"flex items-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (isSaved ? "text-accent" : "text-mute hover:text-ink")}>
                   <Icon name={isSaved ? "heartOn" : "heart"} size={15} /><span className="u">{t("savedItems")}</span>
@@ -12704,7 +12719,7 @@ const ProductPage = ({ slug }) => {
                   <VsTurn size={15} /><span className="u">{showroomOf(p).is3d ? t("vsInspectInShowroom") : t("vsSeeInShowroom")}</span>
                 </a>
               ) : null}
-              <KsEnquire p={p} />
+              {p.pending ? null : <KsEnquire p={p} />}
             </div>
 
             {/* the next model up, in the same colour — set under the buy

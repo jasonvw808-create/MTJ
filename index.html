@@ -1335,6 +1335,31 @@
   /* a rail that scrolls sideways on a phone keeps its first card off the edge of the screen */
   @media (max-width: 767.98px) { [data-lux] main .snap-x { scroll-padding-inline: 20px; } }
 
+  /* ── THE DOOR PAGES (#/shop/doors, a door's own page: [data-doors] on the shell) ──────────────────────────────
+     In the dark theme the door catalogue is set on its own black — warm charcoal rather than the site's neutral one —
+     with soft ivory type, warm grey for the quieter type, and champagne bronze kept for what is chosen and for the
+     small details, never a fill at rest. Held on the shell, so the bar, its menus, the bag and the footer follow it
+     on these pages and nowhere else:
+       #1B1917 the ground · #23201D the second ground · #2C2824 a card · #403A34 the rules
+       #F1EADE the type (14.7:1 on the ground) · #B2A99C the quieter type (7.6:1; 6.3:1 on a card) · #C9AC80 bronze (8.1:1)
+     The light theme is the site's own. The door photographs keep their light plate in both themes, undimmed, so a
+     door's colour reads as it is. */
+  :root[data-theme="dark"] [data-doors] {
+    --bone: 27 25 23; --shell: 35 32 29; --concrete: 44 40 36;
+    --ink: 241 234 222; --mute: 178 169 156; --line: 64 58 52; --accent: 201 172 128;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) [data-doors] {
+      --bone: 27 25 23; --shell: 35 32 29; --concrete: 44 40 36;
+      --ink: 241 234 222; --mute: 178 169 156; --line: 64 58 52; --accent: 201 172 128;
+    }
+  }
+  /* behind the page, too, so an overscroll never shows the site's own ground at the edges */
+  :root[data-theme="dark"][data-doors-page], :root[data-theme="dark"][data-doors-page] body { background: rgb(27 25 23); }
+  [data-doors] ::selection { background: rgb(var(--accent) / .3); color: rgb(var(--ink)); }
+  /* the tab that is open, underlined in bronze */
+  [data-doors] [data-ks-tabs] [role="tab"][aria-selected="true"] { border-color: rgb(var(--accent)); }
+
   /* ── THE HOUSE STYLE, ON EVERY PAGE ([data-side] is the shell; the catalogue's print pages are outside it) ──
      Headlines in the serif; the small type over them in bronze. The bar: clear over a photograph, the ground once
      the page moves under it — translucent, so the page reads on beneath it; its places set a little wider and
@@ -17356,22 +17381,55 @@ const KsPrint = ({ doc, lang, page = null }) => {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   UPVC DOORS — the door catalogue, in the kitchen sink catalogue's own
-   pattern: an opening of the products themselves on their plate; a grid with
-   its filters beside it (a sheet on a phone), a search by model or product
-   code, and a sort; and a page for each door (#/shop/p/<door>, the shop's own
-   product route) with its pictures, its colour, list and opening direction,
-   the product code those make, its price, its size drawn, and its
-   specification. Everything shown is the price list's (DOORS, DOOR_MODELS)
-   or its pictures'; what the list does not say — stock, delivery,
-   installation, warranty, the frame — is left to the store to confirm.
+   UPVC DOORS — the Wellup door catalogue (#/shop/doors) and a door's own page
+   (#/shop/p/<door>(/l), the shop's own product route).
+   The catalogue opens on the collection's facts beside a room it could stand
+   in; then every model at a glance, in the colour chosen; then the models in
+   four sections — the price list's own door types, gathered by what they
+   have in common — with the filters beside them (a sheet on a phone), a
+   search by model or product code, and a sort. A door's page has its
+   pictures, its colour, list and opening direction, the product code those
+   make and its price, its specification as printed and its size drawn.
+   Everything shown is the price list's (DOORS, DOOR_MODELS) or its
+   pictures'; what the list does not say — stock, delivery, installation,
+   warranty, the frame — is left to the store: "Contact us for details".
+   In the dark theme the door pages are set on their own warm charcoal
+   ([data-doors] on the shell, in the stylesheet), with champagne bronze kept
+   for what is chosen and for the small details; the light theme is the
+   site's own. The photographs keep their light plate in both, so a door's
+   colour reads as it is. The kitchen sink pages are not touched by any of it.
    ═══════════════════════════════════════════════════════════════════════════ */
-const DOOR_PER = 12;
 /* a type as a label, short enough for a filter or a card: in English set out as the list prints it, in
    Indonesian as printed */
 const DOOR_TYPE_EN = { halfGlass: "1/2 glass + louvre", full: "Full UPVC", six: "6 glass panes", eight: "8 glass panes", topGlass: "1/4 glass top + louvre",
   sideGlass: "1/4 glass side, louvre", sidePlain: "1/2 plain side + louvre", sideGlassPlain: "1/2 side glass, plain" };
 const doorTypeLabel = (type) => ({ en: DOOR_TYPE_EN[type], id: DOOR_TYPE[type].as });
+/* The catalogue's four sections. The price list sets every door under one heading (UPVC DOOR); these gather its
+   printed types by what they have in common, and keep each model in the list's own order. */
+const DOOR_SECTIONS = [
+  { id: "top-glass", types: ["halfGlass", "topGlass"],
+    title: { en: "Glass above a louvre", id: "Kaca di atas jalusi" },
+    line:  { en: "Glass in the upper part of the door, a louvre below it: half glass on the PT 109 to PT 119, a quarter on the PT 409.",
+             id: "Kaca di bagian atas pintu, jalusi di bawahnya: setengah kaca pada PT 109 sampai PT 119, seperempat pada PT 409." } },
+  { id: "full", types: ["full"],
+    title: { en: "Full UPVC", id: "Full UPVC" },
+    line:  { en: "No glass: the PT 270 with two moulded panels, the PT 290 with two louvred panels.",
+             id: "Tanpa kaca: PT 270 dengan dua panel berprofil, PT 290 dengan dua panel jalusi." } },
+  { id: "panes", types: ["six", "eight"],
+    title: { en: "Glass panes with a list", id: "Kotak kaca dengan list" },
+    line:  { en: "Six or eight glass panes, divided by a list — the bars between the panes — in white or black.",
+             id: "Enam atau delapan kotak kaca, dibagi oleh list — bilah di antara kaca — putih atau hitam." } },
+  { id: "side", types: ["sideGlass", "sidePlain", "sideGlassPlain"],
+    title: { en: "Glass or panel at the side", id: "Kaca atau polos di samping" },
+    line:  { en: "Glass, or a plain panel, down the side of the door.", id: "Kaca, atau panel polos, di sisi pintu." } },
+];
+const doorSectionOf = (g) => DOOR_SECTIONS.find((s) => s.types.includes(g.m.type)) || DOOR_SECTIONS[0];
+const doorSectionNo = (s) => String(DOOR_SECTIONS.indexOf(s) + 1).padStart(2, "0");
+/* a run of prices as the list gives them: one price, or the lowest to the highest */
+const doorPriceRun = (list) => {
+  const ps = list.map((g) => g.price), lo = Math.min(...ps), hi = Math.max(...ps);
+  return lo === hi ? rp(lo) : rp(lo) + " – " + rp(hi).replace("Rp ", "");
+};
 /* the line under a card's name: the picture on its glass, its panels, its lists — or, where the list says only
    its type (which the card already names), its material and size */
 const doorCardLine = (g) => g.m.motif || g.m.look ? g.short
@@ -17392,8 +17450,10 @@ const doorAlt = (r, view, lang) => {
     : "Wellup " + r.model + " UPVC door in " + DOOR_COLOUR[r.doorCol].en + list + (view ? " — angled view" : " — front view");
 };
 /* the search: a product code names its colour, list and opening; anything else is looked for, word by word, in
-   the model's name and WL code, its codes' series, its type, the picture on its glass, its colours and its lists */
+   the model's name and WL code, its codes' series, its type and section, the picture on its glass, its colours and
+   its lists */
 const doorHay = (g) => [g.name, g.m.codes[0], "Wellup", "UPVC", "door", "pintu", g.short.en, g.short.id, DOOR_TYPE[g.m.type].as, DOOR_TYPE[g.m.type].en,
+  DOOR_TYPE_EN[g.m.type], doorSectionOf(g).title.en, doorSectionOf(g).title.id,
   ...g.colours.map((c) => DOOR_COLOUR[c].en), ...(g.m.lists || []).flatMap((l) => [DOOR_LIST[l].en, DOOR_LIST[l].id])].map(dq).join(" ");
 const doorSearchHit = (g, q) => {
   const nq = dq(q);
@@ -17404,10 +17464,14 @@ const doorSearchHit = (g, q) => {
   const hay = doorHay(g), words = String(q).toLowerCase().split(/\s+/).map(dq).filter(Boolean);
   return hay.replace(/ /g, "").includes(nq) || words.every((w) => hay.includes(w)) ? { row: null, hand: null, code: null } : null;
 };
-/* the filters: each reads only what the records hold */
+/* the filters: each reads only what the records hold. The opening direction is not among them: every model is
+   listed in R and in L, so choosing one filters nothing out — it sets which code (and address) the cards give. */
 const DOOR_FILTERS = [
+  { id: "model", label: { en: "Door model", id: "Model pintu" }, chips: true,
+    options: DOOR_MODELS.map((m) => ({ value: doorKey(m), label: { en: m.code, id: m.code }, full: doorName(m) })), test: (g, v) => g.key === v },
   { id: "type", label: { en: "Door type", id: "Tipe pintu" },
-    options: [...new Set(DOOR_MODELS.map((m) => m.type))].map((v) => ({ value: v, label: doorTypeLabel(v) })), test: (g, v) => g.m.type === v },
+    options: DOOR_SECTIONS.flatMap((s) => s.types).filter((v) => DOOR_MODELS.some((m) => m.type === v)).map((v) => ({ value: v, label: doorTypeLabel(v) })),
+    test: (g, v) => g.m.type === v },
   { id: "colour", label: { en: "Colour", id: "Warna" },
     options: DOOR_ORDER.map((c) => ({ value: c, label: DOOR_COLOUR[c], hex: DOOR_1XX[c] })), test: (g, v) => g.colours.includes(v) },
   { id: "list", label: { en: "List colour", id: "Warna list" },
@@ -17415,6 +17479,7 @@ const DOOR_FILTERS = [
     test: (g, v) => !!g.m.lists && g.m.lists.includes(v) },
 ];
 const DOOR_SORTS = [
+  { id: "sections",  label: { en: "By section", id: "Per bagian" } },
   { id: "catalogue", label: { en: "Price list order", id: "Urutan daftar harga" } },
   { id: "low",       label: { en: "Price: low to high", id: "Harga: rendah ke tinggi" } },
   { id: "high",      label: { en: "Price: high to low", id: "Harga: tinggi ke rendah" } },
@@ -17427,59 +17492,151 @@ const doorSorted = (list, sort) => {
   if (sort === "name") l.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
   return l;
 };
+/* what the door pages ask the store to confirm, said once */
+const DOOR_ASK = { en: "Stock, delivery, installation, warranty and whether the frame (kusen) is included are not stated in the price list.",
+                   id: "Stok, pengiriman, pemasangan, garansi dan apakah kusen termasuk tidak tercantum di daftar harga." };
+const DOOR_CONTACT = { en: "Contact us for details", id: "Hubungi kami untuk detail" };
 
-/* ── the product card: its picture, its type, its model and line, its price, its colours (and lists), its
-   opening directions, and the way to its page — the kitchen sink card's, for a door ── */
-const DoorCard = ({ g, prefer = null, preferList = null, hit = null }) => {
+/* ── the controls the door pages share: a filter's tick, its options, the models as numbers, R and L ── */
+const DoorTick = ({ on }) => (
+  <span className={"flex h-[14px] w-[14px] shrink-0 items-center justify-center border transition-colors duration-300 " + (on ? "border-accent bg-accent text-bone" : "border-line text-transparent")}>
+    <Icon name="check" size={9} />
+  </span>
+);
+const DoorOptions = ({ f, sel, on, counts, lang }) => (
+  <div className="flex flex-col gap-3.5">
+    {f.options.map((o) => {
+      const active = sel.includes(o.value), n = counts[o.value] || 0;
+      return (
+        <button key={o.value} type="button" onClick={() => on(f.id, o.value)} disabled={!n && !active} aria-pressed={active}
+          className="group flex items-center gap-3 text-left disabled:cursor-default disabled:opacity-40">
+          <DoorTick on={active} />
+          {o.hex ? <span className="h-[14px] w-[14px] shrink-0 rounded-full" style={{ background: o.hex, boxShadow: KS_RING }} /> : null}
+          <span className={"text-[12px] font-medium uppercase tracking-[0.07em] transition-colors duration-300 " + (active ? "text-ink" : "text-mute group-hover:text-ink")}>{tx(o.label, lang)}</span>
+          <span className="ml-auto text-[11px] tabular-nums text-mute">{n}</span>
+        </button>
+      );
+    })}
+  </div>
+);
+const DoorModelChips = ({ f, sel, on, counts }) => (
+  <div className="grid grid-cols-3 gap-2">
+    {f.options.map((o) => {
+      const active = sel.includes(o.value), n = counts[o.value] || 0;
+      return (
+        <button key={o.value} type="button" onClick={() => on(f.id, o.value)} disabled={!n && !active} aria-pressed={active} title={o.full} aria-label={o.full}
+          data-door-model-pick={o.value}
+          className={"h-9 whitespace-nowrap border px-1 text-[11px] font-medium tabular-nums tracking-[0.03em] transition-colors duration-300 disabled:cursor-default disabled:opacity-35 " +
+            (active ? "border-accent bg-accent/10 text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{o.label.en}</button>
+      );
+    })}
+  </div>
+);
+const DoorHandPick = ({ hand, onHand, count }) => {
+  const { x } = useStore();
+  return (
+    <div className="flex gap-2.5" role="group" aria-label={x({ en: "Opening direction", id: "Arah bukaan" })}>
+      {["R", "L"].map((h) => (
+        <button key={h} type="button" onClick={() => onHand(hand === h ? null : h)} aria-pressed={hand === h} data-door-hand-filter={h}
+          className={"flex h-10 min-w-[78px] items-center justify-between gap-3 border px-3.5 text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors duration-300 " +
+            (hand === h ? "border-accent text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>
+          {h}<span className="text-[11px] font-normal tabular-nums text-mute">{count}</span>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+/* ── a door's picture, and what stands in for it when it cannot be shown: the door's outline on the plate,
+   said in words — never a blank ── */
+const DoorNoPhoto = ({ label, small = false, className = "" }) => {
+  const { x } = useStore();
+  return (
+    <div role="img" aria-label={(label ? label + " — " : "") + x({ en: "photo not available", id: "foto tidak tersedia" })} data-door-nophoto=""
+      className={"flex flex-col items-center justify-center gap-3 px-3 text-center text-[#6B6864] " + className} style={{ background: PLATE }}>
+      <svg viewBox="0 0 72 202" className={(small ? "h-[46%]" : "h-[36%]") + " w-auto"} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <rect x="1" y="1" width="70" height="200" /><rect x="8" y="8" width="56" height="186" strokeOpacity=".45" /><path d="M58 96v12" strokeLinecap="round" />
+      </svg>
+      {small ? null : (
+        <span className="block">
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.12em]">{x({ en: "Photo not available", id: "Foto tidak tersedia" })}</span>
+          <span className="mt-1.5 block text-[11px] leading-[1.5]">{x(DOOR_CONTACT)}</span>
+        </span>
+      )}
+    </div>
+  );
+};
+const DoorImg = ({ src, alt, className = "", eager = false, priority = false, small = false }) => {
+  const [failed, setFailed] = useState(!src);
+  const [was, setWas] = useState(src);
+  if (was !== src) { setWas(src); setFailed(!src); }
+  if (failed) return <DoorNoPhoto label={alt} small={small} className={className} />;
+  return <img src={src} alt={alt} width="800" height="1000" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={priority ? "high" : undefined}
+    onError={() => setFailed(true)} className={"no-dim " + className} draggable="false" />;
+};
+
+/* ── the product card: its picture, its type, its model and line, its price, its colours (and lists), its opening
+   direction, the product code those make, and the way to its page ── */
+const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit = null, eager = false }) => {
   const { x, lang } = useStore();
   const start = hit && hit.row ? hit.row : doorRowOf(g, prefer && g.colours.includes(prefer) ? prefer : "dark-grey", g.m.lists ? (preferList || "white") : null);
+  const startHand = hit && hit.code ? hit.hand : preferHand === "L" ? "L" : "R";
   const [c, setC] = useState(start.doorCol);
   const [l, setL] = useState(start.listCol);
-  useEffect(() => { setC(start.doorCol); setL(start.listCol); }, [start.slug]);
+  const [h, setH] = useState(startHand);
+  /* a new start — a colour or list filtered for, an opening chosen, a code searched for — is taken up as it is drawn */
+  const base = start.slug + "|" + startHand;
+  const [was, setWas] = useState(base);
+  if (was !== base) { setWas(base); setC(start.doorCol); setL(start.listCol); setH(startHand); }
   const row = doorRowOf(g, c, l);
-  const hand = hit && hit.code ? hit.hand : null;
-  const href = doorHref(row, hand);
+  const sel = row.hands.find((hh) => hh.id === h) || row.hands[0];
+  const href = doorHref(row, sel.id);
+  const codeHit = !!(hit && hit.code && hit.code === sel.code);
   return (
-    <article className="group/card flex h-full flex-col" data-door-card={g.key}>
-      <a href={href} className="block" aria-label={g.name + " " + x(row.colour) + " — " + x({ en: "view details", id: "lihat detail" })}>
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#F4F3F0]">
-          <Photo src={pImg(row, 0)} alt={doorAlt(row, 0, lang)} tone={PLATE}
-            className="no-dim absolute inset-0 h-full w-full object-contain transition-transform duration-[900ms] ease-quiet group-hover/card:scale-[1.04]" />
+    <article className="group/card flex h-full flex-col" data-door-card={g.key} data-door-in={doorSectionOf(g).id}>
+      <a href={href} className="block" aria-label={g.name + ", " + x(row.colour) + ", " + sel.id + " — " + x({ en: "view details", id: "lihat detail" })}>
+        <div className="relative aspect-[3/5] w-full overflow-hidden" style={{ background: PLATE }}>
+          <DoorImg src={pImg(row, 0)} alt={doorAlt(row, 0, lang)} eager={eager}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-quiet group-hover/card:scale-[1.035]" />
         </div>
       </a>
-      <div className="flex flex-1 flex-col pt-4 md:pt-5">
+      <div className="flex flex-1 flex-col pt-5">
         <p className="text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.1em] text-mute md:text-[10.5px]" data-door-type="">{x(doorTypeLabel(g.m.type))}</p>
         <a href={href} className="mt-2 block">
-          <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[19px]" data-door-name="">{g.name}</h3>
+          <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[18px]" data-door-name="">{g.name}</h3>
         </a>
         <p className="mt-1 text-[12.5px] leading-[1.55] text-mute md:text-[13px]" data-door-short="">{x(doorCardLine(g))}</p>
         <p className="mt-2.5 text-[15px] font-semibold tabular-nums text-ink md:text-[16px]" data-door-price="">{rp(g.price)}</p>
-        <div className="mt-3 flex min-h-[22px] flex-wrap items-center gap-2" role="group" aria-label={x({ en: "Colour", id: "Warna" })} data-door-dots="">
+        <div className="mt-3.5 flex min-h-[22px] flex-wrap items-center gap-2" role="group" aria-label={x({ en: "Colour", id: "Warna" })} data-door-dots="">
           {g.colours.map((cc) => (
             <button key={cc} type="button" onClick={() => setC(cc)} aria-pressed={cc === c} aria-label={x(DOOR_COLOUR[cc])} title={x(DOOR_COLOUR[cc])} data-door-colour-pick={cc}
-              className={"h-[22px] w-[22px] rounded-full border p-[3px] transition-colors duration-300 " + (cc === c ? "border-ink" : "border-transparent hover:border-line")}>
+              className={"h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 " + (cc === c ? "border-accent" : "border-transparent hover:border-line")}>
               <span className="block h-full w-full rounded-full" style={{ background: g.m.cols[cc], boxShadow: KS_RING }} />
             </button>
           ))}
-          <span className="ml-1 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute" data-door-shown="">{x(DOOR_COLOUR[c])}</span>
+          <span className="ml-0.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute" data-door-shown="">{x(DOOR_COLOUR[c])}</span>
         </div>
         {g.m.lists ? (
           <div className="mt-2.5 flex flex-wrap gap-1.5" role="group" aria-label={x({ en: "List colour", id: "Warna list" })}>
             {g.m.lists.map((ll) => (
               <button key={ll} type="button" onClick={() => setL(ll)} aria-pressed={ll === l} data-door-list-pick={ll}
-                className={"flex h-[26px] items-center gap-1.5 border px-2 text-[10px] font-semibold uppercase tracking-[0.08em] transition-colors duration-300 " + (ll === l ? "border-ink text-ink" : "border-line text-mute hover:text-ink")}>
+                className={"flex h-[26px] items-center gap-1.5 border px-2 text-[10px] font-semibold uppercase tracking-[0.08em] transition-colors duration-300 " + (ll === l ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>
                 <span className="h-[10px] w-[10px] shrink-0 rounded-full" style={{ background: DOOR_LIST[ll].hex, boxShadow: KS_RING }} />{x({ en: DOOR_LIST[ll].en, id: DOOR_LIST[ll].id })}
               </button>
             ))}
           </div>
         ) : null}
-        <p className="mt-3 flex items-center gap-1.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute" data-door-opening="">
-          <span className="mr-1">{x({ en: "Opening", id: "Arah bukaan" })}</span>
-          {row.hands.map((h) => (
-            <span key={h.id} className={"grid h-[20px] min-w-[22px] place-items-center border px-1 text-[10px] font-semibold " + (hand === h.id ? "border-ink text-ink" : "border-line text-ink/80")}>{h.id}</span>
+        <div className="mt-3 flex items-center gap-1.5" role="group" aria-label={x({ en: "Opening direction", id: "Arah bukaan" })} data-door-opening="">
+          <span className="mr-1 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute">{x({ en: "Opening", id: "Arah bukaan" })}</span>
+          {row.hands.map((hh) => (
+            <button key={hh.id} type="button" onClick={() => setH(hh.id)} aria-pressed={hh.id === sel.id} data-door-hand-pick={hh.id}
+              className={"grid h-[24px] min-w-[28px] place-items-center border px-1.5 text-[10.5px] font-semibold transition-colors duration-300 " + (hh.id === sel.id ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>{hh.id}</button>
           ))}
+        </div>
+        <p className={"mt-3 text-[11px] font-medium tabular-nums tracking-[0.04em] transition-colors duration-300 " + (codeHit ? "text-accent" : "text-mute")}
+          data-door-card-code={sel.code} data-door-code-hit={codeHit ? "" : undefined}>
+          <span className="sr-only">{x({ en: "Product code", id: "Kode produk" })}: </span>{sel.code}
         </p>
-        {hit && hit.code ? <p className="mt-2 text-[11px] font-medium tabular-nums tracking-[0.04em] text-accent" data-door-code-hit="">{hit.code} · {x(row.colour)} · {hit.hand}</p> : null}
         <a href={href} className="group/l mt-auto inline-flex items-center gap-2.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink" data-door-details="">
           <span className="u">{x({ en: "View details", id: "Lihat detail" })}</span>
           <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
@@ -17489,35 +17646,213 @@ const DoorCard = ({ g, prefer = null, preferList = null, hit = null }) => {
   );
 };
 
-/* ── the opening: four doors on the plate they were photographed on, and beside them the collection's words ── */
-const DOOR_OPENER = [["PT 2601", "dark-grey", "white"], ["PT 110", "white", null], ["PT 290", "brown", null], ["PT 115", "dark-grey", null]];
-const DoorOpener = ({ tag, strong, light, lede, children }) => {
-  const { lang } = useStore();
-  const rows = DOOR_OPENER.map(([code, c, l]) => { const g = doorFind(code); return g ? doorRowOf(g, c, l) : null; }).filter(Boolean);
+/* ── the introduction: the collection's facts, as the price list gives them, beside a room the door could stand
+   in — a visualisation, and said to be one ── */
+const DOOR_INTRO_VIS = { slug: "pt-2602-dark-grey-black-list", src: "img/home/cat-door.webp", w: 1200, h: 1500 };
+const DoorIntro = ({ onSee }) => {
+  const { x } = useStore();
+  const low = Math.min(...DOOR_MODELS.map((m) => m.price));
+  const vis = bySlug(DOOR_INTRO_VIS.slug);
+  const lists = DOOR_MODELS.filter((m) => m.lists).map((m) => m.code).join(", ");
+  /* each fact: its name, what the list gives, and (for two) a word on where it applies */
+  const facts = [
+    ["models", { en: "Models", id: "Model" }, String(DOOR_MODELS.length), null],
+    ["size", { en: "Size", id: "Ukuran" }, DOOR_SIZE, null],
+    ["price", { en: "Price", id: "Harga" }, x({ en: "From ", id: "Mulai " }) + rp(low), null],
+    ["colours", { en: "Colours", id: "Warna" }, (
+      <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5">
+        {DOOR_ORDER.map((c) => (
+          <span key={c} className="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <span className="h-[11px] w-[11px] rounded-full" style={{ background: DOOR_1XX[c], boxShadow: KS_RING }} />{x(DOOR_COLOUR[c])}
+          </span>
+        ))}
+      </span>
+    ), null],
+    ["lists", { en: "List colour", id: "Warna list" }, x({ en: "White or black", id: "Putih atau hitam" }), lists],
+    ["hands", { en: "Opening direction", id: "Arah bukaan" }, "R / L", x({ en: "Each with its own code", id: "Masing-masing dengan kodenya" })],
+  ];
   return (
     <section className="border-b border-line" data-door-hero="">
       <div className="mx-auto grid max-w-[1600px] grid-cols-1 lg:grid-cols-12">
-        {/* each picture held to the door itself (its plate's margins cut away), so four stand side by side at a size to read */}
-        <div className="order-2 flex items-center justify-center gap-[3%] bg-[#F4F3F0] px-5 py-10 sm:px-10 md:py-14 lg:order-1 lg:col-span-7 lg:px-14 lg:py-16 xl:px-20">
-          {rows.map((r) => (
-            <div key={r.slug} className="aspect-[1/2] w-[22%] max-w-[210px] overflow-hidden">
-              <img src={pImg(r, 0)} alt={doorAlt(r, 0, lang)} decoding="async" draggable="false" width="800" height="1000"
-                className="no-dim block h-full w-full object-cover" />
-            </div>
-          ))}
-        </div>
-        <div className="order-1 flex flex-col justify-center bg-concrete px-5 py-12 sm:px-10 md:py-16 lg:order-2 lg:col-span-5 lg:px-14 xl:px-16">
+        <div className="flex flex-col justify-center px-5 pb-14 pt-12 sm:px-10 md:pb-20 md:pt-16 lg:col-span-6 lg:px-14 lg:py-20 xl:col-span-5 xl:px-16">
           <Reveal className="block">
-            <span className="inline-block bg-ink px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-bone">{tag}</span>
+            <p data-eyebrow="" className="text-[11px] font-medium uppercase tracking-[0.26em] text-accent">Wellup · {x({ en: "Door Catalogue", id: "Katalog Pintu" })} · Price List 2026</p>
           </Reveal>
           <Reveal className="mt-7 block" delay={80}>
-            <h1 className="text-[42px] leading-[1.04] tracking-[-0.022em] md:text-[60px] xl:text-[68px]">
-              <span className="block font-medium">{strong}</span>{" "}<span className="block font-normal text-mute">{light}</span>
+            <h1 className="text-[48px] leading-[1.02] tracking-[-0.02em] md:text-[70px] xl:text-[82px]">
+              <span className="block">{x({ en: "UPVC", id: "Pintu" })}</span><span className="block text-mute">{x({ en: "Doors", id: "UPVC" })}</span>
             </h1>
           </Reveal>
-          {lede ? <Reveal className="mt-7 block" delay={160}><p className="max-w-[46ch] text-[15.5px] leading-[1.75] text-mute">{lede}</p></Reveal> : null}
-          {children ? <Reveal className="mt-9 block" delay={240}>{children}</Reveal> : null}
+          <Reveal className="mt-7 block" delay={140}>
+            <p className="max-w-[46ch] text-[16px] leading-[1.75] text-mute">
+              {x({ en: "Wellup UPVC doors: " + DOOR_MODELS.length + " models in one size, each in White, Brown and Dark Grey, with an R or L opening — every choice with its own product code.",
+                   id: "Pintu UPVC Wellup: " + DOOR_MODELS.length + " model dalam satu ukuran, masing-masing dalam White, Brown dan Dark Grey, dengan arah bukaan R atau L — setiap pilihan dengan kode produknya sendiri." })}
+            </p>
+          </Reveal>
+          <Reveal className="mt-9 block" delay={200}>
+            <dl className="grid grid-cols-2 gap-x-8 border-t border-line sm:grid-cols-3" data-door-facts="">
+              {facts.map(([id, k, val, sub]) => (
+                <div key={id} className="min-w-0 border-b border-line py-4" data-door-fact={id}>
+                  <dt className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-mute">{x(k)}</dt>
+                  <dd className="mt-2 text-[14.5px] font-medium tabular-nums leading-[1.45] text-ink">
+                    {val}{sub ? <span className="mt-1 block text-[11.5px] font-normal leading-[1.45] text-mute">{sub}</span> : null}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+          <Reveal className="mt-10 block" delay={260}>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href="#door-models" onClick={onSee}
+                className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
+                {x({ en: "See the models", id: "Lihat modelnya" })}
+                <span className="transition-transform duration-700 ease-quiet group-hover/cta:translate-x-1.5"><Icon name="arrow" size={16} /></span>
+              </a>
+              <a href="#/contact" className="inline-flex h-[54px] items-center whitespace-nowrap border border-line px-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[border-color,color] duration-500 ease-quiet hover:border-accent hover:text-accent">
+                {x({ en: "Request a quote", id: "Minta penawaran" })}
+              </a>
+            </div>
+          </Reveal>
         </div>
+        <div className="relative aspect-[4/5] overflow-hidden bg-concrete sm:aspect-[5/4] lg:col-span-6 lg:aspect-auto lg:min-h-[760px] xl:col-span-7" data-door-hero-vis="">
+          <img src={DOOR_INTRO_VIS.src} width={DOOR_INTRO_VIS.w} height={DOOR_INTRO_VIS.h} decoding="async" fetchpriority="high" draggable="false"
+            alt={x({ en: "The Wellup PT 2602 / WL 018 UPVC door in Dark Grey with a black list, in a hallway (visualisation)",
+                     id: "Pintu UPVC Wellup PT 2602 / WL 018 Dark Grey dengan List Hitam di sebuah lorong (visualisasi)" })}
+            className="no-dim absolute inset-0 h-full w-full object-cover" style={{ objectPosition: "38% 52%" }} />
+          {/* said where it is seen first: this room is a visualisation */}
+          <span className="absolute left-5 top-5 bg-black/50 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/90 sm:left-8 sm:top-7" data-door-hero-tag="">
+            {x({ en: "Visualisation", id: "Visualisasi" })}
+          </span>
+          <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-5 pb-5 pt-20 sm:px-8 sm:pb-7">
+            <p className="text-[10.5px] font-semibold uppercase leading-[1.6] tracking-[0.14em] text-white/90">
+              PT 2602 / WL 018 · Dark Grey · {x({ en: "Black list", id: "List Hitam" })}
+            </p>
+            {vis ? (
+              <a href={doorHref(vis)} className="group/l inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white" data-door-hero-link="">
+                <span className="u">{x({ en: "View this door", id: "Lihat pintu ini" })}</span>
+                <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── every model at a glance: the nineteen side by side on their plate, each section's together, in the colour
+   chosen — each a way to its page; a section's name takes you to it below ── */
+const DoorLineup = ({ colour, onColour, onSection }) => {
+  const { x, lang } = useStore();
+  const all = useMemo(() => doorModels(), []);
+  return (
+    <section className="mx-auto max-w-site px-5 pb-6 pt-14 md:px-10 md:pt-20" data-door-lineup="">
+      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div>
+          <Eyebrow>{x({ en: "The collection", id: "Koleksinya" })}</Eyebrow>
+          <h2 className="mt-4 text-[28px] leading-[1.12] md:text-[38px]">{x({ en: "Every model at a glance", id: "Semua model sekilas" })}</h2>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3" role="group" aria-label={x({ en: "Show the models in", id: "Tampilkan model dalam" })} data-door-lineup-colours="">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Show in", id: "Tampilkan" })}</span>
+          {DOOR_ORDER.map((c) => (
+            <button key={c} type="button" onClick={() => onColour(c)} aria-pressed={colour === c} data-door-lineup-colour={c}
+              className={"group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
+              <span className={"grid h-[24px] w-[24px] place-items-center rounded-full border transition-colors duration-300 " + (colour === c ? "border-accent" : "border-transparent group-hover:border-line")}>
+                <span className="h-[16px] w-[16px] rounded-full" style={{ background: DOOR_1XX[c], boxShadow: KS_RING }} />
+              </span>
+              {x(DOOR_COLOUR[c])}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="ks-scroll -mx-5 mt-10 overflow-x-auto px-5 pb-4 md:mx-0 md:overflow-visible md:px-0 md:pb-0">
+        <div className="flex w-max gap-4 md:w-auto md:gap-5 xl:gap-6">
+          {DOOR_SECTIONS.map((s) => {
+            const list = all.filter((g) => doorSectionOf(g) === s);
+            return (
+              /* on a phone each section is as wide as its doors (its name wraps within them); from md, the row is
+                 shared out by the number of doors, so every door is the same width */
+              <div key={s.id} className="flex flex-none flex-col md:basis-0 md:[flex-grow:var(--n)]" style={{ "--n": list.length }} data-door-lineup-section={s.id}>
+                <button type="button" onClick={() => onSection(s.id)}
+                  className="mb-3.5 flex min-h-[46px] w-0 min-w-full items-start gap-2 text-left text-[10.5px] font-semibold uppercase leading-[1.45] tracking-[0.11em] text-mute transition-colors duration-300 hover:text-ink md:min-h-[32px]">
+                  <span className="text-accent">{doorSectionNo(s)}</span><span className="u">{x(s.title)}</span>
+                </button>
+                <div className="flex" style={{ background: PLATE }}>
+                  {list.map((g) => {
+                    const r = doorRowOf(g, colour, g.m.lists ? "white" : null);
+                    return (
+                      <a key={g.key} href={doorHref(r)} data-door-lineup-door={g.key}
+                        className="group/d relative block w-[58px] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8A6A3E] md:w-auto md:min-w-0 md:flex-1">
+                        <span className="relative block aspect-[1/2] overflow-hidden">
+                          <DoorImg src={pImg(r, 0)} alt={doorAlt(r, 0, lang)} small
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-quiet group-hover/d:scale-[1.06]" />
+                        </span>
+                      </a>
+                    );
+                  })}
+                </div>
+                <div className="flex pt-2.5" aria-hidden="true">
+                  {list.map((g) => <span key={g.key} className="w-[58px] shrink-0 text-center text-[10px] font-medium tabular-nums tracking-[0.02em] text-mute md:w-auto md:min-w-0 md:flex-1">{g.m.code.replace("PT ", "")}</span>)}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── a section of the catalogue: its number, its name, what its doors have in common, its printed types, how many
+   models it holds and their prices — then its cards ── */
+const DoorSection = ({ s, list, total, children }) => {
+  const { x } = useStore();
+  const tid = "door-section-" + s.id + "-title";
+  return (
+    <section id={"door-section-" + s.id} className="scroll-mt-[190px] pt-12 first:pt-9 md:pt-[72px] md:first:pt-12" data-door-section={s.id} aria-labelledby={tid}>
+      <header className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 border-t border-line pt-7 md:grid-cols-[72px_minmax(0,1fr)_auto] md:gap-x-8 md:pt-9">
+        <span className="font-serif-lx text-[32px] font-light leading-none text-accent md:text-[44px]" aria-hidden="true">{doorSectionNo(s)}</span>
+        <div>
+          <h2 id={tid} className="text-[25px] leading-[1.15] md:text-[33px]">{x(s.title)}</h2>
+          <p className="mt-3 max-w-[64ch] text-[14.5px] leading-[1.7] text-mute">{x(s.line)}</p>
+          <p className="mt-4 flex flex-wrap gap-2" data-door-section-types="">
+            {s.types.filter((v) => DOOR_MODELS.some((m) => m.type === v)).map((v) => (
+              <span key={v} className="border border-line px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-mute">{x(doorTypeLabel(v))}</span>
+            ))}
+          </p>
+        </div>
+        <dl className="col-span-2 mt-5 flex gap-10 md:col-span-1 md:mt-1 md:flex-col md:gap-3 md:text-right" data-door-section-facts="">
+          <div>
+            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Models", id: "Model" })}</dt>
+            <dd className="mt-1 text-[14px] font-medium tabular-nums text-ink" data-door-section-count={list.length}>{list.length === total ? total : list.length + " / " + total}</dd>
+          </div>
+          <div>
+            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Price", id: "Harga" })}</dt>
+            <dd className="mt-1 whitespace-nowrap text-[14px] font-medium tabular-nums text-ink">{doorPriceRun(list)}</dd>
+          </div>
+        </dl>
+      </header>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-12 pt-9 md:grid-cols-3 md:gap-x-7 md:gap-y-14 md:pt-11 xl:grid-cols-4 xl:gap-x-8">{children}</div>
+    </section>
+  );
+};
+
+/* what the price list does not say, and who to ask: once on the catalogue, beside the price on a door's page */
+const DoorAsk = () => {
+  const { x } = useStore();
+  return (
+    <section className="border-y border-line bg-shell" data-door-contact="">
+      <div className="mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-5 py-14 md:grid-cols-12 md:gap-12 md:px-10 md:py-20">
+        <Reveal className="block md:col-span-8">
+          <Eyebrow>{x({ en: "Before you order", id: "Sebelum memesan" })}</Eyebrow>
+          <h2 className="mt-5 text-[26px] leading-[1.15] md:text-[34px]">{x(DOOR_CONTACT)}</h2>
+          <p className="mt-4 max-w-[62ch] text-[15px] leading-[1.75] text-mute">{x(DOOR_ASK)}</p>
+        </Reveal>
+        <Reveal className="block md:col-span-4 md:justify-self-end" delay={100}>
+          <a href="#/contact" className="inline-flex h-[54px] items-center gap-3 whitespace-nowrap border border-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">
+            <Icon name="chat" size={15} />{x({ en: "Contact us", id: "Hubungi kami" })}
+          </a>
+        </Reveal>
       </div>
     </section>
   );
@@ -17528,9 +17863,9 @@ const DoorNotes = () => {
   const { x } = useStore();
   return (
     <div className="mx-auto max-w-site border-t border-line px-5 py-10 md:px-10" data-door-notes="">
-      <p className="max-w-[100ch] text-[12px] leading-[1.7] text-mute">
-        {x({ en: "Models, product codes, sizes, specifications and prices as in the Wellup Price List 2026 (Door & Lock). The pictures are the store's photographs of each model; PT 109, 409, 709, 809 and 909 are pictured as in the price list. Stock, delivery, installation, warranty and the frame are not stated there: ask the store to confirm them.",
-             id: "Model, kode produk, ukuran, spesifikasi dan harga sesuai Price List 2026 Wellup (Door & Lock). Gambar adalah foto toko untuk setiap model; PT 109, 409, 709, 809 dan 909 ditampilkan sesuai daftar harga. Stok, pengiriman, pemasangan, garansi dan kusen tidak tercantum di sana: tanyakan kepada toko untuk konfirmasi." })}
+      <p className="max-w-[100ch] text-[12.5px] leading-[1.75] text-mute">
+        {x({ en: "Models, product codes, sizes, specifications and prices as in the Wellup Price List 2026 (Door & Lock). The pictures are the store's photographs of each model; PT 109, 409, 709, 809 and 909 are pictured as in the price list; the rooms are visualisations. Stock, delivery, installation, warranty and the frame are not stated there: contact us for details.",
+             id: "Model, kode produk, ukuran, spesifikasi dan harga sesuai Price List 2026 Wellup (Door & Lock). Gambar adalah foto toko untuk setiap model; PT 109, 409, 709, 809 dan 909 ditampilkan sesuai daftar harga; ruangannya adalah visualisasi. Stok, pengiriman, pemasangan, garansi dan kusen tidak tercantum di sana: hubungi kami untuk detail." })}
       </p>
     </div>
   );
@@ -17542,10 +17877,11 @@ const DoorsPage = () => {
   const all = useMemo(() => doorModels(), []);
   const [q, setQ] = useState("");
   const [sel, setSel] = useState({});
-  const [sort, setSort] = useState("catalogue");
-  const [page, setPage] = useState(1);
+  const [hand, setHand] = useState(null);
+  const [shown, setShown] = useState("dark-grey");
+  const [sort, setSort] = useState("sections");
   const [sheet, setSheet] = useState(false);
-  const gridTop = useRef(null);
+  const [jump, setJump] = useState(null);
   const sheetRef = useInert(!sheet);
   /* the sheet is a dialog: the page behind it holds still, Escape closes it, and the keyboard starts inside it */
   const sheetClose = useRef(null), sheetOpener = useRef(null);
@@ -17557,7 +17893,6 @@ const DoorsPage = () => {
     window.addEventListener("keydown", onKey);
     return () => { clearTimeout(t0); window.removeEventListener("keydown", onKey); if (sheetOpener.current) sheetOpener.current.focus({ preventScroll: true }); };
   }, [sheet]);
-  useEffect(() => { setPage(1); }, [sort, q, JSON.stringify(sel)]);
   const low = Math.min(...DOOR_MODELS.map((m) => m.price));
   useKsMeta(x({ en: "UPVC Doors — Wellup", id: "Pintu UPVC — Wellup" }),
     x({ en: "Wellup UPVC doors: " + DOOR_MODELS.length + " models, each " + DOOR_SIZE + ", in White, Brown and Dark Grey, R or L — from " + rp(low) + ".",
@@ -17569,19 +17904,36 @@ const DoorsPage = () => {
   const passes = (g, except = null) => (!nq || !!hits[g.key]) &&
     DOOR_FILTERS.every((f) => f.id === except || !(sel[f.id] || []).length || (sel[f.id] || []).some((v) => f.test(g, v)));
   const results = doorSorted(all.filter((g) => passes(g)), sort);
-  const pages = Math.max(1, Math.ceil(results.length / DOOR_PER)), cur = Math.min(page, pages);
-  const shown = results.slice((cur - 1) * DOOR_PER, cur * DOOR_PER);
-  const toPage = (n) => { setPage(n); const el = gridTop.current; if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 200, behavior: lessMotion() ? "auto" : "smooth" }); };
   /* how many each option would show, the other filters (and the search) as they are */
   const counts = Object.fromEntries(DOOR_FILTERS.map((f) => [f.id, Object.fromEntries(f.options.map((o) => [o.value, all.filter((g) => passes(g, f.id) && f.test(g, o.value)).length]))]));
+  const handWord = (h) => x({ en: "Opening", id: "Arah bukaan" }) + " " + h;
   const chips = [
     ...(q.trim() ? [{ key: "q", label: "“" + q.trim() + "”", clear: () => setQ("") }] : []),
     ...DOOR_FILTERS.flatMap((f) => (sel[f.id] || []).map((v) => ({ key: f.id + v, label: tx((f.options.find((o) => o.value === v) || {}).label, lang), clear: () => on(f.id, v) }))),
+    ...(hand ? [{ key: "hand", label: handWord(hand), clear: () => setHand(null) }] : []),
   ];
-  const clearAll = () => { setSel({}); setQ(""); };
+  const clearAll = () => { setSel({}); setQ(""); setHand(null); };
   const colourPick = ((sel.colour || [])[0]) || null, listPick = ((sel.list || [])[0]) || null;
+  /* the colour the models are shown in: the one filtered for, or the one chosen at a glance */
+  const display = colourPick || shown;
+  const pickShown = (c) => { setShown(c); if (colourPick) setSel((s) => ({ ...s, colour: [c] })); };
   const toModels = (e) => { e.preventDefault(); const el = document.getElementById("door-models"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" }); };
+  /* to a section: brought back into view first if the filters or the sort had set it aside */
+  const toSection = (id) => {
+    if (sort !== "sections" || !results.some((g) => doorSectionOf(g).id === id)) { setSort("sections"); clearAll(); }
+    setJump(id + "|" + Date.now());
+  };
+  useEffect(() => {
+    if (!jump) return;
+    const el = document.getElementById("door-section-" + jump.split("|")[0]);
+    if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" });
+  }, [jump]);
   const modelsWord = (n) => n + " " + (n === 1 ? x({ en: "model", id: "model" }) : x({ en: "models", id: "model" }));
+  const card = (g, n) => (
+    <Reveal key={g.key} delay={Math.min(n, 6) * 55} className="block h-full">
+      <DoorCard g={g} prefer={display} preferList={listPick} preferHand={hand} hit={hits[g.key]} eager={n < 4} />
+    </Reveal>
+  );
 
   /* a function, not a component: called twice, the same buttons stay mounted and keep the keyboard's place */
   const sidebar = (inSheet) => (
@@ -17595,54 +17947,49 @@ const DoorsPage = () => {
       {DOOR_FILTERS.map((f) => (
         <div key={f.id} className="border-b border-line pb-7 pt-1 [&+&]:pt-7" data-door-filter={f.id}>
           <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{tx(f.label, lang)}</p>
-          <KsOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />
-          {f.id === "list" ? <p className="mt-4 text-[11.5px] leading-[1.6] text-mute">{x({ en: "PT 2601 and PT 2602: the bars between the panes.", id: "PT 2601 dan PT 2602: bilah di antara kaca." })}</p> : null}
+          {f.chips ? <DoorModelChips f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} />
+                   : <DoorOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />}
+          {f.id === "list" ? <p className="mt-4 text-[12px] leading-[1.6] text-mute">{x({ en: "PT 2601 and PT 2602: the bars between the panes.", id: "PT 2601 dan PT 2602: bilah di antara kaca." })}</p> : null}
         </div>
       ))}
+      <div className="pb-7 pt-7" data-door-filter="hand">
+        <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Opening direction", id: "Arah bukaan" })}</p>
+        <DoorHandPick hand={hand} onHand={setHand} count={results.length} />
+        <p className="mt-4 text-[12px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code: the cards show the code for the one chosen.",
+                                                                       id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri: kartu menampilkan kode untuk yang dipilih." })}</p>
+      </div>
     </div>
   );
 
   return (
     <div data-doors-page="">
-      <DoorOpener tag={x({ en: "Door Catalogue · Price List 2026", id: "Katalog Pintu · Price List 2026" })}
-        strong={x({ en: "UPVC", id: "Pintu" })} light={x({ en: "Door", id: "UPVC" })}
-        lede={x({ en: "Wellup UPVC doors: " + DOOR_MODELS.length + " models, each " + DOOR_SIZE + ", in White, Brown and Dark Grey, with an R or L opening — from " + rp(low) + ".",
-                  id: "Pintu UPVC Wellup: " + DOOR_MODELS.length + " model, masing-masing " + DOOR_SIZE + ", dalam White, Brown dan Dark Grey, dengan arah bukaan R atau L — mulai " + rp(low) + "." })}>
-        <div className="flex flex-wrap items-center gap-3">
-          <a href="#door-models" onClick={toModels}
-            className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
-            {x({ en: "See the models", id: "Lihat modelnya" })}
-            <span className="transition-transform duration-700 ease-quiet group-hover/cta:translate-x-1.5"><Icon name="arrow" size={16} /></span>
-          </a>
-          <a href="#/contact" className="inline-flex h-[54px] items-center whitespace-nowrap border border-ink px-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">
-            {x({ en: "Request a quote", id: "Minta penawaran" })}
-          </a>
-        </div>
-      </DoorOpener>
+      <DoorIntro onSee={toModels} />
 
       <div className="mx-auto max-w-site px-5 pt-10 md:px-10">
         <Breadcrumb trail={[{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Door", id: "Pintu" }) }]} />
       </div>
 
-      <div id="door-models" className="mx-auto grid max-w-site scroll-mt-[180px] grid-cols-1 gap-10 px-5 pb-[100px] pt-10 md:px-10 md:pt-14 lg:grid-cols-12 lg:gap-14" data-door-models="">
+      <DoorLineup colour={display} onColour={pickShown} onSection={toSection} />
+
+      <div id="door-models" className="mx-auto grid max-w-site scroll-mt-[180px] grid-cols-1 gap-10 px-5 pb-[100px] pt-12 md:px-10 md:pt-16 lg:grid-cols-12 lg:gap-14" data-door-models="">
         <aside className="hidden lg:col-span-3 lg:block" aria-label={t("filter")}>{sidebar(false)}</aside>
 
         <div className="lg:col-span-9">
           {/* the search: a model or a product code */}
           <div className="mb-7" data-door-search="">
-            <label className="flex items-center gap-4 border-b border-line pb-4 transition-colors duration-300 focus-within:border-ink">
+            <label className="flex items-center gap-4 border-b border-line pb-4 transition-colors duration-300 focus-within:border-accent">
               <span className="text-mute"><Icon name="search" size={18} /></span>
               <input value={q} onChange={(e) => setQ(e.target.value)} enterKeyHint="search" autoComplete="off" spellCheck="false" aria-describedby="door-search-hint"
                 placeholder={x({ en: "Search model or product code", id: "Cari model atau kode produk" })} aria-label={x({ en: "Search model or product code", id: "Cari model atau kode produk" })}
                 className="min-w-0 flex-1 bg-transparent text-[16px] tracking-[0.01em] text-ink placeholder:text-mute focus:outline-none md:text-[17px]" />
               {q ? <button type="button" onClick={() => setQ("")} aria-label={t("clear")} className="text-mute transition-colors duration-300 hover:text-ink"><Icon name="close" size={15} /></button> : null}
             </label>
-            <p id="door-search-hint" className="mt-2.5 text-[11.5px] leading-[1.6] text-mute">
+            <p id="door-search-hint" className="mt-2.5 text-[12px] leading-[1.6] text-mute">
               {x({ en: "For example PT 111, WL 016 or a product code such as WELUP-DPT0202001.", id: "Contoh: PT 111, WL 016 atau kode produk seperti WELUP-DPT0202001." })}
             </p>
           </div>
 
-          <div ref={gridTop} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
             <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-door-count={results.length}>{modelsWord(results.length)}</p>
             <div className="ml-auto flex items-center gap-5">
               <button ref={sheetOpener} onClick={() => setSheet(true)} className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-door-sheet-open="">
@@ -17651,8 +17998,8 @@ const DoorsPage = () => {
               <label className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
                 <span className="hidden sm:inline">{x({ en: "Sort", id: "Urutkan" })}</span>
                 <select value={sort} onChange={(e) => setSort(e.target.value)} data-door-sort=""
-                  className="cursor-pointer border-b border-line bg-transparent py-1 pr-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink focus:border-ink focus:outline-none">
-                  {DOOR_SORTS.map((s) => <option key={s.id} value={s.id}>{tx(s.label, lang)}</option>)}
+                  className="cursor-pointer border-b border-line bg-transparent py-1 pr-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink focus:border-accent focus:outline-none">
+                  {DOOR_SORTS.map((s) => <option key={s.id} value={s.id} className="bg-bone text-ink">{tx(s.label, lang)}</option>)}
                 </select>
               </label>
             </div>
@@ -17662,7 +18009,7 @@ const DoorsPage = () => {
             <div className="flex flex-wrap items-center gap-3 pt-6" data-door-chips="">
               {chips.map((c) => (
                 <button key={c.key} onClick={c.clear}
-                  className="flex items-center gap-3 border border-line px-4 py-2 text-[11px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:border-ink hover:text-ink">
+                  className="flex items-center gap-3 border border-line px-4 py-2 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/85 transition-colors duration-300 hover:border-accent hover:text-ink">
                   {c.label}<Icon name="close" size={11} />
                 </button>
               ))}
@@ -17671,16 +18018,28 @@ const DoorsPage = () => {
           ) : null}
 
           {results.length ? (
-            <>
-              <div key={sort + JSON.stringify(sel) + cur} data-door-grid="" className="grid grid-cols-2 gap-x-4 gap-y-12 pt-8 md:gap-x-8 md:gap-y-[60px] md:pt-12 xl:grid-cols-3 xl:gap-x-10">
-                {shown.map((g, n) => <Reveal key={g.key} delay={Math.min(n, 6) * 55} className="block h-full"><DoorCard g={g} prefer={colourPick} preferList={listPick} hit={hits[g.key]} /></Reveal>)}
+            sort === "sections" ? (
+              <div key={JSON.stringify(sel) + (hand || "")} data-door-grid="" data-door-view-mode="sections">
+                {DOOR_SECTIONS.map((s) => {
+                  const list = results.filter((g) => doorSectionOf(g) === s);
+                  if (!list.length) return null;
+                  return (
+                    <DoorSection key={s.id} s={s} list={list} total={all.filter((g) => doorSectionOf(g) === s).length}>
+                      {list.map(card)}
+                    </DoorSection>
+                  );
+                })}
               </div>
-              <KsPager page={cur} pages={pages} onPage={toPage} />
-            </>
+            ) : (
+              <div key={sort + JSON.stringify(sel) + (hand || "")} data-door-grid="" data-door-view-mode="list"
+                className="grid grid-cols-2 gap-x-4 gap-y-12 pt-9 md:grid-cols-3 md:gap-x-7 md:gap-y-14 md:pt-12 xl:grid-cols-4 xl:gap-x-8">
+                {results.map(card)}
+              </div>
+            )
           ) : (
             <div className="py-24 text-center" data-door-empty="">
-              <p className="text-[24px] font-medium">{t("noResults")}</p>
-              <p className="mx-auto mt-4 max-w-[46ch] text-[14px] leading-[1.7] text-mute">
+              <p className="font-serif-lx text-[26px] font-light">{t("noResults")}</p>
+              <p className="mx-auto mt-4 max-w-[46ch] text-[14.5px] leading-[1.7] text-mute">
                 {x({ en: "Try a model such as PT 111 or WL 016, or a product code from the price list.", id: "Coba model seperti PT 111 atau WL 016, atau kode produk dari daftar harga." })}
               </p>
               <button onClick={clearAll} className="u mt-6 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink">{t("clearAll")}</button>
@@ -17689,8 +18048,10 @@ const DoorsPage = () => {
         </div>
       </div>
 
+      <DoorAsk />
+
       {/* the other collection, as the sink pages point to theirs */}
-      <section className="mx-auto max-w-site border-t border-line px-5 py-[90px] md:px-10 md:py-[120px]">
+      <section className="mx-auto max-w-site px-5 py-[90px] md:px-10 md:py-[120px]">
         <a href="#/shop/kitchen-sinks" className="group grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12">
           <div className="overflow-hidden bg-[#F4F3F0] md:col-span-6">
             <KsSinkSet name="web-collection" layout="grid-3" className="px-6 py-12 transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.025] md:px-10 md:py-16" />
@@ -17741,11 +18102,20 @@ const DoorFront = ({ w = 240, h = 440, f = 13, sw = 1.4, label }) => {
 };
 
 /* ═══ #/shop/p/<door>(/l) — one door ════════════════════════════════════════
-   The shop's own product route, for a door: its pictures — its views and every colour (and list) it comes in —
-   the colour, list and opening direction to choose, the product code they make, its price, the bag; its size
-   drawn; its description, specification and every code of the model. A choice is said in the address too, as
-   the sink pages do, so the page can be shared as it is seen. */
-const DOOR_VIS = { "pt-2602-dark-grey-black-list": "img/home/cat-door.webp" };
+   The shop's own product route, for a door: its pictures — its views and every colour (and list) it comes in,
+   each with its code — the colour, list and opening direction to choose, the product code they make, its price,
+   the bag; its specification as printed and its size drawn; its description and every code of the model. A
+   choice is said in the address too, as the sink pages do, so the page can be shared as it is seen. Where a door
+   stands in the virtual showroom, a link opens it there in the colour chosen. */
+/* the rooms a door is shown in: visualisations, made from its photographs, and labelled so wherever they appear */
+const DOOR_VIS = {
+  "pt-2602-dark-grey-black-list": [
+    { src: "img/home/cat-door.webp", w: 1200, h: 1500, where: { en: "In a hallway", id: "Di lorong" },
+      alt: { en: "The PT 2602 / WL 018 in Dark Grey with a black list, in a hallway (visualisation)", id: "PT 2602 / WL 018 Dark Grey dengan List Hitam di sebuah lorong (visualisasi)" } },
+    { src: "img/collections/doors.jpg", w: 800, h: 1000, where: { en: "Against a plain wall", id: "Di depan dinding polos" },
+      alt: { en: "The PT 2602 / WL 018 in Dark Grey with a black list, against a plain wall (visualisation)", id: "PT 2602 / WL 018 Dark Grey dengan List Hitam di depan dinding polos (visualisasi)" } },
+  ],
+};
 const DoorProduct = ({ p, handInit = null, at = null }) => {
   const { t, x, lang, add, saved, toggleSaved, setDrawer, noteViewed } = useStore();
   const g = useMemo(() => doorFind(p.code), [p.code]);
@@ -17762,8 +18132,8 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
   if (arrived !== at) { setArrived(at); setC(p.doorCol); setL(p.listCol); setHand(handInit === "L" ? "L" : "R"); setView(0); setQty(1); }
   useEffect(() => { noteViewed(p.slug); }, [p.slug]);
   const row = g ? doorRowOf(g, c, l) : p;
-  const vis = DOOR_VIS[row.slug] || null;
-  const views = [...row.photos.map((ph, n) => ({ kind: "photo", n })), ...(vis ? [{ kind: "vis" }] : [])];
+  const vis = DOOR_VIS[row.slug] || [];
+  const views = [...row.photos.map((ph, n) => ({ kind: "photo", n, id: "photo-" + n })), ...vis.map((vv, n) => ({ ...vv, kind: "vis", n, id: "vis-" + n }))];
   const v = views[Math.min(view, views.length - 1)] || views[0];
   const sel = row.hands.find((h) => h.id === hand) || row.hands[0];
   useEffect(() => {
@@ -17771,12 +18141,15 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
   }, [row.slug, sel.id, at]);
   useKsMeta(row.model + " " + x(DOOR_COLOUR[row.doorCol]) + (row.listCol ? " · " + x({ en: DOOR_LIST[row.listCol].en, id: DOOR_LIST[row.listCol].id }) : "") + " — " + x({ en: "UPVC Door", id: "Pintu UPVC" }), x(row.desc));
   if (!g) return <NotFound />;
+  const sec = doorSectionOf(g);
   const finish = x(row.colour) + " · " + sel.id;
   const isSaved = saved.includes(row.slug);
+  const showroom = showroomOf(row);
   const pickColour = (cc) => { setC(cc); setView(0); };
   const pickVariant = (r) => { setC(r.doorCol); setL(r.listCol); setView(0); };
   const label = "text-[11px] font-semibold uppercase tracking-[0.11em] text-mute";
   const btn = "inline-flex h-[52px] items-center justify-center gap-3 whitespace-nowrap border px-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color,border-color] duration-500 ease-quiet ";
+  const viewName = (vv) => vv.kind === "vis" ? x(vv.where) + " (" + x({ en: "visualisation", id: "visualisasi" }) + ")" : vv.n ? x({ en: "Angled view", id: "Tampak miring" }) : x({ en: "Front view", id: "Tampak depan" });
   const summary = [
     [{ en: "Model", id: "Model" }, row.model],
     [{ en: "Colour", id: "Warna" }, x(DOOR_COLOUR[row.doorCol])],
@@ -17786,44 +18159,56 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
     [{ en: "Size", id: "Ukuran" }, DOOR_SIZE],
     [{ en: "Price", id: "Harga" }, rp(row.price), "price"],
   ].filter(Boolean);
+  /* the specification, as the price list gives it, in the order it is looked for */
+  const contactLink = (
+    <a href={"#/contact/" + row.slug} className="u font-medium text-ink transition-colors duration-300 hover:text-accent" data-door-spec-contact="">{x(DOOR_CONTACT)}</a>
+  );
+  const specGroups = [
+    { id: "door", title: { en: "The door", id: "Pintu" }, rows: [
+      [{ en: "Brand", id: "Merek" }, "Wellup"],
+      [{ en: "Range", id: "Rangkaian" }, x({ en: "UPVC Door", id: "Pintu UPVC" })],
+      [{ en: "Model", id: "Model" }, row.model],
+      [{ en: "Material", id: "Material" }, x(row.material)],
+      [{ en: "Type", id: "Tipe" }, x(doorTypeLabel(g.m.type))],
+    ] },
+    { id: "size", title: { en: "Size", id: "Ukuran" }, rows: [
+      [{ en: "Size", id: "Ukuran" }, DOOR_SIZE],
+      [{ en: "Height", id: "Tinggi" }, "200 cm"],
+      [{ en: "Width", id: "Lebar" }, "70 cm"],
+      [{ en: "Specification (as printed)", id: "Spesifikasi (sesuai daftar)" }, DOOR_SIZE + ", 1.8mm, " + row.typeAs],
+    ] },
+    { id: "options", title: { en: "Options", id: "Pilihan" }, rows: [
+      [{ en: "Colours", id: "Warna" }, g.colours.map((cc) => x(DOOR_COLOUR[cc])).join(", ")],
+      ...(g.m.lists ? [[{ en: "List colours", id: "Warna list" }, g.m.lists.map((ll) => x({ en: DOOR_LIST[ll].en, id: DOOR_LIST[ll].id })).join(", ")]] : []),
+      [{ en: "Opening direction", id: "Arah bukaan" }, "R / L"],
+    ] },
+    { id: "codes", title: { en: "This choice", id: "Pilihan ini" }, rows: [
+      [{ en: "Colour", id: "Warna" }, x(row.colour)],
+      [{ en: "Product code (R)", id: "Kode produk (R)" }, row.hands[0].code],
+      [{ en: "Product code (L)", id: "Kode produk (L)" }, row.hands[1].code],
+      [{ en: "Price", id: "Harga" }, rp(row.price)],
+    ] },
+  ];
   /* every code of the model: a row for each colour (and list), R and L beside it */
   const codeRows = g.rows.map((r) => ({ r, R: r.hands[0].code, L: r.hands[1].code }));
-  const ask = x({ en: "Stock, delivery, installation, warranty and whether the frame (kusen) is included are not stated in the price list. Please contact the store to confirm them.",
-                  id: "Stok, pengiriman, pemasangan, garansi dan apakah kusen termasuk tidak tercantum di daftar harga. Silakan hubungi toko untuk konfirmasi." });
   const tabs = [
     { id: "description", label: x({ en: "Description", id: "Deskripsi" }), body: (
       <div className="max-w-[68ch]">
         <p className="text-[15.5px] leading-[1.8] text-ink/90">{x(row.desc)}</p>
         <ul className="mt-7 grid gap-3">{(row.feat || []).map((fe, k) => (
-          <li key={k} className="flex items-baseline gap-3 text-[14px] leading-[1.6] text-mute"><span className="h-[5px] w-[5px] shrink-0 translate-y-[-2px] rounded-full bg-ink/50" />{x(fe)}</li>
+          <li key={k} className="flex items-baseline gap-3 text-[14px] leading-[1.6] text-mute"><span className="h-[5px] w-[5px] shrink-0 translate-y-[-2px] rounded-full bg-accent/70" />{x(fe)}</li>
         ))}</ul>
       </div>
-    ) },
-    { id: "spec", label: x({ en: "Specifications", id: "Spesifikasi" }), body: (
-      <table className="w-full max-w-[760px] border-collapse text-[14px]" data-door-spec="">
-        <tbody>
-          {row.spec.map(([k, val], n) => (
-            <tr key={n} className="border-t border-line">
-              <th scope="row" className="w-[42%] py-4 pr-6 text-left align-top font-normal text-mute">{x(k)}</th>
-              <td className="py-4 font-medium text-ink">{x(val)}</td>
-            </tr>
-          ))}
-          <tr className="border-t border-line">
-            <th scope="row" className="w-[42%] py-4 pr-6 text-left align-top font-normal text-mute">{x({ en: "Stock, delivery, installation, warranty", id: "Stok, pengiriman, pemasangan, garansi" })}</th>
-            <td className="py-4 font-medium text-ink">{x({ en: "Not stated in the price list — ask the store", id: "Tidak tercantum di daftar harga — tanyakan ke toko" })}</td>
-          </tr>
-        </tbody>
-      </table>
     ) },
     { id: "codes", label: x({ en: "Product codes", id: "Kode produk" }), body: (
       <div className="max-w-[860px] overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-[13.5px]" data-door-codes="">
           <thead>
             <tr className="text-left">
-              <th scope="col" className="pb-3 pr-6 font-semibold uppercase tracking-[0.1em] text-[11px] text-mute">{x({ en: "Colour", id: "Warna" })}</th>
-              {g.m.lists ? <th scope="col" className="pb-3 pr-6 font-semibold uppercase tracking-[0.1em] text-[11px] text-mute">{x({ en: "List", id: "List" })}</th> : null}
-              <th scope="col" className="pb-3 pr-6 font-semibold uppercase tracking-[0.1em] text-[11px] text-mute">R</th>
-              <th scope="col" className="pb-3 font-semibold uppercase tracking-[0.1em] text-[11px] text-mute">L</th>
+              <th scope="col" className="pb-3 pr-6 text-[11px] font-semibold uppercase tracking-[0.1em] text-mute">{x({ en: "Colour", id: "Warna" })}</th>
+              {g.m.lists ? <th scope="col" className="pb-3 pr-6 text-[11px] font-semibold uppercase tracking-[0.1em] text-mute">{x({ en: "List", id: "List" })}</th> : null}
+              <th scope="col" className="pb-3 pr-6 text-[11px] font-semibold uppercase tracking-[0.1em] text-mute">R</th>
+              <th scope="col" className="pb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-mute">L</th>
             </tr>
           </thead>
           <tbody>
@@ -17831,8 +18216,8 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               <tr key={r.slug} className={"border-t border-line " + (r.slug === row.slug ? "text-ink" : "text-mute")}>
                 <td className="py-3.5 pr-6 font-medium">{x(DOOR_COLOUR[r.doorCol])}</td>
                 {g.m.lists ? <td className="py-3.5 pr-6">{x({ en: DOOR_LIST[r.listCol].en, id: DOOR_LIST[r.listCol].id })}</td> : null}
-                <td className={"py-3.5 pr-6 tabular-nums " + (r.slug === row.slug && sel.id === "R" ? "font-semibold text-ink" : "")}>{R}</td>
-                <td className={"py-3.5 tabular-nums " + (r.slug === row.slug && sel.id === "L" ? "font-semibold text-ink" : "")}>{L}</td>
+                <td className={"py-3.5 pr-6 tabular-nums " + (r.slug === row.slug && sel.id === "R" ? "font-semibold text-accent" : "")}>{R}</td>
+                <td className={"py-3.5 tabular-nums " + (r.slug === row.slug && sel.id === "L" ? "font-semibold text-accent" : "")}>{L}</td>
               </tr>
             ))}
           </tbody>
@@ -17842,16 +18227,18 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
     ) },
     { id: "delivery", label: x({ en: "Delivery & installation", id: "Pengiriman & pemasangan" }), body: (
       <div className="max-w-[68ch]">
-        <p className="text-[15px] leading-[1.8] text-ink/90">{ask}</p>
+        <p className="text-[15px] leading-[1.8] text-ink/90">{x(DOOR_ASK)}</p>
         <a href={"#/contact/" + row.slug} className="group/l mt-7 inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-          <span className="u">{x({ en: "Contact the store", id: "Hubungi toko" })}</span>
+          <span className="u">{x(DOOR_CONTACT)}</span>
           <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
         </a>
       </div>
     ) },
   ];
+  /* the nearest other doors: the same section first, then the same type, then the nearest price */
   const related = doorModels().filter((o) => o.m.code !== g.m.code)
-    .sort((a, b) => ((a.m.type !== g.m.type) - (b.m.type !== g.m.type)) || Math.abs(a.price - g.price) - Math.abs(b.price - g.price)).slice(0, 4);
+    .sort((a, b) => ((doorSectionOf(a) !== sec) - (doorSectionOf(b) !== sec)) || ((a.m.type !== g.m.type) - (b.m.type !== g.m.type)) || Math.abs(a.price - g.price) - Math.abs(b.price - g.price))
+    .slice(0, 4);
 
   return (
     <div data-door-page="" data-door-model={row.model}>
@@ -17860,65 +18247,88 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
       </div>
 
       <section className="mx-auto grid max-w-site grid-cols-1 gap-10 px-5 pb-20 pt-8 md:px-10 md:pb-28 md:pt-12 lg:grid-cols-12 lg:gap-16">
-        {/* the pictures: this door's views (and, for one, a visualisation), and each colour it comes in */}
+        {/* the pictures: this door's views (and, for one, its rooms), and each colour it comes in, with its code */}
         <div className="lg:col-span-7">
-          <div className="relative">
-            <button type="button" onClick={() => v.kind === "photo" && setZoom(true)} aria-label={t("enlarge")} disabled={v.kind !== "photo"}
-              className={"group relative block aspect-[4/5] w-full overflow-hidden sm:aspect-square " + (v.kind === "vis" ? "cursor-default bg-concrete" : "bg-[#F4F3F0]")} data-door-main={v.kind === "vis" ? "vis" : "photo-" + v.n}>
-              {v.kind === "vis" ? (
-                <>
-                  <Photo key="vis" src={vis} tone="#BCB3A6" eager className="absolute inset-0 h-full w-full object-cover"
-                    alt={x({ en: "The " + row.model + " in Dark Grey with a black list, in a hallway (visualisation)", id: row.model + " Dark Grey dengan List Hitam di sebuah lorong (visualisasi)" })} />
-                  <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-5 pb-4 pt-12 text-left text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/90">
-                    {x({ en: "Visualisation", id: "Visualisasi" })}
-                  </span>
-                </>
-              ) : (
-                <Photo key={row.slug + v.n} src={pImg(row, v.n)} alt={doorAlt(row, v.n, lang)} tone={PLATE} eager
-                  className="no-dim absolute inset-0 h-full w-full object-contain transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.03]" />
-              )}
-            </button>
-          </div>
+          <button type="button" onClick={() => v.kind === "photo" && setZoom(true)} aria-label={v.kind === "photo" ? t("enlarge") : viewName(v)} disabled={v.kind !== "photo"}
+            className={"group relative block aspect-[4/5] w-full overflow-hidden sm:aspect-[6/7] " + (v.kind === "vis" ? "cursor-default bg-concrete" : "cursor-zoom-in")}
+            style={v.kind === "vis" ? undefined : { background: PLATE }} data-door-main={v.id}>
+            {v.kind === "vis" ? (
+              <>
+                <img key={v.id} src={v.src} width={v.w} height={v.h} alt={x(v.alt)} decoding="async" draggable="false" className="no-dim absolute inset-0 h-full w-full object-cover" />
+                <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/65 to-transparent px-5 pb-4 pt-14 text-left text-[10.5px] font-semibold uppercase tracking-[0.14em] text-white/90">
+                  {x({ en: "Visualisation", id: "Visualisasi" })} · {x(v.where)}
+                </span>
+              </>
+            ) : (
+              <>
+                <DoorImg key={row.slug + v.n} src={pImg(row, v.n)} alt={doorAlt(row, v.n, lang)} eager priority
+                  className="absolute inset-0 h-full w-full object-contain transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.03]" />
+                <span className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-black/10 bg-white/80 text-[#1A1A1A] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
+                  <Icon name="plus" size={15} />
+                </span>
+              </>
+            )}
+          </button>
           {views.length > 1 ? (
             <div className="mt-4 flex flex-wrap gap-3" role="group" aria-label={x({ en: "Views", id: "Tampilan" })} data-door-views="">
               {views.map((vv, k) => (
-                <button key={k} type="button" onClick={() => setView(k)} aria-pressed={k === view} data-door-view={vv.kind === "vis" ? "vis" : "photo-" + vv.n}
-                  title={vv.kind === "vis" ? x({ en: "In a hallway (visualisation)", id: "Di lorong (visualisasi)" }) : vv.n ? x({ en: "Angled view", id: "Tampak miring" }) : x({ en: "Front view", id: "Tampak depan" })}
-                  aria-label={vv.kind === "vis" ? x({ en: "In a hallway (visualisation)", id: "Di lorong (visualisasi)" }) : vv.n ? x({ en: "Angled view", id: "Tampak miring" }) : x({ en: "Front view", id: "Tampak depan" })}
-                  className={"relative h-[96px] w-[78px] overflow-hidden border transition-colors duration-300 " + (vv.kind === "vis" ? "bg-concrete " : "bg-[#F4F3F0] ") + (k === view ? "border-ink" : "border-line hover:border-mute")}>
-                  <img src={vv.kind === "vis" ? vis : pImg(row, vv.n)} alt="" loading="lazy" className={"h-full w-full " + (vv.kind === "vis" ? "object-cover" : "no-dim object-contain")} draggable="false" />
+                <button key={vv.id} type="button" onClick={() => setView(k)} aria-pressed={k === view} data-door-view={vv.id} title={viewName(vv)} aria-label={viewName(vv)}
+                  className={"relative h-[96px] w-[78px] overflow-hidden border transition-colors duration-300 " + (vv.kind === "vis" ? "bg-concrete " : "") + (k === view ? "border-accent" : "border-line hover:border-mute")}
+                  style={vv.kind === "vis" ? undefined : { background: PLATE }}>
+                  {vv.kind === "vis" ? <img src={vv.src} alt="" loading="lazy" decoding="async" className="no-dim h-full w-full object-cover" draggable="false" />
+                    : <DoorImg src={pImg(row, vv.n)} alt="" small className="h-full w-full object-contain" />}
                 </button>
               ))}
             </div>
           ) : null}
-          <div className="mt-8 border-t border-line pt-6" data-door-variants="">
-            <p className={label}>{g.m.lists ? x({ en: "Every colour and list", id: "Semua warna dan list" }) : x({ en: "Every colour", id: "Semua warna" })}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {g.rows.map((r) => (
-                <button key={r.slug} type="button" onClick={() => pickVariant(r)} aria-pressed={r.slug === row.slug} title={x(r.colour)} aria-label={x(r.colour)} data-door-variant={r.slug}
-                  className={"relative h-[96px] w-[78px] overflow-hidden border bg-[#F4F3F0] transition-colors duration-300 " + (r.slug === row.slug ? "border-ink" : "border-line hover:border-mute")}>
-                  <img src={pImg(r, 0)} alt="" loading="lazy" className="no-dim h-full w-full object-contain" draggable="false" />
-                </button>
-              ))}
+          <div className="mt-10 border-t border-line pt-7" data-door-variants="">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+              <p className={label}>{g.m.lists ? x({ en: "Every colour and list", id: "Semua warna dan list" }) : x({ en: "Every colour", id: "Semua warna" })}</p>
+              <p className="text-[11.5px] text-mute">{x({ en: "Codes for opening " + sel.id, id: "Kode untuk arah bukaan " + sel.id })}</p>
+            </div>
+            {/* on a phone, a list — each picture beside its name and its code in full; from sm, tiles wide enough
+                for the code, as many to a row as fit */}
+            <div className="mt-5 grid grid-cols-1 sm:flex sm:flex-wrap sm:gap-x-3 sm:gap-y-6">
+              {g.rows.map((r) => {
+                const code = (r.hands.find((h) => h.id === sel.id) || r.hands[0]).code, onIt = r.slug === row.slug;
+                return (
+                  <button key={r.slug} type="button" onClick={() => pickVariant(r)} aria-pressed={onIt} data-door-variant={r.slug} aria-label={x(r.colour) + " — " + code}
+                    className="group/v flex min-w-0 items-center gap-4 border-b border-line py-2.5 text-left first:border-t sm:block sm:w-[112px] sm:border-0 sm:py-0">
+                    <span className={"relative block aspect-[4/5] w-[52px] shrink-0 overflow-hidden border transition-colors duration-300 sm:w-full " + (onIt ? "border-accent" : "border-line group-hover/v:border-mute")} style={{ background: PLATE }}>
+                      <DoorImg src={pImg(r, 0)} alt="" small className="absolute inset-0 h-full w-full object-cover" />
+                    </span>
+                    <span className="block min-w-0">
+                      <span className={"block text-[12.5px] font-medium leading-[1.35] sm:mt-2.5 sm:text-[11px] " + (onIt ? "text-ink" : "text-mute")}>{x(r.colour)}</span>
+                      <span className="mt-1 block whitespace-nowrap text-[11.5px] tabular-nums tracking-[0.01em] text-mute sm:text-[10.5px]" data-door-variant-code="">{code}</span>
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
 
         {/* what it is, and what to choose */}
         <div className="lg:col-span-5 lg:pt-2">
-          <p className={label}>{x({ en: "UPVC Door", id: "Pintu UPVC" })} · Wellup</p>
-          <h1 className="mt-4 text-[38px] font-medium leading-[1.06] tracking-[-0.02em] md:text-[52px]">{row.model}</h1>
+          <p className={label} data-door-eyebrow="">{x({ en: "UPVC Door", id: "Pintu UPVC" })} · Wellup<span className="mx-2.5 text-line">/</span><span className="text-accent">{doorSectionNo(sec)}</span> {x(sec.title)}</p>
+          <h1 className="mt-4 text-[40px] leading-[1.04] tracking-[-0.02em] md:text-[54px]">{row.model}</h1>
           <p className="mt-3 text-[15px] leading-[1.6] text-mute" data-door-typeline="">
             {x(doorTypeLabel(g.m.type))}{lang === "id" ? "" : " · " + row.typeAs} · {DOOR_SIZE}
           </p>
-          <p className="mt-6 text-[24px] font-semibold tabular-nums tracking-[-0.01em]" data-door-price="">{rp(row.price)}</p>
+          <div className="mt-7 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-y border-line py-5">
+            <p className="text-[26px] font-semibold tabular-nums tracking-[-0.01em]" data-door-price="">{rp(row.price)}</p>
+            <p className="text-left sm:text-right" aria-live="polite">
+              <span className="block text-[10.5px] font-semibold uppercase tracking-[0.12em] text-mute">{x({ en: "Product code", id: "Kode produk" })}</span>
+              <span className="mt-1 block text-[15px] font-medium tabular-nums tracking-[0.03em] text-accent" data-door-code-now="">{sel.code}</span>
+            </p>
+          </div>
 
-          <div className="mt-8 border-t border-line pt-7" data-door-colour-select="">
+          <div className="mt-8" data-door-colour-select="">
             <p className={label}>{x({ en: "Colour", id: "Warna" })}<span className="ml-3 normal-case tracking-normal text-ink" data-door-colour="">{x(DOOR_COLOUR[c])}</span></p>
             <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label={x({ en: "Colour", id: "Warna" })}>
               {g.colours.map((cc) => (
                 <button key={cc} type="button" role="radio" aria-checked={cc === c} onClick={() => pickColour(cc)} aria-label={x(DOOR_COLOUR[cc])} title={x(DOOR_COLOUR[cc])} data-door-colour-option={cc}
-                  className={"h-[42px] w-[42px] rounded-full border p-[4px] transition-colors duration-300 " + (cc === c ? "border-ink" : "border-line hover:border-mute")}>
+                  className={"h-[44px] w-[44px] rounded-full border p-[4px] transition-colors duration-300 " + (cc === c ? "border-accent" : "border-line hover:border-mute")}>
                   <span className="block h-full w-full rounded-full" style={{ background: g.m.cols[cc], boxShadow: KS_RING }} />
                 </button>
               ))}
@@ -17931,7 +18341,7 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label={x({ en: "List colour", id: "Warna list" })}>
                 {g.m.lists.map((ll) => (
                   <button key={ll} type="button" role="radio" aria-checked={ll === l} onClick={() => { setL(ll); setView(0); }} data-door-list-option={ll}
-                    className={"flex h-[44px] items-center gap-2.5 border px-4 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " + (ll === l ? "border-ink text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>
+                    className={"flex h-[44px] items-center gap-2.5 border px-4 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " + (ll === l ? "border-accent text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>
                     <span className="h-[16px] w-[16px] shrink-0 rounded-full" style={{ background: DOOR_LIST[ll].hex, boxShadow: KS_RING }} />{x({ en: DOOR_LIST[ll].en, id: DOOR_LIST[ll].id })}
                   </button>
                 ))}
@@ -17945,10 +18355,10 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
             <div className="mt-4 flex gap-3" role="radiogroup" aria-label={x({ en: "Opening direction", id: "Arah bukaan" })}>
               {row.hands.map((h) => (
                 <button key={h.id} type="button" role="radio" aria-checked={h.id === sel.id} onClick={() => setHand(h.id)} data-door-hand-option={h.id}
-                  className={"h-[44px] min-w-[72px] border px-5 text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " + (h.id === sel.id ? "border-ink text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{h.id}</button>
+                  className={"h-[44px] min-w-[72px] border px-5 text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " + (h.id === sel.id ? "border-accent text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{h.id}</button>
               ))}
             </div>
-            <p className="mt-3 text-[12.5px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code. Not sure which you need? Ask the store.", id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri. Ragu mana yang Anda perlukan? Tanyakan ke toko." })}</p>
+            <p className="mt-3 text-[12.5px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code. Not sure which you need? Contact us for details.", id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri. Ragu mana yang Anda perlukan? Hubungi kami untuk detail." })}</p>
           </div>
 
           {/* the choice, in full */}
@@ -17982,61 +18392,83 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               </button>
               <CompareToggle slug={row.slug} size="md" />
             </div>
-            <a href={"#/contact/" + row.slug} data-ks-enquire="" className={btn + "mt-5 w-full border-line text-ink hover:border-ink"}>
+            <a href={"#/contact/" + row.slug} data-ks-enquire="" className={btn + "mt-5 w-full border-line text-ink hover:border-accent hover:text-accent"}>
               <Icon name="chat" size={15} />{x({ en: "Request a quote", id: "Minta penawaran" })}
             </a>
+            {/* the virtual showroom, where it holds this door: opened at it, in the colour chosen */}
+            {showroom ? (
+              <a href={"#/virtual-showroom/" + row.slug} data-door-showroom=""
+                className="mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+                <VsTurn size={15} /><span className="u">{x({ en: "Preview in the virtual showroom", id: "Pratinjau di showroom virtual" })}</span>
+              </a>
+            ) : null}
           </div>
-          <div className="mt-8 border border-line px-5 py-4 text-[13px] leading-[1.7] text-mute" data-door-ask="">
-            {ask}{" "}
-            <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x({ en: "Contact the store", id: "Hubungi toko" })}</a>
+          <div className="mt-8 border-l border-accent/70 py-1 pl-5 text-[13.5px] leading-[1.7] text-mute" data-door-ask="">
+            {x(DOOR_ASK)}{" "}
+            <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a>
           </div>
         </div>
       </section>
 
-      {/* the size, drawn */}
+      {/* the specification, as listed, and the size drawn */}
       <section className="border-y border-line bg-shell" data-door-tech="">
-        <div className="mx-auto grid max-w-site grid-cols-1 gap-10 px-5 py-16 md:px-10 md:py-24 lg:grid-cols-12 lg:gap-16">
-          <Reveal className="block lg:col-span-5">
-            <Eyebrow>{x({ en: "Size", id: "Ukuran" })}</Eyebrow>
-            <h2 className="mt-6 text-[28px] font-medium leading-[1.14] tracking-[-0.014em] md:text-[36px]">{DOOR_SIZE}</h2>
-            <dl className="mt-8 border-t border-line">
-              {[[{ en: "Height", id: "Tinggi" }, "200 cm"], [{ en: "Width", id: "Lebar" }, "70 cm"], [{ en: "Specification", id: "Spesifikasi" }, DOOR_SIZE + ", 1.8mm, " + row.typeAs]].map(([k, val]) => (
-                <div key={k.en} className="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
-                  <dt className="text-[13px] text-mute">{x(k)}</dt><dd className="text-right text-[14.5px] font-medium text-ink">{val}</dd>
+        <div className="mx-auto grid max-w-site grid-cols-1 gap-12 px-5 py-16 md:px-10 md:py-24 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="block lg:col-span-7">
+            <Eyebrow>{x({ en: "Specification", id: "Spesifikasi" })}</Eyebrow>
+            <h2 className="mt-5 text-[28px] leading-[1.14] md:text-[38px]">{row.model}</h2>
+            <p className="mt-3 text-[14px] leading-[1.7] text-mute">{x({ en: "As listed in the Wellup Price List 2026.", id: "Sesuai Price List 2026 Wellup." })}</p>
+            <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-10 sm:grid-cols-2" data-door-spec="">
+              {specGroups.map((grp) => (
+                <div key={grp.id} data-door-spec-group={grp.id}>
+                  <h3 className="border-b border-line pb-3 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-accent">{x(grp.title)}</h3>
+                  <dl>
+                    {grp.rows.map(([k, val]) => (
+                      <div key={k.en} className="flex items-baseline justify-between gap-5 border-b border-line py-3">
+                        <dt className="shrink-0 text-[13px] text-mute">{x(k)}</dt>
+                        <dd className="text-right text-[13.5px] font-medium tabular-nums text-ink">{val}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
               ))}
-            </dl>
-            <p className="mt-6 text-[12.5px] leading-[1.7] text-mute">
-              {x({ en: "As listed in the price list for every model. Whether it is the door or the door with its frame, and the opening it needs, are not stated: ask the store before you measure.",
-                   id: "Sesuai daftar harga untuk setiap model. Apakah ukuran pintu saja atau dengan kusen, serta lubang yang diperlukan, tidak tercantum: tanyakan ke toko sebelum mengukur." })}
-            </p>
+              <div className="sm:col-span-2" data-door-spec-group="ask">
+                <div className="flex flex-col gap-2 border-y border-line py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                  <p className="text-[13px] text-mute">{x({ en: "Stock, delivery, installation, warranty, frame (kusen)", id: "Stok, pengiriman, pemasangan, garansi, kusen" })}</p>
+                  <p className="text-[13.5px] sm:text-right">{contactLink}</p>
+                </div>
+              </div>
+            </div>
           </Reveal>
-          <Reveal className="block lg:col-span-7" delay={120}>
-            <figure className="m-0 mx-auto max-w-[260px] sm:max-w-[320px] lg:mx-0 lg:max-w-[360px]">
+          <Reveal className="block lg:col-span-5" delay={120}>
+            <figure className="m-0 mx-auto max-w-[280px] sm:max-w-[320px] lg:ml-auto lg:mr-0 lg:max-w-[360px]">
               <div className="border border-line bg-bone px-8 py-8 md:px-12 md:py-10">
                 <DoorFront label={x({ en: row.model + ": 70 cm wide, 200 cm high, as listed", id: row.model + ": lebar 70 cm, tinggi 200 cm, sesuai daftar" })} />
               </div>
               <figcaption className="mt-3 text-[11px] font-medium uppercase tracking-[0.1em] text-mute">{x({ en: "Front · cm", id: "Tampak depan · cm" })}</figcaption>
             </figure>
+            <p className="mx-auto mt-6 max-w-[360px] text-[12.5px] leading-[1.7] text-mute lg:ml-auto lg:mr-0">
+              {x({ en: "The size is listed for every model. Whether it is the door alone or the door with its frame, and the opening it needs, are not stated: contact us for details before you measure.",
+                   id: "Ukuran tercantum untuk setiap model. Apakah ukuran pintu saja atau dengan kusen, serta lubang yang diperlukan, tidak tercantum: hubungi kami untuk detail sebelum mengukur." })}
+            </p>
           </Reveal>
         </div>
       </section>
 
       {/* the rest of what is known */}
       <section className="mx-auto max-w-site px-5 py-16 md:px-10 md:py-24" data-door-info="">
-        <KsTabs key={g.m.code} tabs={tabs} initial="spec" />
+        <KsTabs key={g.m.code} tabs={tabs} initial="description" />
       </section>
 
-      {/* the nearest other doors: the same type first, then the nearest price */}
+      {/* the nearest other doors */}
       <section className="mx-auto max-w-site border-t border-line px-5 py-16 md:px-10 md:py-24" data-door-related="">
-        <KsHead title={x({ en: "Related doors", id: "Pintu terkait" })} line={x({ en: "UPVC doors by Wellup", id: "Pintu UPVC Wellup" })}>
+        <KsHead title={x({ en: "Related doors", id: "Pintu terkait" })} line={x({ en: "From the same section first, then the nearest price.", id: "Dari bagian yang sama lebih dulu, lalu harga terdekat." })}>
           <a href="#/shop/doors" className="group/l inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
             <span className="u">{x({ en: "View all", id: "Lihat semua" })}</span>
             <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
           </a>
         </KsHead>
         <div className="grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-8 lg:grid-cols-4 lg:gap-x-10">
-          {related.map((o, n) => <Reveal key={o.key} delay={n * 60} className="block h-full"><DoorCard g={o} prefer={row.doorCol} /></Reveal>)}
+          {related.map((o, n) => <Reveal key={o.key} delay={n * 60} className="block h-full"><DoorCard g={o} prefer={row.doorCol} preferHand={sel.id} /></Reveal>)}
         </div>
       </section>
       <RecentlyViewed exclude={row.slug} tone="shell" />
@@ -18328,12 +18760,18 @@ const SkipLink = () => {
 
 const Shell = () => {
   const route = useRoute();
+  /* the door pages are set on their own palette in the dark theme ([data-doors], in the stylesheet) */
+  const doorsHere = route.side === "shop" && (route.name === "doors" || (route.name === "product" && !!(bySlug(route.slug) || {}).hands));
+  useEffect(() => {
+    const root = document.documentElement;
+    if (doorsHere) root.setAttribute("data-doors-page", ""); else root.removeAttribute("data-doors-page");
+  }, [doorsHere]);
   if (route.name === "ksPrint") return <KsPrint doc={route.doc} lang={route.lang} page={route.page} />;
   const shop = route.side === "shop";
   const flush = !shop && (route.name === "home" || route.name === "catalogue");   // the brand hero, and the catalogue's stage, run under the bar
   const lux = !shop && route.name === "home";   // the home page is set on charcoal in both themes ([data-lux], .lx-* in the stylesheet)
   return (
-    <div data-side={route.side} data-lux={lux ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
+    <div data-side={route.side} data-lux={lux ? "" : undefined} data-doors={doorsHere ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
       <SkipLink />
       <SiteHeader />
       {/* The dip that covers a change of language runs on the page and on

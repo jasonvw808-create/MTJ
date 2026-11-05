@@ -8552,117 +8552,142 @@ const STAINLESS = [
 CATALOG.push(...STAINLESS);
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   UPVC DOORS — Wellup. Every model and price is the 2026 Wellup Door & Lock
-   price list's, as the shop's owner gave them: the codes (two for some —
-   PT and WL) and the price of each. The list itself — sizes, specifications,
-   the colours by name — was not to hand, so none of that is stated: what a
-   page says beyond the code and the price is what its photographs show (the
-   door's colour, its panels, the list — the bars between the panes — and
-   its colour). Six models came without photographs: they are listed at
-   their price, their picture and colours to follow. No locks are listed.
-   Each photograph is the supplied one, framed alike on the sinks' plate
-   (img/doors, 800 x 1000).
+   UPVC DOORS — Wellup, from the PRICE LIST 2026 (Door & Lock), as printed:
+   every model, its product codes, its specification and its price. Every
+   door is 200 x 70 cm, 1.8mm, in White, Brown and Dark Grey, each R or L,
+   with a product code for each; PT 2601 and PT 2602 also with a List Putih
+   or List Hitam (the bars between the panes), so twelve codes each. A record
+   here is one colour (and list) of a model; its R and L are chosen on its
+   page, each with its own code. 19 models, 63 records, 126 codes.
+   The pictures are the shop's photographs, framed alike on the sinks' plate
+   (img/doors, 800 x 1000); PT 109, 409, 709, 809 and 909 came without
+   photographs and use the price list's own (smaller) pictures. Two things in
+   the list are kept as printed and were raised with the shop: its PT 111
+   picture is the PT 113 one (the PT 111 photographs are used here), and its
+   last PT 409 row (WELUP-DPT0203006) names the PT 709. No locks are listed.
    ═══════════════════════════════════════════════════════════════════════════ */
 const DOOR_COLOUR = {
-  grey:  { en: "Grey",  id: "Abu-abu" },
-  white: { en: "White", id: "Putih" },
-  red:   { en: "Red",   id: "Merah" },
+  white:       { en: "White",     id: "White" },
+  brown:       { en: "Brown",     id: "Brown" },
+  "dark-grey": { en: "Dark Grey", id: "Dark Grey" },
 };
 const DOOR_LIST = {
-  white: { en: "White list", id: "List putih", word: { en: "white", id: "putih" }, hex: "#F4F4F2" },
-  black: { en: "Black list", id: "List hitam", word: { en: "black", id: "hitam" }, hex: "#1F2023" },
+  white: { en: "White list", id: "List Putih", word: { en: "white", id: "putih" }, hex: "#F4F4F2" },
+  black: { en: "Black list", id: "List Hitam", word: { en: "black", id: "hitam" }, hex: "#1F2023" },
 };
-/* each door colour's swatch, sampled from that model's photographs */
-const DOOR_1XX = { grey: "#565656", white: "#F0EFF2", red: "#7A2921" };
+/* each model's type, as the list prints it (as) and in English */
+const DOOR_TYPE = {
+  halfGlass: { as: "1/2 Kaca + Jalusi",          en: "half glass and louvre" },
+  full:      { as: "Full UPVC",                  en: "full UPVC" },
+  six:       { as: "6 Kotak",                    en: "six glass panes" },
+  eight:     { as: "8 Kotak",                    en: "eight glass panes" },
+  topGlass:  { as: "1/4 Kaca Atas + Jalusi",     en: "quarter glass at the top, and louvre" },
+  sideGlass: { as: "1/4 Kaca Samping Jalusi",    en: "quarter glass at the side, louvre" },
+  sidePlain: { as: "1/2 Samping Polos + Jalusi", en: "half plain side and louvre" },
+  sideGlassPlain: { as: "1/2 Kaca Samping Polos", en: "half side glass, plain" },
+};
+/* the list's code for a colour, a list and a hand: its rows run White R, White L, Brown R … Dark Grey L
+   (and with lists, List Putih R, List Putih L, List Hitam R, List Hitam L under each colour) */
+const DOOR_ORDER = ["white", "brown", "dark-grey"];
+const doorCodeOf = (m, c, l, h) => {
+  const ci = DOOR_ORDER.indexOf(c), hi = h === "L" ? 1 : 0, li = l === "black" ? 1 : 0;
+  return m.codes[0] + String(m.codes[1] + (m.lists ? ci * 4 + li * 2 + hi : ci * 2 + hi)).padStart(3, "0");
+};
+/* each door colour's swatch, sampled from that model's pictures */
+const DOOR_1XX = { white: "#F0EFF2", brown: "#7A2921", "dark-grey": "#565656" };
 const DOOR_MODELS = [
-  { code: "PT 109", wl: "WL 002", price: 1300000 },
-  { code: "PT 110", price: 1300000 },
-  { code: "PT 111", price: 1300000, cols: DOOR_1XX, motif: { en: "pink lotus and a striped band", id: "teratai merah muda dan pita bergaris" } },
-  { code: "PT 112", price: 1300000, cols: DOOR_1XX, motif: { en: "yellow leaves on a curling vine", id: "daun kuning pada sulur melengkung" } },
-  { code: "PT 113", price: 1300000, cols: DOOR_1XX, motif: { en: "red peonies on a sweeping curve", id: "peoni merah pada lengkung" } },
-  { code: "PT 114", price: 1300000, cols: DOOR_1XX, motif: { en: "a wave of gold and grey lines", id: "gelombang garis emas dan abu-abu" } },
-  { code: "PT 115", price: 1300000, cols: DOOR_1XX, motif: { en: "white lotus and koi", id: "teratai putih dan ikan koi" } },
-  { code: "PT 116", price: 1300000, cols: DOOR_1XX, motif: { en: "orange flowers on a silver ribbon", id: "bunga oranye pada pita perak" } },
-  { code: "PT 117", price: 1300000, cols: DOOR_1XX, motif: { en: "dolphins under the sea", id: "lumba-lumba di bawah laut" } },
-  { code: "PT 118", price: 1300000, cols: DOOR_1XX, motif: { en: "a climbing rose in white line", id: "mawar merambat bergaris putih" } },
-  { code: "PT 119", price: 1300000, cols: DOOR_1XX, motif: { en: "bare trees and a stepped line", id: "pohon tanpa daun dan garis bertingkat" } },
-  { code: "PT 270", price: 1300000, cols: { grey: "#444547", white: "#ECECEC", red: "#572217" },
-    design: { en: "two moulded panels", id: "dua panel berprofil" } },
-  { code: "PT 290", price: 1500000, cols: { grey: "#4A4C4F", white: "#E2E1E4", red: "#6A1A09" },
-    design: { en: "two louvred panels", id: "dua panel kisi-kisi" } },
-  { code: "PT 409", wl: "WL 004", price: 1300000 },
-  { code: "PT 709", wl: "WL 007", price: 1400000 },
-  { code: "PT 809", wl: "WL 008", price: 1300000 },
-  { code: "PT 909", wl: "WL 010", price: 1300000 },
-  { code: "PT 2601", wl: "WL 016", price: 1425000, cols: { grey: "#3F444E", white: "#EFEFEF", red: "#8B2918" }, lists: ["white", "black"],
-    angles: ["grey-white", "grey-black", "white-white", "white-black", "red-white", "red-black"],
-    design: { en: "six frosted panes above a ribbed lower panel", id: "enam panel buram di atas panel bawah bergaris" } },
-  { code: "PT 2602", wl: "WL 018", price: 1450000, cols: { grey: "#404147", white: "#F1F0F0", red: "#822314" }, lists: ["white", "black"],
-    angles: ["grey-white", "grey-black", "red-white", "red-black"],
-    design: { en: "eight frosted panes above a ribbed lower panel", id: "delapan panel buram di atas panel bawah bergaris" } },
+  { code: "PT 109", wl: "WL 002", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 61], cols: { white: "#F9FAFC", brown: "#763934", "dark-grey": "#5B5B5B" },
+    motif: { en: "textured glass", id: "kaca bertekstur" } },
+  { code: "PT 110", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 67], cols: DOOR_1XX, motif: { en: "butterflies", id: "kupu-kupu" } },
+  { code: "PT 111", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 1], cols: DOOR_1XX, motif: { en: "pink lotus and a striped band", id: "teratai merah muda dan pita bergaris" } },
+  { code: "PT 112", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 7], cols: DOOR_1XX, motif: { en: "yellow leaves on a curling vine", id: "daun kuning pada sulur melengkung" } },
+  { code: "PT 113", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 13], cols: DOOR_1XX, motif: { en: "red peonies on a sweeping curve", id: "peoni merah pada lengkung" } },
+  { code: "PT 114", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 19], cols: DOOR_1XX, motif: { en: "a wave of gold and grey lines", id: "gelombang garis emas dan abu-abu" } },
+  { code: "PT 115", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 25], cols: DOOR_1XX, motif: { en: "white lotus and koi", id: "teratai putih dan ikan koi" } },
+  { code: "PT 116", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 31], cols: DOOR_1XX, motif: { en: "orange flowers on a silver ribbon", id: "bunga oranye pada pita perak" } },
+  { code: "PT 117", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 37], cols: DOOR_1XX, motif: { en: "dolphins under the sea", id: "lumba-lumba di bawah laut" } },
+  { code: "PT 118", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 43], cols: DOOR_1XX, motif: { en: "a climbing rose in white line", id: "mawar merambat bergaris putih" } },
+  { code: "PT 119", price: 1300000, type: "halfGlass", codes: ["WELUP-DPT0202", 49], cols: DOOR_1XX, motif: { en: "bare trees and a stepped line", id: "pohon tanpa daun dan garis bertingkat" } },
+  { code: "PT 270", price: 1300000, type: "full", codes: ["WELUP-DPT0101", 1], cols: { white: "#ECECEC", brown: "#572217", "dark-grey": "#444547" },
+    look: { en: "two moulded panels", id: "dua panel berprofil" } },
+  { code: "PT 290", price: 1500000, type: "full", codes: ["WELUP-DPT0207", 1], cols: { white: "#E2E1E4", brown: "#6A1A09", "dark-grey": "#4A4C4F" },
+    look: { en: "two louvred panels", id: "dua panel jalusi" } },
+  { code: "PT 409", wl: "WL 004", price: 1300000, type: "topGlass", codes: ["WELUP-DPT0203", 1], cols: { white: "#F2F3F6", brown: "#63322E", "dark-grey": "#525256" } },
+  { code: "PT 709", wl: "WL 007", price: 1400000, type: "sideGlass", codes: ["WELUP-DPT0214", 1], cols: { white: "#EAEBEB", brown: "#752D27", "dark-grey": "#464A4E" } },
+  { code: "PT 809", wl: "WL 008", price: 1300000, type: "sidePlain", codes: ["WELUP-DPT0215", 1], cols: { white: "#F2F2F6", brown: "#6E3330", "dark-grey": "#545559" } },
+  { code: "PT 909", wl: "WL 010", price: 1300000, type: "sideGlassPlain", codes: ["WELUP-DPT0212", 1], cols: { white: "#F2F3F7", brown: "#723430", "dark-grey": "#535458" } },
+  { code: "PT 2601", wl: "WL 016", price: 1425000, type: "six", codes: ["WELUP-DPT0205", 1], lists: ["white", "black"],
+    cols: { white: "#EFEFEF", brown: "#8B2918", "dark-grey": "#3F444E" },
+    angles: ["white-white", "white-black", "brown-white", "brown-black", "dark-grey-white", "dark-grey-black"] },
+  { code: "PT 2602", wl: "WL 018", price: 1450000, type: "eight", codes: ["WELUP-DPT0206", 1], lists: ["white", "black"],
+    cols: { white: "#F1F0F0", brown: "#822314", "dark-grey": "#404147" },
+    angles: ["brown-white", "brown-black", "dark-grey-white", "dark-grey-black"] },
 ];
+const DOOR_SIZE = "200 x 70 cm";
 const doorName = (m) => m.code + (m.wl ? " / " + m.wl : "");
 const doorKey = (m) => m.code.toLowerCase().replace(/\s+/g, "-");
-const doorDesign = (m) => m.design || (m.motif ? { en: "a decorated upper panel — " + m.motif.en + " — above a ribbed lower panel",
-                                                   id: "panel atas bermotif — " + m.motif.id + " — di atas panel bawah bergaris" } : null);
 const doorCap = (v) => ({ en: v.en.charAt(0).toUpperCase() + v.en.slice(1), id: v.id.charAt(0).toUpperCase() + v.id.slice(1) });
-const doorAnd = (list, lang) => list.length < 2 ? list.join("") : list.slice(0, -1).join(", ") + (lang === "id" ? " dan " : " and ") + list[list.length - 1];
-SINK_IMG["door-tbc"] = "img/doors/placeholder.webp";
+/* the type as printed for a record: with its list for PT 2601 and PT 2602 ("List Putih 6 Kotak") */
+const doorTypeAs = (m, l) => (l ? DOOR_LIST[l].id + " " : "") + DOOR_TYPE[m.type].as;
+const doorTypeEn = (m, l) => DOOR_TYPE[m.type].en + (l ? ", " + DOOR_LIST[l].en.toLowerCase() : "");
+/* the line under a model's name: its glass's picture, its panels, or its type */
+const doorShort = (m) => m.motif ? doorCap(m.motif)
+  : m.look ? doorCap({ en: m.look.en, id: m.look.id })
+  : m.lists ? { en: doorCap({ en: DOOR_TYPE[m.type].en, id: "" }).en + ", white or black list", id: "List Putih / List Hitam " + DOOR_TYPE[m.type].as }
+  : { en: doorCap({ en: DOOR_TYPE[m.type].en, id: "" }).en, id: DOOR_TYPE[m.type].as };
 const DOORS = [];
 DOOR_MODELS.forEach((m) => {
-  const name = doorName(m), key = doorKey(m), design = doorDesign(m);
-  const codeRow = [{ en: "Code", id: "Kode" }, name];
+  const name = doorName(m), key = doorKey(m);
   const base = { model: name, code: m.code, wl: m.wl || null, cat: "doors", line: "essential", range: { en: "UPVC Door", id: "Pintu UPVC" },
-    brand: "Wellup", price: m.price, unit: "each", fit: "contain", material: { en: "UPVC", id: "UPVC" },
+    brand: "Wellup", price: m.price, unit: "each", fit: "contain", material: { en: "UPVC", id: "UPVC" }, size: DOOR_SIZE,
     stock: [], ask: true, noRatings: true, rating: 0, reviews: 0, sold: 0, added: "2026-11-05", warrantyYears: 0,
-    warrantyText: { en: "Ask us", id: "Tanyakan kepada kami" } };
-  if (!m.cols) {
-    /* in the price list, not yet photographed */
-    DOORS.push({ ...base, slug: key, name, pending: true, photos: ["door-tbc"],
-      short: { en: "Photo and colours to follow", id: "Foto dan warna menyusul" },
-      desc: { en: "A Wellup UPVC door, " + name + ", in the 2026 price list at " + rp(m.price) + ". Its photographs and colours are to follow — ask us about it.",
-              id: "Pintu UPVC Wellup, " + name + ", dalam daftar harga 2026 seharga " + rp(m.price) + ". Foto dan warnanya menyusul — tanyakan kepada kami." },
-      finishes: [{ id: "door-tbc", name: { en: "Colour to confirm", id: "Warna menyusul" }, hex: "#8C877F" }],
-      feat: [{ en: "UPVC door", id: "Pintu UPVC" }, { en: "Photo to follow", id: "Foto menyusul" }],
-      spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"], codeRow] });
-    return;
-  }
-  const colours = Object.keys(DOOR_COLOUR).filter((c) => m.cols[c]);
-  const variants = m.lists ? colours.flatMap((c) => m.lists.map((l) => [c, l])) : colours.map((c) => [c, null]);
-  const inCols = (lang) => doorAnd(colours.map((c) => DOOR_COLOUR[c][lang].toLowerCase()), lang);
+    warrantyText: { en: "Not stated in the price list", id: "Tidak tercantum di daftar harga" } };
+  const variants = m.lists ? DOOR_ORDER.flatMap((c) => m.lists.map((l) => [c, l])) : DOOR_ORDER.map((c) => [c, null]);
+  const extra = { en: m.motif ? ", the glass with " + m.motif.en : m.look ? ", " + m.look.en : "", id: m.motif ? ", kacanya bermotif " + m.motif.id : m.look ? ", " + m.look.id : "" };
   variants.forEach(([c, l]) => {
     const id = c + (l ? "-" + l : ""), slug = key + "-" + c + (l ? "-" + l + "-list" : "");
     const col = l ? { en: DOOR_COLOUR[c].en + " · " + DOOR_LIST[l].en, id: DOOR_COLOUR[c].id + " · " + DOOR_LIST[l].id } : DOOR_COLOUR[c];
     const photos = [slug];
     if (m.angles && m.angles.includes(id)) photos.push(slug + "-angle");
     photos.forEach((ph) => { SINK_IMG[ph] = "img/doors/" + ph + ".webp"; });
+    const hands = ["R", "L"].map((h) => ({ id: h, code: doorCodeOf(m, c, l, h) }));
     const hex = l ? "linear-gradient(135deg, " + m.cols[c] + " 0 50%, " + DOOR_LIST[l].hex + " 50% 100%)" : m.cols[c];
-    const listLine = m.lists ? { en: " The list — the bars between the panes — in white or black.", id: " List — bilah di antara panel — putih atau hitam." } : { en: "", id: "" };
+    const typeAs = doorTypeAs(m, l);
     DOORS.push({ ...base, slug, name: name + " " + DOOR_COLOUR[c].en + (l ? ", " + DOOR_LIST[l].en : ""),
-      colourId: id, doorCol: c, listCol: l, colour: col, photos,
+      colourId: id, doorCol: c, listCol: l, colour: col, photos, hands, typeAs,
       finishes: [{ id: "door-" + id, name: col, hex }],
-      short: doorCap(m.lists ? { en: design.en.split(" above")[0] + " · " + DOOR_LIST[l].en.toLowerCase(), id: design.id.split(" di atas")[0] + " · " + DOOR_LIST[l].id.toLowerCase() }
-                             : m.motif || design),
-      desc: { en: "A Wellup UPVC door, " + name + ": " + design.en + "." + listLine.en + " In " + inCols("en") + ".",
-              id: "Pintu UPVC Wellup, " + name + ": " + design.id + "." + listLine.id + " Dalam warna " + inCols("id") + "." },
-      feat: [{ en: "UPVC door", id: "Pintu UPVC" }, col, doorCap(design)],
-      spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"], codeRow,
+      short: doorShort(m),
+      desc: { en: "A Wellup UPVC door, " + name + ": " + DOOR_SIZE + ", 1.8mm, " + doorTypeEn(m, null) + extra.en + ". In White, Brown and Dark Grey" +
+                  (m.lists ? ", with a white or black list (List Putih or List Hitam)" : "") + ", each R or L.",
+              id: "Pintu UPVC Wellup " + name + ": " + DOOR_SIZE + ", 1.8mm, " + DOOR_TYPE[m.type].as + extra.id + ". Tersedia White, Brown dan Dark Grey" +
+                  (m.lists ? ", dengan List Putih atau List Hitam" : "") + ", masing-masing R atau L." },
+      feat: [{ en: "UPVC door, " + DOOR_SIZE, id: "Pintu UPVC, " + DOOR_SIZE }, col, { en: doorCap({ en: doorTypeEn(m, l), id: "" }).en, id: typeAs }],
+      spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"],
+             [{ en: "Model", id: "Model" }, name],
+             [{ en: "Product code (R)", id: "Kode produk (R)" }, hands[0].code], [{ en: "Product code (L)", id: "Kode produk (L)" }, hands[1].code],
+             [{ en: "Size", id: "Ukuran" }, DOOR_SIZE],
+             [{ en: "Specification", id: "Spesifikasi" }, DOOR_SIZE + ", 1.8mm, " + typeAs],
+             [{ en: "Type", id: "Tipe" }, { en: doorCap({ en: doorTypeEn(m, l), id: "" }).en, id: typeAs }],
              [{ en: "Colour", id: "Warna" }, DOOR_COLOUR[c]],
-             ...(l ? [[{ en: "List", id: "List" }, DOOR_LIST[l].word]] : []),
-             [{ en: "Design", id: "Desain" }, doorCap(design)]] });
+             ...(l ? [[{ en: "List", id: "List" }, { en: DOOR_LIST[l].en, id: DOOR_LIST[l].id }]] : []),
+             [{ en: "Hand", id: "Arah bukaan" }, "R / L"]] });
   });
 });
 CATALOG.push(...DOORS);
+/* an address from before the price list (red and grey, or a model without its colour) still finds its door */
+const doorSlugOf = (s) => {
+  if (!/^pt-\d+/.test(s || "")) return null;
+  if (/^pt-\d+$/.test(s)) { const p = CATALOG.find((q) => q.slug.indexOf(s + "-") === 0); return p ? p.slug : null; }
+  return s.replace(/-red(?=-|$)/, "-brown").replace(/-grey(?=-|$)/, "-dark-grey");
+};
 /* the doors, gathered into their models (in the price list's order), for the doors' own page */
 const doorModels = () => DOOR_MODELS.map((m) => {
   const rows = DOORS.filter((p) => p.code === m.code);
-  const design = doorDesign(m);
-  return { m, key: doorKey(m), name: doorName(m), price: m.price, rows, pending: !m.cols, design,
-           short: m.motif ? doorCap(m.motif) : design ? doorCap(design) : null,
-           colours: m.cols ? Object.keys(DOOR_COLOUR).filter((c) => m.cols[c]) : [] };
+  return { m, key: doorKey(m), name: doorName(m), price: m.price, rows, pending: false, short: doorShort(m),
+           colours: DOOR_ORDER.filter((c) => m.cols[c]) };
 });
 
-const bySlug = (s) => CATALOG.find((p) => p.slug === s);
+const bySlug = (s) => CATALOG.find((p) => p.slug === s) || (typeof doorSlugOf === "function" && doorSlugOf(s) ? CATALOG.find((p) => p.slug === doorSlugOf(s)) : undefined);
 /* one product per model (the first of its colourways), for lists where every colourway would crowd it */
 const oneEach = (list) => { const seen = new Set(); return list.filter((p) => { const k = p.model || p.slug; if (seen.has(k)) return false; seen.add(k); return true; }); };
 const modelsIn = (list) => [...new Set(list.map((p) => p.model).filter(Boolean))].sort();
@@ -10176,6 +10201,7 @@ const ProductCard = ({ p, delay = 0, size = "md", note = null, finish = null, on
   const press = (e) => {
     e.preventDefault();
     if (added) return;
+    if (p.hands) { go("#/shop/p/" + p.slug); return; }   // a door: R or L is chosen on its page
     if (onAdd) onAdd(p, fin); else add(p, x(fin.name), 1);
   };
 
@@ -10197,7 +10223,7 @@ const ProductCard = ({ p, delay = 0, size = "md", note = null, finish = null, on
               (added
                 ? "translate-y-0 cursor-default bg-bone/[0.92] text-ink"
                 : "translate-y-0 bg-ink/[0.92] text-bone md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100")}>
-            {added ? <><Icon name="check" size={14} />{t("inYourBag")}</> : t("addToCart")}
+            {added ? <><Icon name="check" size={14} />{t("inYourBag")}</> : p.hands ? x({ en: "Choose R or L", id: "Pilih R atau L" }) : t("addToCart")}
           </button>}
         </div>
 
@@ -12051,7 +12077,7 @@ const ShopHome = () => {
 
   /* every category the shop sells, the kitchen sinks among them; a sink category is pictured by a chosen model */
   const tiles = CATS.map((c) => c.id);
-  const lead = { steelsinks: "w-8050-tss", doors: "pt-2602-grey-black-list" };
+  const lead = { steelsinks: "w-8050-tss", doors: "pt-2602-dark-grey-black-list" };
   /* Sanitary & Plumbing is pictured by its collection's picture */
   const pic = { sanitary: { img: "img/home/cat-sanitary.webp", tone: "#C9C0B2" } };
 
@@ -12211,9 +12237,9 @@ const ProductsPage = () => {
     { id: "steelsinks", img: null, tone: null, lead: "w-8050-tss",
       body: KS_KINDS["stainless-steel"].lede },
     /* the doors, pictured by the PT 2602 */
-    { id: "doors", img: null, tone: null, lead: "pt-2602-grey-black-list",
-      body: { en: "Wellup UPVC doors: 19 models, from Rp 1.300.000 — the photographed ones in grey, white and red.",
-              id: "Pintu UPVC Wellup: 19 model, mulai Rp 1.300.000 — yang sudah difoto dalam abu-abu, putih dan merah." } },
+    { id: "doors", img: null, tone: null, lead: "pt-2602-dark-grey-black-list",
+      body: { en: "Wellup UPVC doors: 19 models, each 200 x 70 cm, in White, Brown and Dark Grey — from Rp 1.300.000.",
+              id: "Pintu UPVC Wellup: 19 model, masing-masing 200 x 70 cm, dalam White, Brown dan Dark Grey — mulai Rp 1.300.000." } },
     { id: "sanitary", pic: "img/home/cat-sanitary.webp", tone: "#C9C0B2",
       body: { en: "Basins, mixers and showers for the bathroom and the kitchen.",
               id: "Wastafel, keran dan shower untuk kamar mandi dan dapur." } },
@@ -12569,6 +12595,10 @@ const ProductPage = ({ slug }) => {
   const [zoom, setZoom] = useState(false);
 
   useEffect(() => { setFinish(p ? x(p.finishes[0].name) : null); }, [slug, lang]);
+  /* a door: R or L, each with its own product code; the bag's line names the colour and the hand */
+  const [hand, setHand] = useState("R");
+  useEffect(() => { setHand("R"); }, [slug]);
+  useEffect(() => { if (p && p.hands) setFinish(x(p.colour) + " · " + hand); }, [slug, lang, hand]);
   useEffect(() => { setQty(1); setShot(0); }, [slug]);
   const { noteViewed } = useStore();
   useEffect(() => { if (p) noteViewed(p.slug); }, [slug]);
@@ -12674,6 +12704,22 @@ const ProductPage = ({ slug }) => {
                 </a>
               </div>
             ) : (<>
+            {p.hands ? (
+              <div className="mt-11" data-door-hand="">
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Hand", id: "Arah bukaan" })}</p>
+                  <p className="text-[11px] tabular-nums tracking-[0.06em] text-ink/80" data-door-code="">{(p.hands.find((h) => h.id === hand) || p.hands[0]).code}</p>
+                </div>
+                <div className="mt-4 flex gap-3" role="radiogroup" aria-label={x({ en: "Hand", id: "Arah bukaan" })}>
+                  {p.hands.map((h) => (
+                    <button key={h.id} type="button" role="radio" aria-checked={hand === h.id} onClick={() => setHand(h.id)} data-door-hand-option={h.id}
+                      className={"h-[44px] min-w-[72px] border px-5 text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " +
+                        (hand === h.id ? "border-ink text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{h.id}</button>
+                  ))}
+                </div>
+                <p className="mt-3 text-[12.5px] leading-[1.6] text-mute">{x({ en: "R or L, as the price list gives each door; each has its own product code.", id: "R atau L, sesuai daftar harga; masing-masing dengan kode produknya sendiri." })}</p>
+              </div>
+            ) : (
             <div className="mt-11">
               <div className="flex items-baseline justify-between">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{p.cat === "doors" ? t("colour") : t("finish")}</p>
@@ -12688,6 +12734,7 @@ const ProductPage = ({ slug }) => {
                 ))}
               </div>
             </div>
+            )}
 
             <div className="mt-9 flex items-end gap-4">
               <div>
@@ -13530,7 +13577,7 @@ const CL_COLLECTIONS = [
     tag:   { en: "Door", id: "Pintu" },
     title: { en: "UPVC Doors", id: "Pintu UPVC" },
     body:  { en: "19 Wellup models, from Rp 1.300.000", id: "19 model Wellup, mulai Rp 1.300.000" },
-    alt:   { en: "The PT 2602 UPVC door in grey, with a black list", id: "Pintu UPVC PT 2602 abu-abu dengan list hitam" } },
+    alt:   { en: "The PT 2602 UPVC door in Dark Grey, with a black list", id: "Pintu UPVC PT 2602 Dark Grey dengan List Hitam" } },
   { id: "sanitary", rooms: ["kitchen", "bathroom"], to: "#/shop/c/sanitary", img: "img/collections/faucets.jpg",
     tag:   { en: "Kitchen & Bath", id: "Dapur & Kamar Mandi" },
     title: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
@@ -14044,9 +14091,9 @@ const ComparePage = () => {
                         <p className="mt-4 text-[21px] font-medium leading-[1.3]">{x(p.name)}</p>
                         <p className="mt-1 text-[14px] font-normal text-mute">{x(p.material)}</p>
                       </a>
-                      <button onClick={() => add(p, x(p.finishes[0].name), 1)}
+                      <button onClick={() => (p.hands ? go("#/shop/p/" + p.slug) : add(p, x(p.finishes[0].name), 1))}
                         className="mt-4 inline-flex h-[38px] w-full items-center justify-center border border-ink px-4 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">
-                        {t("addToBag")}
+                        {p.hands ? x({ en: "Choose R or L", id: "Pilih R atau L" }) : t("addToBag")}
                       </button>
                     </div>
                   </th>
@@ -17375,10 +17422,10 @@ const DoorCard = ({ g, col, delay = 0 }) => {
     </Reveal>
   );
 };
-const DOOR_SHOW = ["grey", "white", "red"];
+const DOOR_SHOW = DOOR_ORDER;
 const DoorsPage = () => {
   const { x, t } = useStore();
-  const [col, setCol] = useState("grey");
+  const [col, setCol] = useState("dark-grey");
   const groups = useMemo(() => doorModels(), []);
   const shown = groups.filter((g) => !g.pending), later = groups.filter((g) => g.pending);
   const low = Math.min(...DOOR_MODELS.map((m) => m.price));
@@ -17396,8 +17443,8 @@ const DoorsPage = () => {
           <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Door", id: "Pintu" })} · Wellup</p>
           <h1 className="mt-6 text-[46px] font-medium leading-[1.04] md:text-[72px]">{x({ en: "UPVC Doors", id: "Pintu UPVC" })}</h1>
           <p className="mt-8 max-w-[44ch] text-[16px] leading-[1.8] text-mute">
-            {x({ en: DOOR_MODELS.length + " models from the 2026 Wellup price list, from " + rp(low) + ". Each is shown in its colours; open one for its colourways and its price.",
-                 id: DOOR_MODELS.length + " model dari daftar harga Wellup 2026, mulai " + rp(low) + ". Masing-masing ditampilkan dalam warnanya; buka satu untuk pilihan warna dan harganya." })}
+            {x({ en: DOOR_MODELS.length + " models from the Wellup price list 2026, each " + DOOR_SIZE + ", in White, Brown and Dark Grey, R or L — from " + rp(low) + ". Open one for its colours, its product codes and its price.",
+                 id: DOOR_MODELS.length + " model dari daftar harga Wellup 2026, masing-masing " + DOOR_SIZE + ", dalam White, Brown dan Dark Grey, R atau L — mulai " + rp(low) + ". Buka satu untuk warna, kode produk dan harganya." })}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-9 gap-y-5">
             <a href="#door-models" onClick={toModels}
@@ -17410,18 +17457,18 @@ const DoorsPage = () => {
         </Reveal>
         <div className="lg:col-span-7">
           <Media className="frame relative mx-auto aspect-[4/5] w-full max-w-[560px] overflow-hidden bg-concrete lg:max-w-none">
-            <Photo src="img/home/cat-door.webp" alt={x({ en: "The PT 2602 door, grey with a black list, in a hallway", id: "Pintu PT 2602, abu-abu dengan list hitam, di sebuah lorong" })}
+            <Photo src="img/home/cat-door.webp" alt={x({ en: "The PT 2602 door, Dark Grey with a black list, in a hallway", id: "Pintu PT 2602, Dark Grey dengan List Hitam, di sebuah lorong" })}
               tone="#BCB3A6" eager className="h-full w-full object-cover" />
           </Media>
           <p className="mx-auto mt-4 max-w-[560px] text-[11px] font-medium uppercase tracking-[0.08em] text-mute lg:max-w-none">
-            {x({ en: "PT 2602 · grey, black list — visualisation", id: "PT 2602 · abu-abu, list hitam — visualisasi" })}
+            {x({ en: "PT 2602 · Dark Grey, black list — visualisation", id: "PT 2602 · Dark Grey, List Hitam — visualisasi" })}
           </p>
         </div>
       </section>
 
       <section id="door-models" className="mx-auto max-w-site scroll-mt-[180px] px-5 pb-[100px] md:px-10 md:pb-[140px]" data-door-models="">
         <KsHead title={x({ en: "The models", id: "Modelnya" })}
-          line={x({ en: shown.length + " models, photographed in their colours. Show them in:", id: shown.length + " model, difoto dalam warnanya. Tampilkan dalam:" })}>
+          line={x({ en: shown.length + " models, each in three colours. Show them in:", id: shown.length + " model, masing-masing dalam tiga warna. Tampilkan dalam:" })}>
           <div className="flex flex-wrap gap-3" role="radiogroup" aria-label={x({ en: "Door colour", id: "Warna pintu" })} data-door-colours="">
             {DOOR_SHOW.map((c) => (
               <button key={c} type="button" role="radio" aria-checked={col === c} onClick={() => setCol(c)} data-door-colour={c}
@@ -17457,8 +17504,8 @@ const DoorsPage = () => {
 
       <section className="mx-auto max-w-site px-5 py-[60px] md:px-10">
         <p className="max-w-[72ch] text-[13px] leading-[1.75] text-mute">
-          {x({ en: "Codes and prices as in the 2026 Wellup Door & Lock price list. Sizes, fitting and delivery: ask us.",
-               id: "Kode dan harga sesuai daftar harga Wellup Door & Lock 2026. Ukuran, pemasangan dan pengiriman: tanyakan kepada kami." })}
+          {x({ en: "Models, product codes, specifications and prices as in the Wellup Price List 2026 (Door & Lock). Fitting and delivery: ask us.",
+               id: "Model, kode produk, spesifikasi dan harga sesuai Price List 2026 Wellup (Door & Lock). Pemasangan dan pengiriman: tanyakan kepada kami." })}
         </p>
       </section>
       <RecentlyViewed tone="bone" />

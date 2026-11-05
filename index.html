@@ -1335,7 +1335,8 @@
   /* a rail that scrolls sideways on a phone keeps its first card off the edge of the screen */
   @media (max-width: 767.98px) { [data-lux] main .snap-x { scroll-padding-inline: 20px; } }
 
-  /* ── THE DOOR PAGES (#/shop/doors, a door's own page: [data-doors] on the shell) ──────────────────────────────
+  /* ── THE DOOR PAGES (#/shop/doors, a door's own page: [data-doors] on the shell) AND THE KITCHEN SINK CATALOGUE
+     (#/shop/kitchen-sinks and its pages: [data-sinks]) ──────────────────────────────────────────────────────────
      In the dark theme the door catalogue is set on its own black — warm charcoal rather than the site's neutral one —
      with soft ivory type, warm grey for the quieter type, and champagne bronze kept for what is chosen and for the
      small details, never a fill at rest. Held on the shell, so the bar, its menus, the bag and the footer follow it
@@ -1344,21 +1345,21 @@
        #F1EADE the type (14.7:1 on the ground) · #B2A99C the quieter type (7.6:1; 6.3:1 on a card) · #C9AC80 bronze (8.1:1)
      The light theme is the site's own. The door photographs keep their light plate in both themes, undimmed, so a
      door's colour reads as it is. */
-  :root[data-theme="dark"] [data-doors] {
+  :root[data-theme="dark"] :is([data-doors], [data-sinks]) {
     --bone: 27 25 23; --shell: 35 32 29; --concrete: 44 40 36;
     --ink: 241 234 222; --mute: 178 169 156; --line: 64 58 52; --accent: 201 172 128;
   }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) [data-doors] {
+    :root:not([data-theme="light"]) :is([data-doors], [data-sinks]) {
       --bone: 27 25 23; --shell: 35 32 29; --concrete: 44 40 36;
       --ink: 241 234 222; --mute: 178 169 156; --line: 64 58 52; --accent: 201 172 128;
     }
   }
   /* behind the page, too, so an overscroll never shows the site's own ground at the edges */
-  :root[data-theme="dark"][data-doors-page], :root[data-theme="dark"][data-doors-page] body { background: rgb(27 25 23); }
-  [data-doors] ::selection { background: rgb(var(--accent) / .3); color: rgb(var(--ink)); }
+  :root[data-theme="dark"]:is([data-doors-page], [data-sinks-page]), :root[data-theme="dark"]:is([data-doors-page], [data-sinks-page]) body { background: rgb(27 25 23); }
+  :is([data-doors], [data-sinks]) ::selection { background: rgb(var(--accent) / .3); color: rgb(var(--ink)); }
   /* the tab that is open, underlined in bronze */
-  [data-doors] [data-ks-tabs] [role="tab"][aria-selected="true"] { border-color: rgb(var(--accent)); }
+  :is([data-doors], [data-sinks]) [data-ks-tabs] [role="tab"][aria-selected="true"] { border-color: rgb(var(--accent)); }
 
   /* ── THE HOUSE STYLE, ON EVERY PAGE ([data-side] is the shell; the catalogue's print pages are outside it) ──
      Headlines in the serif; the small type over them in bronze. The bar: clear over a photograph, the ground once
@@ -15970,46 +15971,280 @@ const KsSinkSet = ({ name, layout = "feature", className = "" }) => {
   );
 };
 
-/* ── the product card: its picture, what it is, its model number, and the way to its page ── */
-const KsCard = ({ m, prefer = null }) => {
+/* ── THE KITCHEN SINK CATALOGUE, set out as the door catalogue is ────────────────────────────────────────────
+   An introduction of the facts as listed beside a kitchen it could stand in (a visualisation, said to be one);
+   every model at a glance; each material's models in sections, with a search and the filters beside them; cards
+   that show what is chosen. Prices: the stainless steel sinks' are the Price List 2024's (14 August 2024) and are
+   shown; the granite sinks' are placeholders in the records (none was supplied), so for those the store is asked. */
+const ksPriced = (m) => m.kind === "steel";
+const ksPriceOf = (m, row = null) => (ksPriced(m) ? (row || m.rows[0]).price : null);
+const KS_PRICE_ASK = { en: "Contact us for price", id: "Hubungi kami untuk harga" };
+const KS_ASK_STEEL = { en: "Stock, delivery, installation and warranty are not stated in the price list.",
+                       id: "Stok, pengiriman, pemasangan dan garansi tidak tercantum di daftar harga." };
+const KS_ASK_GRANITE = { en: "Price, stock, delivery, installation and warranty have not been supplied for the granite sinks.",
+                         id: "Harga, stok, pengiriman, pemasangan dan garansi bak cuci granit belum disediakan." };
+/* a run of values: one, or the lowest to the highest */
+const ksRun = (vals, fmt) => { const v = vals.filter((n) => n != null && !isNaN(n)); if (!v.length) return null; const lo = Math.min(...v), hi = Math.max(...v); return lo === hi ? fmt(lo) : fmt(lo) + " – " + fmt(hi); };
+const ksPriceRun = (list) => { const r = ksRun(list.filter(ksPriced).map((m) => m.rows[0].price), rp); return r ? r.replace(" – Rp ", " – ") : null; };
+const ksWidthRun = (list) => { const r = ksRun(list.map(ksWidth).filter(Boolean), String); return r ? r + " mm" : null; };
+const ksAnd = (items, lang) => (items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + (lang === "id" ? " dan " : " and ") + items[items.length - 1]);
+/* each material's sections: the granite sinks by how they are fitted, the stainless steel sinks by the price list's
+   two ranges — what each section's models are made of, and by whom, read from their records */
+const KS_SECTIONS = {
+  granite: [
+    { id: "undermount", title: KS_INSTALL.undermount, line: { en: "Set under the worktop.", id: "Dipasang di bawah meja dapur." }, test: (m) => m.install === "undermount" },
+    { id: "topmount", title: KS_INSTALL.topmount, line: { en: "Set on the worktop, on its rim.", id: "Dipasang di atas meja dapur, bertumpu pada bibirnya." }, test: (m) => m.install === "topmount" },
+  ],
+  "stainless-steel": [
+    { id: "pressed", title: KS_RANGE.pressed, test: (m) => m.section === "pressed" },
+    { id: "handmade", title: KS_RANGE.handmade, test: (m) => m.section === "handmade" },
+  ],
+};
+const ksSectionLine = (s, list, lang) => {
+  if (s.line) return tx(s.line, lang);
+  const grades = [...new Set(list.map((m) => m.grade))].sort(), brands = [...new Set(list.map((m) => m.brand))];
+  return (lang === "id" ? "Stainless steel " : "Stainless steel ") + ksAnd(grades, lang) + " · " + ksAnd(brands, lang) + ".";
+};
+/* what a section's models come in: the granite colours, or the stainless finishes */
+const ksSectionTags = (list, lang) => {
+  const out = [];
+  list.forEach((m) => { if (m.kind === "steel" && !out.some((o) => o.id === m.finish.id)) out.push({ id: m.finish.id, label: tx(m.finish.name, lang), hex: m.finish.hex }); });
+  if (list[0] && list[0].kind === "granite") KS_ORDER.forEach((c) => { const r = list.flatMap((mm) => mm.rows).find((rr) => rr.colourId === c); if (r) out.push({ id: c, label: tx(r.colour, lang), hex: r.finishes[0].hex }); });
+  return out;
+};
+/* the search: a model as it is printed ("GDU 8145", "w7546tsbn"), or what it is — its material, colours or finish,
+   bowls, fitting or range, edge, brand, grade — word by word */
+const ksHay = (m) => [m.model, m.kind === "granite" ? "granite granit komposit composite" : "stainless steel",
+  ...m.rows.flatMap((r) => (r.colour ? [r.colour.en, r.colour.id] : [])), ...(m.finish ? [m.finish.name.en] : []),
+  m.brand || "", m.grade ? "ss " + m.grade : "", tx(ksBowls(m), "en"), tx(ksBowls(m), "id"),
+  m.install ? tx(KS_INSTALL[m.install], "en") : "", m.section ? tx(KS_RANGE[m.section], "en") : "", m.edge || "", m.extra || ""].map(dq).join(" ");
+const ksSearchHit = (m, q) => {
+  const nq = dq(q);
+  if (!nq) return true;
+  const hay = ksHay(m), words = String(q).toLowerCase().split(/\s+/).map(dq).filter(Boolean);
+  return hay.replace(/ /g, "").includes(nq) || words.every((w) => hay.includes(w));
+};
+const ksSectionOf = (kind, m) => (KS_SECTIONS[kind] || []).find((s) => s.test(m)) || null;
+
+/* ── the product card: its picture, what it is, its model number, its size, its price as listed (or who to ask),
+   its colours or finish, and the way to its page ── */
+const KsCard = ({ m, prefer = null, eager = false }) => {
   const { x, lang } = useStore();
   const first = Math.max(0, prefer ? m.rows.findIndex((r) => r.colourId === prefer) : 0);
   const [i, setI] = useState(first);
-  useEffect(() => { setI(first); }, [prefer, m.key]);
+  /* a colour filtered for is taken up as it is drawn */
+  const base = first + "|" + m.key;
+  const [was, setWas] = useState(base);
+  if (was !== base) { setWas(base); setI(first); }
   const row = m.rows[i] || m.rows[0];
   const href = ksDetailHref(m, row);
+  const price = ksPriceOf(m, row);
+  const alt = m.model + (row.colour ? " — " + x(row.colour) : m.finish ? " — " + x(m.finish.name) : "") + ", " + x({ en: "seen from above", id: "tampak atas" });
   return (
     <article className="group/card flex h-full flex-col" data-ks-card={m.model}>
       <a href={href} className="block" aria-label={m.model + (row.colour ? " " + x(row.colour) : "") + " — " + x({ en: "view details", id: "lihat detail" })}>
-        <div className="relative aspect-square w-full overflow-hidden bg-[#F4F3F0]">
-          <Photo src={pImg(row, 0, 900)} alt={m.model + (row.colour ? " — " + x(row.colour) : "")} tone={PLATE}
-            className="no-dim absolute inset-0 h-full w-full object-contain p-[10%] transition-transform duration-[900ms] ease-quiet group-hover/card:scale-[1.04]" />
+        <div className="relative aspect-square w-full overflow-hidden" style={{ background: PLATE }}>
+          <CatImg src={pImg(row, 0, 900)} alt={alt} eager={eager} shape="sink" w={900} h={900}
+            className="absolute inset-0 h-full w-full object-contain p-[10%] transition-transform duration-[900ms] ease-quiet group-hover/card:scale-[1.04]" />
         </div>
       </a>
-      <div className="flex flex-1 flex-col pt-4 md:pt-5">
-        <p className="text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.1em] text-mute md:text-[10.5px]">{ksTypeName(m, lang)}</p>
+      <div className="flex flex-1 flex-col pt-5">
+        <p className="text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.1em] text-mute md:text-[10.5px]" data-ks-card-type="">{ksTypeName(m, lang)}</p>
         <a href={href} className="mt-2 block">
-          <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[19px]">{m.model}</h3>
+          <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[18px]" data-ks-card-name="">{m.model}</h3>
         </a>
-        <p className="mt-1 text-[12.5px] leading-[1.55] text-mute md:text-[13px]">{ksSize(m, lang)}</p>
-        <div className="mt-3 flex min-h-[22px] flex-wrap items-center gap-2">
-          {m.kind === "granite" ? m.rows.map((r, n) => (
-            <button key={r.slug} onClick={() => setI(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)}
-              className={"h-[22px] w-[22px] rounded-full border p-[3px] transition-colors duration-300 " + (n === i ? "border-ink" : "border-transparent hover:border-line")}>
-              <span className="block h-full w-full rounded-full" style={{ background: r.finishes[0].hex, boxShadow: KS_RING }} />
-            </button>
-          )) : (
-            <span className="flex items-center gap-2 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute">
-              <span className="h-[13px] w-[13px] rounded-full" style={{ background: m.finish.hex, boxShadow: KS_RING }} />{x(m.finish.name)}
+        <p className="mt-1 text-[12.5px] leading-[1.55] text-mute md:text-[13px]" data-ks-card-size="">{ksSize(m, lang)}{m.kind === "steel" ? " · " + m.brand : ""}</p>
+        {price != null
+          ? <p className="mt-2.5 text-[15px] font-semibold tabular-nums text-ink md:text-[16px]" data-ks-card-price={price}>{rp(price)}</p>
+          : <p className="mt-2.5 text-[12.5px] font-medium text-ink/85" data-ks-card-price="ask">{x(KS_PRICE_ASK)}</p>}
+        <div className="mt-3.5 flex min-h-[24px] flex-wrap items-center gap-2" data-ks-card-colours="">
+          {m.kind === "granite" ? (
+            <>
+              {m.rows.map((r, n) => (
+                <button key={r.slug} type="button" onClick={() => setI(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)} data-ks-colour-pick={r.colourId}
+                  className={"h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 " + (n === i ? "border-accent" : "border-transparent hover:border-line")}>
+                  <span className="block h-full w-full rounded-full" style={{ background: r.finishes[0].hex, boxShadow: KS_RING }} />
+                </button>
+              ))}
+              <span className="ml-0.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute" data-ks-card-shown="">{x(row.colour)}</span>
+            </>
+          ) : (
+            <span className="flex items-center gap-2 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute" data-ks-card-shown="">
+              <span className="h-[14px] w-[14px] rounded-full" style={{ background: m.finish.hex, boxShadow: KS_RING }} />{x(m.finish.name)}
             </span>
           )}
         </div>
-        <a href={href} className="group/l mt-auto inline-flex items-center gap-2.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink">
+        <a href={href} className="group/l mt-auto inline-flex items-center gap-2.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink" data-ks-details="">
           <span className="u">{x({ en: "View details", id: "Lihat detail" })}</span>
           <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
         </a>
       </div>
     </article>
+  );
+};
+
+/* ── the introduction of the collection, or of one material: its facts as listed beside a kitchen it could stand in —
+   a visualisation, and said to be one ── */
+const KsIntro = ({ eyebrow, strong, light, lede, facts = [], vis, children }) => {
+  const { x } = useStore();
+  return (
+    <section className="border-b border-line" data-ks-hero="">
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 lg:grid-cols-12">
+        <div className="flex flex-col justify-center px-5 pb-14 pt-12 sm:px-10 md:pb-20 md:pt-16 lg:col-span-6 lg:px-14 lg:py-20 xl:col-span-5 xl:px-16">
+          <Reveal className="block">
+            <p data-eyebrow="" className="text-[11px] font-medium uppercase tracking-[0.26em] text-accent">{eyebrow}</p>
+          </Reveal>
+          <Reveal className="mt-7 block" delay={80}>
+            <h1 className="text-[46px] leading-[1.02] tracking-[-0.02em] md:text-[66px] xl:text-[76px]">
+              <span className="block">{strong}</span><span className="block text-mute">{light}</span>
+            </h1>
+          </Reveal>
+          {lede ? <Reveal className="mt-7 block" delay={140}><p className="max-w-[46ch] text-[16px] leading-[1.75] text-mute">{lede}</p></Reveal> : null}
+          {facts.length ? (
+            <Reveal className="mt-9 block" delay={200}>
+              <dl className="grid grid-cols-2 gap-x-8 border-t border-line sm:grid-cols-3" data-ks-intro-facts="">
+                {facts.map(([id, k, val, sub]) => (
+                  <div key={id} className="min-w-0 border-b border-line py-4" data-ks-fact={id}>
+                    <dt className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-mute">{x(k)}</dt>
+                    <dd className="mt-2 text-[14.5px] font-medium tabular-nums leading-[1.45] text-ink">
+                      {val}{sub ? <span className="mt-1 block text-[11.5px] font-normal leading-[1.45] text-mute">{sub}</span> : null}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          ) : null}
+          {children ? <Reveal className="mt-10 block" delay={260}>{children}</Reveal> : null}
+        </div>
+        <div className="relative aspect-[5/4] overflow-hidden bg-concrete lg:col-span-6 lg:aspect-auto lg:min-h-[720px] xl:col-span-7" data-ks-hero-vis="">
+          <img src={vis.src} width={vis.w} height={vis.h} decoding="async" fetchpriority="high" draggable="false" alt={vis.alt}
+            className="no-dim absolute inset-0 h-full w-full object-cover" style={{ objectPosition: vis.pos || "50% 55%" }} />
+          <span className="absolute left-5 top-5 bg-black/50 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/90 sm:left-8 sm:top-7" data-ks-hero-tag="">
+            {x({ en: "Visualisation", id: "Visualisasi" })}
+          </span>
+          <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-5 pb-5 pt-20 sm:px-8 sm:pb-7">
+            <p className="text-[10.5px] font-semibold uppercase leading-[1.6] tracking-[0.14em] text-white/90">{vis.caption}</p>
+            {vis.href ? (
+              <a href={vis.href} className="group/l inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white" data-ks-hero-link="">
+                <span className="u">{x({ en: "View this sink", id: "Lihat bak cuci ini" })}</span>
+                <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+/* a kitchen to open with: a model's visualisation (img/kitchens), captioned with the model and the colour or finish it is
+   shown in, and the way to its page */
+const ksIntroVis = (kind, modelName, lang) => {
+  const m = ksModels(kind).find((mm) => mm.model === modelName);
+  const kit = m ? ksKitchen(m) : null;
+  if (!m || !kit) return null;
+  const row = m.kind === "granite" ? m.rows.find((r) => r.colourId === kit.colour) || m.rows[0] : m.rows[0];
+  const shown = m.kind === "granite" ? tx(row.colour, lang) : tx(m.finish.name, lang);
+  return { src: kit.src, w: 1400, h: 1120, caption: m.model + " · " + shown, href: ksDetailHref(m, row),
+    alt: m.model + ", " + shown + (lang === "id" ? ", di sebuah dapur (visualisasi)" : ", in a kitchen (visualisation)") };
+};
+
+/* ── every model at a glance: the thirty-one on their plate, granite in the colour chosen, each a way to its page ── */
+const KsLineup = ({ colour, onColour }) => {
+  const { x } = useStore();
+  const granite = useMemo(() => ksGranite(), []), steel = useMemo(() => ksSteel(), []);
+  const groups = [
+    { id: "granite", title: KS_KINDS.granite.label, list: granite, route: KS_KINDS.granite.route },
+    { id: "pressed", title: { en: "Stainless steel · Pressed", id: "Stainless steel · Pressed" }, list: steel.filter((m) => m.section === "pressed"), route: KS_KINDS["stainless-steel"].route },
+    { id: "handmade", title: { en: "Stainless steel · Hand Made", id: "Stainless steel · Hand Made" }, list: steel.filter((m) => m.section === "handmade"), route: KS_KINDS["stainless-steel"].route },
+  ];
+  return (
+    <section className="mx-auto max-w-site px-5 pb-6 pt-14 md:px-10 md:pt-20" data-ks-lineup="">
+      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div>
+          <Eyebrow>{x({ en: "The collection", id: "Koleksinya" })}</Eyebrow>
+          <h2 className="mt-4 text-[28px] leading-[1.12] md:text-[38px]">{x({ en: "Every model at a glance", id: "Semua model sekilas" })}</h2>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3" role="group" aria-label={x({ en: "Show the granite sinks in", id: "Tampilkan bak cuci granit dalam" })} data-ks-lineup-colours="">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Granite in", id: "Granit dalam" })}</span>
+          {KS_ORDER.map((c) => (
+            <button key={c} type="button" onClick={() => onColour(c)} aria-pressed={colour === c} data-ks-lineup-colour={c}
+              className={"group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
+              <span className={"grid h-[24px] w-[24px] place-items-center rounded-full border transition-colors duration-300 " + (colour === c ? "border-accent" : "border-transparent group-hover:border-line")}>
+                <span className="h-[16px] w-[16px] rounded-full" style={{ background: F[c].hex, boxShadow: KS_RING }} />
+              </span>
+              {x(F[c].name)}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="mt-10 grid gap-8 md:gap-10">
+        {groups.map((g, k) => (
+          <div key={g.id} data-ks-lineup-group={g.id}>
+            <a href={g.route} className="group/s mb-3.5 inline-flex items-baseline gap-2 text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute transition-colors duration-300 hover:text-ink">
+              <span className="text-accent">{String(k + 1).padStart(2, "0")}</span><span className="u">{x(g.title)}</span><span className="tabular-nums">· {g.list.length}</span>
+            </a>
+            <div className="ks-scroll -mx-5 overflow-x-auto px-5 pb-3 md:mx-0 md:overflow-visible md:px-0 md:pb-0">
+              <div className="flex w-max md:max-w-full md:flex-wrap" style={{ background: PLATE }}>
+                {g.list.map((m) => {
+                  const row = m.kind === "granite" ? m.rows.find((r) => r.colourId === colour) || m.rows[0] : m.rows[0];
+                  return (
+                    <a key={m.key} href={ksDetailHref(m, row)} data-ks-lineup-sink={m.key}
+                      className="group/d relative block w-[84px] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8A6A3E] md:w-[92px]">
+                      <span className="relative block aspect-square overflow-hidden">
+                        <CatImg src={pImg(row, 0, 300)} alt={m.model + (row.colour ? " — " + x(row.colour) : " — " + x(m.finish.name)) + ", " + x({ en: "seen from above", id: "tampak atas" })} small shape="sink" w={300} h={300}
+                          className="absolute inset-0 h-full w-full object-contain p-[12%] transition-transform duration-700 ease-quiet group-hover/d:scale-[1.08]" />
+                      </span>
+                      <span className="block truncate px-1 pb-2.5 text-center text-[9.5px] font-medium tracking-[0.02em] text-[#6B6864]" aria-hidden="true">{m.model}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+/* ── a section of a material's catalogue: its number and name, what its models are and are made of, how many, their
+   widths and prices as listed — then its cards ── */
+const KsSection = ({ kind, s, n, list, total, children }) => {
+  const { x, lang } = useStore();
+  const tid = "ks-section-" + s.id + "-title";
+  const price = ksPriceRun(list);
+  return (
+    <section id={"ks-section-" + s.id} className="scroll-mt-[190px] pt-12 first:pt-9 md:pt-[72px] md:first:pt-12" data-ks-section={s.id} aria-labelledby={tid}>
+      <header className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 border-t border-line pt-7 md:grid-cols-[72px_minmax(0,1fr)_auto] md:gap-x-8 md:pt-9">
+        <span className="font-serif-lx text-[32px] font-light leading-none text-accent md:text-[44px]" aria-hidden="true">{String(n).padStart(2, "0")}</span>
+        <div>
+          <h2 id={tid} className="text-[25px] leading-[1.15] md:text-[33px]">{x(s.title)}</h2>
+          <p className="mt-3 max-w-[64ch] text-[14.5px] leading-[1.7] text-mute">{ksSectionLine(s, list, lang)}</p>
+          <p className="mt-4 flex flex-wrap gap-2" data-ks-section-tags="">
+            {ksSectionTags(list, lang).map((tg) => (
+              <span key={tg.id} className="inline-flex items-center gap-2 border border-line px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-mute">
+                {tg.hex ? <span className="h-[9px] w-[9px] rounded-full" style={{ background: tg.hex, boxShadow: KS_RING }} /> : null}{tg.label}
+              </span>
+            ))}
+          </p>
+        </div>
+        <dl className="col-span-2 mt-5 flex flex-wrap gap-x-10 gap-y-3 md:col-span-1 md:mt-1 md:flex-col md:gap-3 md:text-right" data-ks-section-facts="">
+          <div>
+            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Models", id: "Model" })}</dt>
+            <dd className="mt-1 text-[14px] font-medium tabular-nums text-ink" data-ks-section-count={list.length}>{list.length === total ? total : list.length + " / " + total}</dd>
+          </div>
+          <div>
+            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Width", id: "Lebar" })}</dt>
+            <dd className="mt-1 whitespace-nowrap text-[14px] font-medium tabular-nums text-ink">{ksWidthRun(list)}</dd>
+          </div>
+          <div>
+            <dt className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Price", id: "Harga" })}</dt>
+            <dd className="mt-1 whitespace-nowrap text-[14px] font-medium tabular-nums text-ink" data-ks-section-price="">{price || x(KS_PRICE_ASK)}</dd>
+          </div>
+        </dl>
+      </header>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-12 pt-9 md:grid-cols-3 md:gap-x-7 md:gap-y-14 md:pt-11 xl:grid-cols-4 xl:gap-x-8">{children}</div>
+    </section>
   );
 };
 
@@ -16359,20 +16594,46 @@ const KsHead = ({ title, line = null, children = null }) => (
 const KsCollection = () => {
   const { x, lang, t } = useStore();
   const granite = useMemo(() => ksGranite(), []), steel = useMemo(() => ksSteel(), []);
-  const colours = granite.reduce((s, m) => { m.rows.forEach((r) => s.add(r.colourId)); return s; }, new Set()).size;
-  const finishes = new Set(steel.map((m) => m.finish.id)).size;
+  const [gc, setGc] = useState("pearl");
+  const colours = KS_ORDER.filter((c) => granite.some((m) => m.rows.some((r) => r.colourId === c)));
+  const finishes = [...new Map(steel.map((m) => [m.finish.id, m.finish])).values()];
+  const grades = [...new Set(steel.map((m) => m.grade))].sort();
   const selected = KS_SELECTED.map(([k, model, c]) => ({ m: ksModels(k).find((mm) => mm.model === model), c })).filter((s) => s.m);
   useKsMeta(x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }),
     x({ en: "Granite composite and stainless steel kitchen sinks: every model with its colours or finish, dimensions, technical drawing and specifications, online and as a PDF catalogue.",
         id: "Bak cuci dapur komposit granit dan stainless steel: setiap model dengan warna atau finishing, dimensi, gambar teknis dan spesifikasinya, online dan sebagai katalog PDF." }));
   const toCats = (e) => { e.preventDefault(); const el = document.getElementById("ks-materials"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" }); };
+  const swatches = (list) => (
+    <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5">
+      {list.map((f) => (
+        <span key={f.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
+          <span className="h-[11px] w-[11px] rounded-full" style={{ background: f.hex, boxShadow: KS_RING }} />{x(f.name)}
+        </span>
+      ))}
+    </span>
+  );
+  const facts = [
+    ["models", { en: "Models", id: "Model" }, String(granite.length + steel.length),
+      x({ en: granite.length + " granite · " + steel.length + " stainless steel", id: granite.length + " granit · " + steel.length + " stainless steel" })],
+    ["materials", { en: "Materials", id: "Material" }, x({ en: "Granite composite, stainless steel", id: "Komposit granit, stainless steel" }), "SS " + ksAnd(grades, lang)],
+    ["width", { en: "Width", id: "Lebar" }, ksWidthRun(granite.concat(steel)), null],
+    ["colours", { en: "Granite colours", id: "Warna granit" }, swatches(colours.map((c) => F[c])), null],
+    ["finishes", { en: "Stainless finishes", id: "Finishing stainless" }, swatches(finishes), null],
+    ["price", { en: "Price", id: "Harga" }, x({ en: "From ", id: "Mulai " }) + rp(Math.min(...steel.map((m) => m.rows[0].price))),
+      x({ en: "Stainless steel, as listed · granite: contact us", id: "Stainless steel, sesuai daftar · granit: hubungi kami" })],
+  ];
+  const vis = ksIntroVis("granite", "GDU 8145", lang);
+  const kinds = [
+    ["granite", granite.length + " " + x({ en: "models", id: "model" }) + " · " + colours.length + " " + x({ en: "colours", id: "warna" }), colours.map((c) => F[c])],
+    ["stainless-steel", steel.length + " " + x({ en: "models", id: "model" }) + " · " + finishes.length + " " + x({ en: "finishes", id: "finishing" }), finishes],
+  ];
   return (
     <div data-ks-page="collection">
-      <KsOpener set="web-collection" layout="grid-2"
-        tag={x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }) + " · " + x(KS_EDITION)}
+      <KsIntro eyebrow={x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }) + " · " + x(KS_EDITION)}
         strong={x({ en: "Kitchen Sink", id: "Koleksi" })} light={x({ en: "Collection", id: "Bak Cuci Dapur" })}
         lede={x({ en: "Granite composite and stainless steel — every model with its dimensions, technical drawing and specification.",
-                  id: "Komposit granit dan stainless steel — setiap model dengan dimensi, gambar teknis dan spesifikasinya." })}>
+                  id: "Komposit granit dan stainless steel — setiap model dengan dimensi, gambar teknis dan spesifikasinya." })}
+        facts={facts} vis={vis}>
         <div className="flex flex-wrap items-center gap-4">
           <a href="#ks-materials" onClick={toCats}
             className="group/cta inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
@@ -16382,19 +16643,20 @@ const KsCollection = () => {
         <div className="mt-6 border-t border-line" data-ks-hero-pdfs="">
           {KS_DOC_LIST.map((d) => <KsPdfLink key={d} doc={d} lang={lang} variant="row">{x(KS_DOCS[d].title)}</KsPdfLink>)}
         </div>
-      </KsOpener>
+      </KsIntro>
 
       <div className="mx-auto max-w-site px-5 pt-10 md:px-10">
         <Breadcrumb trail={[{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Kitchen Sink", id: "Bak Cuci Dapur" }) }]} />
       </div>
 
-      {/* shop by category: the two materials */}
+      <KsLineup colour={gc} onColour={setGc} />
+
+      {/* shop by category: the two materials, each its own catalogue */}
       <section id="ks-materials" className="mx-auto max-w-site scroll-mt-[180px] px-5 pb-[90px] pt-[70px] md:px-10 md:pb-[120px] md:pt-[90px]" data-ks-materials="">
         <KsHead title={x({ en: "Shop by category", id: "Belanja per kategori" })}
           line={x({ en: "Two materials, each with its own catalogue.", id: "Dua material, masing-masing dengan katalognya sendiri." })} />
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8">
-          {[["granite", granite.length + " " + x({ en: "models", id: "model" }) + " · " + colours + " " + x({ en: "colours", id: "warna" })],
-            ["stainless-steel", steel.length + " " + x({ en: "models", id: "model" }) + " · " + finishes + " " + x({ en: "finishes", id: "finishing" })]].map(([k, count], n) => {
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8">
+          {kinds.map(([k, count, sw], n) => {
             const K = KS_KINDS[k];
             return (
               <Reveal key={k} delay={n * 120} className="block">
@@ -16402,14 +16664,20 @@ const KsCollection = () => {
                   <div className="overflow-hidden bg-[#F4F3F0]">
                     <KsSinkSet name={K.set} layout="feature" className="px-8 py-10 transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.025] md:px-14 md:py-14" />
                   </div>
-                  <div className="pt-7">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{count}</p>
-                    <h3 className="mt-3 text-[28px] font-medium leading-[1.12] tracking-[-0.014em] md:text-[34px]">{x(K.label)}</h3>
-                    <p className="mt-2.5 text-[14.5px] leading-[1.7] text-mute">{x(K.card)}</p>
-                    <span className="mt-6 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-                      <span className="u">{t("exploreCollection")}</span>
-                      <span className="transition-transform duration-500 ease-quiet group-hover:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-                    </span>
+                  <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 pt-7 md:gap-x-7">
+                    <span className="font-serif-lx text-[34px] font-light leading-none text-accent md:text-[42px]" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{count}</p>
+                      <h3 className="font-serif-lx mt-3 text-[28px] font-light leading-[1.12] md:text-[34px]">{x(K.label)}</h3>
+                      <p className="mt-2.5 text-[14.5px] leading-[1.7] text-mute">{x(K.card)}</p>
+                      <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[11px] font-medium uppercase tracking-[0.08em] text-mute">
+                        {sw.map((f) => <span key={f.id} className="inline-flex items-center gap-1.5"><span className="h-[10px] w-[10px] rounded-full" style={{ background: f.hex, boxShadow: KS_RING }} />{x(f.name)}</span>)}
+                      </p>
+                      <span className="mt-6 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+                        <span className="u">{t("exploreCollection")}</span>
+                        <span className="transition-transform duration-500 ease-quiet group-hover:translate-x-1.5"><Icon name="arrow" size={15} /></span>
+                      </span>
+                    </div>
                   </div>
                 </a>
               </Reveal>
@@ -16445,10 +16713,10 @@ const KsCollection = () => {
 const KsNotes = () => {
   const { x } = useStore();
   return (
-    <div className="mx-auto max-w-site border-t border-line px-5 py-10 md:px-10">
-      <p className="max-w-[100ch] text-[12px] leading-[1.7] text-mute">
-        {x({ en: "Dimensions in millimetres, as listed for each model. The product pictures here are supplied photographs; the kitchens in the catalogues are visualisations made from them and the listed dimensions. Prices and stock are in the shop.",
-             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Gambar produk di sini adalah foto produk yang disediakan; dapur di dalam katalog merupakan visualisasi yang dibuat dari foto tersebut dan dimensi yang tercantum. Harga dan stok ada di toko." })}
+    <div className="mx-auto max-w-site border-t border-line px-5 py-10 md:px-10" data-ks-notes="">
+      <p className="max-w-[100ch] text-[12.5px] leading-[1.75] text-mute">
+        {x({ en: "Dimensions in millimetres, as listed for each model. The product pictures here are supplied photographs; the kitchens are visualisations made from them and the listed dimensions. Stainless steel prices as in the Price List 2024 (14 August 2024); no granite prices were supplied — contact us for details. Stock is in the shop.",
+             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Gambar produk di sini adalah foto produk yang disediakan; dapurnya merupakan visualisasi yang dibuat dari foto tersebut dan dimensi yang tercantum. Harga stainless steel sesuai Price List 2024 (14 Agustus 2024); harga granit belum disediakan — hubungi kami untuk detail. Stok ada di toko." })}
       </p>
     </div>
   );
@@ -16459,12 +16727,17 @@ const KsCategory = ({ kind }) => {
   const { x, lang, t } = useStore();
   const K = KS_KINDS[kind];
   const all = useMemo(() => (K ? ksModels(kind) : []), [kind]);
-  const filters = useMemo(() => (K ? ksFilters(kind === "granite" ? "granite" : "steel", lang) : []), [kind, lang]);
+  const steel = kind === "stainless-steel";
+  /* the material's own filters, and before them its models by number */
+  const filters = useMemo(() => (K ? [{ id: "model", label: { en: "Model", id: "Model" }, chips: true,
+    options: all.map((m) => ({ value: m.key, label: { en: m.model, id: m.model }, full: m.model })), test: (m, v) => m.key === v },
+    ...ksFilters(kind === "granite" ? "granite" : "steel", lang)] : []), [kind, lang]);
+  const sorts = useMemo(() => [{ id: "sections", label: { en: "By section", id: "Per bagian" } }, ...KS_SORTS,
+    ...(steel ? [{ id: "low", label: { en: "Price: low to high", id: "Harga: rendah ke tinggi" } }, { id: "high", label: { en: "Price: high to low", id: "Harga: tinggi ke rendah" } }] : [])], [kind]);
+  const [q, setQ] = useState("");
   const [sel, setSel] = useState({});
-  const [sort, setSort] = useState("catalogue");
-  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("sections");
   const [sheet, setSheet] = useState(false);
-  const gridTop = useRef(null);
   const sheetRef = useInert(!sheet);
   /* the sheet is a dialog: the page behind it holds still, Escape closes it, and the keyboard starts inside it */
   const sheetClose = useRef(null), sheetOpener = useRef(null);
@@ -16476,22 +16749,57 @@ const KsCategory = ({ kind }) => {
     window.addEventListener("keydown", onKey);
     return () => { clearTimeout(t0); window.removeEventListener("keydown", onKey); if (sheetOpener.current) sheetOpener.current.focus({ preventScroll: true }); };
   }, [sheet]);
-  useEffect(() => { setSel({}); setSort("catalogue"); setPage(1); }, [kind]);
-  useEffect(() => { setPage(1); }, [sort, JSON.stringify(sel)]);
+  useEffect(() => { setSel({}); setQ(""); setSort("sections"); }, [kind]);
   useKsMeta(K ? x(K.label) : null, K ? x(K.lede) : null);
   if (!K) return <NotFound />;
 
   const on = (fid, v) => setSel((s) => { const cur = s[fid] || []; return { ...s, [fid]: cur.includes(v) ? cur.filter((y) => y !== v) : [...cur, v] }; });
-  const passes = (m, except = null) => filters.every((f) => f.id === except || !(sel[f.id] || []).length || (sel[f.id] || []).some((v) => f.test(m, v)));
-  const results = ksSorted(all.filter((m) => passes(m)), sort);
-  const PER = 12, pages = Math.max(1, Math.ceil(results.length / PER)), shown = results.slice((Math.min(page, pages) - 1) * PER, Math.min(page, pages) * PER);
-  const toPage = (n) => { setPage(n); const el = gridTop.current; if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 200, behavior: lessMotion() ? "auto" : "smooth" }); };
-  /* how many each option would show, the other filters as they are */
+  const passes = (m, except = null) => ksSearchHit(m, q) && filters.every((f) => f.id === except || !(sel[f.id] || []).length || (sel[f.id] || []).some((v) => f.test(m, v)));
+  const sorted = (list) => {
+    if (sort === "low") return list.slice().sort((a, b) => a.rows[0].price - b.rows[0].price);
+    if (sort === "high") return list.slice().sort((a, b) => b.rows[0].price - a.rows[0].price);
+    return ksSorted(list, sort);
+  };
+  const results = sorted(all.filter((m) => passes(m)));
+  /* how many each option would show, the other filters (and the search) as they are */
   const counts = Object.fromEntries(filters.map((f) => [f.id, Object.fromEntries(f.options.map((o) => [o.value, all.filter((m) => passes(m, f.id) && f.test(m, o.value)).length]))]));
-  const chips = filters.flatMap((f) => (sel[f.id] || []).map((v) => ({ key: f.id + v, label: tx((f.options.find((o) => o.value === v) || {}).label, lang), clear: () => on(f.id, v) })));
-  const clearAll = () => setSel({});
+  const chips = [
+    ...(q.trim() ? [{ key: "q", label: "“" + q.trim() + "”", clear: () => setQ("") }] : []),
+    ...filters.flatMap((f) => (sel[f.id] || []).map((v) => ({ key: f.id + v, label: tx((f.options.find((o) => o.value === v) || {}).label, lang), clear: () => on(f.id, v) }))),
+  ];
+  const clearAll = () => { setSel({}); setQ(""); };
   const colourPick = ((sel.colour || [])[0]) || null;
   const other = kind === "granite" ? "stainless-steel" : "granite";
+  const count = (n) => n + " " + (n === 1 ? x({ en: "model", id: "model" }) : x({ en: "models", id: "model" }));
+  const secs = KS_SECTIONS[kind] || [];
+  const card = (m, n) => <Reveal key={m.key} delay={Math.min(n, 6) * 55} className="block h-full"><KsCard m={m} prefer={colourPick} eager={n < 4} /></Reveal>;
+
+  /* the material's facts, as its records give them */
+  const finishes = steel ? [...new Map(all.map((m) => [m.finish.id, m.finish])).values()] : [];
+  const colours = steel ? [] : KS_ORDER.filter((c) => all.some((m) => m.rows.some((r) => r.colourId === c))).map((c) => F[c]);
+  const swatches = (list) => (
+    <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5">
+      {list.map((f) => <span key={f.id} className="inline-flex items-center gap-1.5 whitespace-nowrap"><span className="h-[11px] w-[11px] rounded-full" style={{ background: f.hex, boxShadow: KS_RING }} />{x(f.name)}</span>)}
+    </span>
+  );
+  const bowlsAll = [...new Set(all.map((m) => x(ksBowls(m))))];
+  const facts = steel ? [
+    ["models", { en: "Models", id: "Model" }, String(all.length), x({ en: all.filter((m) => m.section === "pressed").length + " pressed · " + all.filter((m) => m.section === "handmade").length + " hand made",
+                                                                    id: all.filter((m) => m.section === "pressed").length + " pressed · " + all.filter((m) => m.section === "handmade").length + " hand made" })],
+    ["grade", { en: "Steel grade", id: "Tipe stainless" }, "SS " + ksAnd([...new Set(all.map((m) => m.grade))].sort(), lang), null],
+    ["width", { en: "Width", id: "Lebar" }, ksWidthRun(all), null],
+    ["finishes", { en: "Finishes", id: "Finishing" }, swatches(finishes), null],
+    ["brands", { en: "Brands", id: "Merek" }, ksAnd([...new Set(all.map((m) => m.brand))], lang), null],
+    ["price", { en: "Price", id: "Harga" }, ksPriceRun(all), x({ en: "As in the Price List 2024", id: "Sesuai Price List 2024" })],
+  ] : [
+    ["models", { en: "Models", id: "Model" }, String(all.length), null],
+    ["bowls", { en: "Bowls", id: "Jumlah ruang" }, ksAnd(bowlsAll, lang), null],
+    ["width", { en: "Width", id: "Lebar" }, ksWidthRun(all), null],
+    ["colours", { en: "Colours", id: "Warna" }, swatches(colours), null],
+    ["install", { en: "Installation", id: "Pemasangan" }, ksAnd(["undermount", "topmount"].filter((v) => all.some((m) => m.install === v)).map((v) => x(KS_INSTALL[v])), lang), null],
+    ["price", { en: "Price", id: "Harga" }, x(KS_PRICE_ASK), null],
+  ];
+  const vis = steel ? ksIntroVis("stainless-steel", "W 7546 TSBN", lang) : ksIntroVis("granite", "GSU 7545", lang);
 
   /* a function, not a component: called twice, the same buttons stay mounted and keep the keyboard's place */
   const sidebar = (inSheet) => (
@@ -16505,7 +16813,8 @@ const KsCategory = ({ kind }) => {
       {filters.map((f) => (
         <div key={f.id} className="border-b border-line pb-7 pt-1 [&+&]:pt-7" data-ks-filter={f.id}>
           <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{tx(f.label, lang)}</p>
-          <KsOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />
+          {f.chips ? <CatModelChips f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} cols={steel ? 2 : 3} />
+                   : <CatOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />}
         </div>
       ))}
     </div>
@@ -16513,47 +16822,59 @@ const KsCategory = ({ kind }) => {
 
   return (
     <div data-ks-page={kind}>
-      <KsOpener set={K.set} layout="feature" tag={x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" })}
-        strong={x(K.strong)} light={x(K.light)} lede={x(K.lede)}>
+      <KsIntro eyebrow={x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }) + " · " + x(KS_EDITION)} strong={x(K.strong)} light={x(K.light)} lede={x(K.lede)} facts={facts} vis={vis}>
         {/* the catalogue: its pages here on the website, or the PDF to keep */}
         <div className="flex flex-wrap items-center gap-3">
           <KsViewLink doc={K.doc} lang={lang} />
           <KsPdfLink doc={K.doc} lang={lang}>{x({ en: "Download PDF", id: "Unduh PDF" })}</KsPdfLink>
         </div>
         <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.08em] text-mute"><KsPdfMeta doc={K.doc} /></p>
-      </KsOpener>
+      </KsIntro>
 
       <div className="mx-auto max-w-site px-5 pt-10 md:px-10">
         <Breadcrumb trail={[{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Kitchen Sink", id: "Bak Cuci Dapur" }), to: "#/shop/kitchen-sinks" }, { label: x(K.label) }]} />
       </div>
 
-      <div className="mx-auto grid max-w-site grid-cols-1 gap-10 px-5 pb-[100px] pt-10 md:px-10 md:pt-14 lg:grid-cols-12 lg:gap-14">
+      <div id="ks-models" className="mx-auto grid max-w-site scroll-mt-[180px] grid-cols-1 gap-10 px-5 pb-[100px] pt-10 md:px-10 md:pt-14 lg:grid-cols-12 lg:gap-14" data-ks-models="">
         <aside className="hidden lg:col-span-3 lg:block" aria-label={t("filter")}>{sidebar(false)}</aside>
 
         <div className="lg:col-span-9">
-          <div ref={gridTop} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
-            <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-ks-count={results.length}>
-              {results.length} {results.length === 1 ? x({ en: "product", id: "produk" }) : x({ en: "products", id: "produk" })}
+          {/* the search: a model as printed, or what it is */}
+          <div className="mb-7" data-ks-search="">
+            <label className="flex items-center gap-4 border-b border-line pb-4 transition-colors duration-300 focus-within:border-accent">
+              <span className="text-mute"><Icon name="search" size={18} /></span>
+              <input value={q} onChange={(e) => setQ(e.target.value)} enterKeyHint="search" autoComplete="off" spellCheck="false" aria-describedby="ks-search-hint"
+                placeholder={x({ en: "Search model", id: "Cari model" })} aria-label={x({ en: "Search model", id: "Cari model" })}
+                className="min-w-0 flex-1 bg-transparent text-[16px] tracking-[0.01em] text-ink placeholder:text-mute focus:outline-none md:text-[17px]" />
+              {q ? <button type="button" onClick={() => setQ("")} aria-label={t("clear")} className="text-mute transition-colors duration-300 hover:text-ink"><Icon name="close" size={15} /></button> : null}
+            </label>
+            <p id="ks-search-hint" className="mt-2.5 text-[12px] leading-[1.6] text-mute">
+              {steel ? x({ en: "For example W 7546 TSBN, WL 07 or LPS 5040 — or a finish, such as Nano Black.", id: "Contoh: W 7546 TSBN, WL 07 atau LPS 5040 — atau finishing, seperti Nano Black." })
+                     : x({ en: "For example GDU 8145 or GSU 7545 — or a colour, such as Pure White.", id: "Contoh: GDU 8145 atau GSU 7545 — atau warna, seperti Putih Murni." })}
             </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
+            <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-ks-count={results.length}>{count(results.length)}</p>
             <div className="ml-auto flex items-center gap-5">
-              <button ref={sheetOpener} onClick={() => setSheet(true)} className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden">
+              <button ref={sheetOpener} onClick={() => setSheet(true)} className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-ks-sheet-open="">
                 <KsIcon name="filter" size={15} />{t("filter")}{chips.length ? <span className="text-accent">({chips.length})</span> : null}
               </button>
               <label className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
                 <span className="hidden sm:inline">{x({ en: "Sort", id: "Urutkan" })}</span>
                 <select value={sort} onChange={(e) => setSort(e.target.value)} data-ks-sort=""
-                  className="cursor-pointer border-b border-line bg-transparent py-1 pr-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink focus:border-ink focus:outline-none">
-                  {KS_SORTS.map((s) => <option key={s.id} value={s.id}>{tx(s.label, lang)}</option>)}
+                  className="cursor-pointer border-b border-line bg-transparent py-1 pr-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink focus:border-accent focus:outline-none">
+                  {sorts.map((s) => <option key={s.id} value={s.id} className="bg-bone text-ink">{tx(s.label, lang)}</option>)}
                 </select>
               </label>
             </div>
           </div>
 
           {chips.length ? (
-            <div className="flex flex-wrap items-center gap-3 pt-6">
+            <div className="flex flex-wrap items-center gap-3 pt-6" data-ks-chips="">
               {chips.map((c) => (
                 <button key={c.key} onClick={c.clear}
-                  className="flex items-center gap-3 border border-line px-4 py-2 text-[11px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:border-ink hover:text-ink">
+                  className="flex items-center gap-3 border border-line px-4 py-2 text-[11px] font-medium uppercase tracking-[0.08em] text-ink/85 transition-colors duration-300 hover:border-accent hover:text-ink">
                   {c.label}<Icon name="close" size={11} />
                 </button>
               ))}
@@ -16562,21 +16883,44 @@ const KsCategory = ({ kind }) => {
           ) : null}
 
           {results.length ? (
-            <>
-              <div key={sort + JSON.stringify(sel) + page} data-ks-grid="" className="grid grid-cols-2 gap-x-4 gap-y-12 pt-8 md:gap-x-8 md:gap-y-[60px] md:pt-12 xl:grid-cols-3 xl:gap-x-10">
-                {shown.map((m, n) => <Reveal key={m.key} delay={Math.min(n, 6) * 55} className="block h-full"><KsCard m={m} prefer={colourPick} /></Reveal>)}
+            sort === "sections" ? (
+              <div key={JSON.stringify(sel)} data-ks-grid="" data-ks-view-mode="sections">
+                {secs.map((s, k) => {
+                  const list = results.filter((m) => s.test(m));
+                  if (!list.length) return null;
+                  return <KsSection key={s.id} kind={kind} s={s} n={k + 1} list={list} total={all.filter((m) => s.test(m)).length}>{list.map(card)}</KsSection>;
+                })}
               </div>
-              <KsPager page={Math.min(page, pages)} pages={pages} onPage={toPage} />
-            </>
+            ) : (
+              <div key={sort + JSON.stringify(sel)} data-ks-grid="" data-ks-view-mode="list"
+                className="grid grid-cols-2 gap-x-4 gap-y-12 pt-9 md:grid-cols-3 md:gap-x-7 md:gap-y-14 md:pt-12 xl:grid-cols-4 xl:gap-x-8">
+                {results.map(card)}
+              </div>
+            )
           ) : (
-            <div className="py-24 text-center">
-              <p className="text-[24px] font-medium">{t("noResults")}</p>
+            <div className="py-24 text-center" data-ks-empty="">
+              <p className="font-serif-lx text-[26px] font-light">{t("noResults")}</p>
               <button onClick={clearAll} className="u mt-6 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink">{t("clearAll")}</button>
             </div>
           )}
-
         </div>
       </div>
+
+      {/* what the price list does not say, and who to ask */}
+      <section className="border-y border-line bg-shell" data-ks-contact="">
+        <div className="mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-5 py-14 md:grid-cols-12 md:gap-12 md:px-10 md:py-20">
+          <Reveal className="block md:col-span-8">
+            <Eyebrow>{x({ en: "Before you order", id: "Sebelum memesan" })}</Eyebrow>
+            <h2 className="mt-5 text-[26px] leading-[1.15] md:text-[34px]">{x({ en: "Contact us for details", id: "Hubungi kami untuk detail" })}</h2>
+            <p className="mt-4 max-w-[62ch] text-[15px] leading-[1.75] text-mute">{x(steel ? KS_ASK_STEEL : KS_ASK_GRANITE)}</p>
+          </Reveal>
+          <Reveal className="block md:col-span-4 md:justify-self-end" delay={100}>
+            <a href="#/contact" className="inline-flex h-[54px] items-center gap-3 whitespace-nowrap border border-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">
+              <Icon name="chat" size={15} />{x({ en: "Contact us", id: "Hubungi kami" })}
+            </a>
+          </Reveal>
+        </div>
+      </section>
 
       <KsDownloads docs={[K.doc]} title={x(K.dlTitle)} set={K.set} />
 
@@ -16609,7 +16953,7 @@ const KsCategory = ({ kind }) => {
         <div className="h-[calc(100%-132px)] overflow-y-auto px-5 pb-10 pt-7">{sidebar(true)}</div>
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-4 border-t border-line bg-bone px-5 py-4">
           <button onClick={clearAll} className="u shrink-0 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">{t("clear")}</button>
-          <Action onClick={() => setSheet(false)}>{x({ en: "Show", id: "Tampilkan" })} {results.length} {results.length === 1 ? x({ en: "product", id: "produk" }) : x({ en: "products", id: "produk" })}</Action>
+          <Action onClick={() => setSheet(false)}>{x({ en: "Show", id: "Tampilkan" })} {count(results.length)}</Action>
         </div>
       </div>
     </div>
@@ -16722,14 +17066,14 @@ const KsProduct = ({ kind, model, colour }) => {
               {(granite ? m.rows : [row]).map((r, n) => (
                 <button key={r.slug} onClick={() => pick(granite ? n : i)} aria-pressed={view === "photo" && (granite ? n === i : true)}
                   aria-label={granite ? x(r.colour) : x({ en: "Photograph", id: "Foto" })} title={granite ? x(r.colour) : x({ en: "Photograph", id: "Foto" })}
-                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-[#F4F3F0] transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "photo" && (granite ? n === i : true) ? "border-ink" : "border-line hover:border-mute")}>
+                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-[#F4F3F0] transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "photo" && (granite ? n === i : true) ? "border-accent" : "border-line hover:border-mute")}>
                   <img src={pImg(r, 0, 300)} alt="" className="no-dim h-full w-full object-contain p-2" draggable="false" />
                 </button>
               ))}
               {kit ? (
                 <button onClick={() => setView("kitchen")} aria-pressed={view === "kitchen"} data-ks-kitchen-thumb=""
                   aria-label={x({ en: "In a kitchen (visualisation)", id: "Di dapur (visualisasi)" })} title={x({ en: "In a kitchen (visualisation)", id: "Di dapur (visualisasi)" })}
-                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-concrete transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "kitchen" ? "border-ink" : "border-line hover:border-mute")}>
+                  className={"relative h-[76px] w-[96px] overflow-hidden border bg-concrete transition-colors duration-300 md:h-[88px] md:w-[112px] " + (view === "kitchen" ? "border-accent" : "border-line hover:border-mute")}>
                   <img src={kit.src} alt="" loading="lazy" className="h-full w-full object-cover" draggable="false" />
                   <span className="absolute inset-x-0 bottom-0 bg-black/55 py-1 text-center text-[9px] font-semibold uppercase tracking-[0.12em] text-white">{x({ en: "Kitchen", id: "Dapur" })}</span>
                 </button>
@@ -16743,16 +17087,31 @@ const KsProduct = ({ kind, model, colour }) => {
           <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x(K.label)}</p>
           <h1 className="mt-4 text-[38px] font-medium leading-[1.06] tracking-[-0.02em] md:text-[52px]">{m.model}</h1>
           <p className="mt-3 text-[15px] leading-[1.6] text-mute">{ksTypeName(m, lang)}{granite ? "" : " · " + m.brand}</p>
+          {/* the price as the price list gives it (stainless steel), or who to ask (granite: none was supplied); the model as printed */}
+          <div className="mt-7 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-y border-line py-5" data-ks-price-block="">
+            {ksPriced(m) ? (
+              <p>
+                <span className="block text-[26px] font-semibold tabular-nums tracking-[-0.01em]" data-ks-price={row.price}>{rp(row.price)}</span>
+                <span className="mt-1 block text-[11.5px] text-mute">{x({ en: "As listed in the Price List 2024 (14 August 2024)", id: "Sesuai Price List 2024 (14 Agustus 2024)" })}</span>
+              </p>
+            ) : (
+              <a href={"#/contact/" + row.slug} className="u text-[17px] font-medium text-ink" data-ks-price="ask">{x(KS_PRICE_ASK)}</a>
+            )}
+            <p className="text-left sm:text-right">
+              <span className="block text-[10.5px] font-semibold uppercase tracking-[0.12em] text-mute">{x({ en: "Model", id: "Model" })}</span>
+              <span className="mt-1 block text-[15px] font-medium tracking-[0.03em] text-accent" data-ks-code="">{m.model}</span>
+            </p>
+          </div>
 
-          <div className="mt-9 border-t border-line pt-7">
+          <div className="mt-8">
             <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">
               {granite ? x({ en: "Colour", id: "Warna" }) : x({ en: "Finish", id: "Finishing" })}
               <span className="ml-3 normal-case tracking-normal text-ink" data-ks-colour="">{granite ? x(row.colour) : x(m.finish.name)}</span>
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               {granite ? m.rows.map((r, n) => (
-                <button key={r.slug} onClick={() => pick(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)}
-                  className={"h-[42px] w-[42px] rounded-full border p-[4px] transition-colors duration-300 " + (n === i ? "border-ink" : "border-line hover:border-mute")}>
+                <button key={r.slug} onClick={() => pick(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)} data-ks-colour-option={r.colourId}
+                  className={"h-[44px] w-[44px] rounded-full border p-[4px] transition-colors duration-300 " + (n === i ? "border-accent" : "border-line hover:border-mute")}>
                   <span className="block h-full w-full rounded-full" style={{ background: r.finishes[0].hex, boxShadow: KS_RING }} />
                 </button>
               )) : <span className="block h-[34px] w-[34px] rounded-full" style={{ background: m.finish.hex, boxShadow: KS_RING }} />}
@@ -16770,12 +17129,25 @@ const KsProduct = ({ kind, model, colour }) => {
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <KsViewLink doc={K.doc} lang={lang} page={ksPdfPageOf(K.doc, m.model)} className="justify-center">{x({ en: "View in the catalogue", id: "Lihat di katalog" })}</KsViewLink>
             <KsPdfLink doc={K.doc} lang={lang} className="justify-center">{x({ en: "Download PDF", id: "Unduh PDF" })}</KsPdfLink>
-            <a href={"#/contact/" + row.slug} data-ks-enquire="" className={btn + "border-line text-ink hover:border-ink"}>{x({ en: "Request a quote", id: "Minta penawaran" })}</a>
+            <a href={"#/contact/" + row.slug} data-ks-enquire="" className={btn + "border-line text-ink hover:border-accent hover:text-accent"}>{x({ en: "Request a quote", id: "Minta penawaran" })}</a>
           </div>
-          <a href={"#/shop/p/" + row.slug} data-ks-shoplink="" className="group/l mt-7 inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
-            <span className="u">{x({ en: "Price and stock in the shop", id: "Harga dan stok di toko" })}</span>
-            <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
-          </a>
+          <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href={"#/shop/p/" + row.slug} data-ks-shoplink="" className="group/l inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+              <span className="u">{x({ en: "Order in the shop", id: "Pesan di toko" })}</span>
+              <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
+            </a>
+            {/* the virtual showroom, where it holds this sink: opened at it, in the colour chosen */}
+            {showroomOf(row) ? (
+              <a href={"#/virtual-showroom/" + row.slug} data-ks-showroom=""
+                className="inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors duration-300 hover:text-accent">
+                <VsTurn size={15} /><span className="u">{x({ en: "Preview in the virtual showroom", id: "Pratinjau di showroom virtual" })}</span>
+              </a>
+            ) : null}
+          </div>
+          <div className="mt-8 border-l border-accent/70 py-1 pl-5 text-[13.5px] leading-[1.7] text-mute" data-ks-ask="">
+            {x(granite ? KS_ASK_GRANITE : KS_ASK_STEEL)}{" "}
+            <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x({ en: "Contact us for details", id: "Hubungi kami untuk detail" })}</a>
+          </div>
         </div>
       </section>
 
@@ -17497,20 +17869,21 @@ const DOOR_ASK = { en: "Stock, delivery, installation, warranty and whether the 
                    id: "Stok, pengiriman, pemasangan, garansi dan apakah kusen termasuk tidak tercantum di daftar harga." };
 const DOOR_CONTACT = { en: "Contact us for details", id: "Hubungi kami untuk detail" };
 
-/* ── the controls the door pages share: a filter's tick, its options, the models as numbers, R and L ── */
-const DoorTick = ({ on }) => (
+/* ── the controls the two catalogues share (the doors and the kitchen sinks): a filter's tick, its options, the models
+   as their numbers; and the doors' R and L ── */
+const CatTick = ({ on }) => (
   <span className={"flex h-[14px] w-[14px] shrink-0 items-center justify-center border transition-colors duration-300 " + (on ? "border-accent bg-accent text-bone" : "border-line text-transparent")}>
     <Icon name="check" size={9} />
   </span>
 );
-const DoorOptions = ({ f, sel, on, counts, lang }) => (
+const CatOptions = ({ f, sel, on, counts, lang }) => (
   <div className="flex flex-col gap-3.5">
     {f.options.map((o) => {
       const active = sel.includes(o.value), n = counts[o.value] || 0;
       return (
         <button key={o.value} type="button" onClick={() => on(f.id, o.value)} disabled={!n && !active} aria-pressed={active}
           className="group flex items-center gap-3 text-left disabled:cursor-default disabled:opacity-40">
-          <DoorTick on={active} />
+          <CatTick on={active} />
           {o.hex ? <span className="h-[14px] w-[14px] shrink-0 rounded-full" style={{ background: o.hex, boxShadow: KS_RING }} /> : null}
           <span className={"text-[12px] font-medium uppercase tracking-[0.07em] transition-colors duration-300 " + (active ? "text-ink" : "text-mute group-hover:text-ink")}>{tx(o.label, lang)}</span>
           <span className="ml-auto text-[11px] tabular-nums text-mute">{n}</span>
@@ -17519,13 +17892,13 @@ const DoorOptions = ({ f, sel, on, counts, lang }) => (
     })}
   </div>
 );
-const DoorModelChips = ({ f, sel, on, counts }) => (
-  <div className="grid grid-cols-3 gap-2">
+const CatModelChips = ({ f, sel, on, counts, cols = 3 }) => (
+  <div className={"grid gap-2 " + (cols === 2 ? "grid-cols-2" : "grid-cols-3")}>
     {f.options.map((o) => {
       const active = sel.includes(o.value), n = counts[o.value] || 0;
       return (
         <button key={o.value} type="button" onClick={() => on(f.id, o.value)} disabled={!n && !active} aria-pressed={active} title={o.full} aria-label={o.full}
-          data-door-model-pick={o.value}
+          data-model-pick={o.value}
           className={"h-9 whitespace-nowrap border px-1 text-[11px] font-medium tabular-nums tracking-[0.03em] transition-colors duration-300 disabled:cursor-default disabled:opacity-35 " +
             (active ? "border-accent bg-accent/10 text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{o.label.en}</button>
       );
@@ -17547,16 +17920,22 @@ const DoorHandPick = ({ hand, onHand, count }) => {
   );
 };
 
-/* ── a door's picture, and what stands in for it when it cannot be shown: the door's outline on the plate,
-   said in words — never a blank ── */
-const DoorNoPhoto = ({ label, small = false, className = "" }) => {
+/* ── a product's picture, and what stands in for it when it cannot be shown: its outline on the plate (a door's, or a
+   sink's seen from above), said in words — never a blank ── */
+const CatNoPhoto = ({ label, small = false, className = "", shape = "door" }) => {
   const { x } = useStore();
   return (
     <div role="img" aria-label={(label ? label + " — " : "") + x({ en: "photo not available", id: "foto tidak tersedia" })} data-door-nophoto=""
       className={"flex flex-col items-center justify-center gap-3 px-3 text-center text-[#6B6864] " + className} style={{ background: PLATE }}>
-      <svg viewBox="0 0 72 202" className={(small ? "h-[46%]" : "h-[36%]") + " w-auto"} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-        <rect x="1" y="1" width="70" height="200" /><rect x="8" y="8" width="56" height="186" strokeOpacity=".45" /><path d="M58 96v12" strokeLinecap="round" />
-      </svg>
+      {shape === "sink" ? (
+        <svg viewBox="0 0 162 92" className={(small ? "w-[62%]" : "w-[46%]") + " h-auto"} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <rect x="1" y="1" width="160" height="90" rx="4" /><rect x="14" y="12" width="134" height="68" rx="9" strokeOpacity=".5" /><circle cx="81" cy="46" r="6" strokeOpacity=".7" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 72 202" className={(small ? "h-[46%]" : "h-[36%]") + " w-auto"} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <rect x="1" y="1" width="70" height="200" /><rect x="8" y="8" width="56" height="186" strokeOpacity=".45" /><path d="M58 96v12" strokeLinecap="round" />
+        </svg>
+      )}
       {small ? null : (
         <span className="block">
           <span className="block text-[10px] font-semibold uppercase tracking-[0.12em]">{x({ en: "Photo not available", id: "Foto tidak tersedia" })}</span>
@@ -17566,12 +17945,12 @@ const DoorNoPhoto = ({ label, small = false, className = "" }) => {
     </div>
   );
 };
-const DoorImg = ({ src, alt, className = "", eager = false, priority = false, small = false }) => {
+const CatImg = ({ src, alt, className = "", eager = false, priority = false, small = false, shape = "door", w = 800, h = 1000 }) => {
   const [failed, setFailed] = useState(!src);
   const [was, setWas] = useState(src);
   if (was !== src) { setWas(src); setFailed(!src); }
-  if (failed) return <DoorNoPhoto label={alt} small={small} className={className} />;
-  return <img src={src} alt={alt} width="800" height="1000" loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={priority ? "high" : undefined}
+  if (failed) return <CatNoPhoto label={alt} small={small} className={className} shape={shape} />;
+  return <img src={src} alt={alt} width={w} height={h} loading={eager ? "eager" : "lazy"} decoding="async" fetchpriority={priority ? "high" : undefined}
     onError={() => setFailed(true)} className={"no-dim " + className} draggable="false" />;
 };
 
@@ -17596,7 +17975,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
     <article className="group/card flex h-full flex-col" data-door-card={g.key} data-door-in={doorSectionOf(g).id}>
       <a href={href} className="block" aria-label={g.name + ", " + x(row.colour) + ", " + sel.id + " — " + x({ en: "view details", id: "lihat detail" })}>
         <div className="relative aspect-[3/5] w-full overflow-hidden" style={{ background: PLATE }}>
-          <DoorImg src={pImg(row, 0)} alt={doorAlt(row, 0, lang)} eager={eager}
+          <CatImg src={pImg(row, 0)} alt={doorAlt(row, 0, lang)} eager={eager}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-quiet group-hover/card:scale-[1.035]" />
         </div>
       </a>
@@ -17784,7 +18163,7 @@ const DoorLineup = ({ colour, onColour, onSection }) => {
                       <a key={g.key} href={doorHref(r)} data-door-lineup-door={g.key}
                         className="group/d relative block w-[58px] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8A6A3E] md:w-auto md:min-w-0 md:flex-1">
                         <span className="relative block aspect-[1/2] overflow-hidden">
-                          <DoorImg src={pImg(r, 0)} alt={doorAlt(r, 0, lang)} small
+                          <CatImg src={pImg(r, 0)} alt={doorAlt(r, 0, lang)} small
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-quiet group-hover/d:scale-[1.06]" />
                         </span>
                       </a>
@@ -17947,8 +18326,8 @@ const DoorsPage = () => {
       {DOOR_FILTERS.map((f) => (
         <div key={f.id} className="border-b border-line pb-7 pt-1 [&+&]:pt-7" data-door-filter={f.id}>
           <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{tx(f.label, lang)}</p>
-          {f.chips ? <DoorModelChips f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} />
-                   : <DoorOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />}
+          {f.chips ? <CatModelChips f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} />
+                   : <CatOptions f={f} sel={sel[f.id] || []} on={on} counts={counts[f.id]} lang={lang} />}
           {f.id === "list" ? <p className="mt-4 text-[12px] leading-[1.6] text-mute">{x({ en: "PT 2601 and PT 2602: the bars between the panes.", id: "PT 2601 dan PT 2602: bilah di antara kaca." })}</p> : null}
         </div>
       ))}
@@ -18261,7 +18640,7 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               </>
             ) : (
               <>
-                <DoorImg key={row.slug + v.n} src={pImg(row, v.n)} alt={doorAlt(row, v.n, lang)} eager priority
+                <CatImg key={row.slug + v.n} src={pImg(row, v.n)} alt={doorAlt(row, v.n, lang)} eager priority
                   className="absolute inset-0 h-full w-full object-contain transition-transform duration-[1400ms] ease-quiet group-hover:scale-[1.03]" />
                 <span className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-black/10 bg-white/80 text-[#1A1A1A] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
                   <Icon name="plus" size={15} />
@@ -18276,7 +18655,7 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
                   className={"relative h-[96px] w-[78px] overflow-hidden border transition-colors duration-300 " + (vv.kind === "vis" ? "bg-concrete " : "") + (k === view ? "border-accent" : "border-line hover:border-mute")}
                   style={vv.kind === "vis" ? undefined : { background: PLATE }}>
                   {vv.kind === "vis" ? <img src={vv.src} alt="" loading="lazy" decoding="async" className="no-dim h-full w-full object-cover" draggable="false" />
-                    : <DoorImg src={pImg(row, vv.n)} alt="" small className="h-full w-full object-contain" />}
+                    : <CatImg src={pImg(row, vv.n)} alt="" small className="h-full w-full object-contain" />}
                 </button>
               ))}
             </div>
@@ -18295,7 +18674,7 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
                   <button key={r.slug} type="button" onClick={() => pickVariant(r)} aria-pressed={onIt} data-door-variant={r.slug} aria-label={x(r.colour) + " — " + code}
                     className="group/v flex min-w-0 items-center gap-4 border-b border-line py-2.5 text-left first:border-t sm:block sm:w-[112px] sm:border-0 sm:py-0">
                     <span className={"relative block aspect-[4/5] w-[52px] shrink-0 overflow-hidden border transition-colors duration-300 sm:w-full " + (onIt ? "border-accent" : "border-line group-hover/v:border-mute")} style={{ background: PLATE }}>
-                      <DoorImg src={pImg(r, 0)} alt="" small className="absolute inset-0 h-full w-full object-cover" />
+                      <CatImg src={pImg(r, 0)} alt="" small className="absolute inset-0 h-full w-full object-cover" />
                     </span>
                     <span className="block min-w-0">
                       <span className={"block text-[12.5px] font-medium leading-[1.35] sm:mt-2.5 sm:text-[11px] " + (onIt ? "text-ink" : "text-mute")}>{x(r.colour)}</span>
@@ -18762,16 +19141,18 @@ const Shell = () => {
   const route = useRoute();
   /* the door pages are set on their own palette in the dark theme ([data-doors], in the stylesheet) */
   const doorsHere = route.side === "shop" && (route.name === "doors" || (route.name === "product" && !!(bySlug(route.slug) || {}).hands));
+  const sinksHere = route.side === "shop" && route.name === "kitchenSinks";
   useEffect(() => {
     const root = document.documentElement;
     if (doorsHere) root.setAttribute("data-doors-page", ""); else root.removeAttribute("data-doors-page");
-  }, [doorsHere]);
+    if (sinksHere) root.setAttribute("data-sinks-page", ""); else root.removeAttribute("data-sinks-page");
+  }, [doorsHere, sinksHere]);
   if (route.name === "ksPrint") return <KsPrint doc={route.doc} lang={route.lang} page={route.page} />;
   const shop = route.side === "shop";
   const flush = !shop && (route.name === "home" || route.name === "catalogue");   // the brand hero, and the catalogue's stage, run under the bar
   const lux = !shop && route.name === "home";   // the home page is set on charcoal in both themes ([data-lux], .lx-* in the stylesheet)
   return (
-    <div data-side={route.side} data-lux={lux ? "" : undefined} data-doors={doorsHere ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
+    <div data-side={route.side} data-lux={lux ? "" : undefined} data-doors={doorsHere ? "" : undefined} data-sinks={sinksHere ? "" : undefined} className="min-h-screen bg-bone font-sans font-normal text-ink antialiased">
       <SkipLink />
       <SiteHeader />
       {/* The dip that covers a change of language runs on the page and on

@@ -950,6 +950,50 @@
   .vs-choose .vs-num { color: rgb(var(--mute)); }
   .vs-buy .vs-3d-go { margin-top: 0; }
 
+  /* ── the Wellup Door Hall in the room: the door's code where a product's stock is; the views of the door, four abreast;
+     the list's door cards as tall as a door is ── */
+  .vs-code { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.11em; text-transform: uppercase; color: rgb(var(--mute)); }
+  .vs-code b { font-size: 14px; font-weight: 500; letter-spacing: 0.03em; text-transform: none; font-variant-numeric: tabular-nums; color: rgb(var(--accent)); }
+  .vs-door-views { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; margin-top: 12px; }
+  .vs-door-views button { padding: 0 6px; }
+  .vs-door .vs-choose { margin-top: 14px; }
+  .vs-door-note p + p { margin-top: 8px; }
+  .vs-dcard .vs-card-img { aspect-ratio: 4 / 5; }
+
+  /* ── the Wellup Door Hall on the page (#vs-doors) ──
+     The door's photograph, cut to the door and its frame, in a doorway drawn round it in the room's own palette: an end
+     wall of honed travertine lit from in front by two warm display lights and turning into shadow at either side, a line
+     of warm light where it meets the ceiling, the cut lined in dark bronze, and the dark stone floor mirroring the foot
+     of the door. Set on the doors' warm charcoal (.dcat), in either theme. */
+  .vsd-scene, .vsd-photo { position: relative; overflow: hidden; aspect-ratio: 4 / 5; }
+  @media (min-width: 1024px) { .vsd-scene, .vsd-photo { aspect-ratio: 1 / 1.04; } }
+  .vsd-scene { isolation: isolate; background: #6c6051; }
+  .vsd-wall { position: absolute; left: 0; right: 0; top: 0; bottom: 12%;
+    background:
+      radial-gradient(30% 30% at 41% 3%, rgb(255 232 200 / 0.32), transparent 72%),
+      radial-gradient(30% 30% at 59% 3%, rgb(255 232 200 / 0.32), transparent 72%),
+      radial-gradient(58% 48% at 50% 64%, rgb(255 238 214 / 0.14), transparent 74%),
+      linear-gradient(90deg, rgb(20 18 16 / 0.72), rgb(20 18 16 / 0) 22%, rgb(20 18 16 / 0) 78%, rgb(20 18 16 / 0.72)),
+      repeating-linear-gradient(180deg, rgb(255 246 232 / 0.045) 0 1px, transparent 1px 12px, rgb(70 56 40 / 0.06) 12px 14px, transparent 14px 33px),
+      linear-gradient(180deg, #a09380 0%, #8a7d6a 58%, #75695a 100%); }
+  .vsd-slot { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: rgb(255 216 164 / 0.9); box-shadow: 0 0 26px 8px rgb(255 198 134 / 0.26); }
+  .vsd-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 12%; background: linear-gradient(180deg, #2b2824, #161412); }
+  .vsd-floor::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: linear-gradient(180deg, rgb(0 0 0 / 0.45), transparent); }
+  .vsd-way, .vsd-mirror { position: absolute; left: 50%; height: 68%; aspect-ratio: var(--a, 0.45); }
+  .vsd-way { bottom: 12%; transform: translateX(-50%); box-shadow: 0 0 0 3px #8a6846, 0 0 0 4px rgb(0 0 0 / 0.35), 0 22px 44px -10px rgb(0 0 0 / 0.55); }
+  .vsd-mirror { top: 88%; transform: translateX(-50%) scaleY(-1); opacity: 0.17; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, #000, transparent 26%); mask-image: linear-gradient(to top, #000, transparent 26%); }
+  .vsd-door { position: absolute; inset: 0; overflow: hidden; background: #F4F3F0; }
+  .vsd-door img { position: absolute; max-width: none; -webkit-user-select: none; user-select: none; }
+  .vsd-badge { position: absolute; left: 14px; top: 14px; padding: 7px 11px; border: 1px solid rgb(var(--accent) / 0.6); background: rgb(23 21 19 / 0.76);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--ink)); }
+  .vsd-views { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .vsd-views button { height: 40px; padding: 0 14px; border: 1px solid rgb(var(--line)); font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgb(var(--mute)); transition: border-color 0.3s, color 0.3s; }
+  .vsd-views button:hover { color: rgb(var(--ink)); border-color: rgb(var(--mute)); }
+  .vsd-views button[aria-pressed="true"] { color: rgb(var(--ink)); border-color: rgb(var(--accent)); }
+
   /* the markers over what can be chosen: a fine ring and a cross, its name and price beside it on the way past */
   .vs-spots { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; transition: opacity 0.4s var(--vs-ease), visibility 0s; }
   .vs-stage[data-immersive="false"] .vs-spots, .vs-stage[data-inspect="true"] .vs-spots, .vs-stage[data-panel="open"] .vs-spots,
@@ -2143,14 +2187,15 @@
      piece of a group with no places — a sink that waits its turn on an
      island — is not in the room until it is chosen.                    */
   const PLACES = {
-    /* the lobby: two on the left wall, four on the partition either side of the opening */
+    /* the lobby: one on the left wall (the rest of it opens into the Door Hall), four on the partition either side of
+       the opening, one on the right wall between the way into the stainless room and the partition */
     lobby: [
       { kind: "wall", side: -1, z: -1.3, y: 1.55, w: 0.72, h: 0.72 },
-      { kind: "wall", side: -1, z: -3.3, y: 1.55, w: 0.72, h: 0.72 },
       { kind: "front", x: -5.0, z: LP + 0.15, y: 1.55, w: 0.72, h: 0.72 },
       { kind: "front", x: -2.95, z: LP + 0.15, y: 1.55, w: 0.72, h: 0.72 },
       { kind: "front", x: 2.95, z: LP + 0.15, y: 1.55, w: 0.72, h: 0.72 },
       { kind: "front", x: 5.0, z: LP + 0.15, y: 1.55, w: 0.72, h: 0.72 },
+      { kind: "wall", side: 1, z: -3.78, y: 1.55, w: 0.72, h: 0.72 },
     ],
     /* each kitchen's installation: its island, and the sink on it */
     hero:     [{ kind: "station", isle: 0 }],
@@ -2163,6 +2208,8 @@
     ],
     shower:   [{ kind: "niche", z: -18.15, y: 1.5, w: 0.6, h: 0.6 }],
     steelHero: [{ kind: "station", isle: 1 }],
+    /* the Door Hall's installation: the doorway in its end wall, and the door chosen standing in it */
+    door: [{ kind: "doorway" }],
   };
 
   /* The island is lit as a set of its own (2): the lights of the granite
@@ -2244,7 +2291,12 @@
         b.box(T.strip, cx0, CH - e, cz0, cx1, CH, cz0 + e, { skip: "+y-z" }); b.box(T.strip, cx0, CH - e, cz1 - e, cx1, CH, cz1, { skip: "+y+z" });
         b.box(T.strip, cx0, CH - e, cz0 + e, cx0 + e, CH, cz1 - e, { skip: "+y-x" }); b.box(T.strip, cx1 - e, CH - e, cz0 + e, cx1, CH, cz1 - e, { skip: "+y+x" });
       }
-      b.box("plaster", -W - 0.25, 0, z0, -W, H, z1, { skip: "-x+y-y+z-z" });
+      if (zone === LOBBY && o.hall) {
+        /* the lobby's left-hand wall, round the opening into the Door Hall */
+        b.box("plaster", -W - 0.25, 0, z0, -W, H, DOP0 - 0.012, { skip: "-x+y-y+z-z" });
+        b.box("plaster", -W - 0.25, 0, DOP1 + 0.012, -W, H, z1, { skip: "-x+y-y+z-z" });
+        b.box("plaster", -W - 0.25, LINTEL, DOP0 - 0.012, -W, H, DOP1 + 0.012, { skip: "-x+y-y+z-z" });
+      } else b.box("plaster", -W - 0.25, 0, z0, -W, H, z1, { skip: "-x+y-y+z-z" });
       if (zone === LOBBY && o.wing) {
         /* the lobby's right-hand wall, round the opening into the Stainless Steel Kitchen Sink room */
         b.box("plaster", W, 0, z0, W + 0.25, H, GOP0 - 0.012, { skip: "+x+y-y+z-z" });
@@ -2258,7 +2310,8 @@
         b.box(zone === 0 ? T.strip : "emit", Math.min(xa, xb), H - 0.003, z0, Math.max(xa, xb), H, z1, { skip: "+y" });
         washes.push({ a: [s * (W - 0.04), H - 0.01, z0], b: [s * (W - 0.04), H - 0.01, z1], color: zone === 0 ? T.light : WARM, power: zone === 0 ? 1.25 * T.power : 1, zone, zones: zone === 0 ? NEAR_ISLAND : null });
       }
-      decals.push({ kind: "foot", axis: "x", at: -W, a: z0, b: z1, dir: 1 });
+      if (zone === LOBBY && o.hall) decals.push({ kind: "foot", axis: "x", at: -W, a: z0, b: DOP0 - 0.012, dir: 1 }, { kind: "foot", axis: "x", at: -W, a: DOP1 + 0.012, b: z1, dir: 1 });
+      else decals.push({ kind: "foot", axis: "x", at: -W, a: z0, b: z1, dir: 1 });
       if (zone === LOBBY && o.wing) decals.push({ kind: "foot", axis: "x", at: W, a: z0, b: GOP0 - 0.012, dir: -1 }, { kind: "foot", axis: "x", at: W, a: GOP1 + 0.012, b: z1, dir: -1 });
       else decals.push({ kind: "foot", axis: "x", at: W, a: z0, b: z1, dir: -1 });
     }
@@ -2274,7 +2327,9 @@
     b.box("emit", -W, H - 0.003, -D + 0.02, W, H, -D + 0.05, { skip: "+y" });
     washes.push({ a: [-W, H - 0.01, -D + 0.04], b: [W, H - 0.01, -D + 0.04], color: WARM, power: 1, zone: 1 });
     decals.push({ kind: "foot", axis: "z", at: -D, a: -W, b: W, dir: 1 });
-    solid(-W - 1, -D - 1, -W, 1); solid(-W, -D - 1, W, -D); solid(-W, 0, W, 1);
+    if (o.hall) { solid(-W - 0.25, -D - 1, -W, DOP0 - 0.012); solid(-W - 0.25, DOP1 + 0.012, -W, 1); solid(-W - 0.25, DOP0, -W, DOP1, H, LINTEL); }
+    else solid(-W - 1, -D - 1, -W, 1);
+    solid(-W, -D - 1, W, -D); solid(-W, 0, W, 1);
     if (o.wing) { solid(W, -D - 1, W + 0.25, GOP0 - 0.012); solid(W, GOP1 + 0.012, W + 0.25, 1); solid(W, GOP0, W + 0.25, GOP1, H, LINTEL); }
     else solid(W, -D - 1, W + 1, 1);
 
@@ -2381,7 +2436,10 @@
     /* the Stainless Steel Kitchen Sink room, through the lobby's right-hand wall */
     const wing = o.wing ? buildWing(b, ctx, o.wing) : null;
     if (wing) Object.assign(envs, wing.envs);
-    return { colliders, lights, washes, decals, glows, envs, spot, can, shade, solid, wing, islands: [KI, wing ? wing.island : null] };
+    /* the Wellup Door Hall, through the lobby's left-hand wall */
+    const hall = o.hall ? buildHall(b, ctx, o.hall) : null;
+    if (hall) Object.assign(envs, hall.envs);
+    return { colliders, lights, washes, decals, glows, envs, spot, can, shade, solid, wing, hall, islands: [KI, wing ? wing.island : null] };
   };
 
   /* where a print hangs, how it is framed, the light aimed at it, and where to stand to see it */
@@ -2408,6 +2466,21 @@
      A kitchen's island: its nameplate, and its pendant's light. Returns
      what the walk needs to find it, highlight it and stand in front of it. */
   const buildExhibit = (b, room, pl, i, o = {}) => {
+    if (pl.kind === "doorway") {
+      /* the Door Hall's installation: the door chosen — its photograph standing in the doorway — and its nameplate */
+      const d = room.hall && room.hall.door;
+      if (!d) return null;
+      b.zone = HALL;
+      const r = [0, 0, -1], u = [0, 1, 0], n = [1, 0, 0], lw = 0.44, lh = lw / 5.33;
+      b.panel("print:" + i, d.c, r, u, d.w, d.h);
+      b.slab("dark", add(d.plaque, [0.008, 0, 0]), r, u, lw + 0.016, lh + 0.012, 0.008);
+      b.panel("label:" + i, add(d.plaque, [0.0092, 0, 0]), r, u, lw, lh);
+      b.zone = 0;
+      const c = d.c.slice();
+      return { index: i, place: pl, c, n, w: d.w, h: d.h, light: d.light, sinkLight: -1, door: true,
+        pick: { c, r, u, n, hw: d.w / 2 + 0.05, up: d.h / 2 + 0.05, down: d.h / 2 },
+        view: { pos: [c[0] + 2.7, EYE, c[2]], at: [c[0], 1.1, c[2]] }, zone: HALL, anchor: [c[0] + 0.06, d.h - 0.32, c[2]] };
+    }
     if (pl.kind === "station") {
       /* a kitchen's installation: its nameplate on the island's cabinet, below the stone, read as you walk up; and
          the pendant's light twice over — round the island for the room, and in display white aimed into the sink,
@@ -2469,6 +2542,27 @@
   /* its light sets: the room itself, and the island */
   const WING = 5, WISL = 6, NEAR_WISL = [WING, WISL];
   const inWing = (x) => x > W + 0.12;
+
+  /* ── the Wellup Door Hall ─────────────────────────────────────────────────
+     A room of its own, through an opening in the lobby's left-hand wall — as the stainless room is through its right.
+     Plan, in metres (the lobby's left wall is x = −7):
+       x −7.25 → −13.65   the hall, 6.4 m long, looking in from the opening
+       z −5.6 → −0.4      5.2 m across; the opening at z −4.0 → −2.0, straight across from the door
+     An entrance hall in the house's own palette — charcoal plaster, the dark stone floor, a line of warm light where
+     each wall meets the ceiling — and at its end a wall of honed travertine with a doorway cut in it, lined in bronze,
+     the door chosen standing in it: the door's own product photograph, the door and its frame as photographed, at the
+     door's listed height of 200 cm — a visual preview, not a 3D model. The stone is honed and toned down (travertineD), so
+     the door is the brightest thing on the wall; display light, whiter than the room's, falls on it in two pools from in
+     front, so a white door reads white and a brown one brown. A walnut bench on the left, a low walnut console with
+     stoneware on the right, an olive tree by the door.                                                          */
+  const DX0 = -W - 0.25, DX1 = DX0 - 6.4, DZ0 = -5.6, DZ1 = -0.4, DOP0 = -4.0, DOP1 = -2.0, DZC = (DOP0 + DOP1) / 2;
+  /* its light set */
+  const HALL = 7;
+  const inHall = (x) => x < -W - 0.12;
+  /* the door's photograph stands on the floor as tall as the door is listed, as wide as the photograph makes it at that
+     height; the travertine (CLAD thick) is cut round it and the cut lined in bronze (REV wide) */
+  const DOOR_H = 2.0, CLAD = 0.05, REV = 0.014;
+  const doorWidth = (aspect) => DOOR_H * clamp(aspect || 0.44, 0.3, 0.6);
 
   /* ── an island: a 900 mm sink base under a slab of stone, in its room's preset `I.theme`, drawn in its room's
      own language (`I.style`):
@@ -2643,6 +2737,79 @@
     const island = buildIsland(b, ctx, { cx: GXC, cz: GZC, turn: true, style: "steel", sink: o.island ? o.island.sink : null, display: o.island ? o.island.display : "photo",
       zone: WISL, gzone: WING, frontPower: (o.island && o.island.frontPower) || 6, theme: T, color: T.key });
     return { island, envs: { [WING]: { warm: T.warm }, [WISL]: { warm: T.warm } } };
+  };
+
+  /* ── the Door Hall: its shell, its light, its furniture, and the doorway the door chosen stands in ── */
+  const buildHall = (b, ctx, o) => {
+    const { solid, point, washes, decals, shade, downlight } = ctx;
+    const dw = doorWidth(o.aspect), dz0 = DZC - dw / 2, dz1 = DZC + dw / 2, XC = DX1 + CLAD;
+    b.zone = HALL;
+    /* floor (and the threshold through the wall), ceiling */
+    b.face("floor", [DX1, 0, DZ1], [DX0, 0, DZ1], [DX0, 0, DZ0], [DX1, 0, DZ0], [0, 1, 0], (p) => [p[0] / 1.2, p[2] / 1.2]);
+    b.face("floor", [DX0, 0, DOP1], [-W, 0, DOP1], [-W, 0, DOP0], [DX0, 0, DOP0], [0, 1, 0], (p) => [p[0] / 1.2, p[2] / 1.2]);
+    b.face("ceiling", [DX1, H, DZ0], [DX0, H, DZ0], [DX0, H, DZ1], [DX1, H, DZ1], [0, -1, 0], (p) => [p[0] / 3, p[2] / 3]);
+    /* the two long walls, each with its slot of warm light where it meets the ceiling */
+    for (const [z, dir] of [[DZ0, 1], [DZ1, -1]]) {
+      const outer = z - dir * 0.25;
+      b.box("plaster", DX1, 0, Math.min(z, outer), DX0, H, Math.max(z, outer), { skip: dir > 0 ? "-z+y-y-x+x" : "+z+y-y-x+x" });
+      const za = z + dir * 0.02, zb = z + dir * 0.05;
+      b.box("emit", DX1, H - 0.003, Math.min(za, zb), DX0, H, Math.max(za, zb), { skip: "+y" });
+      washes.push({ a: [DX1, H - 0.01, z + dir * 0.04], b: [DX0, H - 0.01, z + dir * 0.04], color: WARM, power: 1, zone: HALL, zones: [HALL] });
+      decals.push({ kind: "foot", axis: "z", at: z, a: DX1, b: DX0, dir });
+    }
+    /* the lobby's side, round the opening, which is lined in bronze through the wall */
+    b.box("plaster", DX0, 0, DZ0, -W, H, DOP0 - 0.012, { skip: "+x+y-y+z-z" });
+    b.box("plaster", DX0, 0, DOP1 + 0.012, -W, H, DZ1, { skip: "+x+y-y+z-z" });
+    b.box("plaster", DX0, LINTEL, DOP0 - 0.012, -W, H, DOP1 + 0.012, { skip: "+x+y-y+z-z" });
+    b.box("emit", DX0 - 0.05, H - 0.003, DZ0, DX0 - 0.02, H, DZ1, { skip: "+y" });
+    washes.push({ a: [DX0 - 0.04, H - 0.01, DZ0], b: [DX0 - 0.04, H - 0.01, DZ1], color: WARM, power: 0.7, zone: HALL, zones: [HALL] });
+    decals.push({ kind: "foot", axis: "x", at: DX0, a: DZ0, b: DOP0 - 0.012, dir: -1 }, { kind: "foot", axis: "x", at: DX0, a: DOP1 + 0.012, b: DZ1, dir: -1 });
+    b.box("brass", DX0, 0, DOP0 - 0.012, -W, LINTEL, DOP0, { skip: "-z-y" });
+    b.box("brass", DX0, 0, DOP1, -W, LINTEL, DOP1 + 0.012, { skip: "+z-y" });
+    b.box("brass", DX0, LINTEL - 0.012, DOP0 - 0.012, -W, LINTEL, DOP1 + 0.012, { skip: "+y" });
+    /* the end wall: honed travertine floor to ceiling, the doorway cut in it and lined in bronze, a bronze threshold */
+    b.box("plaster", DX1 - 0.25, 0, DZ0, DX1, H, DZ1, { skip: "-x+y-y+z-z" });
+    b.box("travertineD", DX1, 0, DZ0, XC, H, dz0 - REV, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
+    b.box("travertineD", DX1, 0, dz1 + REV, XC, H, DZ1, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
+    b.box("travertineD", DX1, DOOR_H + REV, dz0 - REV, XC, H, dz1 + REV, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
+    b.box("bronze", DX1, 0, dz0 - REV, XC + 0.003, DOOR_H, dz0, { skip: "-x-y+y-z" });
+    b.box("bronze", DX1, 0, dz1, XC + 0.003, DOOR_H, dz1 + REV, { skip: "-x-y+y+z" });
+    b.box("bronze", DX1, DOOR_H, dz0 - REV, XC + 0.003, DOOR_H + REV, dz1 + REV, { skip: "-x+y-z+z" });
+    b.box("bronze", DX1, 0, dz0, XC + 0.03, 0.006, dz1, { skip: "-x-y" });
+    b.box("emit", XC + 0.02, H - 0.003, DZ0, XC + 0.05, H, DZ1, { skip: "+y" });
+    washes.push({ a: [XC + 0.04, H - 0.01, DZ0], b: [XC + 0.04, H - 0.01, DZ1], color: DISPLAY, power: 0.5, zone: HALL, zones: [HALL] });
+    decals.push({ kind: "foot", axis: "x", at: XC, a: DZ0, b: dz0 - REV, dir: 1 }, { kind: "foot", axis: "x", at: XC, a: dz1 + REV, b: DZ1, dir: 1 });
+    /* light: two cans down the middle of the hall; display light on the door, from in front of it, either side */
+    downlight([DX0 - 1.6, H, DZC], [DX0 - 1.6, 0, DZC], 4.5, 48, 22, 6, [HALL]);
+    downlight([DX0 - 3.7, H, DZC], [DX0 - 3.7, 0, DZC], 4.5, 48, 22, 6, [HALL]);
+    const doorLight = downlight([XC + 1.35, H, DZC + 0.5], [XC, 1.0, DZC + 0.08], 7.5, 26, 15, 7, [HALL], DISPLAY, "emitN");
+    downlight([XC + 1.35, H, DZC - 0.5], [XC, 1.0, DZC - 0.08], 7.5, 26, 15, 7, [HALL], DISPLAY, "emitN");
+    point([DX0 - 3.0, 2.9, DZC], WARM, 0.6, 7, [HALL]);
+    /* on the left as you come in, a walnut bench on a recessed plinth, under its own light */
+    const BX0 = DX0 - 3.4, BX1 = DX0 - 1.7, BZ0 = DZ1 - 0.42;
+    b.box("dark", BX0 + 0.06, 0, BZ0 + 0.05, BX1 - 0.06, 0.07, DZ1 - 0.04, { skip: "-y" });
+    b.box("walnut", BX0, 0.07, BZ0, BX1, 0.45, DZ1 - 0.012, { skip: "-y+z", off: [0.3, 0.2] });
+    solid(BX0, BZ0, BX1, DZ1, 0.45);
+    shade(BX0 - 0.12, BZ0 - 0.18, BX1 + 0.12, DZ1, 0.55);
+    downlight([(BX0 + BX1) / 2, H, DZ1 - 0.6], [(BX0 + BX1) / 2, 0.45, DZ1 - 0.25], 3.5, 44, 22, 5, [HALL]);
+    /* on the right, a low walnut console with stoneware on it, under its own light */
+    const CXC = DX0 - 4.1;
+    credenza(b, ctx, placer(b, CXC, DZ0, 0), 1.5, { depth: 0.4, h: 0.7, body: "walnut" });
+    vase(b, "stoneware", CXC - 0.35, 0.7, DZ0 + 0.2, "vessel", 0.82);
+    vase(b, "basalt", CXC + 0.32, 0.7, DZ0 + 0.21, "round", 1.0);
+    downlight([CXC, H, DZ0 + 0.6], [CXC, 0.7, DZ0 + 0.25], 3.5, 44, 22, 5, [HALL]);
+    /* an olive tree in the corner by the door */
+    plant(b, ctx, XC + 0.62, DZ1 - 0.64, "tree", { seed: 37, pot: "basalt", h: 1.95 });
+    /* the room's name over the opening on the lobby's side; the way back over it on this side */
+    b.zone = LOBBY;
+    b.panel("sign:4", [-W + 0.003, 3.08, DZC], [0, 0, -1], [0, 1, 0], 2.4, 0.3);
+    b.zone = HALL;
+    b.panel("sign:3", [DX0 - 0.003, 3.08, DZC], [0, 0, 1], [0, 1, 0], 2.4, 0.3);
+    solid(DX1 - 1, DZ0 - 1, DX0, DZ0); solid(DX1 - 1, DZ1, DX0, DZ1 + 1); solid(DX1 - 1, DZ0, XC, DZ1);
+    /* where the door stands (its photograph just in front of the wall behind the stone, in the cut), and its nameplate
+       on the stone beside it, to the right as you face it */
+    return { door: { c: [DX1 + 0.004, DOOR_H / 2, DZC], w: dw, h: DOOR_H, light: doorLight, plaque: [XC + 0.001, 1.3, dz0 - REV - 0.42] },
+             envs: { [HALL]: { warm: [0.068, 0.058, 0.046] } } };
   };
 
   /* ── furnishing ──────────────────────────────────────────────────────────
@@ -4765,7 +4932,7 @@
 
   /* texture repeats per metre for each surface */
   const K = { plaster: 0.4, walnut: 1.0, marble: 0.6, brass: 2.0, tile: 1 / 1.2, dark: 1, emit: 1, glass: 1, mirror: 1, ceramic: 1, charcoal: 1.6,
-    oak: 1.0, walnutK: 1.0, graphite: 0.8, pietra: 0.55, travertine: 0.55, inox: 2.0, stoneware: 3, basalt: 3, fabric: 2.5,
+    oak: 1.0, walnutK: 1.0, graphite: 0.8, pietra: 0.55, travertine: 0.55, travertineD: 0.55, inox: 2.0, stoneware: 3, basalt: 3, fabric: 2.5,
     smokedOak: 1.0, nero: 0.5, greyStone: 0.5, greyStoneLight: 0.5, microcement: 0.32, ceilingS: 0.32, ribbed: 0.32, bronze: 2.0, champagne: 2.0, boucle: 2.5 };
 
   const MAT = {
@@ -4777,6 +4944,8 @@
     pietra:  { tex: "pietra", rough: 0.16, spec: 1 },
     nero:    { tex: "nero", rough: 0.14, spec: 1 },
     travertine: { tex: "travertine", rough: 0.42, spec: 0.75 },
+    /* the Door Hall's end wall: the same stone, honed, in the hall's lower light */
+    travertineD: { tex: "travertine", color: [0.56, 0.57, 0.6], rough: 0.52, spec: 0.55 },
     /* honed grey stone: a soft sheen, not a polish */
     greyStone: { tex: "greyStone", rough: 0.38, spec: 0.7 },
     greyStoneLight: { tex: "greyStoneLight", rough: 0.38, spec: 0.7 },
@@ -5871,8 +6040,10 @@ void main() {}`;
     sanitary: { pos: [0, EYE, -14.4], yaw: 0, pitch: -0.05 },
     /* just inside the stainless room, looking down it: the island ahead, the far run beyond */
     stainless: { pos: [GX0 + 1.2, EYE, GZC], yaw: -Math.PI / 2, pitch: -0.1 },
+    /* just inside the Door Hall, the door ahead at the end of it */
+    doors: { pos: [DX0 - 2.1, EYE, DZC], yaw: Math.PI / 2, pitch: -0.07 },
   };
-  const zoneName = (p) => (inWing(p[0]) ? "stainless" : p[2] > LP ? "entrance" : p[2] >= PART ? "kitchen" : "sanitary");
+  const zoneName = (p) => (inHall(p[0]) ? "doors" : inWing(p[0]) ? "stainless" : p[2] > LP ? "entrance" : p[2] >= PART ? "kitchen" : "sanitary");
   const angleTo = (from, to) => { let d = to - from; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -5942,6 +6113,22 @@ void main() {}`;
     if (ex.sub) {
       if ("letterSpacing" in x) x.letterSpacing = "2px";
       x.fillStyle = "#C9A87C"; fitText(x, ex.sub, w - 110, 34, 400); x.fillText(ex.sub, w / 2, 148);
+    }
+    return c;
+  };
+  /* The door: its own product photograph, cut to the door and its frame (`crop`, fractions of the picture), at the
+     proportions of that part (`aspect`, width over height); without one, the door's place and its name. */
+  const composeDoor = (im, ex, S = 1024) => {
+    const a = clamp(ex.aspect || 0.44, 0.3, 0.6), h = S, w = Math.max(8, Math.round(S * a)), c = canvas(w, h), x = c.getContext("2d");
+    if (im) {
+      const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, k = ex.crop || [0, 0, 1, 1];
+      x.imageSmoothingQuality = "high";
+      x.drawImage(im, k[0] * iw, k[1] * ih, (k[2] - k[0]) * iw, (k[3] - k[1]) * ih, 0, 0, w, h);
+    } else {
+      x.fillStyle = "#24221f"; x.fillRect(0, 0, w, h);
+      x.strokeStyle = "rgba(201,168,124,0.55)"; x.lineWidth = Math.max(3, w * 0.012); x.strokeRect(w * 0.04, w * 0.04, w * 0.92, h - w * 0.08);
+      x.fillStyle = "#C9A87C"; x.textAlign = "center"; x.textBaseline = "middle";
+      fitText(x, ex.title || "", w * 0.8, Math.round(w * 0.1), 500); x.fillText(ex.title || "", w / 2, h / 2);
     }
     return c;
   };
@@ -6068,6 +6255,11 @@ void main() {}`;
     const ISLES = [KIS, WIS];
     for (const I of ISLES) if (I.station >= 0) { I.model = I.modelOf(I.station); I.finish = I.finishOf(I.station); }
     const isleOf = (i) => ISLES.find((I) => I.station >= 0 && (I.hero === i || I.members().includes(i))) || null;
+    /* the Door Hall's door: the piece the page names for it — its photograph, the part of it that is the door (crop) and
+       that part's proportions (aspect) */
+    const doorAt = pieces.findIndex((e) => e && e.group === "door");
+    /* (whether the photograph of the door in the doorway could be read) */
+    let doorToken = 0, doorOk = true;
     const isleById = (id) => ISLES.find((I) => I.id === id) || null;
     /* the island whose sink casts the two shadows the renderer draws: the one in the room you are in */
     let shadowIsle = KIS;
@@ -6116,6 +6308,7 @@ void main() {}`;
       const sinkOf = (M) => ({ cut: M.cut, size: M.size, depth: M.depth, flange: M.flange });
       const o = { theme: KIS.station >= 0 ? KIS.themeOf(KIS.finish) : THEMES.charcoal };
       if (KIS.station >= 0 && KIS.model) Object.assign(o, { sink: sinkOf(KIS.model), display: KIS.display, frontPower: SINK.frontPower });
+      if (doorAt >= 0) o.hall = { aspect: pieces[doorAt].aspect };
       if (steel.length) o.wing = { theme: WIS.station >= 0 ? WIS.themeOf(WIS.finish) : THEMES.steel,
         island: WIS.station >= 0 && WIS.model ? { sink: sinkOf(WIS.model), display: WIS.display, frontPower: SO.frontPower } : null };
       room = buildRoom(b, o);
@@ -6128,7 +6321,7 @@ void main() {}`;
         exhibits.push(ex);
       }
       for (const I of ISLES) if (I.station >= 0) placeSink(I);
-      for (const zone of [LOBBY, 0, 1, ISLAND, WING, WISL]) {
+      for (const zone of [LOBBY, 0, 1, ISLAND, WING, WISL, HALL]) {
         const n = room.lights.filter((L) => (L.zones ? L.zones.includes(zone) : L.zone === zone)).length;
         if (n > 16) console.warn("showroom: light set " + zone + " has " + n + " lights; only 16 are drawn");
         const w = room.washes.filter((L) => (L.zones ? L.zones.includes(zone) : L.zone === zone)).length;
@@ -6816,8 +7009,17 @@ void main() {}`;
     };
     /* the sink's colourways: each a photograph-derived texture carrying its colour and its grain */
     const flat = (hexc) => { const c = canvas(4, 4), x = c.getContext("2d"); x.fillStyle = hexc || "#808080"; x.fillRect(0, 0, 4, 4); return c; };
+    /* the door's picture, as the room draws it — and whether its photograph could be read */
+    const doorFor = async (ex) => {
+      let im = null;
+      if (ex.image) { try { im = await loadImage(ex.image); } catch (e) { im = null; } }
+      let c = composeDoor(im, ex, Q().tex);
+      try { c.getContext("2d").getImageData(0, 0, 1, 1); } catch (e) { c = composeDoor(null, ex, Q().tex); im = null; }
+      return { c, ok: !!im };
+    };
     /* the rooms' names over their openings */
     const signs = () => {
+      if (doorAt >= 0) cache.sign.set(4, composeSign(labels.doors || "Wellup Doors"));
       cache.sign.set(0, composeSign(labels.sanitary || "Sanitary Gallery"));
       cache.sign.set(1, composeSign(labels.kitchen || "Granite Kitchen Sinks"));
       cache.sign.set(3, composeSign(labels.entrance || "Entrance"));
@@ -6840,7 +7042,7 @@ void main() {}`;
     const load = async () => {
       build();
       const live = ISLES.filter((I) => I.station >= 0);
-      const names = [...new Set(BASE_TEX.concat(...live.map((I) => themeTex(I.themeOf(I.finish)))))].filter((n) => TEX[n]);
+      const names = [...new Set(BASE_TEX.concat(...live.map((I) => themeTex(I.themeOf(I.finish))), doorAt >= 0 ? ["travertine"] : []))].filter((n) => TEX[n]);
       const weight = { floor: 3, marble: 3, walnut: 2, plaster: 2 };
       const total = names.reduce((s, n) => s + (weight[n] || 1), 0) + exhibits.length * 0.35 + live.length * 2 + 2;
       let done = 0;
@@ -6854,7 +7056,10 @@ void main() {}`;
       await fontReady();
       await Promise.all(exhibits.map(async (ex) => {
         /* (an island shows its sink, not a print of it) */
-        if (!ex.station) cache.print.set(ex.index, await printFor(ex.data, ex.data.image));
+        /* (the door: its photograph cut to the door — and if it cannot be read, the page is told, and the door's
+           place shows its name instead) */
+        if (ex.door) { const got = await doorFor(ex.data); cache.print.set(ex.index, got.c); doorOk = got.ok; if (!got.ok) later("onDoorBusy", false, ex.index, true); }
+        else if (!ex.station) cache.print.set(ex.index, await printFor(ex.data, ex.data.image));
         cache.label.set(ex.index, composeLabel(ex.data));
         done += 0.35; tick("products");
       }));
@@ -6926,6 +7131,51 @@ void main() {}`;
         glideTo(ex.view.pos, yaw, pitch, 1000);
       },
       exhibitAt(i) { const ex = exById(i); return ex ? { c: ex.c.slice(), view: ex.view } : null; },
+      /* ── the Door Hall's door ── */
+      get door() { return doorAt; },
+      /* the door in the doorway as the room has it — its photograph, its nameplate, its proportions, and whether the
+         photograph could be read (for the page's own checks) */
+      doorState() {
+        const d = doorAt >= 0 ? pieces[doorAt] : null;
+        return d ? { index: doorAt, image: d.image, title: d.title, sub: d.sub, aspect: d.aspect, ok: doorOk } : null;
+      },
+      /* Another door in the doorway: its photograph is read first (the page is told meanwhile), then the doorway is made to
+         its width and the door stands in it. If the photograph cannot be read, the doorway shows the door's name in its
+         place — never the door that was there before under the new one's name — and the page is told so. A door asked
+         for meanwhile is the one shown. */
+      async setDoor(i, d) {
+        const ex = exById(i);
+        if (!ex || !ex.door || !d) return false;
+        const token = ++doorToken;
+        later("onDoorBusy", true, i);
+        const next = { ...pieces[i], ...d };
+        let got = null;
+        try { got = await doorFor(next); } catch (e) { got = { c: composeDoor(null, next, Q().tex), ok: false }; }
+        if (token !== doorToken || !S.alive) return false;
+        Object.assign(pieces[i], d);
+        doorOk = got.ok;
+        cache.print.set(i, got.c);
+        const lc = composeLabel(pieces[i]); cache.label.set(i, lc);
+        build();
+        if (R && !S.lost) {
+          R.upload(scene); isleShadows(shadowIsle);
+          R.texture("print:" + i, got.c, { repeat: false, an: 4 }); R.texture("label:" + i, lc, { repeat: false, an: 4 });
+        }
+        invalidate();
+        later("onDoorBusy", false, i, !got.ok);
+        return got.ok;
+      },
+      /* the door seen from in front, from the left or the right as you face it, or close to: a glide to stand there
+         (`shift` and `rise` keep it clear of a panel over part of the view, as for `view`) */
+      doorView(name = "front", { shift = 0, rise = 0 } = {}) {
+        const ex = exhibits.find((e) => e.door);
+        const V = { front: [2.7, 0, 1.1], left: [2.1, 1.55, 1.05], right: [2.1, -1.55, 1.05], close: [1.6, 0, 1.15] }[name];
+        if (!ex || !V || S.mode === "inspect") return false;
+        const pos = [ex.c[0] + V[0], EYE, ex.c[2] + V[1]], lf = lookFrom(pos, [ex.c[0], V[2], ex.c[2]]);
+        const aspect = cv.width / cv.height, ty = Math.tan(walkFov(aspect) / 2), tx = ty * aspect;
+        glideTo(pos, lf.yaw - Math.atan(shift * tx), lf.pitch - Math.atan(rise * ty), 1000);
+        return true;
+      },
       goTo(name) { const s = SPOTS[name]; if (s) glideTo(s.pos, s.yaw, s.pitch, 1200); },
       async setImage(i, src) {
         const ex = exById(i); if (!ex) return;
@@ -7680,8 +7930,8 @@ const T = {
   /* virtual showroom */
   vsName:        { en: "Virtual Showroom",  id: "Showroom Virtual" },
   vsTitle:       { en: "Walk the showroom.", id: "Jelajahi showroom." },
-  vsLede:        { en: "Our kitchen sinks, each installed in a kitchen of its own — granite in one room, stainless steel in another — with the pieces that complete them at the entrance and the sanitary range beyond. Choose any model to see it fitted, turn it all the way round, and put it in your bag without leaving.",
-                   id: "Bak cuci dapur kami, masing-masing terpasang di dapurnya sendiri — granit di satu ruang, stainless steel di ruang lain — dengan pelengkapnya di pintu masuk dan koleksi sanitari di baliknya. Pilih model mana pun untuk melihatnya terpasang, putar ke segala arah, lalu masukkan ke keranjang tanpa keluar." },
+  vsLede:        { en: "Our kitchen sinks, each installed in a kitchen of its own — granite in one room, stainless steel in another — with the pieces that complete them at the entrance, the sanitary range beyond, and the Wellup UPVC doors in a hall of their own. Choose any model to see it in place, turn a sink all the way round, and put it in your bag without leaving.",
+                   id: "Bak cuci dapur kami, masing-masing terpasang di dapurnya sendiri — granit di satu ruang, stainless steel di ruang lain — dengan pelengkapnya di pintu masuk, koleksi sanitari di baliknya, dan pintu UPVC Wellup di ruangnya sendiri. Pilih model mana pun untuk melihatnya di tempatnya, putar bak cuci ke segala arah, lalu masukkan ke keranjang tanpa keluar." },
   vsEnter:       { en: "Enter Showroom",    id: "Masuk Showroom" },
   vsPreparing:   { en: "Preparing the room", id: "Menyiapkan ruangan" },
   vsBrowse:      { en: "Browse as a list",  id: "Lihat sebagai daftar" },
@@ -7693,8 +7943,8 @@ const T = {
   vsTouchWalk:   { en: "Walk with the stick, bottom left", id: "Berjalan dengan tuas di kiri bawah" },
   vsTouchLook:   { en: "Drag anywhere to look around", id: "Geser di mana saja untuk melihat sekeliling" },
   vsTouchView:   { en: "Tap a + or a piece to see it", id: "Ketuk tanda + atau produk untuk melihatnya" },
-  vsTouchModels: { en: "In a kitchen, step through its sinks with the arrows", id: "Di dapur, ganti bak cucinya dengan tombol panah" },
-  vsKeyModels:   { en: "Every model in the kitchen you are in", id: "Semua model di dapur tempat Anda berada" },
+  vsTouchModels: { en: "In a kitchen or the Door Hall, step through its models with the arrows", id: "Di dapur atau Ruang Pintu, ganti modelnya dengan tombol panah" },
+  vsKeyModels:   { en: "Every model in the room you are in", id: "Semua model di ruang tempat Anda berada" },
   vsTouchTour:   { en: "Or step from piece to piece with the arrows", id: "Atau pindah antarproduk dengan tombol panah" },
   vsExit:        { en: "Exit",              id: "Keluar" },
   vsEntrance:    { en: "Entrance",          id: "Pintu masuk" },
@@ -7794,6 +8044,37 @@ const T = {
                    id: "Harga sesuai daftar harga PL Putus; spesifikasi sesuai Price List 2024 (14 Agustus 2024). Stok tidak tercantum: tanyakan di toko." },
   vs3dNote:      { en: "In the room this sink is a 3D model built from its product photographs. What they show from above — its outline, rim, bowls and drain — is measured from them; its depth and wall thickness, which a photograph taken from above cannot show, are typical values for this kind of sink — to be confirmed against the product.",
                    id: "Di ruangan ini, bak cuci ini adalah model 3D yang dibuat dari foto produknya. Yang terlihat dari atas — bentuk luar, bibir, ruang cuci dan saluran pembuangannya — diukur dari foto tersebut; kedalaman dan ketebalan dindingnya, yang tidak terlihat pada foto dari atas, memakai nilai yang umum untuk jenis bak cuci ini — menunggu konfirmasi dengan produk aslinya." },
+  /* the Wellup Door Hall */
+  vsDoorRoom:    { en: "Wellup Door Hall",  id: "Ruang Pintu Wellup" },
+  vsChipDoors:   { en: "Doors",             id: "Pintu" },
+  vsDoorStyle:   { en: "Visual preview · from the product photographs", id: "Pratinjau visual · dari foto produk" },
+  vsDoorBadge:   { en: "Visual preview",    id: "Pratinjau visual" },
+  vsDoorLede:    { en: "Every Wellup UPVC door in the Price List 2026, one at a time in a doorway of its own. Choose a model, its colour, its list where it has one, and the opening: the price and the product code follow your choice.",
+                   id: "Semua pintu UPVC Wellup di Price List 2026, satu per satu di ambang pintunya sendiri. Pilih model, warna, list bila ada, dan arah bukaannya: harga dan kode produknya mengikuti pilihan Anda." },
+  vsDoorNote:    { en: "Visual preview. The door is shown from its product photograph, set in a doorway at about its listed size. It is not a 3D model, so it cannot be opened or seen from behind. R or L changes the product code; the photograph stays as it was taken.",
+                   id: "Pratinjau visual. Pintu ditampilkan dari foto produknya, ditempatkan di ambang pintu kira-kira seukuran yang tercantum. Ini bukan model 3D, sehingga tidak dapat dibuka atau dilihat dari belakang. R atau L mengubah kode produk; fotonya tetap seperti saat diambil." },
+  vsDoorLoading: { en: "Hanging the door…", id: "Memasang pintu…" },
+  vsDoorFailed:  { en: "The photograph of this door could not be loaded, so its doorway shows its name. Its details are still correct.",
+                   id: "Foto pintu ini tidak dapat dimuat, sehingga ambang pintunya menampilkan namanya. Detailnya tetap benar." },
+  vsAllDoors:    { en: "All doors",         id: "Semua pintu" },
+  vsChooseDoor:  { en: "Choose another door", id: "Pilih pintu lain" },
+  vsPrevDoor:    { en: "Previous door",     id: "Pintu sebelumnya" },
+  vsNextDoor:    { en: "Next door",         id: "Pintu berikutnya" },
+  vsDoorDrawerLede: { en: "Every Wellup UPVC door, in the colour (and list) you have chosen where the model comes in it. The door in the doorway changes; you stay where you are.",
+                   id: "Semua pintu UPVC Wellup, dalam warna (dan list) pilihan Anda bila model itu tersedia dalam warna tersebut. Pintu di ambang pintu berganti; Anda tetap di tempat." },
+  vsDoorViews:   { en: "View the door",     id: "Lihat pintu" },
+  vsDoorFront:   { en: "Front",             id: "Depan" },
+  vsDoorLeft:    { en: "Left",              id: "Kiri" },
+  vsDoorRight:   { en: "Right",             id: "Kanan" },
+  vsDoorClose:   { en: "Close",             id: "Dekat" },
+  vsDoorModel:   { en: "Door model",        id: "Model pintu" },
+  vsCode:        { en: "Product code",      id: "Kode produk" },
+  vsDoorPage:    { en: "View product page", id: "Lihat halaman produk" },
+  vsDoorEnter:   { en: "Walk into the Door Hall in 3D", id: "Masuk ke Ruang Pintu dalam 3D" },
+  vsDoorsLink:   { en: "Wellup doors",      id: "Pintu Wellup" },
+  vsDoorScene:   { en: "In a doorway",      id: "Di ambang pintu" },
+  vsDoorPhoto:   { en: "Front photo",       id: "Foto depan" },
+  vsDoorAngle:   { en: "Angled photo",      id: "Foto miring" },
 };
 
 /* fills {name}-style holes in a translated sentence */
@@ -9220,7 +9501,7 @@ const parseRoute = (hash) => {
                                 : brand("doorCatalogue", { section: c });
   }
   if (a === "print" && b === "kitchen-sinks") return brand("ksPrint", { doc: parts[2] || "granite", lang: parts[3] || "en", page: +parts[4] || null });
-  if (a === "virtual-showroom" || a === "showroom") return brand("showroom", { slug: b || null });
+  if (a === "virtual-showroom" || a === "showroom") return brand("showroom", { slug: b || null, hand: (parts[2] || "").toUpperCase() === "L" ? "L" : null });
   if (a === "contact")  return brand("contact", { about: b || null });
   if (a === "journal")  return brand("journal", { slug: b || null });
   if (a === "services") return brand("services");
@@ -14548,6 +14829,10 @@ const AdminPairings = () => {
        twenty-five stainless sinks in the Price List 2024 (14 August 2024).
        Black stainless takes light oak and pale grey stone instead.
      · the Sanitary Gallery, beyond the granite room.
+     · the Wellup Door Hall, on the left: an entrance hall in charcoal
+       plaster with an end wall of honed travertine, and in its doorway one
+       Wellup UPVC door — any of the shop's doors, in any colour, list and
+       opening, chosen there or on the page below the room.
    One sink stands on each island at a time, chosen from the room's model
    bar or its full list; each is built in 3D only when it is first chosen.
 
@@ -14555,7 +14840,11 @@ const AdminPairings = () => {
    room as a 3D model built from those photographs and from its listed
    measurements (SINK_3D, COUNTER_3D below; STEEL_3D in steeldata.js): what
    could be measured is measured, what could not is marked as estimated, and
-   the panel says so.
+   the panel says so. The doors, too, were supplied as photographs, and no
+   3D model of them exists: each stands in the doorway as its own front
+   photograph, cut to the door and its frame — a visual preview, and the
+   room and its panel say so. It cannot be opened, and R or L changes its
+   product code, not its picture.
 
    More rooms of the same kind — basins, toilets, taps, showers — are one
    more entry in SINK_ROOMS, an island and a palette in the engine, and the
@@ -14577,6 +14866,9 @@ const SHOWROOM = [
   { group: "pressed",   slugs: STEEL_SLUGS("pressed") },
   { group: "handmade",  slugs: STEEL_SLUGS("handmade") },
   { group: "steelHero", slugs: ["w-7546-tsbn"] },
+  /* the Wellup Door Hall: one door in its doorway — the PT 2602 in Dark Grey with a black list to begin with; any of
+     the shop's doors is chosen there in its place */
+  { group: "door",      slugs: ["pt-2602-dark-grey-black-list"] },
 ];
 /* ── THE GDU 8145 IN 3D ─────────────────────────────────────────────────────
    Built from its three product photographs (GRANITE SINK WELLUP.zip). The
@@ -14690,13 +14982,13 @@ const SHOWROOM_MODEL = null;
 const SHOWROOM_LIST = SHOWROOM.flatMap((g) => g.slugs.filter((s) => bySlug(s)).map((slug) => ({ group: g.group, slug })));
 /* which room each group is in */
 const SHOWROOM_ROOM = { lobby: "entrance", hero: "kitchen", granite: "kitchen", sanitary: "sanitary", shower: "sanitary",
-  pressed: "stainless", handmade: "stainless", steelHero: "stainless" };
+  pressed: "stainless", handmade: "stainless", steelHero: "stainless", door: "doors" };
 /* the groups that hang or stand in the room; the rest wait their turn on an island */
-const PLACED = new Set(["lobby", "hero", "sanitary", "shower", "steelHero"]);
-const SHOWROOM_ZONES = ["entrance", "kitchen", "stainless", "sanitary"].filter((z) => z !== "stainless" || SHOWROOM_LIST.some((e) => SHOWROOM_ROOM[e.group] === "stainless"));
+const PLACED = new Set(["lobby", "hero", "sanitary", "shower", "steelHero", "door"]);
+const SHOWROOM_ZONES = ["entrance", "kitchen", "stainless", "sanitary", "doors"].filter((z) => (z !== "stainless" && z !== "doors") || SHOWROOM_LIST.some((e) => SHOWROOM_ROOM[e.group] === z));
 /* each room's name, and the shorter one on the chips that take you there */
-const ZONE_KEY = { entrance: "vsEntrance", kitchen: "vsGraniteRoom", sanitary: "vsSanitary", stainless: "vsSteelRoom" };
-const ZONE_CHIP = { entrance: "vsEntrance", kitchen: "vsChipGranite", sanitary: "vsChipSanitary", stainless: "vsChipSteel" };
+const ZONE_KEY = { entrance: "vsEntrance", kitchen: "vsGraniteRoom", sanitary: "vsSanitary", stainless: "vsSteelRoom", doors: "vsDoorRoom" };
+const ZONE_CHIP = { entrance: "vsEntrance", kitchen: "vsChipGranite", sanitary: "vsChipSanitary", stainless: "vsChipSteel", doors: "vsChipDoors" };
 /* The rooms built round one installation: the island's name in the engine, the room it is in, and how the sinks
    that can stand on it are grouped in its list. A basin, toilet, tap or shower room would be one more entry. */
 const SINK_ROOMS = {
@@ -14704,10 +14996,49 @@ const SINK_ROOMS = {
   steel:   { zone: "stainless", name: "vsSteelRoom", style: "vsStyleSteel", groups: [{ key: "pressed", label: "vsPressed", of: ["pressed"] }, { key: "handmade", label: "vsHandMade", of: ["handmade"] }] },
 };
 const ZONE_ISLE = { kitchen: "kitchen", stainless: "steel" };
+/* ── the Wellup Door Hall's door ──
+   Any of the shop's door records (DOORS): the door piece's place in the list (DOOR_AT) holds the one in the doorway,
+   and everything said about it — its name, colour, list, codes, price and specification — is read from that record.
+   In the room it is its front photograph (img/doors, 800 x 1000) cut to the door and its frame: DOOR_FRAME, measured
+   from each photograph — its left, top, right and bottom as shares of the picture — so the doorway is cut to the
+   door's own proportions. (The photographs are all framed alike, so a door without a measure takes the usual one.) */
+const DOOR_AT = SHOWROOM_LIST.findIndex((e) => e.group === "door");
+const DOOR_PIC = [800, 1000];
+const DOOR_FRAME = {
+  "pt-109-brown": [0.2475, 0.055, 0.7512, 0.953], "pt-109-dark-grey": [0.245, 0.055, 0.7538, 0.955], "pt-109-white": [0.2588, 0.056, 0.74, 0.955],
+  "pt-110-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-110-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-110-white": [0.2562, 0.056, 0.7438, 0.954],
+  "pt-111-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-111-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-111-white": [0.2562, 0.056, 0.7425, 0.954],
+  "pt-112-brown": [0.2312, 0.055, 0.77, 0.954], "pt-112-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-112-white": [0.2562, 0.056, 0.7425, 0.954],
+  "pt-113-brown": [0.2512, 0.054, 0.75, 0.954], "pt-113-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-113-white": [0.2562, 0.056, 0.7438, 0.954],
+  "pt-114-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-114-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-114-white": [0.2562, 0.056, 0.7438, 0.954],
+  "pt-115-brown": [0.2512, 0.055, 0.75, 0.954], "pt-115-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-115-white": [0.2562, 0.056, 0.7425, 0.954],
+  "pt-116-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-116-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-116-white": [0.2562, 0.056, 0.7438, 0.954],
+  "pt-117-brown": [0.2512, 0.055, 0.7488, 0.954], "pt-117-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-117-white": [0.2562, 0.056, 0.7425, 0.954],
+  "pt-118-brown": [0.25, 0.054, 0.7488, 0.954], "pt-118-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-118-white": [0.2562, 0.056, 0.7438, 0.954],
+  "pt-119-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-119-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-119-white": [0.2562, 0.056, 0.7425, 0.954],
+  "pt-2601-brown-black-list": [0.2462, 0.054, 0.7525, 0.956], "pt-2601-brown-white-list": [0.2462, 0.054, 0.7538, 0.956], "pt-2601-dark-grey-black-list": [0.24, 0.055, 0.76, 0.955],
+  "pt-2601-dark-grey-white-list": [0.2438, 0.055, 0.7562, 0.955], "pt-2601-white-black-list": [0.245, 0.055, 0.7538, 0.955], "pt-2601-white-white-list": [0.2575, 0.055, 0.7425, 0.955],
+  "pt-2602-brown-black-list": [0.2475, 0.054, 0.75, 0.956], "pt-2602-brown-white-list": [0.28, 0.054, 0.7188, 0.956], "pt-2602-dark-grey-black-list": [0.2537, 0.055, 0.7462, 0.955],
+  "pt-2602-dark-grey-white-list": [0.28, 0.055, 0.72, 0.955], "pt-2602-white-black-list": [0.2462, 0.055, 0.7538, 0.955], "pt-2602-white-white-list": [0.27, 0.055, 0.7312, 0.949],
+  "pt-270-brown": [0.2412, 0.055, 0.7588, 0.955], "pt-270-dark-grey": [0.24, 0.055, 0.76, 0.955], "pt-270-white": [0.2462, 0.055, 0.7525, 0.955],
+  "pt-290-brown": [0.2325, 0.055, 0.7675, 0.956], "pt-290-dark-grey": [0.23, 0.055, 0.7688, 0.955], "pt-290-white": [0.25, 0.055, 0.7488, 0.955],
+  "pt-409-brown": [0.2312, 0.056, 0.7688, 0.955], "pt-409-dark-grey": [0.23, 0.056, 0.7712, 0.955], "pt-409-white": [0.2588, 0.055, 0.735, 0.955],
+  "pt-709-brown": [0.3012, 0.055, 0.6988, 0.955], "pt-709-dark-grey": [0.2925, 0.055, 0.7062, 0.955], "pt-709-white": [0.3038, 0.055, 0.695, 0.955],
+  "pt-809-brown": [0.2325, 0.054, 0.765, 0.956], "pt-809-dark-grey": [0.2312, 0.055, 0.7675, 0.955], "pt-809-white": [0.2375, 0.055, 0.7612, 0.955],
+  "pt-909-brown": [0.235, 0.055, 0.7638, 0.956], "pt-909-dark-grey": [0.2312, 0.055, 0.7688, 0.955], "pt-909-white": [0.2388, 0.056, 0.7625, 0.955],
+};
+const doorFrameOf = (r) => (r && r.photos && DOOR_FRAME[r.photos[0]]) || [0.25, 0.05, 0.75, 0.95];
+const doorAspectOf = (r) => { const k = doorFrameOf(r); return ((k[2] - k[0]) * DOOR_PIC[0]) / ((k[3] - k[1]) * DOOR_PIC[1]); };
+/* what the room is told about the door: its photograph, the part of it that is the door, and its nameplate */
+const doorPiece = (r, x) => ({ image: SINK_IMG[r.photos[0]], crop: doorFrameOf(r), aspect: doorAspectOf(r), title: r.model, sub: x(r.colour) });
+/* the opening asked for, where the door is offered in it — else the one it is offered in */
+const doorSelOf = (r, want) => (r ? r.hands.find((h) => h.id === want) || r.hands[0] : null) || { id: "R", code: "" };
+/* the door seen from in front, from either side, or close to (in the room) */
+const DOOR_VIEWS = [["front", "vsDoorFront"], ["left", "vsDoorLeft"], ["right", "vsDoorRight"], ["close", "vsDoorClose"]];
 /* the pieces you step through in turn: those in the room — a sink waiting its turn is chosen on its island instead */
 const TOUR = SHOWROOM_LIST.map((e, i) => (PLACED.has(e.group) ? i : -1)).filter((i) => i >= 0);
 /* what the room is told about a piece: its photograph and its nameplate */
-const showroomPiece = (p, x) => ({
+const showroomPiece = (p, x) => (p && p.cat === "doors" ? doorPiece(p, x) : {
   image: pImg(p, 0, 1200), fit: p.fit === "contain" ? "contain" : "cover", plate: PLATE,
   title: p.model || x(p.name), sub: x(p.roomSub || p.short || p.material),
 });
@@ -14753,10 +15084,12 @@ const sizeOf = (p) => specOf(p, "Dimensions", "Size");
 /* the palette a kitchen takes for its sink, in words: the setting round the product, not the product */
 const PALETTE_KEY = { charcoal: "vsPalCharcoal", oak: "vsPalOak", walnut: "vsPalWalnut", steel: "vsPalSteel", steelWarm: "vsPalSteelWarm" };
 /* The piece a link to the showroom names (#/virtual-showroom/<slug>): its place in the list, the colourway asked
-   for, and the island it stands on, if it is a sink there. A product not in the showroom: none. */
-const pieceFor = (slug) => {
+   for, and the island it stands on, if it is a sink there. Any door is the Door Hall's, in the colour and list linked
+   and the opening (`hand`: /l for L) where it is offered in it. A product not in the showroom: none. */
+const pieceFor = (slug, hand = null) => {
   const p = slug ? bySlug(slug) : null;
   if (!p) return null;
+  if (p.cat === "doors") return DOOR_AT >= 0 ? { i: DOOR_AT, slug: p.slug, isle: null, door: true, hand: doorSelOf(p, hand || "R").id } : null;
   let i = SHOWROOM_LIST.findIndex((e) => e.slug === p.slug && e.group !== "steelHero");
   if (i < 0 && p.model) i = SHOWROOM_LIST.findIndex((e) => e.group !== "steelHero" && bySlug(e.slug).model === p.model);
   if (i < 0) return null;
@@ -14821,11 +15154,111 @@ const VsStick = ({ onMove }) => {
   );
 };
 
+/* The Wellup Door Hall on the page, below the room: the same door, the same choices and the same details — for a phone,
+   for a browser that cannot draw the room, or for a quick look. The door stands in a doorway drawn round its photograph
+   (cut to the door and its frame, as in the room), in the room's own palette, and is labelled a visual preview; its own
+   photographs, front and (for some) angled, are a choice away. Everything it says is read from the door's record, as
+   the room's panel is, and a choice made here is the door in the room. */
+const VsDoorHall = ({ row, g, sel, all, onDoor, onHand, onAdd, added, phase, progress, onEnter }) => {
+  const { t, x, lang } = useStore();
+  const [view, setView] = useState("hall");
+  /* a door whose photograph could not be read: its outline and its name in the doorway, never a broken picture */
+  const [broken, setBroken] = useState(null);
+  const views = [["hall", "vsDoorScene"], ["photo", "vsDoorPhoto"]].concat(row.photos.length > 1 ? [["angle", "vsDoorAngle"]] : []);
+  const now = views.some(([k]) => k === view) ? view : "hall";
+  const k = doorFrameOf(row), kw = k[2] - k[0], kh = k[3] - k[1];
+  const crop = { width: 100 / kw + "%", height: 100 / kh + "%", left: (-k[0] / kw) * 100 + "%", top: (-k[1] / kh) * 100 + "%" };
+  const spec = specOf(row, "Specification"), sec = doorSectionOf(g);
+  const said = x({ en: "Visual preview: ", id: "Pratinjau visual: " }) + doorAlt(row, 0, lang) + x({ en: ", standing in a doorway", id: ", berdiri di ambang pintu" });
+  const pic = SINK_IMG[row.photos[0]];
+  const btn = "inline-flex h-[52px] w-full items-center justify-center gap-3 whitespace-nowrap border px-6 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color,border-color] duration-500 ease-quiet ";
+  return (
+    <section id="vs-doors" className="dcat vsd" aria-label={t("vsDoorRoom")} data-vs-doors="" data-door-slug={row.slug} data-door-hand={sel.id}>
+      <div className="mx-auto max-w-site px-5 pb-[90px] pt-[90px] md:px-10 md:pb-[130px] md:pt-[130px]">
+        <SectionHead eyebrow={T.vsInRoom} title={T.vsDoorRoom} lede={T.vsDoorLede} />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            {now === "hall" ? (
+              <div className="vsd-scene" role="img" aria-label={said} style={{ "--a": doorAspectOf(row) }} data-vsd-scene="">
+                <span className="vsd-wall" /><span className="vsd-slot" /><span className="vsd-floor" />
+                {broken === row.slug ? null : <span className="vsd-mirror"><span className="vsd-door"><img src={pic} alt="" style={crop} draggable="false" /></span></span>}
+                <span className="vsd-way"><span className="vsd-door">
+                  {broken === row.slug ? <CatNoPhoto label={row.model} small className="absolute inset-0" />
+                    : <img key={row.slug} src={pic} alt="" style={crop} draggable="false" data-vsd-door="" onError={() => setBroken(row.slug)} />}
+                </span></span>
+                <span className="vsd-badge">{t("vsDoorBadge")}</span>
+              </div>
+            ) : (
+              <div className="vsd-photo bg-[#F4F3F0]" data-vsd-photo={now}>
+                <Photo key={row.slug + now} src={pImg(row, now === "angle" ? 1 : 0, 1000)} alt={doorAlt(row, now === "angle" ? 1 : 0, lang)} tone={PLATE} eager
+                  className="h-full w-full object-contain no-dim" />
+              </div>
+            )}
+            <div className="vsd-views" role="group" aria-label={t("vsDoorViews")}>
+              {views.map(([id, label]) => (
+                <button key={id} type="button" aria-pressed={now === id} onClick={() => setView(id)} data-vsd-view={id}>{t(label)}</button>
+              ))}
+            </div>
+            <p className="mt-5 max-w-[62ch] text-[12.5px] leading-[1.7] text-mute" data-vsd-note="">{t("vsDoorNote")}</p>
+          </div>
+
+          <div className="lg:col-span-5">
+            <p className={DOOR_LABEL}>{x({ en: "UPVC Door", id: "Pintu UPVC" })} · Wellup<span className="mx-2.5 text-line">/</span><span className="text-accent">{doorSectionNo(sec)}</span> {x(sec.title)}</p>
+            <h3 className="font-serif-lx mt-4 text-[34px] font-light leading-[1.06] md:text-[44px]" data-vsd-name="">{row.model}</h3>
+            <p className="mt-3 text-[14.5px] leading-[1.6] text-mute">{x(doorTypeLabel(g.m.type))} · {x(row.colour)} · {DOOR_SIZE}</p>
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-y border-line py-5">
+              <p className="text-[24px] font-semibold tabular-nums tracking-[-0.01em]" data-vsd-price="">{rp(row.price)}</p>
+              <p className="text-left sm:text-right" aria-live="polite">
+                <span className="block text-[10.5px] font-semibold uppercase tracking-[0.12em] text-mute">{t("vsCode")}</span>
+                <span className="mt-1 block text-[15px] font-medium tabular-nums tracking-[0.03em] text-accent" data-vsd-code="">{sel.code}</span>
+              </p>
+            </div>
+            <div className="mt-8" data-vsd-models="">
+              <p className={DOOR_LABEL}>{t("vsDoorModel")}<span className="ml-3 normal-case tracking-normal text-ink">{g.name}</span></p>
+              <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-5" role="radiogroup" aria-label={t("vsDoorModel")}>
+                {all.map((o) => {
+                  const on = o.m.code === g.m.code;
+                  return (
+                    <button key={o.key} type="button" role="radio" aria-checked={on} onClick={() => onDoor(doorRowOf(o, row.doorCol, row.listCol).slug)}
+                      title={o.name} aria-label={o.name} data-vsd-model={o.key}
+                      className={"h-10 whitespace-nowrap border px-1 text-[11px] font-medium tabular-nums tracking-[0.03em] transition-colors duration-300 " +
+                        (on ? "border-accent bg-accent/10 text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{o.m.code}</button>
+                  );
+                })}
+              </div>
+            </div>
+            <DoorChoose g={g} row={row} c={row.doorCol} l={row.listCol} sel={sel}
+              onColour={(c) => onDoor(doorRowOf(g, c, row.listCol).slug)} onList={(l) => onDoor(doorRowOf(g, row.doorCol, l).slug)} onHand={onHand} />
+            <DoorSummary row={row} sel={sel} />
+            {spec ? <p className="mt-4 text-[12.5px] leading-[1.6] text-mute" data-vsd-spec=""><span className="text-ink/90">{x({ en: "Specification", id: "Spesifikasi" })}:</span> {x(spec)}</p> : null}
+            <div className="mt-8 grid gap-3">
+              <Action onClick={onAdd}>{added ? t("inYourBag") : t("addToCart")}</Action>
+              <a href={doorHref(row, sel.id)} data-vsd-page="" className={btn + "border-ink text-ink hover:bg-ink hover:text-bone"}>
+                <span>{t("vsDoorPage")}</span><Icon name="arrow" size={13} />
+              </a>
+              {phase === "failed" || phase === "unsupported" ? null : (
+                <button type="button" onClick={onEnter} disabled={phase !== "ready"} data-vsd-enter=""
+                  className={btn + "border-line text-ink hover:border-accent hover:text-accent disabled:cursor-default disabled:text-mute disabled:hover:border-line"}>
+                  <VsTurn size={15} /><span>{phase === "ready" ? t("vsDoorEnter") : t("vsPreparing") + " · " + Math.round(progress * 100) + "%"}</span>
+                </button>
+              )}
+            </div>
+            <div className="mt-8 border-l border-accent/70 py-1 pl-5 text-[13px] leading-[1.7] text-mute" data-vsd-ask="">
+              {x(DOOR_ASK)}{" "}
+              <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ShowroomPage = () => {
   const { t, x, lang, add, say, count, manual } = useStore();
   const route = useRoute();
   /* the piece a link to the showroom named when the page opened: it is on its island from the start */
-  const deep = useMemo(() => pieceFor(route && route.slug), []);
+  const deep = useMemo(() => pieceFor(route && route.slug, route && route.hand), []);
   const stageRef = useRef(null), canvasRef = useRef(null), roomRef = useRef(null), spotRefs = useRef({}), linked = useRef(null);
   const [phase, setPhase]         = useState("loading");    // loading · ready · failed · unsupported
   const [progress, setProgress]   = useState(0);
@@ -14854,6 +15287,19 @@ const ShowroomPage = () => {
   const [isle, setIsle] = useState("kitchen");
   const [busy, setBusy] = useState(null);
   const [drawer, setDrawer] = useState(false);              // every model the room's island can hold
+  /* The Wellup Door Hall: the door in its doorway is shown[DOOR_AT] — one of the shop's door records, in its colour and
+     list; the opening chosen for it (kept while the door shown is offered in it); whether its photograph is on its way
+     to the room, and whether the last could not be read. */
+  const [doorHand, setDoorHand]     = useState(deep && deep.door ? deep.hand : "R");
+  const [doorBusy, setDoorBusy]     = useState(false);
+  const [doorFailed, setDoorFailed] = useState(false);
+  const doorIn = useRef(null), doorLinked = useRef(null), doorGo = useRef(false);
+  const doorAll = useMemo(() => doorModels(), []);
+  const doorRow = DOOR_AT >= 0 ? bySlug(shown[DOOR_AT]) : null;
+  const doorG = doorRow ? doorAll.find((g) => g.m.code === doorRow.code) || null : null;
+  const doorSel = doorSelOf(doorRow, doorHand);
+  /* in the Door Hall, its doors are the room's models */
+  const doorRoom = zone === "doors" && !inspecting && !!doorG;
   const patchIsle = (id, v) => setIsles((prev) => ({ ...prev, [id]: { ...prev[id], ...v } }));
   const touch = useMemo(() => vsQuery("(pointer: coarse)"), []);
   const live = useRef({}), unlockedAt = useRef(0), addedTimer = useRef(0), relockAfter = useRef(false);
@@ -14868,7 +15314,7 @@ const ShowroomPage = () => {
   /* the island of the room you are in — or of the sink you are turning round: its models are the ones offered */
   const roomIsle = inspecting ? isle : ZONE_ISLE[zone] || null;
   const RI = roomIsle && isles[roomIsle].stations.length ? isles[roomIsle] : null;
-  const drawerOpen = drawer && immersive && !!RI;
+  const drawerOpen = drawer && immersive && (!!RI || doorRoom);
   const introRef = useInert(immersive);
   const hudRef   = useInert(!immersive || inspecting);
   const inspectRef = useInert(!immersive || !inspecting);
@@ -14893,7 +15339,7 @@ const ShowroomPage = () => {
   const p = bySlug(slug) || bySlug(SHOWROOM_LIST[0].slug);
   const f = (fin && p.finishes.find((q) => q.id === fin)) || p.finishes[0];
   const siblings = useMemo(() => (p.model ? CATALOG.filter((r) => r.model === p.model) : []), [p.slug]);
-  const recs = useMemo(() => recommend(p, { finish: f, manual, types: COMPLETING, limit: 3 }), [p.slug, f.id, manual]);
+  const recs = useMemo(() => (p.cat === "doors" ? [] : recommend(p, { finish: f, manual, types: COMPLETING, limit: 3 })), [p.slug, f.id, manual]);
   const unit = unitLabel(p.unit);
   useEffect(() => { setFin(null); setShot(0); }, [slug]);
 
@@ -14994,10 +15440,36 @@ const ShowroomPage = () => {
     if (next && room) { room.unlock(); if (phone() && sel >= 0) closePanel(false); }
     if (next) window.requestAnimationFrame(() => { const el = drawerRef.current; if (el) el.focus({ preventScroll: true }); });
   };
+  /* Another door in the doorway, or the same in another colour or list (and, if named, an opening). The page shows the
+     choice at once; the room follows it (below). */
+  const chooseDoor = (s, hand) => {
+    const r = bySlug(s);
+    if (DOOR_AT < 0 || !r || r.cat !== "doors") return;
+    if (hand) setDoorHand(hand);
+    if (r.slug !== shown[DOOR_AT]) { setDoorFailed(false); setShown((prev) => prev.map((v, i) => (i === DOOR_AT ? r.slug : v))); }
+  };
+  /* another model, in the colour (and list) chosen where it comes in it; the next or the one before, in the list's order */
+  const doorModel = (g) => { if (g && doorRow) chooseDoor(doorRowOf(g, doorRow.doorCol, doorRow.listCol).slug); };
+  const stepDoor = (d) => { if (!doorG) return; const n = doorAll.length, j = doorAll.indexOf(doorG); doorModel(doorAll[(j + d + n) % n]); };
+  /* the door from in front, from either side or close to — clear of the panel */
+  const viewDoor = (k) => { const room = roomRef.current; if (room) room.doorView(k, phone() ? { rise: 0.4 } : { shift: sel >= 0 ? 0.27 : 0 }); };
+  /* into the Door Hall and up to the door, its panel open */
+  const enterDoors = () => {
+    if (!roomRef.current || phase !== "ready" || DOOR_AT < 0) return;
+    enter("doors", false);
+    window.requestAnimationFrame(() => live.current.openPanel(DOOR_AT));
+  };
+  /* to the Door Hall on the page (once the page has settled where a new address puts it) */
+  const toDoorHall = () => window.requestAnimationFrame(() => {
+    const el = document.getElementById("vs-doors");
+    if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth", block: "start" });
+  });
   live.current = {
     openPanel,
     tapEmpty: () => { const room = roomRef.current; if (room && immersive && sel < 0 && !touch && room.lockable) { setDrawer(false); room.lock(); } },
     busy: (on, info) => { setBusy(on ? info.isle : null); if (!on && info && info.failed) say(t("vsSwitchFailed")); },
+    /* the door's photograph on its way to the doorway — and, if it could not be read, said so */
+    doorBusy: (on, failed) => { setDoorBusy(!!on); if (!on) { setDoorFailed(!!failed); if (failed) say(t("vsDoorFailed")); } },
     /* the markers over what can be chosen: moved straight on the page, every frame, with no render */
     frame: ({ hotspots }) => {
       const seen = new Set();
@@ -15023,7 +15495,7 @@ const ShowroomPage = () => {
       room = S.create(canvasRef.current, {
         exhibits: SHOWROOM_LIST.map((e, i) => ({ group: e.group, ...showroomPiece(bySlug(shown[i]), (v) => tx(v, lang)) })),
         logo: LOGO_LIGHT,
-        labels: { kitchen: tx(T.vsGraniteRoom, lang), sanitary: tx(T.vsSanitary, lang), stainless: tx(T.vsSteelRoom, lang), entrance: tx(T.vsEntrance, lang) },
+        labels: { kitchen: tx(T.vsGraniteRoom, lang), sanitary: tx(T.vsSanitary, lang), stainless: tx(T.vsSteelRoom, lang), entrance: tx(T.vsEntrance, lang), doors: tx(T.vsDoorRoom, lang) },
         sink: SINK_AT >= 0 ? sinkRoom(shown[SINK_AT], isles.kitchen.display) : null,
         finishes: typeof SINK_3D_GRAIN !== "undefined" ? SINK_3D_GRAIN : null,
         counter: counterRoom(shown),
@@ -15039,6 +15511,7 @@ const ShowroomPage = () => {
         onStation: (s, id) => { const r = roomRef.current; if (r) patchIsle(id || "kitchen", { station: r.stationOf(id || "kitchen"), theme: r.themeOf(id || "kitchen") }); },
         onFinish: (fk, id) => { const r = roomRef.current; if (r) patchIsle(id || "kitchen", { theme: r.themeOf(id || "kitchen") }); },
         onBusy: (on, info) => live.current.busy(on, info),
+        onDoorBusy: (on, i, failed) => live.current.doorBusy(on, failed),
         onFrame: (fr) => live.current.frame(fr),
         onFocus: (i) => setFocus(i),
         onZone: (z) => setZone(z),
@@ -15056,8 +15529,10 @@ const ShowroomPage = () => {
       return undefined;
     }
     roomRef.current = room;
+    /* (the door it begins with: the one on the page) */
+    doorIn.current = DOOR_AT >= 0 ? shown[DOOR_AT] : null;
     canvasRef.current.__room = room;          // for the page's own checks
-    setSinks3d(room.sinks); setInspecting(false); setIsle("kitchen"); setBusy(null);
+    setSinks3d(room.sinks); setInspecting(false); setIsle("kitchen"); setBusy(null); setDoorBusy(false);
     const isleNow = (id) => ({ station: room.stationOf(id), stations: room.stationsOf(id), display: room.displayOf(id) || "installed", theme: room.themeOf(id) });
     setIsles({ kitchen: isleNow("kitchen"), steel: isleNow("steel") });
     return () => { room.destroy(); if (roomRef.current === room) roomRef.current = null; };
@@ -15071,16 +15546,24 @@ const ShowroomPage = () => {
     if (on.offsetLeft < row.scrollLeft) row.scrollLeft = on.offsetLeft;
     else if (on.offsetLeft + on.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollLeft = on.offsetLeft + on.offsetWidth - row.clientWidth;
   }, [zone, immersive]);
-  /* leaving a kitchen, its list of models is put away */
-  useEffect(() => { if (!roomIsle) setDrawer(false); }, [roomIsle]);
+  /* leaving a kitchen or the Door Hall, its list of models is put away */
+  useEffect(() => { if (!roomIsle && !doorRoom) setDrawer(false); }, [roomIsle, doorRoom]);
 
   /* the nameplates and the signs above the openings follow the language */
   useEffect(() => {
     const room = roomRef.current;
     if (!room || phase !== "ready") return;
-    room.setLabels({ kitchen: x(T.vsGraniteRoom), sanitary: x(T.vsSanitary), stainless: x(T.vsSteelRoom), entrance: x(T.vsEntrance) });
+    room.setLabels({ kitchen: x(T.vsGraniteRoom), sanitary: x(T.vsSanitary), stainless: x(T.vsSteelRoom), entrance: x(T.vsEntrance), doors: x(T.vsDoorRoom) });
     room.relabel(shown.map((s, i) => { const e = showroomPiece(bySlug(s), x); return { index: i, title: e.title, sub: e.sub }; }));
   }, [lang]);
+
+  /* the door chosen — in the room or on the page — stands in the doorway: its photograph is read, then hung */
+  useEffect(() => {
+    const room = roomRef.current;
+    if (!room || phase !== "ready" || DOOR_AT < 0 || doorIn.current === shown[DOOR_AT]) return;
+    doorIn.current = shown[DOOR_AT];
+    room.setDoor(DOOR_AT, doorPiece(bySlug(shown[DOOR_AT]), x));
+  }, [phase, DOOR_AT >= 0 ? shown[DOOR_AT] : null]);
 
   /* a real model for the featured sink, if one has been given */
   useEffect(() => {
@@ -15114,12 +15597,24 @@ const ShowroomPage = () => {
     if (phase !== "ready" || !s || linked.current === s) return;
     linked.current = s;
     const d = pieceFor(s), room = roomRef.current;
-    if (!d || !room) return;
+    if (!d || !room || d.door) return;
     if (d.isle && (isles[d.isle].station !== d.i || shown[d.i] !== d.slug)) chooseModel(d.i, bySlug(d.slug));
     const at = d.isle ? HERO_OF[d.isle] : d.i;
     if (!immersive) enter(undefined, false);
     window.requestAnimationFrame(() => live.current.openPanel(at));
   }, [phase, route && route.slug]);
+  /* A link to a door (#/virtual-showroom/<door>, /l for its L): that door, in the colour, list and opening linked, in
+     the doorway — and you are taken to it: on a computer, into the room once it is ready and up to the door, its panel
+     open; on a phone, or where the room cannot be shown, to the Door Hall on the page. */
+  useEffect(() => {
+    const s = route && route.slug, d = s ? pieceFor(s, route.hand) : null;
+    if (!d || !d.door) return;
+    const key = d.slug + "/" + d.hand;
+    if (doorLinked.current !== key) { doorLinked.current = key; doorGo.current = true; chooseDoor(d.slug, d.hand); }
+    if (!doorGo.current || (phase === "loading" && !phone())) return;
+    doorGo.current = false;
+    if (phase === "ready" && !phone()) enterDoors(); else toDoorHall();
+  }, [phase, route && route.slug, route && route.hand]);
 
   /* Escape puts away the list of models, finishes turning round the sink,
      then closes the panel, then leaves the room. The press that lets the
@@ -15136,7 +15631,7 @@ const ShowroomPage = () => {
         return;
       }
       if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || vsTyping(e.target)) return;
-      if (e.code === "KeyM" && RI) { e.preventDefault(); toggleDrawer(); return; }
+      if (e.code === "KeyM" && (RI || doorRoom)) { e.preventDefault(); toggleDrawer(); return; }
       if (sinks3d.length && (e.code === "KeyI" || e.code === "KeyV")) {
         const near = inspecting || isSink(sel) || (sel < 0 && isSink(focus));
         if (!near) return;
@@ -15160,7 +15655,7 @@ const ShowroomPage = () => {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [immersive, sel, inspecting, focus, isles, isle, sinks3d, drawerOpen, RI, zone]);
+  }, [immersive, sel, inspecting, focus, isles, isle, sinks3d, drawerOpen, RI, zone, doorRoom]);
 
   /* step from piece to piece: those in the room, in turn */
   const tour = (d) => {
@@ -15205,6 +15700,15 @@ const ShowroomPage = () => {
     window.clearTimeout(addedTimer.current);
     addedTimer.current = window.setTimeout(() => setJustAdded(null), 2600);
   };
+  /* the door chosen, in its colour and opening, to the bag — as its own page puts it there */
+  const addDoor = () => {
+    if (!doorRow) return;
+    add(doorRow, x(doorRow.colour) + " · " + doorSel.id, 1, { quiet: true });
+    say(t("addedToBag"));
+    setJustAdded(doorRow.slug + "|" + doorSel.id);
+    window.clearTimeout(addedTimer.current);
+    addedTimer.current = window.setTimeout(() => setJustAdded(null), 2600);
+  };
   useEffect(() => () => window.clearTimeout(addedTimer.current), []);
   /* its page in the shop: the same product, the same bag */
   const toShop = (prod) => { leave(); go("#/shop/p/" + prod.slug); };
@@ -15222,7 +15726,9 @@ const ShowroomPage = () => {
   const stationNo = II.stations.indexOf(II.station);
   const steelNote = steelNoteOf(p);
   const stores = p.stock.map((id) => (storeById(id) || {}).name).filter(Boolean).join(", ");
-  const added = justAdded === p.slug + "|" + f.id;
+  /* the panel open on the Door Hall's door */
+  const isDoor = p.cat === "doors";
+  const added = justAdded === p.slug + "|" + (isDoor ? doorSel.id : f.id);
   /* the room's own island in the bar: the sink on it, its colourway or finish, its size and price */
   const barP = RI && RI.station >= 0 ? bySlug(shown[RI.station]) : null;
   const barBusy = !!RI && busy === roomIsle;
@@ -15285,6 +15791,9 @@ const ShowroomPage = () => {
                 <a href="#vs-list" className="vs-link" onClick={(e) => { e.preventDefault(); const el = document.getElementById("vs-list"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth" }); }}>
                   <span className="u">{t("vsBrowse")}</span>
                 </a>
+                <a href="#vs-doors" className="vs-link" hidden={!doorG} data-vs-doors-link="" onClick={(e) => { e.preventDefault(); toDoorHall(); }}>
+                  <span className="u">{t("vsDoorsLink")}</span>
+                </a>
               </div>
               <p className="vs-note" role="status" hidden={phase !== "failed" && phase !== "unsupported"}>
                 {phase === "unsupported" ? t("vsUnsupported") : t("vsFailed")}
@@ -15308,7 +15817,7 @@ const ShowroomPage = () => {
               <div>
                 <p className="vs-place">{t("vsName")}</p>
                 <p className="vs-zone" aria-live="polite">{t(ZONE_KEY[zone] || "vsEntrance")}</p>
-                {ZONE_ISLE[zone] ? <p className="vs-style">{t(SINK_ROOMS[ZONE_ISLE[zone]].style)}</p> : null}
+                {ZONE_ISLE[zone] ? <p className="vs-style">{t(SINK_ROOMS[ZONE_ISLE[zone]].style)}</p> : zone === "doors" ? <p className="vs-style">{t("vsDoorStyle")}</p> : null}
               </div>
               <div className="vs-row">
                 <a href="#/shop/bag" onClick={leave} className="vs-chip vs-hit" aria-label={t("bag")}>
@@ -15361,7 +15870,26 @@ const ShowroomPage = () => {
                   <VsGrid size={15} /><span className="vs-model-all-t">{t("vsAllModels")}</span><span className="vs-num">{RI ? String(RI.stations.length).padStart(2, "0") : ""}</span>
                 </button>
               </div>
-              <div className="vs-tour vs-hit" hidden={!!RI}>
+              {/* in the Door Hall, the door in its doorway — and the others, one step at a time or all at once */}
+              <div className="vs-model vs-hit" hidden={!doorRoom || !!RI} data-busy={doorBusy ? "true" : "false"} aria-busy={doorBusy} data-vs-door-bar="">
+                <button type="button" className="vs-chip vs-sq" onClick={() => stepDoor(-1)} aria-label={t("vsPrevDoor")}><Icon name="left" size={16} /></button>
+                <button type="button" className="vs-model-now" onClick={() => toggleDrawer()} aria-expanded={drawerOpen} aria-controls="vs-drawer">
+                  <span className="vs-model-img bg-[#F4F3F0]">
+                    {doorRow ? <Photo key={doorRow.slug} src={pImg(doorRow, 0, 160)} alt="" tone={PLATE} className="h-full w-full object-contain no-dim" /> : null}
+                    <i className="vs-spin" aria-hidden="true" />
+                  </span>
+                  <span className="vs-model-txt">
+                    <span className="vs-model-name">{doorRow ? doorRow.model : ""}</span>
+                    <span className="vs-model-sub">{doorBusy ? t("vsDoorLoading") : doorRow ? x(doorRow.colour) + " · " + doorSel.id : ""}</span>
+                  </span>
+                  <span className="vs-model-price">{doorRow ? rp(doorRow.price) : ""}</span>
+                </button>
+                <button type="button" className="vs-chip vs-sq" onClick={() => stepDoor(1)} aria-label={t("vsNextDoor")}><Icon name="right" size={16} /></button>
+                <button type="button" className="vs-chip vs-model-all" onClick={() => toggleDrawer()} aria-expanded={drawerOpen} aria-controls="vs-drawer">
+                  <VsGrid size={15} /><span className="vs-model-all-t">{t("vsAllDoors")}</span><span className="vs-num">{String(doorAll.length).padStart(2, "0")}</span>
+                </button>
+              </div>
+              <div className="vs-tour vs-hit" hidden={!!RI || doorRoom}>
                 <button type="button" className="vs-chip vs-sq" onClick={() => tour(-1)} aria-label={t("vsPrev")}><Icon name="left" size={16} /></button>
                 <span className="vs-tour-at" aria-live="polite">{TOUR.indexOf(tourAt) >= 0 ? TOUR.indexOf(tourAt) + 1 + " / " + TOUR.length : TOUR.length + " " + t("items")}<span className="vs-tour-name">{tourName}</span></span>
                 <button type="button" className="vs-chip vs-sq" onClick={() => tour(1)} aria-label={t("vsNext")}><Icon name="right" size={16} /></button>
@@ -15404,10 +15932,10 @@ const ShowroomPage = () => {
           <div ref={drawerRef} id="vs-drawer" className="vs-drawer" role="dialog" aria-modal="false" aria-labelledby="vs-drawer-title" aria-hidden={!drawerOpen} tabIndex={-1}>
             <div className="vs-dbar">
               <div>
-                <p className="vs-label">{RI ? t(SINK_ROOMS[roomIsle].name) + " · " + t(SINK_ROOMS[roomIsle].style) : ""}</p>
-                <p id="vs-drawer-title" className="vs-dtitle">{t("vsAllModels")} <span>{RI ? RI.stations.length : 0}</span></p>
+                <p className="vs-label">{RI ? t(SINK_ROOMS[roomIsle].name) + " · " + t(SINK_ROOMS[roomIsle].style) : doorRoom ? t("vsDoorRoom") + " · " + t("vsDoorBadge") : ""}</p>
+                <p id="vs-drawer-title" className="vs-dtitle">{!RI && doorRoom ? t("vsAllDoors") : t("vsAllModels")} <span>{RI ? RI.stations.length : doorRoom ? doorAll.length : 0}</span></p>
               </div>
-              <p className="vs-dnote">{RI ? (roomIsle === "steel" ? t("vsSteelStationLede") : t("vsStationLede")) : ""}</p>
+              <p className="vs-dnote">{RI ? (roomIsle === "steel" ? t("vsSteelStationLede") : t("vsStationLede")) : doorRoom ? t("vsDoorDrawerLede") : ""}</p>
               <button type="button" className="vs-icon" onClick={() => toggleDrawer(false)} aria-label={t("close")}><Icon name="close" size={16} /></button>
             </div>
             <div className="vs-dscroll">
@@ -15447,6 +15975,45 @@ const ShowroomPage = () => {
                   </div>
                 </div>
               ))}
+              {/* the Door Hall: every door, section by section, in the colour (and list) chosen where it comes in it */}
+              {!RI && doorRoom ? DOOR_SECTIONS.map((sec) => {
+                const items = doorAll.filter((o) => sec.types.includes(o.m.type));
+                return items.length ? (
+                  <div key={sec.id} className="vs-dgroup">
+                    <p className="vs-sgroup-label">{x(sec.title)} <span>{items.length}</span></p>
+                    <div className="vs-cards" role="list">
+                      {items.map((o) => {
+                        const r = doorRowOf(o, doorRow.doorCol, doorRow.listCol), on = o.m.code === doorRow.code;
+                        return (
+                          <div key={o.key} role="listitem" className="vs-card vs-dcard" data-on={on ? "true" : "false"} data-busy={on && doorBusy ? "true" : "false"}>
+                            <button type="button" className="vs-card-main" aria-pressed={on} onClick={() => { chooseDoor(r.slug); setDrawer(false); }} data-vs-door-card={o.key}>
+                              <span className="vs-card-img bg-[#F4F3F0]">
+                                <Photo key={r.slug} src={pImg(r, 0, 360)} alt="" tone={PLATE} className="h-full w-full object-contain no-dim" />
+                                <i className="vs-spin" aria-hidden="true" />
+                              </span>
+                              <span className="vs-card-name">{o.name}</span>
+                              <span className="vs-card-sub">{x(r.colour)}</span>
+                              <span className="vs-card-size">{x(doorTypeLabel(o.m.type))}</span>
+                              <span className="vs-card-price">{rp(o.price)}</span>
+                            </button>
+                            <div className="vs-card-cols" role="group" aria-label={t("colour")}>
+                              {o.colours.map((c) => {
+                                const rc = doorRowOf(o, c, r.listCol);
+                                return (
+                                  <button key={c} type="button" className="vs-col" aria-pressed={on && rc.slug === doorRow.slug} title={x(DOOR_COLOUR[c])}
+                                    aria-label={o.name + " · " + x(rc.colour)} onClick={() => { chooseDoor(rc.slug); setDrawer(false); }}>
+                                    <i style={{ background: o.m.cols[c] }} />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null;
+              }) : null}
             </div>
           </div>
 
@@ -15480,19 +16047,43 @@ const ShowroomPage = () => {
               <p className="vs-meta" hidden={!p.model}>{t("model")} {p.model}{p.colour ? " · " + x(p.colour) : ""}{p.brand ? " · " + p.brand : ""}</p>
               <p className="vs-text">{x(p.short || p.material)}</p>
               <p className="vs-price">{rp(p.price)}{unit ? <small> {x(unit)}</small> : null}</p>
-              <p className="vs-stock"><span className="vs-dot" data-stock={stockOf(p)} />{t(stockOf(p))}{stores ? " · " + stores : ""}</p>
+              <p className="vs-stock" hidden={isDoor}><span className="vs-dot" data-stock={stockOf(p)} />{t(stockOf(p))}{stores ? " · " + stores : ""}</p>
+              {/* a door: the product code its colour, list and opening make */}
+              <p className="vs-code" hidden={!isDoor} aria-live="polite"><span>{t("vsCode")}</span><b data-vs-door-code="">{isDoor ? doorSel.code : ""}</b></p>
 
               <div className="vs-buy">
-                <button type="button" className="vs-cta" data-added={added ? "" : undefined} onClick={() => addNow(p, f)}>
+                <button type="button" className="vs-cta" data-added={added ? "" : undefined} onClick={() => (isDoor ? addDoor() : addNow(p, f))}>
                   {added ? <><Icon name="check" size={14} /><span>{t("inYourBag")}</span></> : <span>{t("addToCart")}</span>}
                 </button>
-                <button type="button" className="vs-cta-alt" onClick={() => toShop(p)}>
+                <button type="button" className="vs-cta-alt" onClick={() => toShop(p)} hidden={isDoor}>
                   <span>{t("vsViewInShop")}</span><Icon name="arrow" size={14} />
                 </button>
+                {/* a door: its own page, in the colour, list and opening chosen (the Door Hall's door, which leaving the room
+                    — on the way there — does not change, as it does what the panel holds) */}
+                <a href={doorRow ? doorHref(doorRow, doorSel.id) : "#/shop/doors"} className="vs-cta-alt" hidden={!isDoor} onClick={leave} data-vs-door-page="">
+                  <span>{t("vsDoorPage")}</span><Icon name="arrow" size={14} />
+                </a>
                 {/* the sink in the room is in 3D: turn round it on its island */}
                 <button type="button" className="vs-3d-go" aria-pressed={inspecting} onClick={inspecting ? endInspect : startInspect} hidden={!sinkHere}>
                   <VsTurn size={16} /><span>{inspecting ? t("vsInspectEnd") : t("vsInspect")}</span>
                 </button>
+              </div>
+
+              {/* the Door Hall's door: seen from in front, either side or close to; another door; its colour, list and opening */}
+              <div className="vs-block vs-door" hidden={!isDoor} data-vs-door-panel="">
+                <p className="vs-label">{t("vsDoorViews")}</p>
+                <div className="vs-seg vs-door-views" role="group" aria-label={t("vsDoorViews")}>
+                  {DOOR_VIEWS.map(([k, label]) => (
+                    <button key={k} type="button" onClick={() => viewDoor(k)} data-vs-door-view={k}>{t(label)}</button>
+                  ))}
+                </div>
+                <button type="button" className="vs-cta-alt vs-choose" onClick={() => toggleDrawer(true)} aria-controls="vs-drawer">
+                  <VsGrid size={15} /><span>{t("vsChooseDoor")}</span><span className="vs-num">{doorAll.length}</span>
+                </button>
+                {isDoor && doorG ? (
+                  <DoorChoose g={doorG} row={doorRow} c={doorRow.doorCol} l={doorRow.listCol} sel={doorSel}
+                    onColour={(c) => chooseDoor(doorRowOf(doorG, c, doorRow.listCol).slug)} onList={(l) => chooseDoor(doorRowOf(doorG, doorRow.doorCol, l).slug)} onHand={setDoorHand} />
+                ) : null}
               </div>
 
               {/* an island: any of its room's sinks, fitted there in turn, the kitchen round it in the palette that suits it — and how it stands */}
@@ -15510,7 +16101,7 @@ const ShowroomPage = () => {
                 </div>
               </div>
 
-              <div className="vs-block" hidden={siblings.length < 2}>
+              <div className="vs-block" hidden={isDoor || siblings.length < 2}>
                 <p className="vs-label">{t("colour")}</p>
                 <div className="vs-swatches">
                   {siblings.map((sib) => (
@@ -15520,7 +16111,7 @@ const ShowroomPage = () => {
                   ))}
                 </div>
               </div>
-              <div className="vs-block" hidden={siblings.length > 1}>
+              <div className="vs-block" hidden={isDoor || siblings.length > 1}>
                 <p className="vs-label">{t("finish")}</p>
                 <div className="vs-swatches">
                   {(siblings.length > 1 ? [] : p.finishes).map((q) => (
@@ -15545,6 +16136,12 @@ const ShowroomPage = () => {
                 <p>{t("vsSteelSource")}</p>
               </div>
               <p className="vs-fine" hidden={!stationHere}>{t("vsPaletteNote")}</p>
+              {/* a door: what the door in the room is, and what the price list does not say */}
+              <div className="vs-fine vs-door-note" hidden={!isDoor} data-vs-door-note="">
+                <p>{t("vsDoorNote")}</p>
+                <p hidden={!doorFailed}>{t("vsDoorFailed")}</p>
+                <p>{x(DOOR_ASK)} <a href={"#/contact/" + (doorRow ? doorRow.slug : p.slug)} onClick={leave} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a></p>
+              </div>
 
               <div className="vs-block" hidden={!recs.length}>
                 <p className="vs-label">{t("vsPairs")}</p>
@@ -15575,6 +16172,10 @@ const ShowroomPage = () => {
           </aside>
         </div>
       </section>
+
+      {/* the Wellup Door Hall on the page: the same door, choices and details — for a phone, a browser that cannot draw the room, or a quick look */}
+      {doorG ? <VsDoorHall row={doorRow} g={doorG} sel={doorSel} all={doorAll} onDoor={chooseDoor} onHand={setDoorHand}
+        onAdd={addDoor} added={justAdded === doorRow.slug + "|" + doorSel.id} phase={phase} progress={progress} onEnter={enterDoors} /> : null}
 
       {/* the same pieces as a plain list, room by room: for a quick look, a slow phone, or no 3D at all */}
       <section id="vs-list" className="mx-auto max-w-site px-5 pb-[110px] pt-[100px] md:px-10 md:pb-[170px] md:pt-[150px]">
@@ -19068,7 +19669,7 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
             )}
             {/* the virtual showroom, where it holds this door: opened at it, in the colour chosen */}
             {showroom ? (
-              <a href={"#/virtual-showroom/" + row.slug} data-door-showroom=""
+              <a href={"#/virtual-showroom/" + row.slug + (sel.id === "L" ? "/l" : "")} data-door-showroom=""
                 className="mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
                 <VsTurn size={15} /><span className="u">{x({ en: "Preview in the virtual showroom", id: "Pratinjau di showroom virtual" })}</span>
               </a>

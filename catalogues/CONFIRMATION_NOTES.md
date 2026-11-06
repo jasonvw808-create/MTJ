@@ -1,6 +1,6 @@
 # Items to confirm before print
 
-The two catalogue volumes use only the facts in the supplied records: the granite listings and the stainless steel **Price List 2024 (14 August 2024)**, as held in `index.html` (`GRANITE`, `STAINLESS`), and the measurements the site took from the supplied product photographs (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`). Where the source is unclear or inconsistent, nothing was guessed. The value is marked **†** in the catalogue and listed below.
+The two kitchen sink volumes use only the facts in the supplied records: the granite listings and the stainless steel **Price List 2024 (14 August 2024)**, as held in `index.html` (`GRANITE`, `STAINLESS`), and the measurements the site took from the supplied product photographs (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`). Where the source is unclear or inconsistent, nothing was guessed. The value is marked **†** in the catalogue and listed below.
 
 ## General
 
@@ -39,9 +39,27 @@ The two catalogue volumes use only the facts in the supplied records: the granit
 | S10 | All | **Pack and box quantities** are in the price list. | Not printed, since they are trade information. Available to add. |
 | S11 | WL 11 | **The small bowl's depth** is not listed. The price list describes "two bowls and a small bowl"; in the photograph the small bowl sits between the two. | Not stated. The overall height (210 mm) is as listed. |
 
+## Wellup UPVC Door Collection (Volume 03)
+
+The door volume uses only the website's door records (`DOOR_MODELS`, `DOORS` in `index.html`), taken from the Wellup **PRICE LIST 2026 (Door & Lock)**, and the shop's door photographs. It prints no prices, as the kitchen sink volumes do not.
+
+| # | Model | Item | What the catalogue does |
+|---|-------|------|-------------------------|
+| D1 | All | **"1.8mm"** is printed in every door's specification. The price list does not say what it measures. | Printed as listed ("200 x 70 cm, 1.8mm"), marked †, with a note that what it measures is not stated. |
+| D2 | All | **The size (200 x 70 cm).** The price list does not say whether it is the door alone or the door with its frame, nor what opening a door needs. | Printed as listed, with the same † note. The front view is the outline at the listed size, as on the website. |
+| D3 | All | **R and L.** Every model is listed in R and in L, each with its own product code. The price list does not show which way each opens. | Both are listed with their codes. The size page says the price list does not show which way R or L opens, and asks readers to check with the store. |
+| D4 | PT 409 / WL 004 | **Dark Grey L.** The price list's last PT 409 row, WELUP-DPT0203006, names the PT 709 / WL 007. No picture shows that door, and the store asked that nothing without a picture be shown. | The code is not printed. The PT 409 in Dark Grey is "R only †" on its page, the colours page, the codes page and the index. Confirm the code. |
+| D5 | All | **Handles and locks.** The photographs show a lever handle on every door. No handle or lock is listed with the doors. | The size page and the notes say the handle and lock are not stated. |
+| D6 | All | **Stock, delivery, installation, warranty and whether the frame (kusen) is included** are not in the price list. | Listed as not stated, with "Contact us for details". |
+| D7 | PT 109, PT 409, PT 709, PT 809, PT 909 | **No photographs were supplied.** Their pictures are the price list's own, which are small (some 370 px tall). | Used, placed smaller than the photographed doors, with "Pictures from the Wellup price list" and a † note on each page. They print soft: replace them when photographs arrive. |
+| D8 | PT 111 | **The price list's PT 111 picture is the PT 113's.** | The PT 111's own photographs are used, with a † note. |
+| D9 | PT 2602 / WL 018 | **The cover and introduction pictures** are visualisations: the supplied photograph of the PT 2602 in Dark Grey with a black list, cut out and set into a rendered hallway. | The notes say so. The room, the console and what stands on it are styling. |
+| D10 | All | **Bahasa Indonesia edition.** Translated with AI and not checked by a native speaker. Colour names stay as the price list prints them (White, Brown, Dark Grey). | Have it proofread before printing. |
+
 ## Data sources
 
 - Granite: `GRANITE` records in `index.html` (6 models; 17 colourways).
 - Stainless steel: `STAINLESS` records in `index.html`, transcribed from the Price List 2024 (25 models: 11 Pressed, 14 Hand Made).
 - Shapes, bowls, drainboards and fittings: the measurement tables in `index.html` (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`), taken from the supplied product photographs.
-- Prices are not included in either volume, as in the original catalogues.
+- Doors: `DOOR_MODELS` and `DOORS` records in `index.html`, from the Wellup PRICE LIST 2026 (Door & Lock): 19 models, 63 colourways and lists, 125 product codes (D4). Photographs: `img/doors` on the website, and at full size in `images/doors` (made by `source/tools/door_photos.py`).
+- Prices are not included in any volume, as in the original catalogues.

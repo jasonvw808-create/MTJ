@@ -1,5 +1,5 @@
-KITCHEN SINK CATALOGUES: THE WEBSITE'S COPY
-===========================================
+THE CATALOGUES: THE WEBSITE'S COPY
+==================================
 
 This folder holds what the website (index.html) shows and offers for download:
 
@@ -7,7 +7,11 @@ This folder holds what the website (index.html) shows and offers for download:
   MTJ_Granite_Kitchen_Sink_Catalogue_ID.pdf           Volume 01, Granite, Bahasa Indonesia
   MTJ_Stainless_Steel_Kitchen_Sink_Catalogue.pdf      Volume 02, Stainless Steel, English
   MTJ_Stainless_Steel_Kitchen_Sink_Catalogue_ID.pdf   Volume 02, Stainless Steel, Bahasa Indonesia
-  img/pages/<granite|stainless>-<en|id>-1..3.jpg      three pages of each PDF, for "Look inside"
+  MTJ_Wellup_UPVC_Door_Catalogue.pdf                  Volume 03, Wellup UPVC Doors, English
+  MTJ_Wellup_UPVC_Door_Catalogue_ID.pdf               Volume 03, Wellup UPVC Doors, Bahasa Indonesia
+  img/pages/<granite|stainless|doors>-<en|id>-1..3.jpg   three pages of each PDF, for "Look inside"
+                                                      (the door catalogue's cover and its page 03 are on
+                                                      the Catalogue page)
   img/here.gif                                        a 1-pixel marker: when the site is opened from a disk,
                                                       it tells the site that this folder is present
 
@@ -17,15 +21,20 @@ expects. The print editions, with 3 mm bleed, are only in catalogues/pdf/.
 
 TO UPDATE THEM
 --------------
-1. Rebuild the catalogues with the generator in catalogues/source/ (see catalogues/README.md):
+1. Rebuild the catalogues with the generator in catalogues/source/ (see catalogues/README.md). The kitchen
+   sinks:
 
      layout/make_catalogues.sh <renders> <photos> <logos> <work dir> <pdf dir>
 
-2. Copy them to the website:
+   The doors, from the website's own door records (given index.html, it reads them again first):
 
-     python layout/publish_site.py <pdf dir> <work dir> <website folder>
+     layout/make_door_catalogue.sh <images/doors> <images/editorial> <logos> <work dir> <pdf dir> [index.html]
 
-   This copies the four PDFs here and makes the look-inside pictures. It also writes into index.html each
+2. Copy them to the website (all three volumes, or only those named: granite, stainless, doors):
+
+     python layout/publish_site.py <pdf dir> <work dir> <website folder> [volume ...]
+
+   This copies the PDFs here and makes the look-inside pictures. It also writes into index.html each
    PDF's page count and file size (KS_PDF_META) and every model's page number (KS_PDF_PAGES), so that
    "View in the catalogue" opens the right page.
 

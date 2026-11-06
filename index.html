@@ -653,6 +653,10 @@
     transform: scaleX(var(--p, 0)); transition: transform 0.3s linear, opacity 0.6s; }
   .vs-stage[data-phase="ready"] .vs-enter-bar { opacity: 0; }
   .vs-link { font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(var(--ink) / 0.86); }
+  /* the way into the Door Hall, after the way into the showroom, in bronze; on a phone each way on a line of its own,
+     clear of the page's own buttons in the corner */
+  .vs-link-door { color: rgb(var(--accent)); }
+  @media (max-width: 767px) { .vs-go { margin-top: 26px; row-gap: 14px; } .vs-go .vs-link { flex: 0 0 100%; } }
   .vs-note { margin-top: 22px; max-width: 54ch; padding-left: 14px; border-left: 1px solid rgb(var(--accent) / 0.6); font-size: 13.5px; line-height: 1.7; color: rgb(var(--ink) / 0.75); }
   @media (min-width: 768px) { .vs-intro-in { padding: 0 40px 64px; } }
   @media (max-width: 767px) {
@@ -15791,13 +15795,13 @@ const ShowroomPage = () => {
                 <button type="button" className="vs-enter" onClick={() => setAttempt((a) => a + 1)} hidden={phase !== "failed"}>
                   <span>{t("vsRetry")}</span>
                 </button>
+                {/* straight into the Door Hall, at its door — or, where the room cannot be shown (or is still being made
+                    ready), to the Door Hall on the page; first, in bronze, after the way into the showroom */}
+                <a href="#vs-doors" className="vs-link vs-link-door" hidden={!doorG} data-vs-doors-link="" onClick={(e) => { e.preventDefault(); if (phase === "ready") enter("doors"); else toDoorHall(); }}>
+                  <span className="u">{t("vsDoorsLink")}</span>
+                </a>
                 <a href="#vs-list" className="vs-link" onClick={(e) => { e.preventDefault(); const el = document.getElementById("vs-list"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth" }); }}>
                   <span className="u">{t("vsBrowse")}</span>
-                </a>
-                {/* straight into the Door Hall, at its door — or, where the room cannot be shown (or is still being made
-                    ready), to the Door Hall on the page */}
-                <a href="#vs-doors" className="vs-link" hidden={!doorG} data-vs-doors-link="" onClick={(e) => { e.preventDefault(); if (phase === "ready") enter("doors"); else toDoorHall(); }}>
-                  <span className="u">{t("vsDoorsLink")}</span>
                 </a>
               </div>
               <p className="vs-note" role="status" hidden={phase !== "failed" && phase !== "unsupported"}>

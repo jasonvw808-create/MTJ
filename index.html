@@ -7801,14 +7801,14 @@ const T = {
                    id: "Seberapa jauh tepinya menekuk ke bawah, kedalaman kanal dan deknya, lengkung tepinya dan kemiringan dasarnya tidak terlihat dari atas: dipakai nilai yang umum, menunggu konfirmasi dari pabrik." },
   vsSteelHand3d: { en: "The ledge inside its bowl, the rounds of its edges and the fall of its floor cannot be seen from above: typical values are used, to be confirmed with the manufacturer. The price list does not say how it is installed; it is shown resting on the stone by its flat edge.",
                    id: "Tepian di dalam ruang cucinya, lengkung tepinya dan kemiringan dasarnya tidak terlihat dari atas: dipakai nilai yang umum, menunggu konfirmasi dari pabrik. Daftar harga tidak menyebutkan cara pemasangannya; ditampilkan bertumpu di atas batu dengan tepi datarnya." },
-  vsSteelSource: { en: "Price and specification: Price List 2024, 14 August 2024.", id: "Harga dan spesifikasi: Price List 2024, 14 Agustus 2024." },
+  vsSteelSource: { en: "Price: PL Putus price list. Specification: Price List 2024, 14 August 2024.", id: "Harga: daftar harga PL Putus. Spesifikasi: Price List 2024, 14 Agustus 2024." },
   /* the stainless steel sinks in the shop */
   askInStore:    { en: "Ask in store",      id: "Tanyakan di toko" },
   askInStoreLong:{ en: "Stock is not listed — ask at any of our stores.", id: "Stok tidak tercantum — tanyakan di toko kami." },
-  steelIntro:    { en: "Pressed and hand made stainless steel kitchen sinks from wellup and LUCKY PRO — twenty-five models, with the prices and specifications of our Price List 2024.",
-                   id: "Bak cuci dapur stainless steel pressed dan hand made dari wellup dan LUCKY PRO — dua puluh lima model, dengan harga dan spesifikasi dari Price List 2024 kami." },
-  steelNote:     { en: "Prices and specifications are those of the Price List 2024 (14 August 2024). Stock is not listed: ask in store.",
-                   id: "Harga dan spesifikasi sesuai Price List 2024 (14 Agustus 2024). Stok tidak tercantum: tanyakan di toko." },
+  steelIntro:    { en: "Pressed and hand made stainless steel kitchen sinks from wellup and LUCKY PRO — twenty-five models, with the prices of our PL Putus price list and the specifications of our Price List 2024.",
+                   id: "Bak cuci dapur stainless steel pressed dan hand made dari wellup dan LUCKY PRO — dua puluh lima model, dengan harga dari daftar harga PL Putus dan spesifikasi dari Price List 2024 kami." },
+  steelNote:     { en: "Prices are those of the PL Putus price list; specifications, of the Price List 2024 (14 August 2024). Stock is not listed: ask in store.",
+                   id: "Harga sesuai daftar harga PL Putus; spesifikasi sesuai Price List 2024 (14 Agustus 2024). Stok tidak tercantum: tanyakan di toko." },
   vs3dNote:      { en: "In the room this sink is a 3D model built from its product photographs. What they show from above — its outline, rim, bowls and drain — is measured from them; its depth and wall thickness, which a photograph taken from above cannot show, are typical values for this kind of sink — to be confirmed against the product.",
                    id: "Di ruangan ini, bak cuci ini adalah model 3D yang dibuat dari foto produknya. Yang terlihat dari atas — bentuk luar, bibir, ruang cuci dan saluran pembuangannya — diukur dari foto tersebut; kedalaman dan ketebalan dindingnya, yang tidak terlihat pada foto dari atas, memakai nilai yang umum untuk jenis bak cuci ini — menunggu konfirmasi dengan produk aslinya." },
 };
@@ -8290,12 +8290,14 @@ const brandOf = (p) => p.brand || BRAND_SHORT + " " + tx(lineLabel(p.line), "en"
 /* ═══════════════════════════════════════════════════════════════════════════
    GRANITE KITCHEN SINK — seventeen products, one per supplied photograph
    Dimensions, bowl count and installation type are read from the model code
-   and checked against each photograph. PRICE, STOCK, RATING, REVIEWS and
-   WARRANTY are PLACEHOLDERS — none of that was supplied. Edit them here.
+   and checked against each photograph. PRICE is the store's PL Putus price
+   list (supplied on 6 November 2026; its GDU 8146 is the GDU 8145 here, and its
+   GST 7546 Black and White are the Pearl Black and the Pure White). STOCK,
+   RATING, REVIEWS and WARRANTY are PLACEHOLDERS — none of that was supplied.
    ═══════════════════════════════════════════════════════════════════════════ */
 const GRANITE = [
   { slug:"gdu-8145-pearl-black", name:"GDU 8145 Pearl Black", model:"GDU 8145", cat:"sinks", line:"signature",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3950000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:4885000, unit:"each",
     photos:["gdu-8145-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Double bowl · Undermount · 810 × 450 mm", id:"Dua ruang · Undermount · 810 × 450 mm" },
@@ -8312,7 +8314,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gdu-8145-pure-white", name:"GDU 8145 Pure White", model:"GDU 8145", cat:"sinks", line:"signature",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3950000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:4885000, unit:"each",
     photos:["gdu-8145-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Double bowl · Undermount · 810 × 450 mm", id:"Dua ruang · Undermount · 810 × 450 mm" },
@@ -8329,7 +8331,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gdu-8145-titanium-grey", name:"GDU 8145 Titanium Grey", model:"GDU 8145", cat:"sinks", line:"signature",
-    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3950000, unit:"each",
+    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:4885000, unit:"each",
     photos:["gdu-8145-titanium-grey"], fit:"contain",
     material:{ en:"Granite composite · Titanium Grey", id:"Komposit granit · Abu Titanium" },
     short:{ en:"Double bowl · Undermount · 810 × 450 mm", id:"Dua ruang · Undermount · 810 × 450 mm" },
@@ -8346,7 +8348,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Titanium Grey",id:"Abu Titanium"}] ] },
   { slug:"gst-6045-pearl-black", name:"GST 6045 Pearl Black", model:"GST 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:2450000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3350000, unit:"each",
     photos:["gst-6045-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Single bowl · Top-mount · 600 × 450 mm", id:"Satu ruang · Pasang atas · 600 × 450 mm" },
@@ -8363,7 +8365,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gst-6045-pure-white", name:"GST 6045 Pure White", model:"GST 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:2450000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3350000, unit:"each",
     photos:["gst-6045-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Single bowl · Top-mount · 600 × 450 mm", id:"Satu ruang · Pasang atas · 600 × 450 mm" },
@@ -8380,7 +8382,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gst-6045-titanium-grey", name:"GST 6045 Titanium Grey", model:"GST 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:2450000, unit:"each",
+    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3350000, unit:"each",
     photos:["gst-6045-titanium-grey"], fit:"contain",
     material:{ en:"Granite composite · Titanium Grey", id:"Komposit granit · Abu Titanium" },
     short:{ en:"Single bowl · Top-mount · 600 × 450 mm", id:"Satu ruang · Pasang atas · 600 × 450 mm" },
@@ -8397,7 +8399,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Titanium Grey",id:"Abu Titanium"}] ] },
   { slug:"gst-7546-pearl-black", name:"GST 7546 Pearl Black", model:"GST 7546", cat:"sinks", line:"signature",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:4950000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:7075000, unit:"each",
     photos:["gst-7546-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Single bowl · Top-mount · 750 × 460 mm", id:"Satu ruang · Pasang atas · 750 × 460 mm" },
@@ -8414,7 +8416,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gst-7546-pure-white", name:"GST 7546 Pure White", model:"GST 7546", cat:"sinks", line:"signature",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:4950000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:7250000, unit:"each",
     photos:["gst-7546-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Single bowl · Top-mount · 750 × 460 mm", id:"Satu ruang · Pasang atas · 750 × 460 mm" },
@@ -8431,7 +8433,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gsu-6045-pearl-black", name:"GSU 6045 Pearl Black", model:"GSU 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:2650000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3350000, unit:"each",
     photos:["gsu-6045-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Single bowl · Undermount · 600 × 450 mm", id:"Satu ruang · Undermount · 600 × 450 mm" },
@@ -8448,7 +8450,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gsu-6045-pure-white", name:"GSU 6045 Pure White", model:"GSU 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:2650000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3350000, unit:"each",
     photos:["gsu-6045-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Single bowl · Undermount · 600 × 450 mm", id:"Satu ruang · Undermount · 600 × 450 mm" },
@@ -8465,7 +8467,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gsu-6045-titanium-grey", name:"GSU 6045 Titanium Grey", model:"GSU 6045", cat:"sinks", line:"essential",
-    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:2650000, unit:"each",
+    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3350000, unit:"each",
     photos:["gsu-6045-titanium-grey"], fit:"contain",
     material:{ en:"Granite composite · Titanium Grey", id:"Komposit granit · Abu Titanium" },
     short:{ en:"Single bowl · Undermount · 600 × 450 mm", id:"Satu ruang · Undermount · 600 × 450 mm" },
@@ -8482,7 +8484,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Titanium Grey",id:"Abu Titanium"}] ] },
   { slug:"gsu-7545-pearl-black", name:"GSU 7545 Pearl Black", model:"GSU 7545", cat:"sinks", line:"signature",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3150000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3925000, unit:"each",
     photos:["gsu-7545-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Single bowl · Undermount · 750 × 450 mm", id:"Satu ruang · Undermount · 750 × 450 mm" },
@@ -8499,7 +8501,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gsu-7545-pure-white", name:"GSU 7545 Pure White", model:"GSU 7545", cat:"sinks", line:"signature",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3150000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3925000, unit:"each",
     photos:["gsu-7545-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Single bowl · Undermount · 750 × 450 mm", id:"Satu ruang · Undermount · 750 × 450 mm" },
@@ -8516,7 +8518,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gsu-7545-titanium-grey", name:"GSU 7545 Titanium Grey", model:"GSU 7545", cat:"sinks", line:"signature",
-    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3150000, unit:"each",
+    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3925000, unit:"each",
     photos:["gsu-7545-titanium-grey"], fit:"contain",
     material:{ en:"Granite composite · Titanium Grey", id:"Komposit granit · Abu Titanium" },
     short:{ en:"Single bowl · Undermount · 750 × 450 mm", id:"Satu ruang · Undermount · 750 × 450 mm" },
@@ -8533,7 +8535,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Titanium Grey",id:"Abu Titanium"}] ] },
   { slug:"gsu-8045-pearl-black", name:"GSU 8045 Pearl Black", model:"GSU 8045", cat:"sinks", line:"signature",
-    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:3450000, unit:"each",
+    colour:{ en:"Pearl Black", id:"Hitam Mutiara" }, colourId:"pearl", price:4355000, unit:"each",
     photos:["gsu-8045-pearl-black"], fit:"contain",
     material:{ en:"Granite composite · Pearl Black", id:"Komposit granit · Hitam Mutiara" },
     short:{ en:"Single bowl · Undermount · 800 × 450 mm", id:"Satu ruang · Undermount · 800 × 450 mm" },
@@ -8550,7 +8552,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pearl Black",id:"Hitam Mutiara"}] ] },
   { slug:"gsu-8045-pure-white", name:"GSU 8045 Pure White", model:"GSU 8045", cat:"sinks", line:"signature",
-    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:3450000, unit:"each",
+    colour:{ en:"Pure White", id:"Putih Murni" }, colourId:"pure", price:4355000, unit:"each",
     photos:["gsu-8045-pure-white"], fit:"contain",
     material:{ en:"Granite composite · Pure White", id:"Komposit granit · Putih Murni" },
     short:{ en:"Single bowl · Undermount · 800 × 450 mm", id:"Satu ruang · Undermount · 800 × 450 mm" },
@@ -8567,7 +8569,7 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Pure White",id:"Putih Murni"}] ] },
   { slug:"gsu-8045-titanium-grey", name:"GSU 8045 Titanium Grey", model:"GSU 8045", cat:"sinks", line:"signature",
-    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:3450000, unit:"each",
+    colour:{ en:"Titanium Grey", id:"Abu Titanium" }, colourId:"titan", price:4355000, unit:"each",
     photos:["gsu-8045-titanium-grey"], fit:"contain",
     material:{ en:"Granite composite · Titanium Grey", id:"Komposit granit · Abu Titanium" },
     short:{ en:"Single bowl · Undermount · 800 × 450 mm", id:"Satu ruang · Undermount · 800 × 450 mm" },
@@ -8588,8 +8590,9 @@ CATALOG.push(...GRANITE);
 
 /* ═══════════════════════════════════════════════════════════════════════════
    STAINLESS STEEL KITCHEN SINK — the twenty-five in the Price List 2024
-   (14 August 2024): eleven pressed, fourteen hand made. PRICE and every
-   SPECIFICATION are the price list's, as printed. Stock is not listed:
+   (14 August 2024): eleven pressed, fourteen hand made. Every SPECIFICATION
+   is that price list's, as printed; every PRICE is the store's PL Putus price
+   list's (supplied on 6 November 2026, where the WL 12 is printed WL 12 B). Stock is not listed:
    each shows "Ask in store". No ratings, reviews or sales were supplied,
    so none are shown; nor a warranty. The brand is the mark printed on each
    sink in its photograph (LPS: LUCKY PRO; WL and W: wellup). The bowls
@@ -8607,7 +8610,7 @@ const STAINLESS = [
   {"slug":"lps-8643-a","name":"LPS 8643 A","model":"LPS 8643 A","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"LUCKY PRO","price":280000,"unit":"each","photos":["lps-8643-a"],"fit":"contain","material":{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},"short":{"en":"Pressed · Mat Polished · 860 × 430 × 145 mm","id":"Pressed · Mat Polished · 860 × 430 × 145 mm"},"roomSub":{"en":"Mat Polished · 860 × 430 mm","id":"Mat Polished · 860 × 430 mm"},"desc":{"en":"A LUCKY PRO pressed kitchen sink in stainless steel 201: single bowl with drainboard, Mat Polished finish, inset edge. Size ± 860 × 430 × 145 mm; sheet thickness ± 0.4 mm. Packed 1 per pack, 10 per box.","id":"Bak cuci dapur pressed LUCKY PRO dari stainless steel 201: satu ruang dengan papan tiris, finishing Mat Polished, Inset Edge. Ukuran ± 860 × 430 × 145 mm; ketebalan ± 0.4 mm. Isi 1 per pack, 10 per dus."},"finishes":[SSF.mat],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},{"en":"Single bowl with drainboard","id":"Satu ruang dengan papan tiris"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"LUCKY PRO"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Mat Polished"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.4 mm"],[{"en":"Size","id":"Ukuran"},"± 860 x 430 x 145 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"10"]],"dims":[860,430,145],"dimsNote":false,"bowls":"oneD","grade":"201","edge":"Inset Edge","extra":null},
   {"slug":"lps-9643-a","name":"LPS 9643 A","model":"LPS 9643 A","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"LUCKY PRO","price":290000,"unit":"each","photos":["lps-9643-a"],"fit":"contain","material":{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},"short":{"en":"Pressed · Mat Polished · 960 × 430 × 145 mm","id":"Pressed · Mat Polished · 960 × 430 × 145 mm"},"roomSub":{"en":"Mat Polished · 960 × 430 mm","id":"Mat Polished · 960 × 430 mm"},"desc":{"en":"A LUCKY PRO pressed kitchen sink in stainless steel 201: single bowl with drainboard, Mat Polished finish, inset edge. Size ± 960 × 430 × 145 mm; sheet thickness ± 0.33 mm. Packed 1 per pack, 10 per box.","id":"Bak cuci dapur pressed LUCKY PRO dari stainless steel 201: satu ruang dengan papan tiris, finishing Mat Polished, Inset Edge. Ukuran ± 960 × 430 × 145 mm; ketebalan ± 0.33 mm. Isi 1 per pack, 10 per dus."},"finishes":[SSF.mat],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},{"en":"Single bowl with drainboard","id":"Satu ruang dengan papan tiris"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"LUCKY PRO"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Mat Polished"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.33 mm"],[{"en":"Size","id":"Ukuran"},"± 960 x 430 x 145 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"10"]],"dims":[960,430,145],"dimsNote":false,"bowls":"oneD","grade":"201","edge":"Inset Edge","extra":null},
   {"slug":"lps-10050-a","name":"LPS 10050 A","model":"LPS 10050 A","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"LUCKY PRO","price":510000,"unit":"each","photos":["lps-10050-a"],"fit":"contain","material":{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},"short":{"en":"Pressed · Mat Polished · 1000 × 500 × 160 mm","id":"Pressed · Mat Polished · 1000 × 500 × 160 mm"},"roomSub":{"en":"Mat Polished · 1000 × 500 mm","id":"Mat Polished · 1000 × 500 mm"},"desc":{"en":"A LUCKY PRO pressed kitchen sink in stainless steel 201: single bowl with drainboard, Mat Polished finish, inset edge. Size ± 1000 × 500 × 160 mm; sheet thickness ± 0.5 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed LUCKY PRO dari stainless steel 201: satu ruang dengan papan tiris, finishing Mat Polished, Inset Edge. Ukuran ± 1000 × 500 × 160 mm; ketebalan ± 0.5 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.mat],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},{"en":"Single bowl with drainboard","id":"Satu ruang dengan papan tiris"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"LUCKY PRO"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Mat Polished"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.5 mm"],[{"en":"Size","id":"Ukuran"},"± 1000 x 500 x 160 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[1000,500,160],"dimsNote":false,"bowls":"oneD","grade":"201","edge":"Inset Edge","extra":null},
-  {"slug":"wl-03","name":"WL 03","model":"WL 03","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"wellup","price":610000,"unit":"each","photos":["wl-03"],"fit":"contain","material":{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},"short":{"en":"Pressed · Mat Polished · 600 × 450 × 210 mm","id":"Pressed · Mat Polished · 600 × 450 × 210 mm"},"roomSub":{"en":"Mat Polished · 600 × 450 mm","id":"Mat Polished · 600 × 450 mm"},"desc":{"en":"A wellup pressed kitchen sink in stainless steel 201: single bowl, Mat Polished finish, inset edge. Size ± 600 × 450 × 210 mm; sheet thickness ± 0.6 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed wellup dari stainless steel 201: satu ruang, finishing Mat Polished, Inset Edge. Ukuran ± 600 × 450 × 210 mm; ketebalan ± 0.6 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.mat],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},{"en":"Single bowl","id":"Satu ruang"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"wellup"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Mat Polished"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.6 mm"],[{"en":"Size","id":"Ukuran"},"± 600 x 450 x 210 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[600,450,210],"dimsNote":false,"bowls":"one","grade":"201","edge":"Inset Edge","extra":null},
+  {"slug":"wl-03","name":"WL 03","model":"WL 03","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"wellup","price":640000,"unit":"each","photos":["wl-03"],"fit":"contain","material":{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},"short":{"en":"Pressed · Mat Polished · 600 × 450 × 210 mm","id":"Pressed · Mat Polished · 600 × 450 × 210 mm"},"roomSub":{"en":"Mat Polished · 600 × 450 mm","id":"Mat Polished · 600 × 450 mm"},"desc":{"en":"A wellup pressed kitchen sink in stainless steel 201: single bowl, Mat Polished finish, inset edge. Size ± 600 × 450 × 210 mm; sheet thickness ± 0.6 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed wellup dari stainless steel 201: satu ruang, finishing Mat Polished, Inset Edge. Ukuran ± 600 × 450 × 210 mm; ketebalan ± 0.6 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.mat],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Mat Polished","id":"Stainless Steel 201 · Mat Polished"},{"en":"Single bowl","id":"Satu ruang"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"wellup"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Mat Polished"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.6 mm"],[{"en":"Size","id":"Ukuran"},"± 600 x 450 x 210 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[600,450,210],"dimsNote":false,"bowls":"one","grade":"201","edge":"Inset Edge","extra":null},
   {"slug":"wl-05-a","name":"WL 05 A","model":"WL 05 A","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"wellup","price":1220000,"unit":"each","photos":["wl-05-a"],"fit":"contain","material":{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},"short":{"en":"Pressed · Electroplate · 800 × 500 × 210 mm","id":"Pressed · Electroplate · 800 × 500 × 210 mm"},"roomSub":{"en":"Electroplate · 800 × 500 mm","id":"Electroplate · 800 × 500 mm"},"desc":{"en":"A wellup pressed kitchen sink in stainless steel 201: double bowl, Electroplate finish, inset edge. Size ± 800 × 500 × 210 mm; sheet thickness ± 0.7 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed wellup dari stainless steel 201: dua ruang, finishing Electroplate, Inset Edge. Ukuran ± 800 × 500 × 210 mm; ketebalan ± 0.7 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.electro],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},{"en":"Double bowl","id":"Dua ruang"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"wellup"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Electroplate"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.7 mm"],[{"en":"Size","id":"Ukuran"},"± 800 x 500 x 210 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[800,500,210],"dimsNote":false,"bowls":"two","grade":"201","edge":"Inset Edge","extra":null},
   {"slug":"wl-07","name":"WL 07","model":"WL 07","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"wellup","price":1000000,"unit":"each","photos":["wl-07"],"fit":"contain","material":{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},"short":{"en":"Pressed · Electroplate · 850 × 500 × 210 mm","id":"Pressed · Electroplate · 850 × 500 × 210 mm"},"roomSub":{"en":"Electroplate · 850 × 500 mm","id":"Electroplate · 850 × 500 mm"},"desc":{"en":"A wellup pressed kitchen sink in stainless steel 201: single bowl with drainboard, Electroplate finish, inset edge. Size ± 850 × 500 × 210 mm; sheet thickness ± 0.7 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed wellup dari stainless steel 201: satu ruang dengan papan tiris, finishing Electroplate, Inset Edge. Ukuran ± 850 × 500 × 210 mm; ketebalan ± 0.7 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.electro],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},{"en":"Single bowl with drainboard","id":"Satu ruang dengan papan tiris"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"wellup"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Electroplate"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.7 mm"],[{"en":"Size","id":"Ukuran"},"± 850 x 500 x 210 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[850,500,210],"dimsNote":false,"bowls":"oneD","grade":"201","edge":"Inset Edge","extra":null},
   {"slug":"wl-11","name":"WL 11","model":"WL 11","cat":"steelsinks","section":"pressed","range":{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"},"brand":"wellup","price":1575000,"unit":"each","photos":["wl-11"],"fit":"contain","material":{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},"short":{"en":"Pressed · Electroplate · 930 × 450 × 210 mm","id":"Pressed · Electroplate · 930 × 450 × 210 mm"},"roomSub":{"en":"Electroplate · 930 × 450 mm","id":"Electroplate · 930 × 450 mm"},"desc":{"en":"A wellup pressed kitchen sink in stainless steel 201: two bowls, a small bowl between them, Electroplate finish, inset edge. Size ± 930 × 450 × 210 mm; sheet thickness ± 0.6 mm. Packed 1 per pack, 5 per box.","id":"Bak cuci dapur pressed wellup dari stainless steel 201: dua ruang, dengan ruang kecil di antaranya, finishing Electroplate, Inset Edge. Ukuran ± 930 × 450 × 210 mm; ketebalan ± 0.6 mm. Isi 1 per pack, 5 per dus."},"finishes":[SSF.electro],"stock":[],"ask":true,"noRatings":true,"rating":0,"reviews":0,"sold":0,"added":"2026-10-15","warrantyYears":0,"warrantyText":{"en":"Not stated in the price list","id":"Tidak tercantum di daftar harga"},"feat":[{"en":"Stainless Steel 201 · Electroplate","id":"Stainless Steel 201 · Electroplate"},{"en":"Two bowls, a small bowl between them","id":"Dua ruang, dengan ruang kecil di antaranya"},{"en":"Inset Edge","id":"Inset Edge"}],"spec":[[{"en":"Range","id":"Rangkaian"},{"en":"Pressed Kitchen Sink","id":"Bak Cuci Dapur Pressed"}],[{"en":"Brand","id":"Merek"},"wellup"],[{"en":"Material","id":"Material"},"Stainless Steel 201"],[{"en":"Finish","id":"Finishing"},"Electroplate"],[{"en":"Edge","id":"Tepi"},"Inset Edge"],[{"en":"Thickness","id":"Ketebalan"},"± 0.6 mm"],[{"en":"Size","id":"Ukuran"},"± 930 x 450 x 210 mm"],[{"en":"Pack","id":"Isi per pack"},"1"],[{"en":"Box","id":"Isi per dus"},"5"]],"dims":[930,450,210],"dimsNote":false,"bowls":"wl11","grade":"201","edge":"Inset Edge","extra":null},
@@ -8637,13 +8640,18 @@ CATALOG.push(...STAINLESS);
    with a product code for each; PT 2601 and PT 2602 also with a List Putih
    or List Hitam (the bars between the panes), so twelve codes each. A record
    here is one colour (and list) of a model; its R and L are chosen on its
-   page, each with its own code. 19 models, 63 records, 126 codes.
+   page, each with its own code. 19 models, 63 records; 125 of the list's 126
+   codes are on the website (see DOOR_OFF_WEB).
    The pictures are the shop's photographs, framed alike on the sinks' plate
    (img/doors, 800 x 1000); PT 109, 409, 709, 809 and 909 came without
    photographs and use the price list's own (smaller) pictures. Two things in
    the list are kept as printed and were raised with the shop: its PT 111
    picture is the PT 113 one (the PT 111 photographs are used here), and its
    last PT 409 row (WELUP-DPT0203006) names the PT 709. No locks are listed.
+   That row's code is not put on the website: no picture shows the door it
+   names (a PT 709 with the PT 409's quarter glass at the top), and the store
+   asked that nothing without a picture be shown. So the PT 409 in Dark Grey
+   is offered in R only.
    ═══════════════════════════════════════════════════════════════════════════ */
 const DOOR_COLOUR = {
   white:       { en: "White",     id: "White" },
@@ -8714,6 +8722,9 @@ const doorShort = (m) => m.motif ? doorCap(m.motif)
   : m.look ? doorCap({ en: m.look.en, id: m.look.id })
   : m.lists ? { en: doorCap({ en: DOOR_TYPE[m.type].en, id: "" }).en + ", white or black list", id: "List Putih / List Hitam " + DOOR_TYPE[m.type].as }
   : { en: doorCap({ en: DOOR_TYPE[m.type].en, id: "" }).en, id: DOOR_TYPE[m.type].as };
+/* the list's codes that are not put on the website (see above); a colour without one of its openings is offered in
+   the other only, and says so */
+const DOOR_OFF_WEB = new Set(["WELUP-DPT0203006"]);
 const DOORS = [];
 DOOR_MODELS.forEach((m) => {
   const name = doorName(m), key = doorKey(m);
@@ -8723,13 +8734,17 @@ DOOR_MODELS.forEach((m) => {
     warrantyText: { en: "Not stated in the price list", id: "Tidak tercantum di daftar harga" } };
   const variants = m.lists ? DOOR_ORDER.flatMap((c) => m.lists.map((l) => [c, l])) : DOOR_ORDER.map((c) => [c, null]);
   const extra = { en: m.motif ? ", the glass with " + m.motif.en : m.look ? ", " + m.look.en : "", id: m.motif ? ", kacanya bermotif " + m.motif.id : m.look ? ", " + m.look.id : "" };
+  /* the colours (and lists) of the model offered in one opening only, said in its description */
+  const only = variants.map(([c, l]) => [c, l, ["R", "L"].filter((h) => !DOOR_OFF_WEB.has(doorCodeOf(m, c, l, h)))]).filter(([, , hs]) => hs.length < 2);
+  const onlyEn = only.map(([c, l, hs]) => DOOR_COLOUR[c].en + (l ? ", " + DOOR_LIST[l].en.toLowerCase() : "") + " in " + hs.join(" / ") + " only").join("; ");
+  const onlyId = only.map(([c, l, hs]) => DOOR_COLOUR[c].id + (l ? ", " + DOOR_LIST[l].id : "") + " hanya " + hs.join(" / ")).join("; ");
   variants.forEach(([c, l]) => {
     const id = c + (l ? "-" + l : ""), slug = key + "-" + c + (l ? "-" + l + "-list" : "");
     const col = l ? { en: DOOR_COLOUR[c].en + " · " + DOOR_LIST[l].en, id: DOOR_COLOUR[c].id + " · " + DOOR_LIST[l].id } : DOOR_COLOUR[c];
     const photos = [slug];
     if (m.angles && m.angles.includes(id)) photos.push(slug + "-angle");
     photos.forEach((ph) => { SINK_IMG[ph] = "img/doors/" + ph + ".webp"; });
-    const hands = ["R", "L"].map((h) => ({ id: h, code: doorCodeOf(m, c, l, h) }));
+    const hands = ["R", "L"].map((h) => ({ id: h, code: doorCodeOf(m, c, l, h) })).filter((h) => !DOOR_OFF_WEB.has(h.code));
     const hex = l ? "linear-gradient(135deg, " + m.cols[c] + " 0 50%, " + DOOR_LIST[l].hex + " 50% 100%)" : m.cols[c];
     const typeAs = doorTypeAs(m, l);
     DOORS.push({ ...base, slug, name: name + " " + DOOR_COLOUR[c].en + (l ? ", " + DOOR_LIST[l].en : ""),
@@ -8737,19 +8752,19 @@ DOOR_MODELS.forEach((m) => {
       finishes: [{ id: "door-" + id, name: col, hex }],
       short: doorShort(m),
       desc: { en: "A Wellup UPVC door, " + name + ": " + DOOR_SIZE + ", 1.8mm, " + doorTypeEn(m, null) + extra.en + ". In White, Brown and Dark Grey" +
-                  (m.lists ? ", with a white or black list (List Putih or List Hitam)" : "") + ", each R or L.",
+                  (m.lists ? ", with a white or black list (List Putih or List Hitam)" : "") + ", each R or L" + (onlyEn ? " (" + onlyEn + ")" : "") + ".",
               id: "Pintu UPVC Wellup " + name + ": " + DOOR_SIZE + ", 1.8mm, " + DOOR_TYPE[m.type].as + extra.id + ". Tersedia White, Brown dan Dark Grey" +
-                  (m.lists ? ", dengan List Putih atau List Hitam" : "") + ", masing-masing R atau L." },
+                  (m.lists ? ", dengan List Putih atau List Hitam" : "") + ", masing-masing R atau L" + (onlyId ? " (" + onlyId + ")" : "") + "." },
       feat: [{ en: "UPVC door, " + DOOR_SIZE, id: "Pintu UPVC, " + DOOR_SIZE }, col, { en: doorCap({ en: doorTypeEn(m, l), id: "" }).en, id: typeAs }],
       spec: [[{ en: "Range", id: "Rangkaian" }, { en: "UPVC Door", id: "Pintu UPVC" }], [{ en: "Brand", id: "Merek" }, "Wellup"],
              [{ en: "Model", id: "Model" }, name],
-             [{ en: "Product code (R)", id: "Kode produk (R)" }, hands[0].code], [{ en: "Product code (L)", id: "Kode produk (L)" }, hands[1].code],
+             ...hands.map((h) => [{ en: "Product code (" + h.id + ")", id: "Kode produk (" + h.id + ")" }, h.code]),
              [{ en: "Size", id: "Ukuran" }, DOOR_SIZE],
              [{ en: "Specification", id: "Spesifikasi" }, DOOR_SIZE + ", 1.8mm, " + typeAs],
              [{ en: "Type", id: "Tipe" }, { en: doorCap({ en: doorTypeEn(m, l), id: "" }).en, id: typeAs }],
              [{ en: "Colour", id: "Warna" }, DOOR_COLOUR[c]],
              ...(l ? [[{ en: "List", id: "List" }, { en: DOOR_LIST[l].en, id: DOOR_LIST[l].id }]] : []),
-             [{ en: "Hand", id: "Arah bukaan" }, "R / L"]] });
+             [{ en: "Hand", id: "Arah bukaan" }, hands.map((h) => h.id).join(" / ")]] });
   });
 });
 CATALOG.push(...DOORS);
@@ -15580,8 +15595,8 @@ const SINK_3D_GRAIN = {"pearl":{"albedo":"#3B3B3B","mm":191.3,"grain":"data:imag
 
    One source of truth: everything here is read from the shop's own records
    (CATALOG) — the stainless steel sinks as printed in the Price List 2024,
-   the granite sinks as the shop lists them. Nothing is added to them, and
-   there are no prices in the catalogue: prices stay in the shop.
+   the granite sinks as the shop lists them, and the prices of both from the
+   store's PL Putus price list. Nothing is added to them.
 
    Every picture on these pages is a supplied photograph of the product
    itself — the shop's own product photographs; no rooms, no visualisations.
@@ -16039,18 +16054,19 @@ const KsSinkSet = ({ name, layout = "feature", className = "" }) => {
 /* ── THE KITCHEN SINK CATALOGUE, set out as the door catalogue is ────────────────────────────────────────────
    An introduction of the facts as listed beside a kitchen it could stand in (a visualisation, said to be one);
    every model at a glance; each material's models in sections, with a search and the filters beside them; cards
-   that show what is chosen. Prices: the stainless steel sinks' are the Price List 2024's (14 August 2024) and are
-   shown; the granite sinks' are placeholders in the records (none was supplied), so for those the store is asked. */
-const ksPriced = (m) => m.kind === "steel";
+   that show what is chosen. Prices: every sink's is the store's PL Putus price list's (supplied on 6 November 2026);
+   a model without one would ask the store instead. */
+const ksPriced = (m) => m.rows.every((r) => r.price > 0);
+const KS_PRICE_SOURCE = { en: "As listed in the PL Putus price list", id: "Sesuai daftar harga PL Putus" };
 const ksPriceOf = (m, row = null) => (ksPriced(m) ? (row || m.rows[0]).price : null);
 const KS_PRICE_ASK = { en: "Contact us for price", id: "Hubungi kami untuk harga" };
 const KS_ASK_STEEL = { en: "Stock, delivery, installation and warranty are not stated in the price list.",
                        id: "Stok, pengiriman, pemasangan dan garansi tidak tercantum di daftar harga." };
-const KS_ASK_GRANITE = { en: "Price, stock, delivery, installation and warranty have not been supplied for the granite sinks.",
-                         id: "Harga, stok, pengiriman, pemasangan dan garansi bak cuci granit belum disediakan." };
+const KS_ASK_GRANITE = { en: "Stock, delivery, installation and warranty have not been supplied for the granite sinks.",
+                         id: "Stok, pengiriman, pemasangan dan garansi bak cuci granit belum disediakan." };
 /* a run of values: one, or the lowest to the highest */
 const ksRun = (vals, fmt) => { const v = vals.filter((n) => n != null && !isNaN(n)); if (!v.length) return null; const lo = Math.min(...v), hi = Math.max(...v); return lo === hi ? fmt(lo) : fmt(lo) + " – " + fmt(hi); };
-const ksPriceRun = (list) => { const r = ksRun(list.filter(ksPriced).map((m) => m.rows[0].price), rp); return r ? r.replace(" – Rp ", " – ") : null; };
+const ksPriceRun = (list) => { const r = ksRun(list.filter(ksPriced).flatMap((m) => m.rows.map((row) => row.price)), rp); return r ? r.replace(" – Rp ", " – ") : null; };
 const ksWidthRun = (list) => { const r = ksRun(list.map(ksWidth).filter(Boolean), String); return r ? r + " mm" : null; };
 const ksAnd = (items, lang) => (items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + (lang === "id" ? " dan " : " and ") + items[items.length - 1]);
 /* each material's sections: the granite sinks by how they are fitted, the stainless steel sinks by the price list's
@@ -16780,8 +16796,8 @@ const KsNotes = () => {
   return (
     <div className="mx-auto max-w-site border-t border-line px-5 py-10 md:px-10" data-ks-notes="">
       <p className="max-w-[100ch] text-[12.5px] leading-[1.75] text-mute">
-        {x({ en: "Dimensions in millimetres, as listed for each model. The product pictures here are supplied photographs; the kitchens are visualisations made from them and the listed dimensions. Stainless steel prices as in the Price List 2024 (14 August 2024); no granite prices were supplied — contact us for details. Stock is in the shop.",
-             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Gambar produk di sini adalah foto produk yang disediakan; dapurnya merupakan visualisasi yang dibuat dari foto tersebut dan dimensi yang tercantum. Harga stainless steel sesuai Price List 2024 (14 Agustus 2024); harga granit belum disediakan — hubungi kami untuk detail. Stok ada di toko." })}
+        {x({ en: "Dimensions in millimetres, as listed for each model. The product pictures here are supplied photographs; the kitchens are visualisations made from them and the listed dimensions. Prices as in the PL Putus price list. Stock is in the shop.",
+             id: "Dimensi dalam milimeter, sesuai yang tercantum untuk setiap model. Gambar produk di sini adalah foto produk yang disediakan; dapurnya merupakan visualisasi yang dibuat dari foto tersebut dan dimensi yang tercantum. Harga sesuai daftar harga PL Putus. Stok ada di toko." })}
       </p>
     </div>
   );
@@ -16855,14 +16871,14 @@ const KsCategory = ({ kind }) => {
     ["width", { en: "Width", id: "Lebar" }, ksWidthRun(all), null],
     ["finishes", { en: "Finishes", id: "Finishing" }, swatches(finishes), null],
     ["brands", { en: "Brands", id: "Merek" }, ksAnd([...new Set(all.map((m) => m.brand))], lang), null],
-    ["price", { en: "Price", id: "Harga" }, ksPriceRun(all), x({ en: "As in the Price List 2024", id: "Sesuai Price List 2024" })],
+    ["price", { en: "Price", id: "Harga" }, ksPriceRun(all), x({ en: "As in the PL Putus price list", id: "Sesuai daftar harga PL Putus" })],
   ] : [
     ["models", { en: "Models", id: "Model" }, String(all.length), null],
     ["bowls", { en: "Bowls", id: "Jumlah ruang" }, ksAnd(bowlsAll, lang), null],
     ["width", { en: "Width", id: "Lebar" }, ksWidthRun(all), null],
     ["colours", { en: "Colours", id: "Warna" }, swatches(colours), null],
     ["install", { en: "Installation", id: "Pemasangan" }, ksAnd(["undermount", "topmount"].filter((v) => all.some((m) => m.install === v)).map((v) => x(KS_INSTALL[v])), lang), null],
-    ["price", { en: "Price", id: "Harga" }, x(KS_PRICE_ASK), null],
+    ["price", { en: "Price", id: "Harga" }, ksPriceRun(all) || x(KS_PRICE_ASK), x({ en: "As in the PL Putus price list", id: "Sesuai daftar harga PL Putus" })],
   ];
   const vis = steel ? ksIntroVis("stainless-steel", "W 7546 TSBN", lang) : ksIntroVis("granite", "GSU 7545", lang);
 
@@ -17157,7 +17173,7 @@ const KsProduct = ({ kind, model, colour }) => {
             {ksPriced(m) ? (
               <p>
                 <span className="block text-[26px] font-semibold tabular-nums tracking-[-0.01em]" data-ks-price={row.price}>{rp(row.price)}</span>
-                <span className="mt-1 block text-[11.5px] text-mute">{x({ en: "As listed in the Price List 2024 (14 August 2024)", id: "Sesuai Price List 2024 (14 Agustus 2024)" })}</span>
+                <span className="mt-1 block text-[11.5px] text-mute">{x(KS_PRICE_SOURCE)}</span>
               </p>
             ) : (
               <a href={"#/contact/" + row.slug} className="u text-[17px] font-medium text-ink" data-ks-price="ask">{x(KS_PRICE_ASK)}</a>
@@ -17915,6 +17931,17 @@ const DOOR_FILTERS = [
     options: ["white", "black"].map((l) => ({ value: l, label: { en: DOOR_LIST[l].en, id: DOOR_LIST[l].id }, hex: DOOR_LIST[l].hex })),
     test: (g, v) => !!g.m.lists && g.m.lists.includes(v) },
 ];
+/* the colours (and lists) offered in one opening only, as a clause: " (the PT 409 / WL 004 in Dark Grey in R only)" */
+const doorOnlyNote = () => {
+  const only = DOORS.filter((r) => r.hands.length < 2), hs = (r) => r.hands.map((h) => h.id).join(" / ");
+  return only.length ? { en: " (" + only.map((r) => "the " + r.model + " in " + tx(r.colour, "en") + " in " + hs(r) + " only").join("; ") + ")",
+                         id: " (" + only.map((r) => r.model + " " + tx(r.colour, "id") + " hanya " + hs(r)).join("; ") + ")" } : { en: "", id: "" };
+};
+/* a model's openings: R / L, and any colour (or list) of it offered in one only */
+const doorHandsLine = (g, x) => "R / L" + (g.rows.some((r) => r.hands.length < 2) ? " (" + g.rows.filter((r) => r.hands.length < 2).map((r) => {
+  const col = x(r.colour), hs = r.hands.map((h) => h.id).join(" / ");
+  return x({ en: col + ": " + hs + " only", id: col + ": hanya " + hs });
+}).join("; ") + ")" : "");
 const DOOR_SORTS = [
   { id: "sections",  label: { en: "By section", id: "Per bagian" } },
   { id: "catalogue", label: { en: "Price list order", id: "Urutan daftar harga" } },
@@ -18073,15 +18100,19 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
         ) : null}
         <div className="mt-3 flex items-center gap-1.5" role="group" aria-label={x({ en: "Opening direction", id: "Arah bukaan" })} data-door-opening="">
           <span className="mr-1 text-[10.5px] font-medium uppercase tracking-[0.08em] text-mute">{x({ en: "Opening", id: "Arah bukaan" })}</span>
-          {row.hands.map((hh) => (
-            <button key={hh.id} type="button" onClick={() => setH(hh.id)} aria-pressed={hh.id === sel.id} data-door-hand-pick={hh.id}
-              className={"grid h-[24px] min-w-[28px] place-items-center border px-1.5 text-[10.5px] font-semibold transition-colors duration-300 " + (hh.id === sel.id ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>{hh.id}</button>
-          ))}
+          {["R", "L"].map((hid) => {
+            /* an opening this colour is not offered in is shown, and cannot be chosen */
+            const hh = row.hands.find((q) => q.id === hid);
+            return (
+              <button key={hid} type="button" onClick={() => hh && setH(hid)} disabled={!hh} aria-pressed={!!hh && hid === sel.id} data-door-hand-pick={hid}
+                aria-label={hh ? hid : hid + " — " + x({ en: "not offered in this colour", id: "tidak tersedia untuk warna ini" })}
+                className={"grid h-[24px] min-w-[28px] place-items-center border px-1.5 text-[10.5px] font-semibold transition-colors duration-300 disabled:cursor-default disabled:border-dashed disabled:opacity-40 " + (hh && hid === sel.id ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>{hid}</button>
+            );
+          })}
         </div>
         <p className={"mt-3 text-[11px] font-medium tabular-nums tracking-[0.04em] transition-colors duration-300 " + (codeHit ? "text-accent" : "text-mute")}
           data-door-card-code={sel.code} data-door-code-hit={codeHit ? "" : undefined}>
           <span className="sr-only">{x({ en: "Product code", id: "Kode produk" })}: </span>{sel.code}
-          {DOOR_REVIEW[sel.code] ? <span className="ml-1.5 text-accent" data-door-card-review="">{x({ en: "· to confirm", id: "· perlu dicek" })}</span> : null}
         </p>
         {shop ? (
           <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 pt-5">
@@ -18421,8 +18452,8 @@ const DoorsPage = () => {
       <div className="pb-7 pt-7" data-door-filter="hand">
         <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Opening direction", id: "Arah bukaan" })}</p>
         <DoorHandPick hand={hand} onHand={setHand} count={results.length} />
-        <p className="mt-4 text-[12px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code: the cards show the code for the one chosen.",
-                                                                       id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri: kartu menampilkan kode untuk yang dipilih." })}</p>
+        <p className="mt-4 text-[12px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L" + doorOnlyNote().en + ", each with its own product code: the cards show the code for the one chosen.",
+                                                                       id: "Setiap model tercantum dalam R dan L" + doorOnlyNote().id + ", masing-masing dengan kode produknya sendiri: kartu menampilkan kode untuk yang dipilih." })}</p>
       </div>
     </div>
   );
@@ -18648,7 +18679,8 @@ const DoorVariantTiles = ({ g, row, sel, onPick, className = "mt-10" }) => {
           for the code, as many to a row as fit */}
       <div className="mt-5 grid grid-cols-1 sm:flex sm:flex-wrap sm:gap-x-3 sm:gap-y-6">
         {g.rows.map((r) => {
-          const code = (r.hands.find((h) => h.id === sel.id) || r.hands[0]).code, onIt = r.slug === row.slug;
+          const hh = r.hands.find((h) => h.id === sel.id), ids = r.hands.map((h) => h.id).join(" / ");
+          const code = hh ? hh.code : x({ en: ids + " only", id: "hanya " + ids }), onIt = r.slug === row.slug;
           return (
             <button key={r.slug} type="button" onClick={() => onPick(r)} aria-pressed={onIt} data-door-variant={r.slug} aria-label={x(r.colour) + " — " + code}
               className="group/v flex min-w-0 items-center gap-4 border-b border-line py-2.5 text-left first:border-t sm:block sm:w-[112px] sm:border-0 sm:py-0">
@@ -18702,12 +18734,24 @@ const DoorChoose = ({ g, row, c, l, sel, onColour, onList, onHand }) => {
       <div className="mt-7" data-door-hand="">
         <p className={DOOR_LABEL}>{x({ en: "Opening direction", id: "Arah bukaan" })}<span className="ml-3 normal-case tracking-normal text-ink">{sel.id}</span></p>
         <div className="mt-4 flex gap-3" role="radiogroup" aria-label={x({ en: "Opening direction", id: "Arah bukaan" })}>
-          {row.hands.map((h) => (
-            <button key={h.id} type="button" role="radio" aria-checked={h.id === sel.id} onClick={() => onHand(h.id)} data-door-hand-option={h.id}
-              className={"h-[44px] min-w-[72px] border px-5 text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " + (h.id === sel.id ? "border-accent text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{h.id}</button>
-          ))}
+          {["R", "L"].map((hid) => {
+            const h = row.hands.find((q) => q.id === hid);
+            return (
+              <button key={hid} type="button" role="radio" aria-checked={!!h && hid === sel.id} onClick={() => h && onHand(hid)} disabled={!h} data-door-hand-option={hid}
+                aria-label={h ? hid : hid + " — " + x({ en: "not offered in this colour", id: "tidak tersedia untuk warna ini" })}
+                className={"h-[44px] min-w-[72px] border px-5 text-[12px] font-semibold uppercase tracking-[0.1em] transition-colors duration-300 disabled:cursor-default disabled:border-dashed disabled:opacity-40 " + (h && hid === sel.id ? "border-accent text-ink" : "border-line text-mute hover:border-mute hover:text-ink")}>{hid}</button>
+            );
+          })}
         </div>
-        <p className="mt-3 text-[12.5px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code. Not sure which you need? Contact us for details.", id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri. Ragu mana yang Anda perlukan? Hubungi kami untuk detail." })}</p>
+        {row.hands.length < 2 ? (
+          <p className="mt-3 text-[12.5px] leading-[1.6] text-mute" data-door-hand-only="">
+            {x({ en: "In " + DOOR_COLOUR[row.doorCol].en + (row.listCol ? ", " + DOOR_LIST[row.listCol].en.toLowerCase() : "") + ", this model is offered in " + row.hands.map((h) => h.id).join(" / ") + " only.",
+                 id: "Dalam " + DOOR_COLOUR[row.doorCol].id + (row.listCol ? ", " + DOOR_LIST[row.listCol].id : "") + ", model ini hanya tersedia " + row.hands.map((h) => h.id).join(" / ") + "." })}{" "}
+            <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a>
+          </p>
+        ) : (
+          <p className="mt-3 text-[12.5px] leading-[1.6] text-mute">{x({ en: "Every model is listed in R and L, each with its own product code. Not sure which you need? Contact us for details.", id: "Setiap model tercantum dalam R dan L, masing-masing dengan kode produknya sendiri. Ragu mana yang Anda perlukan? Hubungi kami untuk detail." })}</p>
+        )}
       </div>
     </>
   );
@@ -18756,12 +18800,11 @@ const doorSpecGroups = (g, row, x) => [
   { id: "options", title: { en: "Options", id: "Pilihan" }, rows: [
     [{ en: "Colours", id: "Warna" }, g.colours.map((cc) => x(DOOR_COLOUR[cc])).join(", ")],
     ...(g.m.lists ? [[{ en: "List colours", id: "Warna list" }, g.m.lists.map((ll) => x({ en: DOOR_LIST[ll].en, id: DOOR_LIST[ll].id })).join(", ")]] : []),
-    [{ en: "Opening direction", id: "Arah bukaan" }, "R / L"],
+    [{ en: "Opening direction", id: "Arah bukaan" }, doorHandsLine(g, x)],
   ] },
   { id: "codes", title: { en: "This choice", id: "Pilihan ini" }, rows: [
     [{ en: "Colour", id: "Warna" }, x(row.colour)],
-    [{ en: "Product code (R)", id: "Kode produk (R)" }, row.hands[0].code],
-    [{ en: "Product code (L)", id: "Kode produk (L)" }, row.hands[1].code],
+    ...row.hands.map((h) => [{ en: "Product code (" + h.id + ")", id: "Kode produk (" + h.id + ")" }, h.code]),
     [{ en: "Price", id: "Harga" }, rp(row.price)],
   ] },
 ];
@@ -18813,32 +18856,16 @@ const DoorSize = ({ row }) => {
   );
 };
 
-/* what the price list leaves unclear about a product code: said beside the code wherever it is shown or chosen, and
-   left for the store to confirm rather than guessed at. The PT 409's last row (WELUP-DPT0203006) gives the PT 409's
-   type and sits under the PT 409, but names the PT 709. */
-const DOOR_REVIEW = {
-  "WELUP-DPT0203006": { en: "For review: this code is listed under the PT 409 / WL 004, with its type, but its row in the price list names the PT 709. Please confirm it with us before ordering.",
-                        id: "Perlu dicek: kode ini tercantum di bawah PT 409 / WL 004, dengan tipenya, tetapi barisnya di daftar harga menyebut PT 709. Mohon konfirmasikan kepada kami sebelum memesan." },
-};
-const DoorReview = ({ code, slug }) => {
-  const { x } = useStore();
-  if (!DOOR_REVIEW[code]) return null;
-  return (
-    <p className="mt-5 border border-accent/50 px-4 py-3.5 text-[12.5px] leading-[1.65] text-ink/90" role="note" data-door-review={code}>
-      {x(DOOR_REVIEW[code])}{" "}<a href={"#/contact/" + slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a>
-    </p>
-  );
-};
-
 /* every code of the model: a row for each colour (and list), R and L beside it, the one chosen in bronze — on a phone,
-   each colour (and list) with its two codes under it, so every code is read in full without scrolling */
+   each colour (and list) with its codes under it, so every code is read in full without scrolling. An opening a colour
+   is not offered in says so rather than standing empty. */
 const DoorCodeTable = ({ g, row, sel }) => {
   const { x } = useStore();
-  const codeRows = g.rows.map((r) => ({ r, R: r.hands[0].code, L: r.hands[1].code }));
+  const codeOf = (r, h) => (r.hands.find((q) => q.id === h) || {}).code || null;
+  const codeRows = g.rows.map((r) => ({ r, R: codeOf(r, "R"), L: codeOf(r, "L") }));
   const listOf = (r) => (g.m.lists ? " · " + x({ en: DOOR_LIST[r.listCol].en, id: DOOR_LIST[r.listCol].id }) : "");
-  /* a code the price list leaves unclear, starred, and said under the table */
-  const star = (code) => (DOOR_REVIEW[code] ? <sup className="ml-0.5 text-accent" aria-hidden="true">*</sup> : null);
-  const unclear = codeRows.flatMap(({ R, L }) => [R, L]).filter((code) => DOOR_REVIEW[code]);
+  const none = x({ en: "Not offered", id: "Tidak tersedia" });
+  const on = (r, h, code) => !!code && r.slug === row.slug && sel.id === h;
   return (
     <div className="max-w-[860px]">
       <ul className="border-t border-line sm:hidden" data-door-codes-list="">
@@ -18847,7 +18874,7 @@ const DoorCodeTable = ({ g, row, sel }) => {
             <p className="text-[13.5px] font-medium">{x(DOOR_COLOUR[r.doorCol])}{listOf(r)}</p>
             <p className="mt-1.5 flex flex-wrap gap-x-7 gap-y-1 text-[13px] tabular-nums">
               {[["R", R], ["L", L]].map(([h, code]) => (
-                <span key={h} className={r.slug === row.slug && sel.id === h ? "font-semibold text-accent" : ""}><span className="mr-2.5 font-semibold text-mute">{h}</span>{code}{star(code)}</span>
+                <span key={h} className={on(r, h, code) ? "font-semibold text-accent" : code ? "" : "text-mute"}><span className="mr-2.5 font-semibold text-mute">{h}</span>{code || none}</span>
               ))}
             </p>
           </li>
@@ -18868,17 +18895,18 @@ const DoorCodeTable = ({ g, row, sel }) => {
             <tr key={r.slug} className={"border-t border-line " + (r.slug === row.slug ? "text-ink" : "text-mute")}>
               <td className="py-3.5 pr-6 font-medium">{x(DOOR_COLOUR[r.doorCol])}</td>
               {g.m.lists ? <td className="py-3.5 pr-6">{x({ en: DOOR_LIST[r.listCol].en, id: DOOR_LIST[r.listCol].id })}</td> : null}
-              <td className={"py-3.5 pr-6 tabular-nums " + (r.slug === row.slug && sel.id === "R" ? "font-semibold text-accent" : "")}>{R}{star(R)}</td>
-              <td className={"py-3.5 tabular-nums " + (r.slug === row.slug && sel.id === "L" ? "font-semibold text-accent" : "")}>{L}{star(L)}</td>
+              <td className={"py-3.5 pr-6 tabular-nums " + (on(r, "R", R) ? "font-semibold text-accent" : R ? "" : "text-mute")} data-door-code-cell={R ? undefined : "none"}>{R || none}</td>
+              <td className={"py-3.5 tabular-nums " + (on(r, "L", L) ? "font-semibold text-accent" : L ? "" : "text-mute")} data-door-code-cell={L ? undefined : "none"}>{L || none}</td>
             </tr>
           ))}
         </tbody>
       </table>
       </div>
       <p className="mt-5 text-[12.5px] leading-[1.7] text-mute">{x({ en: "As listed in the Wellup Price List 2026, at " + rp(g.price) + " each.", id: "Sesuai Price List 2026 Wellup, masing-masing " + rp(g.price) + "." })}</p>
-      {unclear.map((code) => (
-        <p key={code} className="mt-2 text-[12.5px] leading-[1.7] text-mute" data-door-review-note={code}><span className="mr-1.5 text-accent">*</span>{code}: {x(DOOR_REVIEW[code])}</p>
-      ))}
+      {codeRows.some(({ R, L }) => !R || !L) ? (
+        <p className="mt-2 text-[12.5px] leading-[1.7] text-mute" data-door-codes-note="">{x({ en: "Not offered: not on the website.", id: "Tidak tersedia: tidak ada di situs." })}{" "}
+          <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a></p>
+      ) : null}
     </div>
   );
 };
@@ -18967,7 +18995,6 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               <span className="mt-1 block text-[15px] font-medium tabular-nums tracking-[0.03em] text-accent" data-door-code-now="">{sel.code}</span>
             </p>
           </div>
-          <DoorReview code={sel.code} slug={row.slug} />
 
           <DoorChoose g={g} row={row} c={c} l={l} sel={sel} onColour={pickColour} onList={pickList} onHand={setHand} />
 
@@ -19435,8 +19462,8 @@ const DoorCatalogue = ({ section = null }) => {
               </div>
             </div>
             <p className="text-[12px] leading-[1.6] text-mute sm:col-span-2 lg:col-span-full" data-dc-filter-note="">
-              {x({ en: "Every model comes in all three colours, and in R and L, each with its own product code: the cards show the colour and the code for the opening chosen. Only PT 2601 and PT 2602 have a list — the bars between the panes.",
-                   id: "Setiap model tersedia dalam ketiga warna, serta R dan L, masing-masing dengan kode produknya sendiri: kartu menampilkan warna dan kode untuk arah bukaan yang dipilih. Hanya PT 2601 dan PT 2602 yang memiliki list — bilah di antara kaca." })}
+              {x({ en: "Every model comes in all three colours, and in R and L" + doorOnlyNote().en + ", each with its own product code: the cards show the colour and the code for the opening chosen. Only PT 2601 and PT 2602 have a list — the bars between the panes.",
+                   id: "Setiap model tersedia dalam ketiga warna, serta R dan L" + doorOnlyNote().id + ", masing-masing dengan kode produknya sendiri: kartu menampilkan warna dan kode untuk arah bukaan yang dipilih. Hanya PT 2601 dan PT 2602 yang memiliki list — bilah di antara kaca." })}
             </p>
           </div>
         </div>
@@ -19524,6 +19551,9 @@ const DcModel = ({ p, handInit = null, at = null }) => {
   /* another model, in the colour (and list) shown here */
   const near = (o) => doorRowOf(o, row.doorCol, o.m.lists ? (row.listCol || "white") : null);
   const others = order.filter((o) => o.key !== g.key && doorSectionOf(o) === sec).slice(0, 4);
+  const nCodes = g.rows.reduce((n, r) => n + r.hands.length, 0), onlyRows = g.rows.filter((r) => r.hands.length < 2);
+  const onlyEn = onlyRows.map((r) => tx(r.colour, "en") + " in " + r.hands.map((h) => h.id).join(" / ") + " only").join("; ");
+  const onlyId = onlyRows.map((r) => tx(r.colour, "id") + " hanya " + r.hands.map((h) => h.id).join(" / ")).join("; ");
   const pickColour = (cc) => { setC(cc); setView(0); };
   const pickList = (ll) => { setL(ll); setView(0); };
   const pickVariant = (r) => { setC(r.doorCol); setL(r.listCol); setView(0); };
@@ -19579,7 +19609,6 @@ const DcModel = ({ p, handInit = null, at = null }) => {
               <span className="mt-1 block text-[15px] font-medium tabular-nums tracking-[0.03em] text-accent" data-dc-code="">{sel.code}</span>
             </p>
           </div>
-          <DoorReview code={sel.code} slug={row.slug} />
 
           <DoorChoose g={g} row={row} c={c} l={l} sel={sel} onColour={pickColour} onList={pickList} onHand={setHand} />
 
@@ -19633,8 +19662,8 @@ const DcModel = ({ p, handInit = null, at = null }) => {
             <Eyebrow>{x({ en: "Product codes", id: "Kode produk" })}</Eyebrow>
             <h2 id="dc-codes-title" className="mt-5 text-[28px] leading-[1.14] md:text-[34px]">{x({ en: "Every code of the " + g.m.code, id: "Semua kode " + g.m.code })}</h2>
             <p className="mt-4 max-w-[40ch] text-[14px] leading-[1.7] text-mute">
-              {x({ en: g.rows.length * 2 + " codes: one for each colour" + (g.m.lists ? " and list" : "") + ", in R and in L. The one chosen above is in bronze.",
-                   id: g.rows.length * 2 + " kode: satu untuk setiap warna" + (g.m.lists ? " dan list" : "") + ", dalam R dan L. Yang dipilih di atas berwarna perunggu." })}
+              {x({ en: nCodes + " codes: one for each colour" + (g.m.lists ? " and list" : "") + ", in R and in L" + (onlyEn ? " — " + onlyEn : "") + ". The one chosen above is in bronze.",
+                   id: nCodes + " kode: satu untuk setiap warna" + (g.m.lists ? " dan list" : "") + ", dalam R dan L" + (onlyId ? " — " + onlyId : "") + ". Yang dipilih di atas berwarna perunggu." })}
             </p>
           </div>
           <div className="min-w-0 lg:col-span-8"><DoorCodeTable g={g} row={row} sel={sel} /></div>

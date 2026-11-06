@@ -1,0 +1,6 @@
+# GitHub Pages builds the website from this repository with Jekyll. The website is index.html with img/ and
+# catalogue/ (the catalogues' presentation PDFs and the pictures of their pages). catalogues/ holds the catalogue
+# generator, its full-size images and the print editions: the website never loads them, so they are left out of
+# what is published, which keeps every deployment small.
+exclude:
+  - catalogues

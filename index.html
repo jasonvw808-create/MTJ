@@ -6621,8 +6621,9 @@ void main() {}`;
           if (m === l) p[0] = c.x0 - RADIUS; else if (m === r) p[0] = c.x1 + RADIUS; else if (m === b) p[2] = c.z0 - RADIUS; else p[2] = c.z1 + RADIUS;
         }
       }
-      /* (the room's walls stop you; this only keeps you inside the building's outline) */
-      p[0] = clamp(p[0], -W + RADIUS, (steel.length ? GX1 : W) - RADIUS); p[2] = clamp(p[2], -D + RADIUS, (steel.length ? GZ1 : 0) - RADIUS);
+      /* (the room's walls stop you; this only keeps you inside the building's outline — the Door Hall's, through the
+         lobby's left-hand wall, and the stainless room's, through its right, with it) */
+      p[0] = clamp(p[0], (room.hall ? DX1 : -W) + RADIUS, (steel.length ? GX1 : W) - RADIUS); p[2] = clamp(p[2], -D + RADIUS, (steel.length ? GZ1 : 0) - RADIUS);
     };
 
     const glideTo = (pos, yaw, pitch, ms = 1100) => {
@@ -8071,7 +8072,7 @@ const T = {
   vsCode:        { en: "Product code",      id: "Kode produk" },
   vsDoorPage:    { en: "View product page", id: "Lihat halaman produk" },
   vsDoorEnter:   { en: "Walk into the Door Hall in 3D", id: "Masuk ke Ruang Pintu dalam 3D" },
-  vsDoorsLink:   { en: "Wellup doors",      id: "Pintu Wellup" },
+  vsDoorsLink:   { en: "Enter the Door Hall", id: "Masuk ke Ruang Pintu" },
   vsDoorScene:   { en: "In a doorway",      id: "Di ambang pintu" },
   vsDoorPhoto:   { en: "Front photo",       id: "Foto depan" },
   vsDoorAngle:   { en: "Angled photo",      id: "Foto miring" },
@@ -14985,7 +14986,9 @@ const SHOWROOM_ROOM = { lobby: "entrance", hero: "kitchen", granite: "kitchen", 
   pressed: "stainless", handmade: "stainless", steelHero: "stainless", door: "doors" };
 /* the groups that hang or stand in the room; the rest wait their turn on an island */
 const PLACED = new Set(["lobby", "hero", "sanitary", "shower", "steelHero", "door"]);
-const SHOWROOM_ZONES = ["entrance", "kitchen", "stainless", "sanitary", "doors"].filter((z) => (z !== "stainless" && z !== "doors") || SHOWROOM_LIST.some((e) => SHOWROOM_ROOM[e.group] === z));
+/* the rooms, as their chips run: the Door Hall next to the entrance it opens off (and so in sight on a phone, where the
+   chips scroll sideways) */
+const SHOWROOM_ZONES = ["entrance", "doors", "kitchen", "stainless", "sanitary"].filter((z) => (z !== "stainless" && z !== "doors") || SHOWROOM_LIST.some((e) => SHOWROOM_ROOM[e.group] === z));
 /* each room's name, and the shorter one on the chips that take you there */
 const ZONE_KEY = { entrance: "vsEntrance", kitchen: "vsGraniteRoom", sanitary: "vsSanitary", stainless: "vsSteelRoom", doors: "vsDoorRoom" };
 const ZONE_CHIP = { entrance: "vsEntrance", kitchen: "vsChipGranite", sanitary: "vsChipSanitary", stainless: "vsChipSteel", doors: "vsChipDoors" };
@@ -15791,7 +15794,9 @@ const ShowroomPage = () => {
                 <a href="#vs-list" className="vs-link" onClick={(e) => { e.preventDefault(); const el = document.getElementById("vs-list"); if (el) el.scrollIntoView({ behavior: lessMotion() ? "auto" : "smooth" }); }}>
                   <span className="u">{t("vsBrowse")}</span>
                 </a>
-                <a href="#vs-doors" className="vs-link" hidden={!doorG} data-vs-doors-link="" onClick={(e) => { e.preventDefault(); toDoorHall(); }}>
+                {/* straight into the Door Hall, at its door — or, where the room cannot be shown (or is still being made
+                    ready), to the Door Hall on the page */}
+                <a href="#vs-doors" className="vs-link" hidden={!doorG} data-vs-doors-link="" onClick={(e) => { e.preventDefault(); if (phase === "ready") enter("doors"); else toDoorHall(); }}>
                   <span className="u">{t("vsDoorsLink")}</span>
                 </a>
               </div>

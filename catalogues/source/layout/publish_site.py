@@ -2,10 +2,12 @@
 site asks for, with the pictures of their pages for the look inside; and each PDF's pages, size and contents written
 into index.html (KS_PDF_META, KS_PDF_PAGES).
 
-    python publish_site.py <pdf_dir> <work_dir> <site_dir>
+    python publish_site.py <pdf_dir> <work_dir> <site_dir> [volume ...]
 
-pdf_dir holds the finished PDFs (make_catalogues.sh), work_dir the bookmark lists build.py wrote beside the pages, and
-site_dir the website (index.html). Needs pdftoppm (poppler-utils)."""
+pdf_dir holds the finished PDFs (make_catalogues.sh, make_door_catalogue.sh), work_dir the bookmark lists build.py and
+build_doors.py wrote beside the pages, and site_dir the website (index.html). The volumes are granite, stainless and
+doors (all three if none is named); a volume not named keeps what index.html already says of it. Needs pdftoppm
+(poppler-utils)."""
 import json
 import os
 import re
@@ -20,7 +22,11 @@ pdf_dir, work_dir, site = sys.argv[1:4]
 DOCS = {  # the site's name for each volume: its PDF here, and the name the site gives it
     "granite": ("MTJ_Granite_Kitchen_Sink_Collection_Vol01", "MTJ_Granite_Kitchen_Sink_Catalogue"),
     "stainless": ("MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02", "MTJ_Stainless_Steel_Kitchen_Sink_Catalogue"),
+    "doors": ("MTJ_Wellup_UPVC_Door_Collection_Vol03", "MTJ_Wellup_UPVC_Door_Catalogue"),
 }
+named = sys.argv[4:]
+assert all(d in DOCS for d in named), "the volumes are: " + ", ".join(DOCS)
+DOCS = {d: v for d, v in DOCS.items() if not named or d in named}
 # the pages that have a page with the same contents in the catalogue the site draws itself, by their bookmarks
 SECTIONS = {"Cover": "cover", "The collection": "overview", "The collection: Pressed": "overview-pressed",
             "The collection: Hand Made": "overview-handmade", "Colours": "colours", "Finishes": "finishes",
@@ -67,8 +73,11 @@ open(os.path.join(out, "img", "here.gif"), "wb").write(
 page = os.path.join(site, "index.html")
 html = open(page, encoding="utf-8", newline="").read()   # as it is: the site's lines end in CR LF
 for name, value in (("KS_PDF_META", meta), ("KS_PDF_PAGES", contents)):
-    line = re.compile(r"^const " + name + r" = .*;(?=\r?$)", re.M)
-    assert len(line.findall(html)) == 1, name + " not found once in index.html"
-    html = line.sub(lambda _: "const " + name + " = " + json.dumps(value, ensure_ascii=False, separators=(",", ":")) + ";", html)
+    line = re.compile(r"^const " + name + r" = (.*);(?=\r?$)", re.M)
+    found = line.findall(html)
+    assert len(found) == 1, name + " not found once in index.html"
+    merged = json.loads(found[0])   # what it says of the volumes not published now stays
+    merged.update(value)
+    html = line.sub(lambda _: "const " + name + " = " + json.dumps(merged, ensure_ascii=False, separators=(",", ":")) + ";", html)
 open(page, "w", encoding="utf-8", newline="").write(html)
-print("index.html: KS_PDF_META and KS_PDF_PAGES written")
+print("index.html: KS_PDF_META and KS_PDF_PAGES written for", ", ".join(DOCS))

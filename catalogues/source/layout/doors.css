@@ -1,0 +1,113 @@
+/* Maju Terus Jaya · the Wellup door catalogue (Volume 03): the pages only this volume has, on catalogue.css —
+   the kitchen sink volumes' design system, its type, folio, cover, introduction, index, notes and back cover. */
+
+.vol-doors { --accent: #957552; --accent-soft: #cdb08a; }
+/* the sizes and codes as the price list prints them: "200 x 70 cm", never turned into "200 × 70 cm" by the face's alternates */
+body.vol-doors { font-feature-settings: "calt" 0; }
+
+/* a door photograph standing on the page: its ground is the paper itself (#F4F3F0), so it has no edge */
+.door-ph { background-size: contain; background-position: center bottom; background-repeat: no-repeat; }
+
+/* ── the collection: every model, by section ─────────────────────────── */
+.dcoll .dgrid { position: absolute; left: 15mm; right: 15mm; top: 48mm; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+  column-gap: 4mm; row-gap: 3.6mm; align-items: start; }
+.dcoll .dsec { margin: 3mm 0 0; padding-bottom: 1.5mm; border-bottom: .15mm solid var(--hair); display: flex; align-items: baseline; gap: 2.2mm;
+  font-family: var(--display); font-weight: 500; font-size: 5.6pt; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.dcoll .dsec .no { color: var(--ink); letter-spacing: .1em; }
+.dcoll .dsec .n { margin-left: auto; color: var(--mute); letter-spacing: .14em; }
+.dcoll .dcard { display: block; color: inherit; text-decoration: none; min-width: 0; }
+.dcoll .dcard .ph { height: 46mm; }
+.dcoll .dcard .meta { display: flex; justify-content: space-between; align-items: baseline; margin-top: 2.2mm; padding-bottom: 1mm; border-bottom: .2mm solid var(--hair); }
+.dcoll .dcard .code { font-family: var(--display); font-weight: 400; font-size: 7.6pt; letter-spacing: .06em; color: var(--ink); white-space: nowrap; }
+.dcoll .dcard .pg { font-size: 6.2pt; color: var(--mute); }
+.dcoll .dcard .line { font-size: 5.9pt; line-height: 1.45; color: var(--ink2); margin-top: 1mm; }
+.dcoll .dcard .line.wl { font-family: var(--display); font-weight: 500; font-size: 5pt; letter-spacing: .14em; color: var(--mute); margin-top: .9mm; }
+
+/* ── colours and lists ───────────────────────────────────────────────── */
+.dcolours .dk-grid { position: absolute; left: 15mm; right: 15mm; top: 58mm; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 8mm; }
+.dcolours .dk .door-ph { width: 100%; }
+.dcolours h3 { display: flex; align-items: center; gap: 2.2mm; font-family: var(--display); font-weight: 300; font-size: 12pt; letter-spacing: .08em;
+  text-transform: uppercase; margin: 4.5mm 0 2mm; padding-top: 3mm; border-top: .2mm solid var(--hair); }
+.dcolours h3 i { flex: none; width: 3.4mm; height: 3.4mm; border-radius: 50%; border: .15mm solid rgba(0,0,0,.25); }
+.dcolours .avail { font-size: 7.1pt; line-height: 1.6; color: var(--ink2); }
+.dcolours .avail b { display: block; margin-bottom: .8mm; font-family: var(--display); font-weight: 500; font-size: 5.6pt; letter-spacing: .2em; text-transform: uppercase; color: var(--mute); }
+.dcolours .dl-band { position: absolute; left: 15mm; right: 15mm; top: 202mm; display: grid; grid-template-columns: 1fr 50mm 50mm; column-gap: 8mm;
+  padding-top: 5mm; border-top: .25mm solid var(--ink2); }
+.dcolours .dl-text .label { margin: 0 0 2.6mm; }
+.dcolours .dl-text .body { margin: 0; max-width: 62mm; }
+.dcolours .dl-text .dl-models { margin-top: 3mm; font-family: var(--display); font-weight: 500; font-size: 6.4pt; letter-spacing: .1em; color: var(--ink); }
+.dcolours .dl-ph { height: 38mm; background-size: 100% auto; background-position: center 6%; background-repeat: no-repeat; }
+.dcolours .dl-i h3 { font-size: 9.5pt; margin-top: 3.4mm; }
+.dcolours .sw-foot { position: absolute; left: 15mm; bottom: 17mm; margin: 0; font-size: 6.6pt; color: var(--mute); }
+
+/* ── size and opening ────────────────────────────────────────────────── */
+.dsize .sw-head { position: absolute; left: 15mm; right: 15mm; top: 17mm; }
+.dsize .sw-head .lede { max-width: 120mm; margin: 5mm 0 0; font-size: 9.5pt; }
+.dsize .sz-draw { position: absolute; left: 15mm; top: 64mm; margin: 0; }
+.dsize .sz-draw svg { display: block; }
+.dsize .sz-draw figcaption { margin-top: 2mm; font-family: var(--display); font-weight: 500; font-size: 5pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+.dsize .sz-text { position: absolute; left: 92mm; right: 15mm; top: 66mm; }
+.dsize .sz-b + .sz-b { margin-top: 9mm; }
+.dsize .sz-b .label { margin: 0 0 2.6mm; padding-bottom: 1.4mm; border-bottom: .15mm solid var(--hair); color: var(--accent); }
+.dsize .sz-print { margin: 0 0 3mm; padding: 2.4mm 3mm; background: #ebe7e0; border-left: .6mm solid var(--accent); font-size: 7.6pt; line-height: 1.5; color: var(--ink); }
+.dsize dl.specs { margin: 0; }
+.dsize dl.specs div { display: grid; grid-template-columns: 36mm 1fr; column-gap: 3mm; padding: 1.55mm 0; border-bottom: .15mm solid var(--hair); align-items: baseline; }
+.dsize dl.specs dt { font-family: var(--display); font-weight: 500; font-size: 5.5pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+.dsize dl.specs dd { margin: 0; font-size: 7.9pt; color: var(--ink); }
+.dsize dl.specs dd .tbc, .dsize .tbc { color: var(--accent); }
+.dsize .sz-note { margin: 2.4mm 0 0; font-size: 6.4pt; line-height: 1.55; color: var(--mute); }
+.dsize .sz-b .body { margin: 0 0 2mm; }
+.dsize .sz-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; }
+.dsize .sz-list li { padding: 1.5mm 0; border-bottom: .15mm solid var(--hair); font-size: 7.4pt; color: var(--ink2); }
+.dsize .sz-ask { margin-top: 3mm; color: var(--ink); font-weight: 500; }
+
+/* ── a section's first page ──────────────────────────────────────────── */
+.dopen .do-text { position: absolute; left: 15mm; top: 22mm; width: 84mm; }
+.dopen .do-no { margin: 0 0 7mm; font-family: var(--display); font-weight: 200; font-size: 60pt; line-height: .9; letter-spacing: .02em; color: var(--accent); }
+.dopen .do-title { margin: 3.5mm 0 5mm; font-family: var(--display); font-weight: 300; font-size: 23pt; letter-spacing: .13em; text-transform: uppercase; line-height: 1.12; }
+.dopen .lede { margin: 0; font-size: 9.6pt; }
+.dopen .do-l { margin: 8mm 0 2.4mm; }
+.dopen .do-types { border-top: .15mm solid var(--hair); }
+.dopen .do-types div { display: grid; grid-template-columns: 37mm 1fr; column-gap: 3mm; padding: 1.8mm 0; border-bottom: .15mm solid var(--hair); font-size: 7.2pt; color: var(--ink2); }
+.dopen .do-types b { font-weight: 500; color: var(--ink); }
+.dopen .do-door { position: absolute; right: 15mm; bottom: 24mm; margin: 0; }
+.dopen .do-door .door-ph { width: 100%; }
+.dopen .do-door figcaption { margin-top: 3mm; padding-top: 2mm; border-top: .2mm solid var(--hair); text-align: center;
+  font-family: var(--display); font-weight: 500; font-size: 5.4pt; letter-spacing: .2em; text-transform: uppercase; color: var(--mute); }
+
+/* ── a model's page ──────────────────────────────────────────────────── */
+/* the door in every colour (and list) it comes in, standing on a line across the page, and what each is */
+.dfeat .hband { position: absolute; left: 15mm; right: 15mm; top: 10mm; height: 142mm; display: flex; flex-direction: column; justify-content: flex-end; gap: 7mm; }
+.dfeat .hd-row { display: flex; justify-content: space-evenly; align-items: flex-end; }
+.dfeat .hband.two .hd-row { justify-content: center; column-gap: 24mm; }
+.dfeat .hd { margin: 0; display: flex; flex-direction: column; align-items: center; }
+.dfeat .hd figcaption { margin-top: 2.4mm; font-family: var(--display); font-weight: 500; font-size: 5.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--ink2); white-space: nowrap; }
+.dfeat .hero-cap { left: 15mm; right: 15mm; top: 154.5mm; padding-top: 1.6mm; border-top: .25mm solid var(--ink2); text-align: right; }
+.dfeat .d-src { font-family: var(--display); font-weight: 500; font-size: 5.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); white-space: nowrap; padding-bottom: 1mm; }
+.dfeat .code { font-size: 26pt; }
+.dfeat .cols { grid-template-columns: 82mm 1fr; }
+.dfeat .gl-v { white-space: nowrap; }
+.dfeat .dcodes-w .label { margin: 1.4mm 0 1.2mm; }
+.dcodes { width: 100%; border-collapse: collapse; }
+.dcodes th { font-family: var(--display); font-weight: 500; font-size: 5.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); text-align: left; padding: 0 2mm 1.6mm 0; border-bottom: .25mm solid var(--ink2); }
+.dcodes td { font-size: 7pt; color: var(--ink2); padding: 1.5mm 2mm 1.5mm 0; border-bottom: .15mm solid var(--hair); vertical-align: baseline; }
+/* the codes in the face's own figures: tabular ones are alternate glyphs, which some PDF viewers copy out as nonsense */
+.dcodes td.c { color: var(--ink); white-space: nowrap; letter-spacing: .01em; }
+.dcodes td.none { color: var(--accent); }
+.dcodes.wl td.c { font-size: 6.4pt; }
+.dfeat .d-notes { margin: 4mm 0 0; font-size: 6pt; line-height: 1.5; color: var(--mute); }
+.dfeat .d-notes > span { display: block; }
+.dfeat .d-notes > span + span { margin-top: .9mm; }
+
+/* ── all the codes, and the index ────────────────────────────────────── */
+.dallcodes .ix-head .body, .dindex .ix-head .body { margin: 3mm 0 0; max-width: 140mm; }
+.dallcodes table { top: 49mm; table-layout: fixed; }
+.dallcodes th { font-size: 4.8pt; letter-spacing: .14em; padding-right: 1.4mm; white-space: nowrap; }
+.dallcodes td { padding: 1.5mm 1.4mm 1.5mm 0; font-size: 6.4pt; }
+.dallcodes td.c { font-size: 5.7pt; color: var(--ink); white-space: nowrap; letter-spacing: 0; }
+.dallcodes td.none { color: var(--accent); }
+.dallcodes td.m a { color: inherit; text-decoration: none; }
+.dallcodes col.cm { width: 15mm; } .dallcodes col.cl { width: 17mm; } .dallcodes col.cp { width: 8mm; }
+.ac-note { position: absolute; left: 15mm; right: 15mm; bottom: 20mm; margin: 0; font-size: 6.6pt; line-height: 1.55; color: var(--mute); }
+.dindex table { top: 40mm; }
+.dindex td.m { font-size: 7pt; }

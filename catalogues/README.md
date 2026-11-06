@@ -1,6 +1,6 @@
-# Maju Terus Jaya — Kitchen Sink Catalogues, 2026
+# Maju Terus Jaya — Product Catalogues, 2026
 
-Two coordinated catalogue volumes, redesigned from the shop's two kitchen sink catalogues:
+Three coordinated catalogue volumes: the two kitchen sink catalogues, redesigned from the shop's own, and the Wellup UPVC door catalogue, made in the same design from the website's door records:
 
 | Volume | Language | Presentation / screen (A4) | Print (A4 + 3 mm bleed) |
 |---|---|---|---|
@@ -8,12 +8,14 @@ Two coordinated catalogue volumes, redesigned from the shop's two kitchen sink c
 | | Bahasa Indonesia | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_ID.pdf` | `pdf/MTJ_Granite_Kitchen_Sink_Collection_Vol01_ID_PRINT.pdf` |
 | **02 · Stainless Steel Kitchen Sink Collection**: 25 models, 40 pages | English | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02.pdf` | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_PRINT.pdf` |
 | | Bahasa Indonesia | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_ID.pdf` | `pdf/MTJ_Stainless_Steel_Kitchen_Sink_Collection_Vol02_ID_PRINT.pdf` |
+| **03 · Wellup UPVC Door Collection**: 19 models, 32 pages | English | `pdf/MTJ_Wellup_UPVC_Door_Collection_Vol03.pdf` | `pdf/MTJ_Wellup_UPVC_Door_Collection_Vol03_PRINT.pdf` |
+| | Bahasa Indonesia | `pdf/MTJ_Wellup_UPVC_Door_Collection_Vol03_ID.pdf` | `pdf/MTJ_Wellup_UPVC_Door_Collection_Vol03_ID_PRINT.pdf` |
 
-Both page counts are multiples of four, for saddle-stitched printing.
+All three page counts are multiples of four, for saddle-stitched printing.
 
 The **print** files are 216 × 303 mm sheets. Images and dark backgrounds run into the 3 mm bleed, and each page carries a TrimBox at A4 (210 × 297 mm). Photographs are placed at 235 ppi (kitchen pages) to 254 ppi (covers and full-page images). The files are RGB: the printer converts them with their own CMYK profile. The **presentation** files are trimmed A4 with lighter images, for screens, email and showroom tablets.
 
-All eight files are PDF 1.4 with embedded TrueType fonts, document metadata (including the document language) and bookmarks (sections, ranges and every model).
+All twelve files are PDF 1.4 with embedded TrueType fonts, document metadata (including the document language) and bookmarks (sections, ranges and every model).
 
 **Before printing, read `CONFIRMATION_NOTES.md`.** It lists every item marked † in the catalogues: information that is unclear or inconsistent in the source and needs the supplier's confirmation.
 
@@ -31,7 +33,36 @@ The website (`index.html`, published with GitHub Pages) offers the presentation 
 
 Changes go live by themselves. GitHub Pages republishes the site whenever `main` changes. Every change pushed to a `claude/…` branch is merged into `main` by `.github/workflows/publish-to-website.yml`, so it goes live too, about a minute later. A branch that conflicts with `main` is not merged; the run in the Actions tab shows why. To stop automatic publishing, delete that file or disable the workflow in the Actions tab.
 
-## What's inside each volume
+## The door catalogue (Volume 03)
+
+Made with the kitchen sink volumes' design system (`layout/catalogue.css`, with `layout/doors.css` for its own pages) from the website's door records, which come from the Wellup PRICE LIST 2026 (Door & Lock). Like the sink volumes, it prints no prices. Its pages:
+
+- **Cover** and **Introduction and contents**: a hallway with the PT 2602 in Dark Grey with a black list. The hallway is a visualisation (`render/door_book.py` frames the website's door picture, `vignettes.door`, for the cover and the introduction band). The door in it is the supplied photograph, cut out and set into the wall.
+- **The collection**: all 19 models in Dark Grey, by section, each with its page.
+- **Colours and lists**: White, Brown and Dark Grey on the PT 270, as photographed, and the white and black lists of the PT 2601 and PT 2602.
+- **Size and opening**: the listed size drawn (200 x 70 cm), the specification as printed, R and L, and what the price list does not state.
+- **Four sections**, the website's own grouping of the price list's eight door types: Glass above a louvre, Full UPVC, Glass panes with a list, Glass or panel at the side. Each opens with a page showing its types as printed, its models and one of its doors.
+- **One page per model**: its colours (and lists) as photographed, its specification as printed, and its product codes, by colour and list, in R and L.
+- **Product codes**: all 125 codes on one page, by model, list, colour and opening.
+- **Index**, **Notes** and the **back cover**.
+
+The items marked † are listed in `CONFIRMATION_NOTES.md` (D1–D10). The PT 109, 409, 709, 809 and 909 came without photographs, so their pictures are the price list's own small ones (D7). They are placed smaller than the rest, but they still print soft.
+
+Its photographs are the shop's: `images/doors/` holds each door's front at the size it was supplied, trimmed to the door, on the catalogue's paper colour (`source/tools/door_photos.py`). The website's `img/doors` pictures are made from the same photographs.
+
+Build it with `layout/make_door_catalogue.sh <door photos> <editorial> <logos> <work dir> <pdf dir> [index.html]`, where door photos is `images/doors` and editorial is `images/editorial` (`cover-doors.jpg`, `intro-doors.jpg`, `stone-dark.jpg`). Given `index.html`, the script first reads the door records again (`tools/extract_doors.js` writes `layout/data/doors.json`). It then runs:
+
+- `prepare_doors.py`, which prepares the pictures;
+- `build_doors.py`, for each language (`i18n_doors.py` holds the Indonesian, and the build stops on any missing text);
+- `check_layout.js`;
+- `export_pdf.js` and `finalize_pdf.py`;
+- last, `verify_doors.py`.
+
+`verify_doors.py` checks every edition against the door records. Every model must have exactly one page, with its printed facts matching its records. Every colour, list and opening must have exactly the code its record has. The codes page must give all 125 codes once each, and the index and bookmarks must point at the right pages. The text must copy out cleanly, and no price may appear anywhere. The build stops on any mismatch.
+
+Put it on the website with `layout/publish_site.py <pdf dir> <work dir> <website folder> doors`.
+
+## What's inside each kitchen sink volume
 
 - **Cover.** A full-bleed kitchen image with the collection's title set large.
 - **Introduction and contents.** Key figures and page references.

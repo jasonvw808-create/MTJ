@@ -1336,26 +1336,9 @@
                    letter-spacing: -.014em; font-variation-settings: "opsz" 60; color: #F1EADE; }
   .dc-cover-foot { display: flex; justify-content: space-between; gap: 4cqw; margin-top: 5.6cqw; padding-top: 3.6cqw; border-top: 1px solid rgb(201 172 128 / .5);
                    font-size: max(6.5px, 2.15cqw); font-weight: 500; letter-spacing: .17em; text-transform: uppercase; color: rgb(241 234 222 / .74); }
-  /* on the Catalogue page, after the two kitchen sink catalogues: the door catalogue, in the doors' warmer charcoal,
-     its cover first once there is room beside it */
+  /* on the Catalogue page, after the two kitchen sink catalogues and laid out as they are: the door catalogue, in the
+     doors' warmer charcoal, its cover and a look inside it where the kitchen sinks have their two volumes */
   .cl-dc { margin-top: 0; border-top: 0; --shell: 35 32 29; --line: 64 58 52; --accent: 201 172 128; --ink: 241 234 222; --mute: 178 169 156; }
-  .cl-dc-in { padding-top: 72px; padding-bottom: 80px; }
-  .cl-dc-book { width: 100%; max-width: 340px; }
-  .cl-dc-cover { display: block; }
-  .cl-dc-cap { margin-top: 16px; font-size: 12px; letter-spacing: .02em; color: rgb(var(--mute)); }
-  .cl-dc-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; max-width: 560px; margin-top: 30px; border-top: 1px solid rgb(var(--line)); }
-  .cl-dc-facts > div { min-width: 0; padding: 15px 0; border-bottom: 1px solid rgb(var(--line)); }
-  .cl-dc-facts dt { font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--mute)); }
-  .cl-dc-facts dd { margin-top: 6px; font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; color: rgb(var(--ink)); }
-  .cl-dc-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 30px; margin-top: 34px; }
-  .cl-dc-acts .cl-btn { height: 50px; padding: 0 24px; gap: 12px; }
-  .cl-dc-acts .cl-link { margin-top: 0; }
-  @media (min-width: 560px) { .cl-dc-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .cl-dc-in { padding-top: 96px; padding-bottom: 104px; } }
-  @media (min-width: 1200px) {
-    .cl-dc-in { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 96px; }
-    .cl-dc-book { order: -1; max-width: none; }
-  }
 
   /* ── THE HOME PAGE (#/, [data-lux]) ─────────────────────────────────────────────────────────────────────
      Dark luxury: the home page is set on charcoal in both themes, as the catalogue page and the showroom are. The
@@ -9225,10 +9208,14 @@ const parseRoute = (hash) => {
   if (a === "about")    return brand("about");
   if (a === "products") return brand("products", { section: b || null });
   if (a === "catalogue") {
-    /* the Catalogue page; under it, the Wellup Door Catalogue: a door's page in it (a door's slug starts pt-), or the
-       catalogue itself, opened at a section where one is named */
+    /* the Catalogue page; under it, the Wellup Door Catalogue: a door's page in it (a door's slug starts pt-), its PDF
+       (pdf/<en|id>[/<page>]), or the catalogue itself, opened at a section where one is named */
     if (b !== "doors") return brand("catalogue");
     const c = parts[2] || null;
+    if (c === "pdf") {
+      const ed = parts[3] === "en" || parts[3] === "id" ? parts[3] : null;
+      return brand("doorCatalogue", { view: "pdf", edition: ed, page: +(ed ? parts[4] : parts[3]) || null });
+    }
     return /^pt-/.test(c || "") ? brand("doorCatalogue", { slug: c, hand: (parts[3] || "").toUpperCase() === "L" ? "L" : null })
                                 : brand("doorCatalogue", { section: c });
   }
@@ -13640,8 +13627,9 @@ const AboutPage = () => {
 /* ═══════════════════════════════════════════════════════════════════════════
    CATALOGUE
    The catalogue's landing page: the collections as cards, the two kitchen
-   sink catalogues to view or download, the Wellup Door Catalogue (DcEntry,
-   with the door catalogue itself), and the services around them. It is
+   sink catalogues to view or download, the Wellup Door Catalogue set as they
+   are (DcEntry: its PDF to view or download, the web catalogue online), and
+   the services around them. It is
    set on a charcoal stage in both themes (.cl in the stylesheet), which the
    bar runs over as it does over the home page's hero.
    A collection is one entry in CL_COLLECTIONS: the grid gives it a card (a
@@ -13692,8 +13680,8 @@ const CL_SERVICES = [
     link:  { en: "Contact us", id: "Hubungi kami" } },
 ];
 
-/* one of the two kitchen sink catalogues: its cover, which opens it here on the website, and its two ways — View and
-   PDF (or, where the files are not beside the page, Read) */
+/* one of the catalogues (the two kitchen sink volumes, the door volume): its cover, which opens it here on the website,
+   and its two ways — View and PDF (or, where the files are not beside the page, Read) */
 const ClBook = ({ doc, n, lang, files }) => {
   const { x } = useStore();
   const read = files === "missing";
@@ -13705,7 +13693,7 @@ const ClBook = ({ doc, n, lang, files }) => {
         <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-1.jpg")} alt={title} tone="#2B2926" className="no-dim" />
       </a>
       <figcaption className="cl-meta">
-        <span className="cl-name">{x(doc === "granite" ? { en: "Granite", id: "Granit" } : { en: "Stainless Steel", id: "Stainless Steel" })}</span>
+        <span className="cl-name">{x(KS_DOCS[doc].name)}</span>
         <span className="cl-acts">
           {read ? (
             <a {...ksDocLink(doc, lang, files)} className="cl-btn cl-solid"><KsIcon name="book" size={14} />{x({ en: "Read", id: "Baca" })}</a>
@@ -13719,6 +13707,29 @@ const ClBook = ({ doc, n, lang, files }) => {
           </>)}
         </span>
         <span className="cl-facts">{"Volume 0" + (n + 1) + " · " + ksPdfLine(doc, lang, files)}</span>
+      </figcaption>
+    </figure>
+  );
+};
+
+/* a look inside a catalogue: its collection page (the second of the look inside's pages), which opens the PDF there —
+   or, where the files are not beside the page, the catalogue to read */
+const ClPeek = ({ doc, lang, files }) => {
+  const { x } = useStore();
+  const read = files === "missing";
+  const at = ((KS_PDF_PAGES[doc] || {}).peek || [1, 3, 7])[1];
+  const link = read ? ksDocLink(doc, lang, files) : ksViewLink(doc, lang, at);
+  const label = x({ en: "Look inside", id: "Lihat isinya" });
+  return (
+    <figure className="cl-book" data-cl-peek={doc + "-" + lang}>
+      <a {...link} className="cl-cover" aria-label={label + ": " + x(KS_DOCS[doc].title) + ", " + x({ en: "page ", id: "halaman " }) + String(at).padStart(2, "0")}>
+        <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-2.jpg")} tone="#E9E6E0" className="no-dim"
+          alt={x({ en: "Inside the " + KS_DOCS[doc].title.en + ": the collection, every model at a glance", id: "Isi " + KS_DOCS[doc].title.id + ": koleksinya, setiap model sekilas" })} />
+      </a>
+      <figcaption className="cl-meta">
+        <span className="cl-name">{label}</span>
+        <span className="cl-facts">{x({ en: "Every model at a glance, then a page for each · page " + String(at).padStart(2, "0"),
+                                         id: "Setiap model sekilas, lalu satu halaman untuk masing-masing · hal. " + String(at).padStart(2, "0") })}</span>
       </figcaption>
     </figure>
   );
@@ -15616,22 +15627,28 @@ const KS_DIR = "catalogue/";
 const KS_IMG = (name) => KS_DIR + "img/" + name;
 const KS_EDITION = { en: "November 2026", id: "November 2026" };
 /* pages and size of each PDF, written in when the files are put in the folder (catalogues/source/layout/publish_site.py) */
-const KS_PDF_META = {"granite-en":{"pages":16,"bytes":1782547},"granite-id":{"pages":16,"bytes":1781032},"stainless-en":{"pages":40,"bytes":5071424},"stainless-id":{"pages":40,"bytes":5071241}};
+const KS_PDF_META = {"granite-en":{"pages":16,"bytes":1782547},"granite-id":{"pages":16,"bytes":1781032},"stainless-en":{"pages":40,"bytes":5071424},"stainless-id":{"pages":40,"bytes":5071241},"doors-en":{"pages":32,"bytes":3902211},"doors-id":{"pages":32,"bytes":3901016}};
 /* and what is on each page of a PDF (the same in both languages), written in with them: a model's code, or the page of
    the catalogue read here with the same contents (cover, overview, colours or finishes, index) — null where there is
    none; and the three pages of the look inside (img/pages/<doc>-<lang>-1…3.jpg) */
-const KS_PDF_PAGES = {"granite":{"peek":[1,3,7],"pages":["cover",null,"overview","colours",null,null,"GDU 8145","GST 6045","GST 7546","GSU 6045","GSU 7545","GSU 8045","index",null,null,null]},"stainless":{"peek":[1,5,11],"pages":["cover",null,"finishes",null,"overview-pressed","overview-handmade",null,null,null,null,"LPS 5040","LPS 7540 A","LPS 8643 A","LPS 9643 A","LPS 10050 A","WL 03","WL 05 A","WL 07","WL 11","WL 12","WL 18",null,"W 5050 TSB","W 6045 TSS","W 6045 TSB","W 7546 TSB","W 7546 TSBN","W 7646 USS","W 7646 USB","W 7845 UDS","W 7845 UDB","W 8050 TSS","W 8050 TSB","W 8245 TDB","W 8550 TDG","W 10050 TSG","index",null,null,null]}};
+const KS_PDF_PAGES = {"granite":{"peek":[1,3,7],"pages":["cover",null,"overview","colours",null,null,"GDU 8145","GST 6045","GST 7546","GSU 6045","GSU 7545","GSU 8045","index",null,null,null]},"stainless":{"peek":[1,5,11],"pages":["cover",null,"finishes",null,"overview-pressed","overview-handmade",null,null,null,null,"LPS 5040","LPS 7540 A","LPS 8643 A","LPS 9643 A","LPS 10050 A","WL 03","WL 05 A","WL 07","WL 11","WL 12","WL 18",null,"W 5050 TSB","W 6045 TSS","W 6045 TSB","W 7546 TSB","W 7546 TSBN","W 7646 USS","W 7646 USB","W 7845 UDS","W 7845 UDB","W 8050 TSS","W 8050 TSB","W 8245 TDB","W 8550 TDG","W 10050 TSG","index",null,null,null]},"doors":{"peek":[1,3,7],"pages":["cover",null,"overview",null,null,null,"PT 109 / WL 002","PT 110","PT 111","PT 112","PT 113","PT 114","PT 115","PT 116","PT 117","PT 118","PT 119","PT 409 / WL 004",null,"PT 270","PT 290",null,"PT 2601 / WL 016","PT 2602 / WL 018",null,"PT 709 / WL 007","PT 809 / WL 008","PT 909 / WL 010",null,"index",null,null]}};
 const KS_LANGS = ["en", "id"];
 /* two catalogues, one for each material — granite and stainless steel are never in the same one */
 const KS_DOCS = {
   granite:   { stem: "MTJ_Granite_Kitchen_Sink_Catalogue",
                title: { en: "Granite Kitchen Sink Collection", id: "Koleksi Bak Cuci Dapur Granit" },
-               short: { en: "Granite Kitchen Sink", id: "Bak Cuci Dapur Granit" } },
+               short: { en: "Granite Kitchen Sink", id: "Bak Cuci Dapur Granit" }, name: { en: "Granite", id: "Granit" } },
   stainless: { stem: "MTJ_Stainless_Steel_Kitchen_Sink_Catalogue",
                title: { en: "Stainless Steel Kitchen Sink Collection", id: "Koleksi Bak Cuci Dapur Stainless Steel" },
-               short: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Dapur Stainless Steel" } },
+               short: { en: "Stainless Steel Kitchen Sink", id: "Bak Cuci Dapur Stainless Steel" }, name: { en: "Stainless Steel", id: "Stainless Steel" } },
+  /* the third volume, made by the same generator (catalogues/source/layout/build_doors.py): the Wellup UPVC doors */
+  doors:     { stem: "MTJ_Wellup_UPVC_Door_Catalogue",
+               title: { en: "Wellup UPVC Door Collection", id: "Koleksi Pintu UPVC Wellup" },
+               short: { en: "Wellup UPVC Door", id: "Pintu UPVC Wellup" }, name: { en: "UPVC Doors", id: "Pintu UPVC" } },
 };
+/* the two kitchen sink catalogues; and every volume, for the viewer's own list */
 const KS_DOC_LIST = ["granite", "stainless"];
+const CAT_DOC_LIST = ["granite", "stainless", "doors"];
 /* MTJ_Granite_Kitchen_Sink_Catalogue.pdf — and the Indonesian edition, …_ID.pdf */
 const ksPdfFile = (doc, lang) => KS_DOCS[doc].stem + (lang === "id" ? "_ID" : "") + ".pdf";
 const ksPdfHref = (doc, lang) => KS_DIR + ksPdfFile(doc, lang);
@@ -15693,11 +15710,18 @@ const ksKindOfDoc = (doc) => (doc === "stainless" ? "stainless-steel" : "granite
    pages are read here instead, drawn by the site.) */
 const ksViewHref = (doc, lang, page = null) =>
   "#/shop/kitchen-sinks/" + ksKindOfDoc(doc) + "/catalogue/" + (lang === "id" ? "id" : "en") + (page ? "/" + page : "");
+/* The door catalogue's PDF, the same way: #/catalogue/doors/pdf/<en|id>[/<page>], in the door catalogue — and where it
+   cannot be shown, the door catalogue itself, which the website draws from the same records */
+const dcPdfHref = (lang, page = null) => "#/catalogue/doors/pdf/" + (lang === "id" ? "id" : "en") + (page ? "/" + page : "");
+const catViewHref = (doc, lang, page = null) => (doc === "doors" ? dcPdfHref(lang, page) : ksViewHref(doc, lang, page));
+const catReadAt = (doc, lang, page = null) => (doc === "doors" ? "#/catalogue/doors" : ksReadAt(doc, lang, page));
+/* a door model's page in its PDF (by its name, as the PDF's bookmarks have it), once the PDF's contents are known */
+const dcPdfPage = (name) => (KS_PDF_PAGES.doors ? ksPdfPageOf("doors", name) : null);
 const ksViewLink = (doc, lang, page = null) => {
   const L = lang === "id" ? "id" : "en";
   const href = typeof window !== "undefined" && window.KS_EMBED_PDF === false
-    ? ksReadAt(doc, L, page)
-    : ksViewHref(doc, L, page);
+    ? catReadAt(doc, L, page)
+    : catViewHref(doc, L, page);
   return { href, "data-ks-view": doc + "-" + L };
 };
 /* can this browser show a PDF inside the page? A computer's browser can (Chrome, Edge, Firefox, Safari); a phone's
@@ -15712,7 +15736,7 @@ const ksCanEmbedPdf = () => {
 const ksDocLink = (doc, lang, files) => {
   const L = lang === "id" ? "id" : "en";
   return files === "missing"
-    ? { href: ksReadHref(doc, L), "data-ks-read": doc + "-" + L }
+    ? { href: doc === "doors" ? "#/catalogue/doors" : ksReadHref(doc, L), "data-ks-read": doc + "-" + L }
     : { href: ksPdfHref(doc, L), download: ksPdfFile(doc, L), "data-ks-pdf": doc + "-" + L };
 };
 
@@ -16558,42 +16582,47 @@ const KitchenSinks = ({ kind, model = null, colour = null, extra = null }) => {
    Without the PDF files beside the page, the catalogue's pages are read here instead. */
 /* as tall as the window under the site's bar (161px on a computer), so the whole viewer can be in view at once */
 const KS_FRAME = "block h-[calc(100svh_-_185px)] min-h-[560px] w-full border-y border-line bg-[#525659] md:border";
-const KsCatalogueView = ({ kind, edition = null, page = null }) => {
+const KsCatalogueView = ({ kind = null, edition = null, page = null, doc: only = null }) => {
   const { x, t, lang } = useStore();
   const files = useKsFiles();
-  const K = KS_KINDS[kind];
-  const doc = K ? K.doc : "granite";
+  /* a kitchen sink catalogue, by its material's page in the shop; or the volume named (the doors) */
+  const K = only ? null : KS_KINDS[kind];
+  const doc = only || (K ? K.doc : "granite");
+  const ok = !!(only || K), doors = doc === "doors";
   const L = edition || (lang === "id" ? "id" : "en");
   const seen = useRef(lang);
   useEffect(() => {
     if (seen.current === lang) return;
     seen.current = lang;
-    if (K) location.replace(ksViewHref(doc, lang, page));
+    if (ok) location.replace(catViewHref(doc, lang, page));
   }, [lang]);
   const [embed] = useState(() => ksCanEmbedPdf());
   /* the cover's picture (made with the PDFs); a server holding just the PDFs has none, and the panel does without */
   const [cover, setCover] = useState(true);
   useEffect(() => { setCover(true); }, [doc, L]);
   const title = tx(KS_DOCS[doc].title, L);
-  useKsMeta(K ? title : null, K ? tx({ en: "The " + KS_DOCS[doc].title.en + " of Maju Terus Jaya, as a PDF: page through it here, print it or download it.",
-                                       id: KS_DOCS[doc].title.id + " dari Maju Terus Jaya, sebagai PDF: lihat di sini, cetak atau unduh." }, lang) : null);
-  useEffect(() => { if (K && files === "missing") location.replace(ksReadAt(doc, L, page)); }, [files]);
-  if (!K) return <KsCategory kind={kind} />;
+  useKsMeta(ok ? title : null, ok ? tx({ en: "The " + KS_DOCS[doc].title.en + " of Maju Terus Jaya, as a PDF: page through it here, print it or download it.",
+                                         id: KS_DOCS[doc].title.id + " dari Maju Terus Jaya, sebagai PDF: lihat di sini, cetak atau unduh." }, lang) : null);
+  useEffect(() => { if (ok && files === "missing") location.replace(catReadAt(doc, L, page)); }, [files]);
+  if (!ok) return <KsCategory kind={kind} />;
   const pdf = ksPdfHref(doc, L);
   const src = pdf + (page ? "#page=" + page : "");
-  const read = ksReadAt(doc, L, page);
+  const read = catReadAt(doc, L, page);
   const btn = "inline-flex h-12 items-center gap-3 whitespace-nowrap border px-6 text-[11px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color,border-color] duration-500 ease-quiet ";
   const dark = btn + "border-ink bg-ink text-bone hover:bg-transparent hover:text-ink", light = btn + "border-ink text-ink hover:bg-ink hover:text-bone";
   return (
     <div data-ks-page="viewer" data-ks-viewer={doc + "-" + L}>
       <div className="mx-auto max-w-site px-5 pt-8 md:px-10">
-        <Breadcrumb trail={[{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Kitchen Sink", id: "Bak Cuci Dapur" }), to: "#/shop/kitchen-sinks" },
-                            { label: x(K.label), to: K.route }, { label: x({ en: "Catalogue", id: "Katalog" }) }]} />
+        <Breadcrumb trail={doors
+          ? [{ label: x({ en: "Catalogue", id: "Katalog" }), to: "#/catalogue" }, { label: x({ en: "Wellup Door Catalogue", id: "Katalog Pintu Wellup" }), to: "#/catalogue/doors" },
+             { label: "PDF" }]
+          : [{ label: t("shop"), to: "#/shop" }, { label: x({ en: "Kitchen Sink", id: "Bak Cuci Dapur" }), to: "#/shop/kitchen-sinks" },
+             { label: x(K.label), to: K.route }, { label: x({ en: "Catalogue", id: "Katalog" }) }]} />
       </div>
       <section className="mx-auto max-w-site px-5 pb-5 pt-6 md:px-10 md:pt-8">
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }) + " · " + x(KS_EDITION)}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x(doors ? { en: "Door Catalogue", id: "Katalog Pintu" } : { en: "Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur" }) + " · " + x(KS_EDITION)}</p>
             <h1 className="mt-3 text-[28px] font-medium leading-[1.12] tracking-[-0.016em] md:text-[36px]">{title}</h1>
             <p className="mt-2.5 text-[11px] font-medium uppercase tracking-[0.08em] text-mute">{ksPdfLine(doc, L, files)} · {L === "id" ? "Bahasa Indonesia" : "English"}</p>
           </div>
@@ -16605,17 +16634,17 @@ const KsCatalogueView = ({ kind, edition = null, page = null }) => {
             </div>
           ) : null}
         </div>
-        {/* the other catalogue, and the other language */}
+        {/* the other catalogues, and the other language */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-line pt-4 text-[11px] font-medium uppercase tracking-[0.08em]">
           <span className="flex flex-wrap gap-x-6 gap-y-2" data-ks-viewer-docs="">
-            {KS_DOC_LIST.map((d) => (
-              <a key={d} href={ksViewHref(d, L)} aria-current={d === doc ? "page" : undefined}
+            {CAT_DOC_LIST.map((d) => (
+              <a key={d} href={catViewHref(d, L)} aria-current={d === doc ? "page" : undefined}
                 className={d === doc ? "text-ink underline decoration-1 underline-offset-[6px]" : "text-mute transition-colors duration-300 hover:text-ink"}>{x(KS_DOCS[d].title)}</a>
             ))}
           </span>
           <span className="flex gap-x-5" data-ks-viewer-langs="">
             {KS_LANGS.map((l) => (
-              <a key={l} href={ksViewHref(doc, l, page)} aria-current={l === L ? "true" : undefined} lang={l}
+              <a key={l} href={catViewHref(doc, l, page)} aria-current={l === L ? "true" : undefined} lang={l}
                 className={l === L ? "text-ink underline decoration-1 underline-offset-[6px]" : "text-mute transition-colors duration-300 hover:text-ink"}>{l === "id" ? "Bahasa Indonesia" : "English"}</a>
             ))}
           </span>
@@ -16651,7 +16680,7 @@ const KsCatalogueView = ({ kind, edition = null, page = null }) => {
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={pdf} target="_blank" rel="noopener" data-ks-open={doc + "-" + L} className={dark}><KsIcon name="external" size={15} />{x({ en: "Open the PDF", id: "Buka PDF" })}</a>
                 <a href={pdf} download={ksPdfFile(doc, L)} data-ks-pdf={doc + "-" + L} className={light}><KsIcon name="download" size={15} />{x({ en: "Download PDF", id: "Unduh PDF" })}</a>
-                <a href={read} data-ks-read={doc + "-" + L} className={btn + "border-line text-ink hover:border-ink"}><KsIcon name="book" size={15} />{x({ en: "Read it here", id: "Baca di sini" })}</a>
+                <a href={read} data-ks-read={doc + "-" + L} className={btn + "border-line text-ink hover:border-ink"}><KsIcon name="book" size={15} />{x(doors ? { en: "Browse it online", id: "Lihat secara online" } : { en: "Read it here", id: "Baca di sini" })}</a>
               </div>
             </div>
           </div>
@@ -18913,6 +18942,7 @@ const DoorCodeTable = ({ g, row, sel }) => {
 
 const DoorProduct = ({ p, handInit = null, at = null }) => {
   const { t, x, lang, add, saved, toggleSaved, setDrawer, noteViewed } = useStore();
+  const files = useKsFiles();
   const g = useMemo(() => doorFind(p.code), [p.code]);
   const [c, setC] = useState(p.doorCol);
   const [l, setL] = useState(p.listCol);
@@ -19029,6 +19059,13 @@ const DoorProduct = ({ p, handInit = null, at = null }) => {
               className="mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
               <KsIcon name="book" size={15} /><span className="u">{x({ en: "View in the door catalogue", id: "Lihat di katalog pintu" })}</span>
             </a>
+            {/* and its page in the catalogue's PDF */}
+            {files === "missing" || !dcPdfPage(g.name) ? null : (
+              <a {...ksViewLink("doors", lang, dcPdfPage(g.name))} data-door-pdf=""
+                className="mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+                <KsIcon name="file" size={15} /><span className="u">{x({ en: "View in the PDF catalogue", id: "Lihat di katalog PDF" })}</span>
+              </a>
+            )}
             {/* the virtual showroom, where it holds this door: opened at it, in the colour chosen */}
             {showroom ? (
               <a href={"#/virtual-showroom/" + row.slug} data-door-showroom=""
@@ -19100,7 +19137,7 @@ const DC_ROUTE = "#/catalogue/doors";
 const dcHref = (r, hand) => DC_ROUTE + "/" + r.slug + (hand === "L" ? "/l" : "");
 const dcSectionHref = (id) => DC_ROUTE + "/" + id;
 /* does the address name something the catalogue holds: its pages, or a door it has? */
-const dcResolves = (route) => !route.slug || !!(bySlug(route.slug) || {}).hands;
+const dcResolves = (route) => route.view !== "pdf" && (!route.slug || !!(bySlug(route.slug) || {}).hands);
 /* the models in the catalogue's order: section by section, each in the price list's order */
 const dcOrder = () => { const all = doorModels(); return DOOR_SECTIONS.flatMap((s) => all.filter((g) => doorSectionOf(g) === s)); };
 /* what the catalogue holds, counted from the records rather than written down */
@@ -19141,41 +19178,33 @@ const DoorCover = ({ eager = false }) => {
   );
 };
 
-/* ── on the Catalogue page, after the two kitchen sink catalogues: the door catalogue's cover, a word on what is in
-   it, and the way in ── */
+/* ── on the Catalogue page, after the two kitchen sink catalogues and set as they are: a word on the door catalogue,
+   the way to it on the website and its PDF in the other language; beside them its cover, to view (the PDF, here on the
+   website) or download, and a look inside it ── */
 const DcEntry = () => {
-  const { x } = useStore();
-  const n = dcCounts();
-  const facts = [
-    ["models", { en: "Models", id: "Model" }, String(n.models)],
-    ["colours", { en: "Colours", id: "Warna" }, String(n.colours)],
-    ["codes", { en: "Product codes", id: "Kode produk" }, String(n.codes)],
-    ["price", { en: "Price", id: "Harga" }, x({ en: "From ", id: "Mulai " }) + rp(n.low)],
-  ];
+  const { x, lang } = useStore();
+  const files = useKsFiles();
+  const L = lang === "id" ? "id" : "en", other = L === "id" ? "en" : "id";
   return (
     <section className="cl-dl cl-dc" aria-labelledby="cl-dc-title" data-cl-doors="">
-      <div className="cl-dl-in cl-dc-in mx-auto max-w-site px-5 md:px-10">
+      <div className="cl-dl-in mx-auto max-w-site px-5 md:px-10">
         <Reveal className="cl-text cascade">
-          <p className="cl-eyebrow">{x({ en: "UPVC doors · Price List 2026", id: "Pintu UPVC · Price List 2026" })}</p>
-          <h2 id="cl-dc-title">{x({ en: "Wellup Door Catalogue", id: "Katalog Pintu Wellup" })}</h2>
-          <p className="cl-body-text">{x({ en: "The Wellup UPVC doors as the price list gives them: " + n.models + " models in one size, " + DOOR_SIZE + ", each in White, Brown and Dark Grey, with an R or L opening. Browse them by type, and find each one's product code and price.",
-                                              id: "Pintu UPVC Wellup sesuai daftar harganya: " + n.models + " model dalam satu ukuran, " + DOOR_SIZE + ", masing-masing dalam White, Brown dan Dark Grey, dengan arah bukaan R atau L. Telusuri menurut tipenya, dan temukan kode produk serta harga masing-masing." })}</p>
-          <dl className="cl-dc-facts" data-cl-doors-facts="">
-            {facts.map(([id, k, v]) => <div key={id} data-cl-doors-fact={id}><dt>{x(k)}</dt><dd>{v}</dd></div>)}
-          </dl>
-          <div className="cl-dc-acts">
-            <a href={DC_ROUTE} className="cl-btn cl-solid" data-cl-doors-view="">{x({ en: "View Catalogue", id: "Lihat Katalog" })}<Icon name="arrow" size={14} /></a>
-            <a href="#/shop/doors" className="cl-link group/l" data-cl-doors-shop="">
-              <span className="u">{x({ en: "Shop the doors", id: "Belanja pintu" })}</span>
-              <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-            </a>
-          </div>
-        </Reveal>
-        <Reveal still className="cl-dc-book">
-          <a href={DC_ROUTE} className="cl-dc-cover" data-cl-doors-cover="" aria-label={x({ en: "View the catalogue: Wellup Door Catalogue", id: "Lihat katalog: Katalog Pintu Wellup" })}>
-            <DoorCover />
+          <p className="cl-eyebrow">{x({ en: "Door catalogue · 2026", id: "Katalog pintu · 2026" })}</p>
+          <h2 id="cl-dc-title">{x({ en: "Every door, colour and product code, in one place.", id: "Setiap pintu, warna, dan kode produk dalam satu tempat." })}</h2>
+          <p className="cl-body-text">{x({ en: "One volume, the Wellup UPVC doors, with a page for every model: its colours as photographed, its specification as printed and every product code, R and L. In English and Indonesian.",
+                                              id: "Satu volume, pintu UPVC Wellup, dengan satu halaman untuk setiap model: warnanya sesuai foto, spesifikasinya sesuai daftar harga, dan setiap kode produknya, R dan L. Dalam bahasa Inggris dan Indonesia." })}</p>
+          <a href={DC_ROUTE} className="cl-link group/l" data-cl-doors-online="">
+            <span className="u">{x({ en: "Browse it online", id: "Lihat secara online" })}</span>
+            <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
           </a>
-          <p className="cl-dc-cap">{x({ en: "Web catalogue · in English and Indonesian", id: "Katalog web · dalam bahasa Inggris dan Indonesia" })}</p>
+          <p className="cl-also">
+            <span>{L === "id" ? "Also in English:" : "Juga dalam Bahasa Indonesia:"}</span>
+            <a {...ksDocLink("doors", other, files)} className="u" data-cl-doors-other="">{tx(KS_DOCS.doors.short, other)}</a>
+          </p>
+        </Reveal>
+        <Reveal still className="cl-books cascade">
+          <ClBook doc="doors" n={2} lang={L} files={files} />
+          <ClPeek doc="doors" lang={L} files={files} />
         </Reveal>
       </div>
     </section>
@@ -19310,6 +19339,15 @@ const DoorCatalogue = ({ section = null }) => {
                   {x({ en: "Shop the doors", id: "Belanja pintu" })}
                 </a>
               </div>
+              {/* the same catalogue as a PDF, to view here or download (not where the files are not beside the page) */}
+              {files === "missing" ? null : (
+                <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium uppercase tracking-[0.1em] text-mute" data-dc-pdf="">
+                  <span>{x({ en: "The catalogue as a PDF", id: "Katalog dalam PDF" })}</span>
+                  <a {...ksViewLink("doors", L)} className="u text-ink transition-colors duration-300 hover:text-accent" data-dc-pdf-view="">{x({ en: "View", id: "Lihat" })}</a>
+                  <a {...ksDocLink("doors", L, files)} className="u text-ink transition-colors duration-300 hover:text-accent" data-dc-pdf-download="">{x({ en: "Download", id: "Unduh" })}</a>
+                  <span className="normal-case tracking-[0.02em]">{"Volume 03 · " + ksPdfLine("doors", L, files)}</span>
+                </p>
+              )}
             </Reveal>
           </div>
           <Reveal className="block lg:order-1 lg:col-span-5" delay={60}>
@@ -19526,6 +19564,7 @@ const DoorCatalogue = ({ section = null }) => {
    is said in the address, and the way to the door's own page in the shop takes it there as chosen. */
 const DcModel = ({ p, handInit = null, at = null }) => {
   const { x, lang } = useStore();
+  const files = useKsFiles();
   const g = useMemo(() => doorFind(p.code), [p.code]);
   const order = useMemo(() => dcOrder(), []);
   const [c, setC] = useState(p.doorCol);
@@ -19629,6 +19668,12 @@ const DcModel = ({ p, handInit = null, at = null }) => {
           </div>
           <p className="mt-3.5 text-[12.5px] leading-[1.65] text-mute">{x({ en: "The product page is in the shop: the same door, in the colour, list and opening chosen here.",
                                                                                  id: "Halaman produk ada di toko: pintu yang sama, dalam warna, list dan arah bukaan yang dipilih di sini." })}</p>
+          {files === "missing" || !dcPdfPage(g.name) ? null : (
+            <a {...ksViewLink("doors", lang, dcPdfPage(g.name))} data-dc-pdf=""
+              className="mt-5 inline-flex items-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+              <KsIcon name="file" size={15} /><span className="u">{x({ en: "This model in the PDF catalogue · page ", id: "Model ini di katalog PDF · hal. " }) + String(dcPdfPage(g.name)).padStart(2, "0")}</span>
+            </a>
+          )}
           <div className="mt-8 border-l border-accent/70 py-1 pl-5 text-[13.5px] leading-[1.7] text-mute" data-dc-ask="">
             {x(DOOR_ASK)}{" "}
             <a href={"#/contact/" + row.slug} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a>
@@ -19705,6 +19750,8 @@ const DcModel = ({ p, handInit = null, at = null }) => {
 /* the catalogue's address: a door (a model's page), or the catalogue itself (opened at a section, where one is named) */
 const DoorCatalogueRoute = () => {
   const r = useRoute();
+  /* the catalogue as a PDF, on the doors' own stage */
+  if (r.view === "pdf") return <div className="dcat" data-dc-page="pdf"><KsCatalogueView doc="doors" edition={r.edition} page={r.page} /></div>;
   if (r.slug) {
     const p = bySlug(r.slug);
     return p && p.hands ? <DcModel key={p.code} p={p} handInit={r.hand} at={r} /> : <NotFound />;

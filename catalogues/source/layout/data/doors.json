@@ -1,0 +1,4856 @@
+{
+ "size": "200 x 70 cm",
+ "colours": {
+  "white": {
+   "en": "White",
+   "id": "White"
+  },
+  "brown": {
+   "en": "Brown",
+   "id": "Brown"
+  },
+  "dark-grey": {
+   "en": "Dark Grey",
+   "id": "Dark Grey"
+  }
+ },
+ "colourOrder": [
+  "white",
+  "brown",
+  "dark-grey"
+ ],
+ "lists": {
+  "white": {
+   "en": "White list",
+   "id": "List Putih",
+   "word": {
+    "en": "white",
+    "id": "putih"
+   },
+   "hex": "#F4F4F2"
+  },
+  "black": {
+   "en": "Black list",
+   "id": "List Hitam",
+   "word": {
+    "en": "black",
+    "id": "hitam"
+   },
+   "hex": "#1F2023"
+  }
+ },
+ "types": {
+  "halfGlass": {
+   "as": "1/2 Kaca + Jalusi",
+   "en": "half glass and louvre"
+  },
+  "full": {
+   "as": "Full UPVC",
+   "en": "full UPVC"
+  },
+  "six": {
+   "as": "6 Kotak",
+   "en": "six glass panes"
+  },
+  "eight": {
+   "as": "8 Kotak",
+   "en": "eight glass panes"
+  },
+  "topGlass": {
+   "as": "1/4 Kaca Atas + Jalusi",
+   "en": "quarter glass at the top, and louvre"
+  },
+  "sideGlass": {
+   "as": "1/4 Kaca Samping Jalusi",
+   "en": "quarter glass at the side, louvre"
+  },
+  "sidePlain": {
+   "as": "1/2 Samping Polos + Jalusi",
+   "en": "half plain side and louvre"
+  },
+  "sideGlassPlain": {
+   "as": "1/2 Kaca Samping Polos",
+   "en": "half side glass, plain"
+  }
+ },
+ "typeEn": {
+  "halfGlass": "1/2 glass + louvre",
+  "full": "Full UPVC",
+  "six": "6 glass panes",
+  "eight": "8 glass panes",
+  "topGlass": "1/4 glass top + louvre",
+  "sideGlass": "1/4 glass side, louvre",
+  "sidePlain": "1/2 plain side + louvre",
+  "sideGlassPlain": "1/2 side glass, plain"
+ },
+ "offWeb": [
+  "WELUP-DPT0203006"
+ ],
+ "sections": [
+  {
+   "id": "top-glass",
+   "types": [
+    "halfGlass",
+    "topGlass"
+   ],
+   "title": {
+    "en": "Glass above a louvre",
+    "id": "Kaca di atas jalusi"
+   },
+   "line": {
+    "en": "Glass in the upper part of the door, a louvre below it: half glass on the PT 109 to PT 119, a quarter on the PT 409.",
+    "id": "Kaca di bagian atas pintu, jalusi di bawahnya: setengah kaca pada PT 109 sampai PT 119, seperempat pada PT 409."
+   }
+  },
+  {
+   "id": "full",
+   "types": [
+    "full"
+   ],
+   "title": {
+    "en": "Full UPVC",
+    "id": "Full UPVC"
+   },
+   "line": {
+    "en": "No glass: the PT 270 with two moulded panels, the PT 290 with two louvred panels.",
+    "id": "Tanpa kaca: PT 270 dengan dua panel berprofil, PT 290 dengan dua panel jalusi."
+   }
+  },
+  {
+   "id": "panes",
+   "types": [
+    "six",
+    "eight"
+   ],
+   "title": {
+    "en": "Glass panes with a list",
+    "id": "Kotak kaca dengan list"
+   },
+   "line": {
+    "en": "Six or eight glass panes, divided by a list — the bars between the panes — in white or black.",
+    "id": "Enam atau delapan kotak kaca, dibagi oleh list — bilah di antara kaca — putih atau hitam."
+   }
+  },
+  {
+   "id": "side",
+   "types": [
+    "sideGlass",
+    "sidePlain",
+    "sideGlassPlain"
+   ],
+   "title": {
+    "en": "Glass or panel at the side",
+    "id": "Kaca atau polos di samping"
+   },
+   "line": {
+    "en": "Glass, or a plain panel, down the side of the door.",
+    "id": "Kaca, atau panel polos, di sisi pintu."
+   }
+  }
+ ],
+ "models": [
+  {
+   "code": "PT 109",
+   "wl": "WL 002",
+   "name": "PT 109 / WL 002",
+   "key": "pt-109",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    61
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F9FAFC",
+    "brown": "#763934",
+    "dark-grey": "#5B5B5B"
+   },
+   "motif": {
+    "en": "textured glass",
+    "id": "kaca bertekstur"
+   },
+   "look": null,
+   "short": {
+    "en": "Textured glass",
+    "id": "Kaca bertekstur"
+   },
+   "rows": [
+    {
+     "slug": "pt-109-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-109-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202061"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202062"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 109 / WL 002"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202061"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202062"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 109 / WL 002: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with textured glass. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 109 / WL 002: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kaca bertekstur. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-109-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-109-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202063"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202064"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 109 / WL 002"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202063"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202064"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 109 / WL 002: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with textured glass. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 109 / WL 002: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kaca bertekstur. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-109-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-109-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202065"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202066"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 109 / WL 002"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202065"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202066"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 109 / WL 002: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with textured glass. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 109 / WL 002: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kaca bertekstur. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 110",
+   "wl": null,
+   "name": "PT 110",
+   "key": "pt-110",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    67
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "butterflies",
+    "id": "kupu-kupu"
+   },
+   "look": null,
+   "short": {
+    "en": "Butterflies",
+    "id": "Kupu-kupu"
+   },
+   "rows": [
+    {
+     "slug": "pt-110-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-110-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202067"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202068"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 110"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202067"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202068"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 110: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with butterflies. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 110: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kupu-kupu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-110-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-110-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202069"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202070"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 110"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202069"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202070"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 110: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with butterflies. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 110: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kupu-kupu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-110-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-110-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202071"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202072"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 110"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202071"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202072"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 110: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with butterflies. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 110: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif kupu-kupu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 111",
+   "wl": null,
+   "name": "PT 111",
+   "key": "pt-111",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "pink lotus and a striped band",
+    "id": "teratai merah muda dan pita bergaris"
+   },
+   "look": null,
+   "short": {
+    "en": "Pink lotus and a striped band",
+    "id": "Teratai merah muda dan pita bergaris"
+   },
+   "rows": [
+    {
+     "slug": "pt-111-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-111-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 111"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 111: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with pink lotus and a striped band. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 111: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai merah muda dan pita bergaris. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-111-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-111-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 111"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 111: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with pink lotus and a striped band. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 111: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai merah muda dan pita bergaris. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-111-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-111-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 111"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 111: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with pink lotus and a striped band. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 111: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai merah muda dan pita bergaris. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 112",
+   "wl": null,
+   "name": "PT 112",
+   "key": "pt-112",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    7
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "yellow leaves on a curling vine",
+    "id": "daun kuning pada sulur melengkung"
+   },
+   "look": null,
+   "short": {
+    "en": "Yellow leaves on a curling vine",
+    "id": "Daun kuning pada sulur melengkung"
+   },
+   "rows": [
+    {
+     "slug": "pt-112-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-112-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202007"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202008"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 112"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202007"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202008"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 112: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with yellow leaves on a curling vine. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 112: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif daun kuning pada sulur melengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-112-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-112-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202009"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202010"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 112"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202009"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202010"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 112: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with yellow leaves on a curling vine. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 112: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif daun kuning pada sulur melengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-112-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-112-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202011"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202012"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 112"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202011"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202012"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 112: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with yellow leaves on a curling vine. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 112: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif daun kuning pada sulur melengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 113",
+   "wl": null,
+   "name": "PT 113",
+   "key": "pt-113",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    13
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "red peonies on a sweeping curve",
+    "id": "peoni merah pada lengkung"
+   },
+   "look": null,
+   "short": {
+    "en": "Red peonies on a sweeping curve",
+    "id": "Peoni merah pada lengkung"
+   },
+   "rows": [
+    {
+     "slug": "pt-113-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-113-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202013"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202014"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 113"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202013"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202014"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 113: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with red peonies on a sweeping curve. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 113: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif peoni merah pada lengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-113-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-113-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202015"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202016"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 113"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202015"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202016"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 113: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with red peonies on a sweeping curve. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 113: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif peoni merah pada lengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-113-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-113-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202017"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202018"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 113"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202017"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202018"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 113: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with red peonies on a sweeping curve. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 113: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif peoni merah pada lengkung. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 114",
+   "wl": null,
+   "name": "PT 114",
+   "key": "pt-114",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    19
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "a wave of gold and grey lines",
+    "id": "gelombang garis emas dan abu-abu"
+   },
+   "look": null,
+   "short": {
+    "en": "A wave of gold and grey lines",
+    "id": "Gelombang garis emas dan abu-abu"
+   },
+   "rows": [
+    {
+     "slug": "pt-114-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-114-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202019"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202020"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 114"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202019"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202020"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 114: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a wave of gold and grey lines. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 114: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif gelombang garis emas dan abu-abu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-114-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-114-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202021"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202022"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 114"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202021"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202022"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 114: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a wave of gold and grey lines. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 114: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif gelombang garis emas dan abu-abu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-114-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-114-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202023"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202024"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 114"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202023"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202024"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 114: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a wave of gold and grey lines. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 114: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif gelombang garis emas dan abu-abu. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 115",
+   "wl": null,
+   "name": "PT 115",
+   "key": "pt-115",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    25
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "white lotus and koi",
+    "id": "teratai putih dan ikan koi"
+   },
+   "look": null,
+   "short": {
+    "en": "White lotus and koi",
+    "id": "Teratai putih dan ikan koi"
+   },
+   "rows": [
+    {
+     "slug": "pt-115-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-115-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202025"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202026"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 115"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202025"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202026"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 115: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with white lotus and koi. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 115: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai putih dan ikan koi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-115-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-115-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202027"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202028"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 115"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202027"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202028"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 115: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with white lotus and koi. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 115: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai putih dan ikan koi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-115-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-115-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202029"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202030"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 115"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202029"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202030"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 115: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with white lotus and koi. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 115: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif teratai putih dan ikan koi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 116",
+   "wl": null,
+   "name": "PT 116",
+   "key": "pt-116",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    31
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "orange flowers on a silver ribbon",
+    "id": "bunga oranye pada pita perak"
+   },
+   "look": null,
+   "short": {
+    "en": "Orange flowers on a silver ribbon",
+    "id": "Bunga oranye pada pita perak"
+   },
+   "rows": [
+    {
+     "slug": "pt-116-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-116-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202031"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202032"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 116"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202031"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202032"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 116: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with orange flowers on a silver ribbon. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 116: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif bunga oranye pada pita perak. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-116-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-116-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202033"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202034"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 116"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202033"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202034"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 116: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with orange flowers on a silver ribbon. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 116: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif bunga oranye pada pita perak. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-116-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-116-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202035"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202036"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 116"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202035"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202036"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 116: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with orange flowers on a silver ribbon. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 116: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif bunga oranye pada pita perak. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 117",
+   "wl": null,
+   "name": "PT 117",
+   "key": "pt-117",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    37
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "dolphins under the sea",
+    "id": "lumba-lumba di bawah laut"
+   },
+   "look": null,
+   "short": {
+    "en": "Dolphins under the sea",
+    "id": "Lumba-lumba di bawah laut"
+   },
+   "rows": [
+    {
+     "slug": "pt-117-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-117-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202037"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202038"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 117"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202037"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202038"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 117: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with dolphins under the sea. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 117: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif lumba-lumba di bawah laut. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-117-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-117-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202039"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202040"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 117"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202039"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202040"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 117: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with dolphins under the sea. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 117: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif lumba-lumba di bawah laut. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-117-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-117-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202041"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202042"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 117"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202041"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202042"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 117: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with dolphins under the sea. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 117: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif lumba-lumba di bawah laut. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 118",
+   "wl": null,
+   "name": "PT 118",
+   "key": "pt-118",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    43
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "a climbing rose in white line",
+    "id": "mawar merambat bergaris putih"
+   },
+   "look": null,
+   "short": {
+    "en": "A climbing rose in white line",
+    "id": "Mawar merambat bergaris putih"
+   },
+   "rows": [
+    {
+     "slug": "pt-118-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-118-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202043"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202044"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 118"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202043"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202044"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 118: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a climbing rose in white line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 118: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif mawar merambat bergaris putih. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-118-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-118-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202045"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202046"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 118"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202045"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202046"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 118: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a climbing rose in white line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 118: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif mawar merambat bergaris putih. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-118-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-118-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202047"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202048"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 118"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202047"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202048"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 118: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with a climbing rose in white line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 118: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif mawar merambat bergaris putih. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 119",
+   "wl": null,
+   "name": "PT 119",
+   "key": "pt-119",
+   "type": "halfGlass",
+   "typeAs": "1/2 Kaca + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0202",
+    49
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F0EFF2",
+    "brown": "#7A2921",
+    "dark-grey": "#565656"
+   },
+   "motif": {
+    "en": "bare trees and a stepped line",
+    "id": "pohon tanpa daun dan garis bertingkat"
+   },
+   "look": null,
+   "short": {
+    "en": "Bare trees and a stepped line",
+    "id": "Pohon tanpa daun dan garis bertingkat"
+   },
+   "rows": [
+    {
+     "slug": "pt-119-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-119-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202049"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202050"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 119"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202049"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202050"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 119: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with bare trees and a stepped line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 119: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif pohon tanpa daun dan garis bertingkat. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-119-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-119-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202051"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202052"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 119"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202051"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202052"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 119: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with bare trees and a stepped line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 119: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif pohon tanpa daun dan garis bertingkat. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-119-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca + Jalusi",
+     "photos": [
+      "pt-119-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0202053"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0202054"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 119"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0202053"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0202054"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi"
+      ],
+      [
+       "Type",
+       "Half glass and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 119: 200 x 70 cm, 1.8mm, half glass and louvre, the glass with bare trees and a stepped line. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 119: 200 x 70 cm, 1.8mm, 1/2 Kaca + Jalusi, kacanya bermotif pohon tanpa daun dan garis bertingkat. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 270",
+   "wl": null,
+   "name": "PT 270",
+   "key": "pt-270",
+   "type": "full",
+   "typeAs": "Full UPVC",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0101",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#ECECEC",
+    "brown": "#572217",
+    "dark-grey": "#444547"
+   },
+   "motif": null,
+   "look": {
+    "en": "two moulded panels",
+    "id": "dua panel berprofil"
+   },
+   "short": {
+    "en": "Two moulded panels",
+    "id": "Dua panel berprofil"
+   },
+   "rows": [
+    {
+     "slug": "pt-270-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-270-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0101001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0101002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 270"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0101001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0101002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 270: 200 x 70 cm, 1.8mm, full UPVC, two moulded panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 270: 200 x 70 cm, 1.8mm, Full UPVC, dua panel berprofil. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-270-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-270-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0101003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0101004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 270"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0101003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0101004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 270: 200 x 70 cm, 1.8mm, full UPVC, two moulded panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 270: 200 x 70 cm, 1.8mm, Full UPVC, dua panel berprofil. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-270-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-270-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0101005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0101006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 270"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0101005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0101006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 270: 200 x 70 cm, 1.8mm, full UPVC, two moulded panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 270: 200 x 70 cm, 1.8mm, Full UPVC, dua panel berprofil. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 290",
+   "wl": null,
+   "name": "PT 290",
+   "key": "pt-290",
+   "type": "full",
+   "typeAs": "Full UPVC",
+   "price": 1500000,
+   "codes": [
+    "WELUP-DPT0207",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#E2E1E4",
+    "brown": "#6A1A09",
+    "dark-grey": "#4A4C4F"
+   },
+   "motif": null,
+   "look": {
+    "en": "two louvred panels",
+    "id": "dua panel jalusi"
+   },
+   "short": {
+    "en": "Two louvred panels",
+    "id": "Dua panel jalusi"
+   },
+   "rows": [
+    {
+     "slug": "pt-290-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-290-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0207001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0207002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 290"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0207001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0207002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 290: 200 x 70 cm, 1.8mm, full UPVC, two louvred panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 290: 200 x 70 cm, 1.8mm, Full UPVC, dua panel jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-290-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-290-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0207003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0207004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 290"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0207003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0207004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 290: 200 x 70 cm, 1.8mm, full UPVC, two louvred panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 290: 200 x 70 cm, 1.8mm, Full UPVC, dua panel jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-290-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "Full UPVC",
+     "photos": [
+      "pt-290-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0207005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0207006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 290"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0207005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0207006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, Full UPVC"
+      ],
+      [
+       "Type",
+       "Full UPVC"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 290: 200 x 70 cm, 1.8mm, full UPVC, two louvred panels. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 290: 200 x 70 cm, 1.8mm, Full UPVC, dua panel jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 2601",
+   "wl": "WL 016",
+   "name": "PT 2601 / WL 016",
+   "key": "pt-2601",
+   "type": "six",
+   "typeAs": "6 Kotak",
+   "price": 1425000,
+   "codes": [
+    "WELUP-DPT0205",
+    1
+   ],
+   "lists": [
+    "white",
+    "black"
+   ],
+   "cols": {
+    "white": "#EFEFEF",
+    "brown": "#8B2918",
+    "dark-grey": "#3F444E"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Six glass panes, white or black list",
+    "id": "List Putih / List Hitam 6 Kotak"
+   },
+   "rows": [
+    {
+     "slug": "pt-2601-white-white-list",
+     "colour": "white",
+     "list": "white",
+     "typeAs": "List Putih 6 Kotak",
+     "photos": [
+      "pt-2601-white-white-list",
+      "pt-2601-white-white-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, white list"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2601-white-black-list",
+     "colour": "white",
+     "list": "black",
+     "typeAs": "List Hitam 6 Kotak",
+     "photos": [
+      "pt-2601-white-black-list",
+      "pt-2601-white-black-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, black list"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2601-brown-white-list",
+     "colour": "brown",
+     "list": "white",
+     "typeAs": "List Putih 6 Kotak",
+     "photos": [
+      "pt-2601-brown-white-list",
+      "pt-2601-brown-white-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, white list"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2601-brown-black-list",
+     "colour": "brown",
+     "list": "black",
+     "typeAs": "List Hitam 6 Kotak",
+     "photos": [
+      "pt-2601-brown-black-list",
+      "pt-2601-brown-black-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205007"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205008"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205007"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205008"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, black list"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2601-dark-grey-white-list",
+     "colour": "dark-grey",
+     "list": "white",
+     "typeAs": "List Putih 6 Kotak",
+     "photos": [
+      "pt-2601-dark-grey-white-list",
+      "pt-2601-dark-grey-white-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205009"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205010"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205009"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205010"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, white list"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2601-dark-grey-black-list",
+     "colour": "dark-grey",
+     "list": "black",
+     "typeAs": "List Hitam 6 Kotak",
+     "photos": [
+      "pt-2601-dark-grey-black-list",
+      "pt-2601-dark-grey-black-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0205011"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0205012"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2601 / WL 016"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0205011"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0205012"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 6 Kotak"
+      ],
+      [
+       "Type",
+       "Six glass panes, black list"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2601 / WL 016: 200 x 70 cm, 1.8mm, six glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2601 / WL 016: 200 x 70 cm, 1.8mm, 6 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 2602",
+   "wl": "WL 018",
+   "name": "PT 2602 / WL 018",
+   "key": "pt-2602",
+   "type": "eight",
+   "typeAs": "8 Kotak",
+   "price": 1450000,
+   "codes": [
+    "WELUP-DPT0206",
+    1
+   ],
+   "lists": [
+    "white",
+    "black"
+   ],
+   "cols": {
+    "white": "#F1F0F0",
+    "brown": "#822314",
+    "dark-grey": "#404147"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Eight glass panes, white or black list",
+    "id": "List Putih / List Hitam 8 Kotak"
+   },
+   "rows": [
+    {
+     "slug": "pt-2602-white-white-list",
+     "colour": "white",
+     "list": "white",
+     "typeAs": "List Putih 8 Kotak",
+     "photos": [
+      "pt-2602-white-white-list"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, white list"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2602-white-black-list",
+     "colour": "white",
+     "list": "black",
+     "typeAs": "List Hitam 8 Kotak",
+     "photos": [
+      "pt-2602-white-black-list"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, black list"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2602-brown-white-list",
+     "colour": "brown",
+     "list": "white",
+     "typeAs": "List Putih 8 Kotak",
+     "photos": [
+      "pt-2602-brown-white-list",
+      "pt-2602-brown-white-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, white list"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2602-brown-black-list",
+     "colour": "brown",
+     "list": "black",
+     "typeAs": "List Hitam 8 Kotak",
+     "photos": [
+      "pt-2602-brown-black-list",
+      "pt-2602-brown-black-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206007"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206008"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206007"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206008"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, black list"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2602-dark-grey-white-list",
+     "colour": "dark-grey",
+     "list": "white",
+     "typeAs": "List Putih 8 Kotak",
+     "photos": [
+      "pt-2602-dark-grey-white-list",
+      "pt-2602-dark-grey-white-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206009"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206010"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206009"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206010"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Putih 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, white list"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "List",
+       "White list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-2602-dark-grey-black-list",
+     "colour": "dark-grey",
+     "list": "black",
+     "typeAs": "List Hitam 8 Kotak",
+     "photos": [
+      "pt-2602-dark-grey-black-list",
+      "pt-2602-dark-grey-black-list-angle"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0206011"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0206012"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 2602 / WL 018"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0206011"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0206012"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, List Hitam 8 Kotak"
+      ],
+      [
+       "Type",
+       "Eight glass panes, black list"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "List",
+       "Black list"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 2602 / WL 018: 200 x 70 cm, 1.8mm, eight glass panes. In White, Brown and Dark Grey, with a white or black list (List Putih or List Hitam), each R or L.",
+      "id": "Pintu UPVC Wellup PT 2602 / WL 018: 200 x 70 cm, 1.8mm, 8 Kotak. Tersedia White, Brown dan Dark Grey, dengan List Putih atau List Hitam, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 409",
+   "wl": "WL 004",
+   "name": "PT 409 / WL 004",
+   "key": "pt-409",
+   "type": "topGlass",
+   "typeAs": "1/4 Kaca Atas + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0203",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F2F3F6",
+    "brown": "#63322E",
+    "dark-grey": "#525256"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Quarter glass at the top, and louvre",
+    "id": "1/4 Kaca Atas + Jalusi"
+   },
+   "rows": [
+    {
+     "slug": "pt-409-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/4 Kaca Atas + Jalusi",
+     "photos": [
+      "pt-409-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0203001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0203002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 409 / WL 004"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0203001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0203002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the top, and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 409 / WL 004: 200 x 70 cm, 1.8mm, quarter glass at the top, and louvre. In White, Brown and Dark Grey, each R or L (Dark Grey in R only).",
+      "id": "Pintu UPVC Wellup PT 409 / WL 004: 200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L (Dark Grey hanya R)."
+     }
+    },
+    {
+     "slug": "pt-409-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/4 Kaca Atas + Jalusi",
+     "photos": [
+      "pt-409-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0203003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0203004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 409 / WL 004"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0203003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0203004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the top, and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 409 / WL 004: 200 x 70 cm, 1.8mm, quarter glass at the top, and louvre. In White, Brown and Dark Grey, each R or L (Dark Grey in R only).",
+      "id": "Pintu UPVC Wellup PT 409 / WL 004: 200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L (Dark Grey hanya R)."
+     }
+    },
+    {
+     "slug": "pt-409-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/4 Kaca Atas + Jalusi",
+     "photos": [
+      "pt-409-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0203005"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 409 / WL 004"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0203005"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the top, and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 409 / WL 004: 200 x 70 cm, 1.8mm, quarter glass at the top, and louvre. In White, Brown and Dark Grey, each R or L (Dark Grey in R only).",
+      "id": "Pintu UPVC Wellup PT 409 / WL 004: 200 x 70 cm, 1.8mm, 1/4 Kaca Atas + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L (Dark Grey hanya R)."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 709",
+   "wl": "WL 007",
+   "name": "PT 709 / WL 007",
+   "key": "pt-709",
+   "type": "sideGlass",
+   "typeAs": "1/4 Kaca Samping Jalusi",
+   "price": 1400000,
+   "codes": [
+    "WELUP-DPT0214",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#EAEBEB",
+    "brown": "#752D27",
+    "dark-grey": "#464A4E"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Quarter glass at the side, louvre",
+    "id": "1/4 Kaca Samping Jalusi"
+   },
+   "rows": [
+    {
+     "slug": "pt-709-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/4 Kaca Samping Jalusi",
+     "photos": [
+      "pt-709-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0214001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0214002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 709 / WL 007"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0214001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0214002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the side, louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 709 / WL 007: 200 x 70 cm, 1.8mm, quarter glass at the side, louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 709 / WL 007: 200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-709-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/4 Kaca Samping Jalusi",
+     "photos": [
+      "pt-709-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0214003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0214004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 709 / WL 007"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0214003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0214004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the side, louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 709 / WL 007: 200 x 70 cm, 1.8mm, quarter glass at the side, louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 709 / WL 007: 200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-709-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/4 Kaca Samping Jalusi",
+     "photos": [
+      "pt-709-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0214005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0214006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 709 / WL 007"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0214005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0214006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi"
+      ],
+      [
+       "Type",
+       "Quarter glass at the side, louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 709 / WL 007: 200 x 70 cm, 1.8mm, quarter glass at the side, louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 709 / WL 007: 200 x 70 cm, 1.8mm, 1/4 Kaca Samping Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 809",
+   "wl": "WL 008",
+   "name": "PT 809 / WL 008",
+   "key": "pt-809",
+   "type": "sidePlain",
+   "typeAs": "1/2 Samping Polos + Jalusi",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0215",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F2F2F6",
+    "brown": "#6E3330",
+    "dark-grey": "#545559"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Half plain side and louvre",
+    "id": "1/2 Samping Polos + Jalusi"
+   },
+   "rows": [
+    {
+     "slug": "pt-809-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Samping Polos + Jalusi",
+     "photos": [
+      "pt-809-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0215001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0215002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 809 / WL 008"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0215001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0215002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi"
+      ],
+      [
+       "Type",
+       "Half plain side and louvre"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 809 / WL 008: 200 x 70 cm, 1.8mm, half plain side and louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 809 / WL 008: 200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-809-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Samping Polos + Jalusi",
+     "photos": [
+      "pt-809-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0215003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0215004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 809 / WL 008"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0215003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0215004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi"
+      ],
+      [
+       "Type",
+       "Half plain side and louvre"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 809 / WL 008: 200 x 70 cm, 1.8mm, half plain side and louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 809 / WL 008: 200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-809-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Samping Polos + Jalusi",
+     "photos": [
+      "pt-809-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0215005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0215006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 809 / WL 008"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0215005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0215006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi"
+      ],
+      [
+       "Type",
+       "Half plain side and louvre"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 809 / WL 008: 200 x 70 cm, 1.8mm, half plain side and louvre. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 809 / WL 008: 200 x 70 cm, 1.8mm, 1/2 Samping Polos + Jalusi. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  },
+  {
+   "code": "PT 909",
+   "wl": "WL 010",
+   "name": "PT 909 / WL 010",
+   "key": "pt-909",
+   "type": "sideGlassPlain",
+   "typeAs": "1/2 Kaca Samping Polos",
+   "price": 1300000,
+   "codes": [
+    "WELUP-DPT0212",
+    1
+   ],
+   "lists": null,
+   "cols": {
+    "white": "#F2F3F7",
+    "brown": "#723430",
+    "dark-grey": "#535458"
+   },
+   "motif": null,
+   "look": null,
+   "short": {
+    "en": "Half side glass, plain",
+    "id": "1/2 Kaca Samping Polos"
+   },
+   "rows": [
+    {
+     "slug": "pt-909-white",
+     "colour": "white",
+     "list": null,
+     "typeAs": "1/2 Kaca Samping Polos",
+     "photos": [
+      "pt-909-white"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0212001"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0212002"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 909 / WL 010"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0212001"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0212002"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos"
+      ],
+      [
+       "Type",
+       "Half side glass, plain"
+      ],
+      [
+       "Colour",
+       "White"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 909 / WL 010: 200 x 70 cm, 1.8mm, half side glass, plain. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 909 / WL 010: 200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-909-brown",
+     "colour": "brown",
+     "list": null,
+     "typeAs": "1/2 Kaca Samping Polos",
+     "photos": [
+      "pt-909-brown"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0212003"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0212004"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 909 / WL 010"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0212003"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0212004"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos"
+      ],
+      [
+       "Type",
+       "Half side glass, plain"
+      ],
+      [
+       "Colour",
+       "Brown"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 909 / WL 010: 200 x 70 cm, 1.8mm, half side glass, plain. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 909 / WL 010: 200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    },
+    {
+     "slug": "pt-909-dark-grey",
+     "colour": "dark-grey",
+     "list": null,
+     "typeAs": "1/2 Kaca Samping Polos",
+     "photos": [
+      "pt-909-dark-grey"
+     ],
+     "hands": [
+      {
+       "id": "R",
+       "code": "WELUP-DPT0212005"
+      },
+      {
+       "id": "L",
+       "code": "WELUP-DPT0212006"
+      }
+     ],
+     "spec": [
+      [
+       "Range",
+       "UPVC Door"
+      ],
+      [
+       "Brand",
+       "Wellup"
+      ],
+      [
+       "Model",
+       "PT 909 / WL 010"
+      ],
+      [
+       "Product code (R)",
+       "WELUP-DPT0212005"
+      ],
+      [
+       "Product code (L)",
+       "WELUP-DPT0212006"
+      ],
+      [
+       "Size",
+       "200 x 70 cm"
+      ],
+      [
+       "Specification",
+       "200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos"
+      ],
+      [
+       "Type",
+       "Half side glass, plain"
+      ],
+      [
+       "Colour",
+       "Dark Grey"
+      ],
+      [
+       "Hand",
+       "R / L"
+      ]
+     ],
+     "desc": {
+      "en": "A Wellup UPVC door, PT 909 / WL 010: 200 x 70 cm, 1.8mm, half side glass, plain. In White, Brown and Dark Grey, each R or L.",
+      "id": "Pintu UPVC Wellup PT 909 / WL 010: 200 x 70 cm, 1.8mm, 1/2 Kaca Samping Polos. Tersedia White, Brown dan Dark Grey, masing-masing R atau L."
+     }
+    }
+   ]
+  }
+ ]
+}

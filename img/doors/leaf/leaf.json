@@ -1,0 +1,380 @@
+{
+ "pt-109-brown": {
+  "edge": "#75332E",
+  "frame": "#933A36",
+  "aspect": 0.386,
+  "px": 342
+ },
+ "pt-109-dark-grey": {
+  "edge": "#51514F",
+  "frame": "#646461",
+  "aspect": 0.387,
+  "px": 334
+ },
+ "pt-109-white": {
+  "edge": "#ECECEA",
+  "frame": "#E2E1DF",
+  "aspect": 0.356,
+  "px": 370
+ },
+ "pt-110-brown": {
+  "edge": "#731C12",
+  "frame": "#9A241E",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-110-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-110-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E0E0DE",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-111-brown": {
+  "edge": "#731C13",
+  "frame": "#9A251F",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-111-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-111-white": {
+  "edge": "#E3E2E1",
+  "frame": "#E1E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-112-brown": {
+  "edge": "#741D14",
+  "frame": "#A3332A",
+  "aspect": 0.393,
+  "px": 1406
+ },
+ "pt-112-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-112-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E1E0DE",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-113-brown": {
+  "edge": "#731C13",
+  "frame": "#9A251E",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-113-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-113-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E0E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-114-brown": {
+  "edge": "#731C13",
+  "frame": "#9A251E",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-114-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-114-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E1E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-115-brown": {
+  "edge": "#731C12",
+  "frame": "#9A251F",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-115-dark-grey": {
+  "edge": "#474747",
+  "frame": "#61615F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-115-white": {
+  "edge": "#E3E2E1",
+  "frame": "#E1E0E0",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-116-brown": {
+  "edge": "#731C13",
+  "frame": "#9A251E",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-116-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-116-white": {
+  "edge": "#E3E2E1",
+  "frame": "#E2E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-117-brown": {
+  "edge": "#731C12",
+  "frame": "#9A241E",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-117-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.39,
+  "px": 1212
+ },
+ "pt-117-white": {
+  "edge": "#E3E2E1",
+  "frame": "#E2E0E0",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-118-brown": {
+  "edge": "#731C12",
+  "frame": "#9A251F",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-118-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.391,
+  "px": 1212
+ },
+ "pt-118-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E1E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-119-brown": {
+  "edge": "#731C12",
+  "frame": "#9A251F",
+  "aspect": 0.392,
+  "px": 1216
+ },
+ "pt-119-dark-grey": {
+  "edge": "#474747",
+  "frame": "#60605F",
+  "aspect": 0.39,
+  "px": 1212
+ },
+ "pt-119-white": {
+  "edge": "#E4E2E1",
+  "frame": "#E2E0DF",
+  "aspect": 0.385,
+  "px": 1226
+ },
+ "pt-2601-brown-black-list": {
+  "edge": "#96321B",
+  "frame": "#AA381D",
+  "aspect": 0.38,
+  "px": 1328
+ },
+ "pt-2601-brown-white-list": {
+  "edge": "#922A17",
+  "frame": "#AE351B",
+  "aspect": 0.377,
+  "px": 1326
+ },
+ "pt-2601-dark-grey-black-list": {
+  "edge": "#4E5259",
+  "frame": "#52565F",
+  "aspect": 0.388,
+  "px": 1276
+ },
+ "pt-2601-dark-grey-white-list": {
+  "edge": "#4E525A",
+  "frame": "#51555E",
+  "aspect": 0.388,
+  "px": 1322
+ },
+ "pt-2601-white-black-list": {
+  "edge": "#E5E4E0",
+  "frame": "#E6E5E1",
+  "aspect": 0.391,
+  "px": 1290
+ },
+ "pt-2601-white-white-list": {
+  "edge": "#DEDDD9",
+  "frame": "#DFDEDA",
+  "aspect": 0.396,
+  "px": 1242
+ },
+ "pt-2602-brown-black-list": {
+  "edge": "#922E19",
+  "frame": "#B03C20",
+  "aspect": 0.404,
+  "px": 1430
+ },
+ "pt-2602-brown-white-list": {
+  "edge": "#7A2211",
+  "frame": "#912B16",
+  "aspect": 0.334,
+  "px": 1333
+ },
+ "pt-2602-dark-grey-black-list": {
+  "edge": "#373B45",
+  "frame": "#40444F",
+  "aspect": 0.417,
+  "px": 1332
+ },
+ "pt-2602-dark-grey-white-list": {
+  "edge": "#424248",
+  "frame": "#47474F",
+  "aspect": 0.338,
+  "px": 1328
+ },
+ "pt-2602-white-black-list": {
+  "edge": "#E8E6E2",
+  "frame": "#E8E5E1",
+  "aspect": 0.397,
+  "px": 1419
+ },
+ "pt-2602-white-white-list": {
+  "edge": "#DCDBD8",
+  "frame": "#E0DFDD",
+  "aspect": 0.374,
+  "px": 1412
+ },
+ "pt-270-brown": {
+  "edge": "#681E0C",
+  "frame": "#7C2A18",
+  "aspect": 0.415,
+  "px": 1323
+ },
+ "pt-270-dark-grey": {
+  "edge": "#454646",
+  "frame": "#545555",
+  "aspect": 0.419,
+  "px": 1330
+ },
+ "pt-270-white": {
+  "edge": "#E2E1DD",
+  "frame": "#E9E8E4",
+  "aspect": 0.405,
+  "px": 1328
+ },
+ "pt-290-brown": {
+  "edge": "#7B1B06",
+  "frame": "#9A2C14",
+  "aspect": 0.413,
+  "px": 1383
+ },
+ "pt-290-dark-grey": {
+  "edge": "#4D4E52",
+  "frame": "#5D5E61",
+  "aspect": 0.436,
+  "px": 1330
+ },
+ "pt-290-white": {
+  "edge": "#E6E4E2",
+  "frame": "#EBEAE8",
+  "aspect": 0.389,
+  "px": 1386
+ },
+ "pt-409-brown": {
+  "edge": "#7F332F",
+  "frame": "#903A34",
+  "aspect": 0.405,
+  "px": 340
+ },
+ "pt-409-dark-grey": {
+  "edge": "#57585A",
+  "frame": "#636266",
+  "aspect": 0.414,
+  "px": 334
+ },
+ "pt-409-white": {
+  "edge": "#E9E9E7",
+  "frame": "#D8D8D4",
+  "aspect": 0.378,
+  "px": 336
+ },
+ "pt-709-brown": {
+  "edge": "#823227",
+  "frame": "#A63F2B",
+  "aspect": 0.322,
+  "px": 698
+ },
+ "pt-709-dark-grey": {
+  "edge": "#4B4B4D",
+  "frame": "#45464A",
+  "aspect": 0.339,
+  "px": 636
+ },
+ "pt-709-white": {
+  "edge": "#DFE0DB",
+  "frame": "#DDDEDA",
+  "aspect": 0.303,
+  "px": 714
+ },
+ "pt-809-brown": {
+  "edge": "#7E332E",
+  "frame": "#903C33",
+  "aspect": 0.407,
+  "px": 340
+ },
+ "pt-809-dark-grey": {
+  "edge": "#565758",
+  "frame": "#5D5D5F",
+  "aspect": 0.415,
+  "px": 334
+ },
+ "pt-809-white": {
+  "edge": "#EBEAE8",
+  "frame": "#D8D8D7",
+  "aspect": 0.413,
+  "px": 344
+ },
+ "pt-909-brown": {
+  "edge": "#7D342F",
+  "frame": "#8F3934",
+  "aspect": 0.406,
+  "px": 340
+ },
+ "pt-909-dark-grey": {
+  "edge": "#57585A",
+  "frame": "#5D5D60",
+  "aspect": 0.412,
+  "px": 334
+ },
+ "pt-909-white": {
+  "edge": "#EAEAE8",
+  "frame": "#DEDDDB",
+  "aspect": 0.411,
+  "px": 344
+ }
+}

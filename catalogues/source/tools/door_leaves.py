@@ -22,9 +22,11 @@ Finding the leaf, on luminance profiles taken along the door:
   · the head seam the same way, about a frame-width below the top;
   · the foot: just above the dark line of shadow beneath the door.
 The warp reads the photograph enlarged twice (Lanczos) and resamples once (bicubic), then sharpens a little. The
-photographs are 330 to 1430 px tall at the leaf, so a 2000 px texture is an enlargement: it cannot hold more detail
-than the photograph. The pictures draw most leaves wider than 70:200 (about 0.38-0.42); the warp brings each to the
-listed 70 x 200 cm.
+photographs are 330 to 1430 px tall at the leaf, so a 2000 px texture is an enlargement. For the five models whose
+only pictures are the price list's own small ones (PT 109, 409, 709, 809 and 909, 330 to 710 px tall at the leaf),
+<photos dir>/x4/<slug>.jpg holds the picture made four times larger by door_upscale.py (Real-ESRGAN for the fine edges,
+the photograph itself for every tone and colour); where it is there the warp reads it instead. The pictures draw most
+leaves wider than 70:200 (about 0.38-0.42); the warp brings each to the listed 70 x 200 cm.
 
     python3 door_leaves.py <photos dir> <img/doors/leaf dir>        (Pillow and NumPy)"""
 import json
@@ -139,9 +141,13 @@ def main(src, dst):
         imgs[n] = Image.open(os.path.join(src, n + ".jpg")).convert("RGB")
         M[n], Ls[n] = measure(np.asarray(imgs[n]).astype(np.float32))
         ws = {(k, s): M[n]["bands"][k]["f" + s] for k in ("hi", "lo") for s in ("l", "r")}
+        # a frame narrower on one side than the other, measured so high and low on the door alike, is the picture's own
+        # (a render that shows the door a little turned: PT 109 in White): it is kept, here and against the other colours
         med = float(np.median(list(ws.values())))
+        M[n]["kept"] = (all(abs(ws[("hi", s)] - ws[("lo", s)]) <= 1.5 for s in ("l", "r"))
+                        and abs(ws[("hi", "l")] - ws[("hi", "r")]) > max(0.22 * med, 4))
         for (k, s), v in ws.items():
-            if abs(v - med) > max(0.22 * med, 4):
+            if abs(v - med) > max(0.22 * med, 4) and not M[n]["kept"]:
                 M[n]["bands"][k]["f" + s] = med
         M[n]["f"] = float(np.median([M[n]["bands"][k]["f" + s] for k in ("hi", "lo") for s in ("l", "r")]))
     groups = {}
@@ -153,7 +159,7 @@ def main(src, dst):
         rel = {n: M[n]["f"] / M[n]["W"] for n in ns}
         med = float(np.median(list(rel.values())))
         for n in ns:
-            if abs(rel[n] - med) > 0.34 * med:
+            if abs(rel[n] - med) > 0.34 * med and not M[n]["kept"]:
                 f = med * M[n]["W"]
                 for k in ("hi", "lo"):
                     M[n]["bands"][k]["fl"] = M[n]["bands"][k]["fr"] = f
@@ -164,11 +170,20 @@ def main(src, dst):
         q = leaf_quad(m, Ls[n])
         wt = ((q[1][0] - q[0][0]) + (q[2][0] - q[3][0])) / 2
         ht = ((q[3][1] - q[0][1]) + (q[2][1] - q[1][1])) / 2
-        # warp from the photograph enlarged twice, so the one resample is from finer pixels
-        big = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)
-        leaf = big.transform((LEAF_W, LEAF_H), Image.PERSPECTIVE, persp([[x * 2, y * 2] for x, y in q], LEAF_W, LEAF_H), resample=Image.BICUBIC)
+        # warp from the photograph enlarged twice, so the one resample is from finer pixels — or, for a small price-list
+        # picture, from the same picture made four times larger (x4/, by door_upscale.py), already sharp
+        x4 = os.path.join(src, "x4", n + ".jpg")
+        if os.path.exists(x4):
+            big = Image.open(x4).convert("RGB")
+            s = big.width / im.width
+        else:
+            big, s = im.resize((im.width * 2, im.height * 2), Image.LANCZOS), 2
+        leaf = big.transform((LEAF_W, LEAF_H), Image.PERSPECTIVE, persp([[x * s, y * s] for x, y in q], LEAF_W, LEAF_H), resample=Image.BICUBIC)
         k = LEAF_H / ht
-        leaf = leaf.filter(ImageFilter.UnsharpMask(radius=1.2 if k < 3 else 2.2, percent=65 if k < 3 else 80, threshold=2))
+        if os.path.exists(x4):
+            leaf = leaf.filter(ImageFilter.UnsharpMask(radius=0.8, percent=35, threshold=2))
+        else:
+            leaf = leaf.filter(ImageFilter.UnsharpMask(radius=1.2 if k < 3 else 2.2, percent=65 if k < 3 else 80, threshold=2))
         rgba = leaf.convert("RGBA")
         rgba.save(os.path.join(dst, n + ".webp"), "WEBP", quality=88, method=6)
         rgba.resize((THUMB_W, THUMB_H), Image.LANCZOS).save(os.path.join(dst, "t", n + ".webp"), "WEBP", quality=84, method=6)

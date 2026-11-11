@@ -8385,6 +8385,8 @@ const T = {
                    id: "Semua pintu UPVC Wellup di Price List 2026, satu per satu di panggung bercahayanya sendiri. Pilih model, warna, list bila ada, dan arah bukaannya: harga dan kode produknya mengikuti pilihan Anda." },
   vsDoorNote:    { en: "Visual preview. The door is its product photograph, cut to the door leaf and straightened to the listed 200 x 70 cm; its thickness and the frame round it are drawn for display. It is not a 3D model of the door, so it cannot be opened or seen from behind. R or L changes the product code; the photograph stays as it was taken.",
                    id: "Pratinjau visual. Pintu ditampilkan dari foto produknya, dipotong pada daun pintu dan diluruskan ke ukuran tercantum 200 x 70 cm; ketebalan dan kusen di sekelilingnya digambar untuk tampilan. Ini bukan model 3D pintu, sehingga tidak dapat dibuka atau dilihat dari belakang. R atau L mengubah kode produk; fotonya tetap seperti saat diambil." },
+  vsDoorNoteX4:  { en: "This model's only pictures are the small ones in the price list. Here its picture is enlarged, and its finest detail is drawn in by the enlarging, so it may differ slightly from the door itself.",
+                   id: "Gambar model ini hanya gambar kecil di daftar harga. Di sini gambarnya diperbesar, dan detail terhalusnya digambar oleh proses pembesaran, sehingga bisa sedikit berbeda dari pintu aslinya." },
   vsDoorLoading: { en: "Hanging the door…", id: "Memasang pintu…" },
   vsDoorFailed:  { en: "The photograph of this door could not be loaded, so the stage shows its name. Its details are still correct.",
                    id: "Foto pintu ini tidak dapat dimuat, sehingga panggung menampilkan namanya. Detailnya tetap benar." },
@@ -15339,7 +15341,7 @@ const DOOR_AT = SHOWROOM_LIST.findIndex((e) => e.group === "door");
    of its edges and of its frame as sampled from the same photograph — DOOR_LEAF, from img/doors/leaf/leaf.json
    (made by catalogues/source/tools/door_leaves.py). */
 const DOOR_LEAF = {
-  "pt-109-brown": ["#75332E", "#933A36"], "pt-109-dark-grey": ["#51514F", "#646461"], "pt-109-white": ["#ECECEA", "#E2E1DF"],
+  "pt-109-brown": ["#75332E", "#933A36"], "pt-109-dark-grey": ["#51514F", "#646461"], "pt-109-white": ["#EBEBEA", "#D8D8D6"],
   "pt-110-brown": ["#731C12", "#9A241E"], "pt-110-dark-grey": ["#474747", "#60605F"], "pt-110-white": ["#E4E2E1", "#E0E0DE"],
   "pt-111-brown": ["#731C13", "#9A251F"], "pt-111-dark-grey": ["#474747", "#60605F"], "pt-111-white": ["#E3E2E1", "#E1E0DF"],
   "pt-112-brown": ["#741D14", "#A3332A"], "pt-112-dark-grey": ["#474747", "#60605F"], "pt-112-white": ["#E4E2E1", "#E1E0DE"],
@@ -15356,12 +15358,15 @@ const DOOR_LEAF = {
   "pt-2602-dark-grey-white-list": ["#424248", "#47474F"], "pt-2602-white-black-list": ["#E8E6E2", "#E8E5E1"], "pt-2602-white-white-list": ["#DCDBD8", "#E0DFDD"],
   "pt-270-brown": ["#681E0C", "#7C2A18"], "pt-270-dark-grey": ["#454646", "#545555"], "pt-270-white": ["#E2E1DD", "#E9E8E4"],
   "pt-290-brown": ["#7B1B06", "#9A2C14"], "pt-290-dark-grey": ["#4D4E52", "#5D5E61"], "pt-290-white": ["#E6E4E2", "#EBEAE8"],
-  "pt-409-brown": ["#7F332F", "#903A34"], "pt-409-dark-grey": ["#57585A", "#636266"], "pt-409-white": ["#E9E9E7", "#D8D8D4"],
+  "pt-409-brown": ["#7E332F", "#903A34"], "pt-409-dark-grey": ["#57575A", "#636266"], "pt-409-white": ["#E9E9E7", "#D8D8D4"],
   "pt-709-brown": ["#823227", "#A63F2B"], "pt-709-dark-grey": ["#4B4B4D", "#45464A"], "pt-709-white": ["#DFE0DB", "#DDDEDA"],
-  "pt-809-brown": ["#7E332E", "#903C33"], "pt-809-dark-grey": ["#565758", "#5D5D5F"], "pt-809-white": ["#EBEAE8", "#D8D8D7"],
-  "pt-909-brown": ["#7D342F", "#8F3934"], "pt-909-dark-grey": ["#57585A", "#5D5D60"], "pt-909-white": ["#EAEAE8", "#DEDDDB"],
+  "pt-809-brown": ["#7E332E", "#903C33"], "pt-809-dark-grey": ["#555658", "#5D5D5F"], "pt-809-white": ["#EAE9E7", "#D8D8D7"],
+  "pt-909-brown": ["#7D342F", "#8F3934"], "pt-909-dark-grey": ["#57585A", "#5D5D60"], "pt-909-white": ["#EAEAE7", "#DEDDDB"],
 };
 const doorLeafOf = (r) => (r && r.photos && DOOR_LEAF[r.photos[0]]) || ["#8A847C", "#8A847C"];
+/* (PT 109, 409, 709, 809 and 909 have only the price list's own small pictures: their leaves are made from them enlarged
+   four times — catalogues/source/tools/door_upscale.py — and the Door Hall says so) */
+const doorX4 = (r) => !!(r && r.photos && /^pt-(109|409|709|809|909)-/.test(r.photos[0]));
 const doorLeafImg = (r, small) => (r && r.photos && r.photos[0] ? "img/doors/leaf/" + (small ? "t/" : "") + r.photos[0] + ".webp" : "");
 /* what the room is told about the door: its leaf, the colours of its edges and its frame, and its name */
 const doorPiece = (r, x) => { const k = doorLeafOf(r); return { image: doorLeafImg(r), edge: k[0], frame: k[1], title: r.model, sub: x(r.colour) }; };
@@ -15532,7 +15537,7 @@ const VsDoorHall = ({ row, g, sel, all, onDoor, onHand, onAdd, added, phase, pro
                 <button key={id} type="button" aria-pressed={now === id} onClick={() => setView(id)} data-vsd-view={id}>{t(label)}</button>
               ))}
             </div>
-            <p className="mt-5 max-w-[62ch] text-[12.5px] leading-[1.7] text-mute" data-vsd-note="">{t("vsDoorNote")}</p>
+            <p className="mt-5 max-w-[62ch] text-[12.5px] leading-[1.7] text-mute" data-vsd-note="">{t("vsDoorNote")}{doorX4(row) ? " " + t("vsDoorNoteX4") : ""}</p>
           </div>
 
           <div className="lg:col-span-5">
@@ -16529,6 +16534,7 @@ const ShowroomPage = () => {
               {/* a door: what the door in the room is, and what the price list does not say */}
               <div className="vs-fine vs-door-note" hidden={!isDoor} data-vs-door-note="">
                 <p>{t("vsDoorNote")}</p>
+                <p hidden={!doorX4(doorRow)} data-vs-door-x4="">{t("vsDoorNoteX4")}</p>
                 <p hidden={!doorFailed}>{t("vsDoorFailed")}</p>
                 <p>{x(DOOR_ASK)} <a href={"#/contact/" + (doorRow ? doorRow.slug : p.slug)} onClick={leave} className="u font-medium text-ink">{x(DOOR_CONTACT)}</a></p>
               </div>

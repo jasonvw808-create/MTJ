@@ -12,10 +12,10 @@
   "px": 334
  },
  "pt-109-white": {
-  "edge": "#ECECEA",
-  "frame": "#E2E1DF",
-  "aspect": 0.356,
-  "px": 370
+  "edge": "#EBEBEA",
+  "frame": "#D8D8D6",
+  "aspect": 0.377,
+  "px": 382
  },
  "pt-110-brown": {
   "edge": "#731C12",
@@ -306,13 +306,13 @@
   "px": 1386
  },
  "pt-409-brown": {
-  "edge": "#7F332F",
+  "edge": "#7E332F",
   "frame": "#903A34",
   "aspect": 0.405,
   "px": 340
  },
  "pt-409-dark-grey": {
-  "edge": "#57585A",
+  "edge": "#57575A",
   "frame": "#636266",
   "aspect": 0.414,
   "px": 334
@@ -348,13 +348,13 @@
   "px": 340
  },
  "pt-809-dark-grey": {
-  "edge": "#565758",
+  "edge": "#555658",
   "frame": "#5D5D5F",
   "aspect": 0.415,
   "px": 334
  },
  "pt-809-white": {
-  "edge": "#EBEAE8",
+  "edge": "#EAE9E7",
   "frame": "#D8D8D7",
   "aspect": 0.413,
   "px": 344
@@ -372,7 +372,7 @@
   "px": 334
  },
  "pt-909-white": {
-  "edge": "#EAEAE8",
+  "edge": "#EAEAE7",
   "frame": "#DEDDDB",
   "aspect": 0.411,
   "px": 344

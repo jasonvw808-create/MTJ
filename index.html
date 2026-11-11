@@ -659,6 +659,15 @@
   @media (max-width: 767px) { .vs-go { margin-top: 26px; row-gap: 14px; } .vs-go .vs-link { flex: 0 0 100%; } }
   .vs-note { margin-top: 22px; max-width: 54ch; padding-left: 14px; border-left: 1px solid rgb(var(--accent) / 0.6); font-size: 13.5px; line-height: 1.7; color: rgb(var(--ink) / 0.75); }
   @media (min-width: 768px) { .vs-intro-in { padding: 0 40px 64px; } }
+  /* a phone: the way in as tall as what it says — the stage grows with it, the trail above it in its own place —
+     rather than words rising from the foot of a fixed height into the trail (and, on a short phone, past the top) */
+  @media (max-width: 767px) {
+    .vs-stage[data-immersive="false"] { height: auto; }
+    .vs-stage[data-immersive="false"] .vs-intro { position: relative; inset: auto; min-height: clamp(600px, calc(100vh - 112px), 920px);
+      flex-direction: column; align-items: stretch; justify-content: space-between; }
+    .vs-stage[data-immersive="false"] .vs-crumbs { position: static; padding-top: 30px; }
+    .vs-stage[data-immersive="false"] .vs-intro-in { padding-top: 34px; }
+  }
   @media (max-width: 767px) {
     .vs-intro { background: linear-gradient(0deg, rgb(23 23 23 / 0.97) 0%, rgb(23 23 23 / 0.94) 62%, rgb(23 23 23 / 0.86) 80%, rgb(23 23 23 / 0.62) 100%); }
     .vs-keys { grid-template-columns: 1fr; gap: 10px; }
@@ -1320,66 +1329,71 @@
   .kc-index-logo { position: absolute; left: 0; bottom: 0; display: block; height: 6.5mm; width: auto; }
 
   /* ── THE CATALOGUE PAGE (#/catalogue, .cl) ─────────────────────────────────────────────────────────────────
-     A charcoal stage in both themes: the dark theme's own values are held here, so every utility inside follows
-     them, and the cards, in warm ivory, hold light values in turn. Champagne (the dark theme's accent) for the small
-     type and the rules; a light serif for the headlines, as in the two catalogues; Inter for the rest. The bar runs
-     over the stage as it does over the home page's hero (36 + 96 px), so the opening leaves room for it. */
+     One catalogue on a charcoal stage, in both themes: the dark theme's own values are held here, so every utility
+     inside follows them. A light serif for the heading, as in the catalogues; Inter for the rest. The bar runs over
+     the stage as it does over the home page's hero (36 + 96 px), so the opening leaves room for it. */
   .cl { --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41; --ink: 245 240 232; --mute: 168 162 154;
         --line: 58 56 53; --accent: 182 154 114; color-scheme: dark;
         --cl-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
         background: rgb(var(--bone)); color: rgb(var(--ink)); }
-  .cl-eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: rgb(var(--accent)); }
+  .cat-head { padding-top: 176px; text-align: center; }
+  .cat-head h1 { font-family: var(--cl-serif); font-weight: 300; font-size: clamp(46px, 6.4vw, 84px); line-height: 1; letter-spacing: -.018em;
+                 font-variation-settings: "opsz" 60; }
+  .cat-lede { max-width: 36em; margin: 20px auto 0; font-size: 15.5px; line-height: 1.7; color: rgb(var(--mute)); text-wrap: balance; }
+  .cat-acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
+  .cat-btn { display: inline-flex; align-items: center; justify-content: center; gap: 11px; min-height: 52px; padding: 0 30px;
+             border: 1px solid rgb(var(--ink) / .45); white-space: nowrap; font-size: 11.5px; font-weight: 600; letter-spacing: .16em;
+             text-transform: uppercase; color: rgb(var(--ink));
+             transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cat-btn:hover { border-color: rgb(var(--ink)); }
+  .cat-btn.cat-solid { border-color: #F3EFE8; background: #F3EFE8; color: #1B1A18; }
+  .cat-btn.cat-solid:hover { border-color: rgb(var(--ink) / .6); background: transparent; color: rgb(var(--ink)); }
+  .cat-facts { margin-top: 18px; font-size: 12px; letter-spacing: .04em; color: rgb(var(--mute)); }
+  .cat-view { padding-top: 44px; padding-bottom: 88px; }
+  /* a computer: the browser's own viewer, as tall as the window allows */
+  .cat-frame { display: block; width: 100%; max-width: 1180px; height: 640px; height: clamp(560px, calc(100vh - 110px), 1240px);
+               height: clamp(560px, calc(100svh - 110px), 1240px); margin: 0 auto; border: 1px solid rgb(var(--line)); background: #2B2926; }
+  /* a phone: a page at a time, drawn by PDF.js (an A4 page: 297 / 210 of its width tall) */
+  .cat-book { max-width: 560px; margin: 0 auto; }
+  .cat-sheet { position: relative; overflow: hidden; background: #FFFFFF; box-shadow: 0 2px 0 rgb(255 255 255 / .03), 0 28px 50px -22px rgb(0 0 0 / .8);
+               touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; }
+  .cat-sheet::before { content: ""; display: block; padding-top: 141.43%; }
+  .cat-sheet img { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
+  .cat-wait { position: absolute; left: 0; top: 0; display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;
+              font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #8A857D; }
+  .cat-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .cat-arrow { display: flex; flex: none; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid rgb(var(--line));
+               border-radius: 50%; color: rgb(var(--ink)); transition: border-color .4s, opacity .4s; }
+  .cat-arrow:hover:not(:disabled) { border-color: rgb(var(--ink) / .6); }
+  .cat-arrow:disabled { opacity: .35; }
+  .cat-count { font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgb(var(--mute)); font-variant-numeric: tabular-nums; }
+  .cat-note { max-width: 44ch; margin: 16px auto 0; font-size: 13px; line-height: 1.6; text-align: center; color: rgb(var(--mute)); }
+  /* the two buttons one above the other where they would not fit side by side */
+  @media (max-width: 479px) {
+    .cat-acts { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+  }
+  @media (min-width: 768px) {
+    .cat-head { padding-top: 220px; }
+    .cat-lede { font-size: 17px; }
+    .cat-view { padding-top: 56px; padding-bottom: 120px; }
+  }
+  /* the PDF full screen, on a phone with no viewer of its own (View Catalogue there) */
+  html.cat-reading, html.cat-reading body { overflow: hidden; }
+  .cat-reader { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 120; display: flex; flex-direction: column; background: #121110; color: #F5F0E8; }
+  .cat-reader-bar { display: flex; flex: none; align-items: center; gap: 2px; min-height: 56px; padding: env(safe-area-inset-top) 4px 0 16px;
+                    border-bottom: 1px solid #2E2B28; }
+  .cat-reader-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 500; }
+  .cat-reader-count { flex: none; padding: 0 8px; font-size: 12px; color: #A8A29A; font-variant-numeric: tabular-nums; }
+  .cat-reader-btn { display: flex; flex: none; align-items: center; justify-content: center; width: 48px; height: 48px; color: inherit; }
+  .cat-reader-pages { position: relative; flex: 1; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+                      padding: 12px 8px calc(32px + env(safe-area-inset-bottom)); }
+  .cat-reader-page { position: relative; max-width: 900px; margin: 0 auto 10px; background: #FFFFFF; }
+  .cat-reader-page::before { content: ""; display: block; padding-top: 141.43%; }
+  .cat-reader-page img { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; }
+  .cat-reader .cat-note { color: #A8A29A; }
 
-  /* the opening, centred under the bar */
-  .cl-intro { padding: 188px 0 56px; text-align: center; }
-  .cl-intro h1 { max-width: 1100px; margin: 22px auto 0; font-family: var(--cl-serif); font-weight: 300; font-size: clamp(40px, 5.2vw, 72px);
-                 line-height: 1.05; letter-spacing: -.014em; font-variation-settings: "opsz" 60; text-wrap: balance; }
-  .cl-lede { max-width: 640px; margin: 24px auto 0; font-size: 16px; line-height: 1.7; color: rgb(var(--mute)); text-wrap: balance; }
-  .cl-rule { width: 44px; height: 1px; margin: 36px auto 0; background: rgb(var(--accent) / .45); }
-
-  /* the collections: the room filters and the count, then a card for each */
-  .cl-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px;
-             margin-bottom: 30px; padding-bottom: 22px; border-bottom: 1px solid rgb(var(--line)); }
-  .cl-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-  .cl-label { display: none; margin-right: 12px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute) / .75); }
-  .cl-chip { height: 38px; padding: 0 17px; border: 1px solid rgb(var(--line)); border-radius: 999px; font-size: 12.5px; font-weight: 500;
-             letter-spacing: .02em; color: rgb(var(--ink) / .86); transition: background-color .4s, border-color .4s, color .4s; }
-  .cl-chip:hover { border-color: rgb(var(--ink) / .45); color: rgb(var(--ink)); }
-  .cl-chip[aria-pressed="true"] { background: #F3EFE8; border-color: #F3EFE8; color: #1B1A18; }
-  .cl-count { font-size: 13px; letter-spacing: .02em; color: rgb(var(--mute)); }
-  .cl-count b { font-weight: 500; color: rgb(var(--ink)); }
-
-  .cl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .cl-card { --bone: 243 239 232; --shell: 236 231 222; --ink: 27 26 24; --mute: 103 99 92; --line: 223 216 204; --accent: 126 100 64;
-             color-scheme: light; display: flex; flex-direction: column; border-radius: 2px; overflow: hidden;
-             background: rgb(var(--bone)); color: rgb(var(--ink));
-             box-shadow: inset 0 1px 0 rgb(255 255 255 / .04), 0 30px 60px -32px rgb(0 0 0 / .75); }
-  .cl-media { position: relative; aspect-ratio: 4 / 5; background: #E7E1D7; }
-  .cl-media img, .cl-media .ph-fallback { display: block; width: 100%; height: 100%; object-fit: cover;
-             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-  .cl-card:hover .cl-media img { transform: scale(1.035); }
-  .cl-body { display: flex; flex: 1; flex-direction: column; padding: 24px 24px 0; }
-  .cl-tag { display: flex; align-items: baseline; gap: 12px; font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute)); }
-  .cl-no { font-family: var(--cl-serif); font-size: 15px; letter-spacing: 0; color: rgb(var(--accent)); }
-  .cl-card h2 { margin-top: 12px; font-family: var(--cl-serif); font-weight: 400; font-size: 28px; line-height: 1.12; letter-spacing: -.005em;
-                font-variation-settings: "opsz" 36; }
-  .cl-desc { display: block; min-height: 3.1em; margin-top: 10px; font-size: 14.5px; line-height: 1.55; color: rgb(var(--mute)); text-wrap: balance; }
-  .cl-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 24px; padding: 18px 0 22px;
-            border-top: 1px solid rgb(var(--line)); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
-  .cl-go { display: grid; flex-shrink: 0; place-items: center; width: 34px; height: 34px; border: 1px solid #CDBFA8; border-radius: 50%; color: rgb(var(--accent));
-           transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
-  .cl-card:hover .cl-go, .cl-card:focus-visible .cl-go { background: rgb(var(--ink)); border-color: rgb(var(--ink)); color: rgb(var(--bone)); }
-
-  /* the two kitchen sink catalogues */
-  .cl-dl { margin-top: 104px; border-top: 1px solid rgb(var(--line)); border-bottom: 1px solid rgb(var(--line)); background: rgb(var(--shell)); }
-  .cl-dl-in { display: grid; align-items: center; gap: 48px; padding-top: 72px; padding-bottom: 76px; }
-  .cl-dl h2 { max-width: 600px; margin-top: 20px; text-wrap: balance; font-family: var(--cl-serif); font-weight: 300; font-size: clamp(32px, 3.3vw, 46px); line-height: 1.12;
-              letter-spacing: -.008em; font-variation-settings: "opsz" 48; }
-  .cl-body-text { max-width: 46ch; margin-top: 22px; font-size: 16px; line-height: 1.7; color: rgb(var(--mute)); }
-  .cl-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 32px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--accent)); }
-  .cl-also { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 18px; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgb(var(--mute)); }
-  .cl-also a { color: rgb(var(--ink) / .8); transition: color .3s; }
-  .cl-also a:hover { color: rgb(var(--ink)); }
+  /* one of the catalogues, as the door catalogue's page shows the two kitchen sink volumes: its cover, its name and
+     its two ways */
   .cl-books { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 640px; }
   .cl-book { container-type: inline-size; }
   .cl-cover { display: block; aspect-ratio: 210 / 297; overflow: hidden; background: rgb(var(--concrete));
@@ -1401,38 +1415,8 @@
   .cl-btn:hover { border-color: rgb(var(--ink) / .6); color: rgb(var(--ink)); }
   .cl-btn.cl-solid { border-color: #F3EFE8; background: #F3EFE8; color: #1B1A18; }
   .cl-btn.cl-solid:hover { border-color: rgb(var(--ink) / .6); background: transparent; color: rgb(var(--ink)); }
-
-  /* the services around them */
-  .cl-svc { display: grid; grid-template-columns: minmax(0, 1fr); padding: 40px 0 56px; }
-  .cl-svc > div { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-top: 1px solid rgb(var(--line)); }
-  .cl-svc > div:first-child { border-top: 0; }
-  .cl-svc svg { margin-top: 2px; color: rgb(var(--accent)); }
-  .cl-svc h3 { font-family: var(--cl-serif); font-weight: 400; font-size: 21px; line-height: 1.25; letter-spacing: -.005em; }
-  .cl-svc p { margin-top: 6px; font-size: 14.5px; line-height: 1.6; color: rgb(var(--mute)); text-wrap: balance; }
-  .cl-svc a { margin-top: 12px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--accent)); }
-
-  @media (min-width: 560px) {
-    .cl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cl-books { gap: 32px; }
-  }
-  @media (min-width: 768px) {
-    .cl-intro { padding: 232px 0 76px; }
-    .cl-lede { font-size: 17px; }
-    .cl-label { display: inline; }
-  }
-  @media (min-width: 1024px) {
-    .cl-dl { margin-top: 128px; }
-    .cl-dl-in { padding-top: 96px; padding-bottom: 96px; }
-    .cl-books { gap: 40px; }
-    .cl-svc { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 72px 0 80px; }
-    .cl-svc > div { padding: 0 40px; border-top: 0; border-left: 1px solid rgb(var(--line)); }
-    .cl-svc > div:first-child { padding-left: 0; border-left: 0; }
-  }
-  /* three cards across once each is wide enough for its line of action; the catalogues beside their text */
-  @media (min-width: 1200px) {
-    .cl-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-    .cl-dl-in { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: 80px; }
-  }
+  @media (min-width: 560px) { .cl-books { gap: 32px; } }
+  @media (min-width: 1024px) { .cl-books { gap: 40px; } }
 
   /* ── THE WELLUP DOOR CATALOGUE (#/catalogue/doors and its pages, .dcat) ─────────────────────────────────────────
      Part of the Catalogue, and set as the Catalogue page is, on a stage that keeps its colours in both themes — here
@@ -1500,6 +1484,9 @@
   [data-lux] main > section.max-w-site + section.max-w-site { padding-top: 0; }
   /* a rail that scrolls sideways on a phone keeps its first card off the edge of the screen */
   @media (max-width: 767.98px) { [data-lux] main .snap-x { scroll-padding-inline: 20px; } }
+  /* and so does every such rail in the shop (New arrivals, Featured products …): without it a card snaps to the
+     scroller's own edge, which a phone has at the edge of the screen */
+  @media (max-width: 767.98px) { main .snap-x.px-5 { scroll-padding-inline: 20px; } }
 
   /* ── THE DOOR PAGES (#/shop/doors, a door's own page, the door catalogue: [data-doors] on the shell) AND THE KITCHEN SINK CATALOGUE
      (#/shop/kitchen-sinks and its pages: [data-sinks]) ──────────────────────────────────────────────────────────
@@ -1545,6 +1532,37 @@
   .to-top:hover, .to-top:focus-visible { border-color: rgb(var(--accent)); color: rgb(var(--accent)); }
   @media (min-width: 768px) { .to-top { right: 34px; bottom: 96px; } .to-top.is-tray { bottom: 164px; } }
   @media print { .to-top, .skip-link { display: none; } }
+  /* ── PHONES AND TOUCH SCREENS ─────────────────────────────────────────────────────────────────────────────────
+     A page is never wider than the screen: what might reach past its edge is clipped there, rather than laid out wider
+     (which a phone shows by zooming the whole page out). */
+  #root { overflow-x: clip; }
+  /* A fingertip needs about 44 px, and much of the site's small type is drawn smaller — the links in 11.5 px capitals,
+     the bar's icons, the swatches. On a touch screen each such control is pressed over a larger, invisible area (its
+     ::before) centred on it: at least 44 × 44 px (.tap — or --tap-w and --tap-h, where its neighbours are nearer), or
+     44 px tall at its own width (.tap-y, and the stand-alone links set in small capitals: group/l, group/b, group/s,
+     .lx-link, .vs-link). It looks exactly as it did; where a mouse is the pointer, nothing changes at all. */
+  @media (pointer: coarse) {
+    .tap:not(.absolute):not(.fixed), .tap-y:not(.absolute):not(.fixed),
+    a.group\/l, a.group\/b, a.group\/s, a.lx-link, a.vs-link { position: relative; }
+    .tap::before, .tap-y::before, a.group\/l::before, a.group\/b::before, a.group\/s::before, a.lx-link::before, a.vs-link::before {
+      content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, var(--tap-w, 44px)); height: max(100%, var(--tap-h, 44px));
+      transform: translate(-50%, -50%); }
+    .tap-y::before, a.group\/l::before, a.group\/b::before, a.group\/s::before, a.lx-link::before, a.vs-link::before { width: 100%; }
+    /* a trail that runs onto a second line: its lines far enough apart for each link's own area */
+    [data-crumbs] { row-gap: 10px; }
+    [data-crumbs] .tap-y { --tap-h: 28px; }
+    /* the announcement bar's arrows, which a mouse finds by hovering over the bar: shown as the hover shows them */
+    [data-announce] [data-announce-step] { opacity: .6; }
+  }
+  /* what to do with a room's markers: hover them with a mouse, tap them on a touch screen */
+  .touch-only { display: none; }
+  @media (pointer: coarse) { .touch-only { display: inline; } .hover-only { display: none; } }
+  /* the Door Hall's buttons (the virtual showroom's page), where their words do not fit on one line: on two */
+  @media (max-width: 419px) {
+    [data-vsd-acts] > a, [data-vsd-acts] > button { height: auto; min-height: 52px; padding-top: 10px; padding-bottom: 10px;
+      white-space: normal; text-align: center; line-height: 1.4; }
+  }
+
   /* straight to the content: out of sight until a keyboard reaches it */
   .skip-link { position: fixed; left: 16px; top: 12px; z-index: 300; padding: 12px 18px; background: rgb(var(--ink)); color: rgb(var(--bone));
     font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; transform: translateY(-200%); transition: transform .2s; }
@@ -10719,7 +10737,7 @@ function useRail(count) {
 
 const Arrows = ({ onPrev, onNext, disablePrev, disableNext }) => {
   const { t } = useStore();
-  const base = "w-9 h-9 flex items-center justify-center text-ink transition-opacity duration-300 ease-quiet ";
+  const base = "tap-y w-9 h-9 flex items-center justify-center text-ink transition-opacity duration-300 ease-quiet ";
   return (
     <div className="flex items-center">
       <button onClick={onPrev} aria-label={t("prev")} className={base + (disablePrev ? "opacity-20 cursor-default" : "opacity-70 hover:opacity-100")}><Icon name="left" /></button>
@@ -10729,11 +10747,11 @@ const Arrows = ({ onPrev, onNext, disablePrev, disableNext }) => {
 };
 
 const Breadcrumb = ({ trail }) => (
-  <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
+  <nav className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" data-crumbs="">
     {trail.map((t, n) => (
       <span key={n} className="flex items-center gap-3">
         {n > 0 && <span className="text-line">/</span>}
-        {t.to ? <a href={t.to} className="u transition-colors duration-300 hover:text-ink">{t.label}</a> : <span className="text-ink/85">{t.label}</span>}
+        {t.to ? <a href={t.to} className="tap-y u transition-colors duration-300 hover:text-ink">{t.label}</a> : <span className="text-ink/85">{t.label}</span>}
       </span>
     ))}
   </nav>
@@ -10747,7 +10765,7 @@ const SaveButton = ({ slug, className = "", size = 16 }) => {
     <button
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleSaved(slug); say(on ? t("remove") : t("savedItems")); }}
       aria-pressed={on} aria-label={t("savedItems")}
-      className={"transition-colors duration-300 " + (on ? "text-accent" : "text-mute hover:text-ink") + " " + className}>
+      className={"tap transition-colors duration-300 " + (on ? "text-accent" : "text-mute hover:text-ink") + " " + className}>
       <Icon name={on ? "heartOn" : "heart"} size={size} />
     </button>
   );
@@ -10963,7 +10981,7 @@ const ProductCard = ({ p, delay = 0, size = "md", note = null, finish = null, on
 
       <div className="mt-5 flex items-center justify-between gap-4 transition-opacity duration-500 ease-quiet md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
         <a href={`#/shop/p/${p.slug}`}
-          className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+          className="tap-y u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
           {t("viewDetails")}
         </a>
         <CompareToggle slug={p.slug} size="sm" />
@@ -11081,7 +11099,7 @@ const SearchPanel = ({ open, onClose }) => {
               className="w-full bg-transparent text-[16px] tracking-[0.01em] text-ink placeholder:text-mute focus:outline-none md:text-[19px]" />
             {q ? <button onClick={() => { setQ(""); inputRef.current && inputRef.current.focus(); }} aria-label={t("clear")}
               className="text-mute transition-colors duration-300 hover:text-ink"><Icon name="close" size={16} /></button> : null}
-            <button onClick={onClose} aria-label={t("close")} className="ml-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+            <button onClick={onClose} aria-label={t("close")} className="tap ml-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
               <span className="u">{t("close")}</span>
             </button>
           </div>
@@ -11196,7 +11214,7 @@ const AccountPanel = ({ open, onClose }) => {
         className={"fixed right-0 top-0 z-[93] flex h-full w-full max-w-[400px] flex-col bg-bone transition-transform duration-[500ms] ease-quiet " + (open ? "translate-x-0" : "translate-x-full")}>
         <div className="flex items-center justify-between border-b border-line px-6 py-5">
           <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("account")}</span>
-          <button onClick={onClose} aria-label={t("close")}><Icon name="close" size={17} /></button>
+          <button onClick={onClose} aria-label={t("close")} className="tap"><Icon name="close" size={17} /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-8">
@@ -11268,7 +11286,7 @@ const BagDrawer = () => {
         className={"fixed right-0 top-0 z-[97] flex h-full w-full max-w-[400px] flex-col bg-bone transition-transform duration-[500ms] ease-quiet " + (open ? "translate-x-0" : "translate-x-full")}>
         <div className="flex items-center justify-between border-b border-line px-6 py-5">
           <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("addedToBag")}</span>
-          <button onClick={() => setDrawer(null)} aria-label={t("close")}><Icon name="close" size={17} /></button>
+          <button onClick={() => setDrawer(null)} aria-label={t("close")} className="tap"><Icon name="close" size={17} /></button>
         </div>
         {p && (
           <div className="flex-1 overflow-y-auto px-6 py-7">
@@ -11331,7 +11349,7 @@ const RegionModal = ({ open, onClose }) => {
             <Eyebrow>{t("region")}</Eyebrow>
             <h2 className="mt-3 text-[30px] font-medium leading-[1.2]">Indonesia</h2>
           </div>
-          <button onClick={onClose} aria-label={t("close")} className="text-mute hover:text-ink"><Icon name="close" size={17} /></button>
+          <button onClick={onClose} aria-label={t("close")} className="tap text-mute hover:text-ink"><Icon name="close" size={17} /></button>
         </div>
 
         <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("language")}</p>
@@ -11367,19 +11385,19 @@ const AnnouncementBar = ({ solid }) => {
   const step = (d) => setI((v) => (v + d + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length);
 
   return (
-    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} data-announce=""
       className={"group relative h-9 w-full overflow-hidden transition-[background-color,color] duration-500 ease-quiet " + (solid ? "bg-shell text-ink" : "bg-black/10 text-white")}>
       <div className="mx-auto flex h-full max-w-site items-center justify-center px-5 md:px-10">
-        <button onClick={() => step(-1)} aria-label={t("prevMsg")}
-          className="absolute left-3 opacity-0 transition-opacity duration-300 ease-quiet group-hover:opacity-60 hover:!opacity-100 md:left-8"><Icon name="left" size={14} /></button>
+        <button onClick={() => step(-1)} aria-label={t("prevMsg")} data-announce-step=""
+          className="tap absolute z-[1] left-3 opacity-0 transition-opacity duration-300 ease-quiet group-hover:opacity-60 hover:!opacity-100 md:left-8"><Icon name="left" size={14} /></button>
         <div className="relative h-full w-full max-w-[720px]">
           {ANNOUNCEMENTS.map((m, n) => (
             <p key={n} className={"absolute inset-0 flex items-center justify-center text-center text-[11.5px] font-medium uppercase tracking-[0.08em] transition-opacity duration-700 ease-quiet md:text-[11px] " +
               (n === i ? "opacity-100" : "pointer-events-none opacity-0")}>{x(m)}</p>
           ))}
         </div>
-        <button onClick={() => step(1)} aria-label={t("nextMsg")}
-          className="absolute right-3 opacity-0 transition-opacity duration-300 ease-quiet group-hover:opacity-60 hover:!opacity-100 md:right-8"><Icon name="right" size={14} /></button>
+        <button onClick={() => step(1)} aria-label={t("nextMsg")} data-announce-step=""
+          className="tap absolute z-[1] right-3 opacity-0 transition-opacity duration-300 ease-quiet group-hover:opacity-60 hover:!opacity-100 md:right-8"><Icon name="right" size={14} /></button>
       </div>
     </div>
   );
@@ -11404,10 +11422,10 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
     <div ref={inertRef} className={"fixed inset-0 z-[95] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet xl:hidden " + (open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0")}>
       <div className="flex h-16 items-center justify-between border-b border-line px-5">
         <Logo h={20} />
-        <button onClick={onClose} aria-label={t("close")}><Icon name="close" /></button>
+        <button onClick={onClose} aria-label={t("close")} className="tap"><Icon name="close" /></button>
       </div>
 
-      <div className="h-[calc(100%-64px)] overflow-y-auto px-5 pb-24">
+      <div className="h-[calc(100%-64px)] overflow-y-auto overscroll-contain px-5 pb-24">
         {/* the same seven items as the bar above, in the same order, with the
             same mark on the last — the phone must not tell a different
             story about how this site is put together */}
@@ -11432,11 +11450,11 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
         {shop ? (
           <>
             <p className="mb-5 mt-10 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("shop")}</p>
-            <div className="flex flex-col gap-5 border-b border-line pb-8">
+            <div className="flex flex-col border-b border-line pb-6">
               {SHOP_NAV.filter((n) => !n.panel || n.sub).map((n) => (
                 <React.Fragment key={n.id}>
-                  <a href={n.to} onClick={onClose} className="text-[16px] font-medium tracking-[-0.008em] text-ink">{x(n.label)}</a>
-                  {(n.sub || []).map((s) => <a key={s.to} href={s.to} onClick={onClose} className="-mt-2 pl-4 text-[14px] font-medium tracking-[-0.004em] text-mute">{x(s.label)}</a>)}
+                  <a href={n.to} onClick={onClose} className="py-2.5 text-[16px] font-medium tracking-[-0.008em] text-ink">{x(n.label)}</a>
+                  {(n.sub || []).map((s) => <a key={s.to} href={s.to} onClick={onClose} className="-mt-1 py-2.5 pl-4 text-[14px] font-medium tracking-[-0.004em] text-mute">{x(s.label)}</a>)}
                 </React.Fragment>
               ))}
             </div>
@@ -11449,26 +11467,26 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
                 </button>
                 <div className="grid transition-[grid-template-rows] duration-500 ease-quiet" style={{ gridTemplateRows: idx === n ? "1fr" : "0fr" }}>
                   <div className="overflow-hidden">
-                    <ul className="flex flex-col gap-3 pb-6">
-                      <li><a href={`#/shop/c/${c.id}`} onClick={onClose} className="text-[12.5px] font-semibold uppercase tracking-[0.08em] text-ink">{t("viewAll")}</a></li>
+                    <ul className="flex flex-col pb-4">
+                      <li><a href={`#/shop/c/${c.id}`} onClick={onClose} className="block py-[9px] text-[12.5px] font-semibold uppercase tracking-[0.08em] text-ink">{t("viewAll")}</a></li>
                       {oneEach(CATALOG.filter((p) => p.cat === c.id)).map((p) => (
-                        <li key={p.slug}><a href={`#/shop/p/${p.slug}`} onClick={onClose} className="text-[14px] text-mute">{p.model || x(p.name)}</a></li>
+                        <li key={p.slug}><a href={`#/shop/p/${p.slug}`} onClick={onClose} className="block py-[9px] text-[14px] text-mute">{p.model || x(p.name)}</a></li>
                       ))}
                     </ul>
                   </div>
                 </div>
               </div>
             ))}
-            <div className="mt-8 flex flex-col gap-4">
-              <a href="#/shop/saved" onClick={onClose} className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("savedItems")} ({saved.length})</a>
-              <a href="#/shop/compare" onClick={onClose} className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("compareProducts")}</a>
-              <a href="#/shop/bag" onClick={onClose} className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("bag")} ({count})</a>
+            <div className="mt-6 flex flex-col">
+              <a href="#/shop/saved" onClick={onClose} className="py-[11px] text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("savedItems")} ({saved.length})</a>
+              <a href="#/shop/compare" onClick={onClose} className="py-[11px] text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("compareProducts")}</a>
+              <a href="#/shop/bag" onClick={onClose} className="py-[11px] text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("bag")} ({count})</a>
             </div>
           </>
         ) : (
-          <div className="mt-9 flex flex-col gap-4">
-            <a href="#/services" onClick={onClose} className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("delivery")}</a>
-            <a href="#/journal" onClick={onClose} className="text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{lang === "id" ? "Artikel" : "Journal"}</a>
+          <div className="mt-7 flex flex-col">
+            <a href="#/services" onClick={onClose} className="py-[11px] text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{t("delivery")}</a>
+            <a href="#/journal" onClick={onClose} className="py-[11px] text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute">{lang === "id" ? "Artikel" : "Journal"}</a>
           </div>
         )}
 
@@ -11479,7 +11497,7 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
                 (lang === code ? "border-ink bg-ink text-bone" : "border-line text-mute")}>{label}</button>
           ))}
         </div>
-        <ThemeRow className="mt-6 flex w-full items-center justify-between text-[11.5px] font-semibold uppercase tracking-[0.08em] text-mute" />
+        <ThemeRow className="mt-3 flex w-full items-center justify-between py-3 text-[11.5px] font-semibold uppercase tracking-[0.08em] text-mute" />
       </div>
     </div>
   );
@@ -11665,7 +11683,7 @@ const SiteHeader = () => {
           {/* line one — identical on both sides */}
           <div className={"mx-auto flex max-w-site items-center justify-between px-5 transition-[height] duration-500 ease-quiet md:px-10 " + (solid ? "h-[76px]" : "h-[96px]")}>
 
-            <a href="#/" className="shrink-0" aria-label={BRAND}>
+            <a href="#/" className="tap shrink-0" aria-label={BRAND}>
               <Logo mark onDark={!solid} h={solid ? 24 : 28} className="sm:hidden" />
               <Logo onDark={!solid} h={solid ? 22 : 26} className="hidden sm:inline-flex" />
             </a>
@@ -11701,8 +11719,8 @@ const SiteHeader = () => {
               <div ref={toolsRef} aria-hidden={!shop}
                 className={"flex items-center gap-4 transition-[opacity,transform] duration-[560ms] ease-quiet md:gap-5 " +
                 (shop ? "translate-x-0 opacity-100" : "pointer-events-none w-0 translate-x-3 overflow-hidden opacity-0")}>
-                <button onClick={() => shop && setSearch(true)} aria-label={t("search")} className="opacity-80 transition-opacity duration-300 hover:opacity-100"><Icon name="search" /></button>
-                <button onClick={() => shop && setAccount(true)} aria-label={t("account")} className="hidden opacity-80 transition-opacity duration-300 hover:opacity-100 sm:block"><Icon name="account" /></button>
+                <button onClick={() => shop && setSearch(true)} aria-label={t("search")} className="tap opacity-80 transition-opacity duration-300 hover:opacity-100"><Icon name="search" /></button>
+                <button onClick={() => shop && setAccount(true)} aria-label={t("account")} className="tap hidden opacity-80 transition-opacity duration-300 hover:opacity-100 sm:block"><Icon name="account" /></button>
                 <a href="#/shop/compare" aria-label={t("compareProducts")} className="relative hidden items-center opacity-80 transition-opacity duration-300 hover:opacity-100 md:flex">
                   <Icon name="columns" />
                   {compare.length ? <span className="ml-1 text-[10.5px] font-semibold tabular-nums">{compare.length}</span> : null}
@@ -11720,14 +11738,14 @@ const SiteHeader = () => {
 
               {/* the bag is always there — a basket filled in the shop must
                   not vanish when you step back out to read the story */}
-              <a href="#/shop/bag" aria-label={t("bag")} className="relative flex items-center opacity-80 transition-opacity duration-300 hover:opacity-100">
+              <a href="#/shop/bag" aria-label={t("bag")} className="tap relative flex items-center opacity-80 transition-opacity duration-300 hover:opacity-100">
                 <Icon name="bag" />
                 <span className={"ml-1.5 text-[10.5px] font-semibold tabular-nums tracking-[0.08em] transition-opacity duration-500 " + (count ? "opacity-100" : "opacity-40")}>
                   {count ? String(count).padStart(2, "0") : "00"}
                 </span>
               </a>
 
-              <button onClick={() => setMobile(true)} className="flex items-center xl:hidden" aria-label={t("menu")}>
+              <button onClick={() => setMobile(true)} className="tap flex items-center xl:hidden" aria-label={t("menu")}>
                 <span className="flex h-[13px] w-[19px] flex-col justify-between">
                   <span className="block h-px w-full bg-current" />
                   <span className="block h-px w-full bg-current" />
@@ -11789,7 +11807,8 @@ const LangToggle = ({ className = "" }) => {
       data-lang-pick={code}
       onClick={() => setLang(code)}
       aria-pressed={lang === code}
-      className={"u py-2 font-sans text-[11.5px] font-semibold uppercase leading-none tracking-[0.1em] transition-opacity duration-300 " +
+      style={{ "--tap-w": "31px" }}
+      className={"tap u py-2 font-sans text-[11.5px] font-semibold uppercase leading-none tracking-[0.1em] transition-opacity duration-300 " +
         (lang === code ? "is-on opacity-100" : "opacity-55 hover:opacity-100")}>
       {label}
     </button>
@@ -11814,7 +11833,7 @@ const ThemeToggle = ({ className = "" }) => {
   return (
     <button onClick={toggle} aria-pressed={dark} aria-label={label} title={label}
       data-theme-toggle
-      className={"relative h-[18px] w-[18px] opacity-90 transition-opacity duration-300 hover:opacity-60 " + className}>
+      className={"tap relative h-[18px] w-[18px] opacity-90 transition-opacity duration-300 hover:opacity-60 " + className}>
       <ThemeFaces size={18} />
     </button>
   );
@@ -11856,8 +11875,8 @@ const BrandFooter = () => {
             <p data-ft="label" className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("contactUs")}</p>
             <ul className="flex flex-col gap-3.5 text-[14px] leading-[1.6] text-mute">
               {/* PLACEHOLDER — invented contact details */}
-              <li><a href="#/contact" className="u text-ink">+62 21 7199 0018</a></li>
-              <li><a href="#/contact" className="u text-ink">hello@majuterusjaya.co.id</a></li>
+              <li><a href="#/contact" className="tap u text-ink [--tap-h:36px]">+62 21 7199 0018</a></li>
+              <li><a href="#/contact" className="tap u text-ink [--tap-h:36px]">hello@majuterusjaya.co.id</a></li>
               <li className="pt-2">{x({ en: "Mon–Sat 09.00–18.00", id: "Sen–Sab 09.00–18.00" })}</li>
             </ul>
           </div>
@@ -11865,9 +11884,9 @@ const BrandFooter = () => {
             <p data-ft="label" className="mb-7 text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{t("stores")}</p>
             <ul className="flex flex-col gap-3.5 text-[14px] leading-[1.6] text-mute">
               {STORES.slice(0, 3).map((s) => (
-                <li key={s.id}><a href="#/contact" className="u text-ink">{s.name}</a> — {x(s.city)}</li>
+                <li key={s.id}><a href="#/contact" className="tap u text-ink [--tap-h:36px]">{s.name}</a> — {x(s.city)}</li>
               ))}
-              <li className="pt-1"><a href="#/contact" className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("viewAll")}</a></li>
+              <li className="pt-1"><a href="#/contact" className="tap u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink [--tap-h:36px]">{t("viewAll")}</a></li>
             </ul>
           </div>
         </div>
@@ -11895,8 +11914,8 @@ const BrandFooter = () => {
               </button>
               <div className="grid transition-[grid-template-rows] duration-500 ease-quiet" style={{ gridTemplateRows: open === n ? "1fr" : "0fr" }}>
                 <div className="overflow-hidden">
-                  <ul className="flex flex-col gap-4 pb-6">
-                    {c.items.map((i, m) => (<li key={m}><a href={i.to || i.href || "#/"} className="text-[14px] text-mute">{x(i.label)}</a></li>))}
+                  <ul className="flex flex-col pb-4">
+                    {c.items.map((i, m) => (<li key={m}><a href={i.to || i.href || "#/"} className="block py-[9px] text-[14px] text-mute">{x(i.label)}</a></li>))}
                   </ul>
                 </div>
               </div>
@@ -11908,14 +11927,14 @@ const BrandFooter = () => {
         <div className="flex flex-col gap-8 border-t border-line py-12 md:flex-row md:items-center md:justify-between md:gap-10">
           <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
             {SOCIAL.map((s) => (
-              <a key={s.label} href={s.href} className="u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute transition-colors duration-300 hover:text-ink">{s.label}</a>
+              <a key={s.label} href={s.href} className="tap u text-[11.5px] font-semibold uppercase tracking-[0.1em] text-mute transition-colors duration-300 hover:text-ink [--tap-h:30px]">{s.label}</a>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
             {LEGAL.map((l, n) => (
-              <a key={n} href={l.to} className="u text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">{x(l.label)}</a>
+              <a key={n} href={l.to} className="tap u text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink [--tap-h:30px]">{x(l.label)}</a>
             ))}
-            <button onClick={() => setRegion(true)} className="inline-flex items-center gap-2.5 text-mute transition-colors duration-300 hover:text-ink">
+            <button onClick={() => setRegion(true)} className="tap inline-flex items-center gap-2.5 text-mute transition-colors duration-300 hover:text-ink [--tap-h:30px]">
               <Icon name="globe" size={15} />
               <span className="u text-[11.5px] font-medium uppercase tracking-[0.08em]">Indonesia — {lang === "id" ? "Bahasa Indonesia" : "English"}</span>
             </button>
@@ -11990,8 +12009,8 @@ const ShopFooter = () => {
               </button>
               <div className="grid transition-[grid-template-rows] duration-500 ease-quiet" style={{ gridTemplateRows: open === n ? "1fr" : "0fr" }}>
                 <div className="overflow-hidden">
-                  <ul className="flex flex-col gap-4 pb-6">
-                    {c.items.map((i, m) => (<li key={m}><a href={i.to} className="text-[14px] text-mute">{x(i.label)}</a></li>))}
+                  <ul className="flex flex-col pb-4">
+                    {c.items.map((i, m) => (<li key={m}><a href={i.to} className="block py-[9px] text-[14px] text-mute">{x(i.label)}</a></li>))}
                   </ul>
                 </div>
               </div>
@@ -12164,7 +12183,7 @@ const Finishes = () => {
             </p>
 
             {!form ? (
-              <button onClick={() => setForm(true)} className="u mt-9 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("sampleBox")}</button>
+              <button onClick={() => setForm(true)} className="tap-y u mt-9 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("sampleBox")}</button>
             ) : sent ? (
               <p className="mt-9 text-[12px] leading-[1.7] text-accent">{t("requestSent")}</p>
             ) : (
@@ -12211,7 +12230,7 @@ const InSitu = () => {
             <Photo key={S.img} src={S.img} alt={x(S.name)} tone={S.tone} className="h-full w-full object-cover" />
             {items.map((it, n) => (
               <a key={it.slug} href={`#/shop/p/${it.slug}`} onMouseEnter={() => setHot(n)} onMouseLeave={() => setHot(null)}
-                aria-label={x(it.p.name)} className={"rv rv-" + Math.min(8, n + 4) + " absolute -translate-x-1/2 -translate-y-1/2"} style={{ left: it.x + "%", top: it.y + "%" }}>
+                aria-label={x(it.p.name)} className={"tap rv rv-" + Math.min(8, n + 4) + " absolute -translate-x-1/2 -translate-y-1/2"} style={{ left: it.x + "%", top: it.y + "%" }}>
                 <span className={"flex h-[26px] w-[26px] items-center justify-center rounded-full border border-white/90 backdrop-blur-[2px] transition-[background-color,color,transform] duration-500 ease-quiet " +
                   (hot === n ? "scale-110 bg-white text-[#1A1A1A]" : "bg-white/25 text-white hover:bg-white/45")}><Icon name="plus" size={11} /></span>
               </a>
@@ -12223,8 +12242,9 @@ const InSitu = () => {
           <Eyebrow>{x({ en: "In situ", id: "Di lokasi" })}</Eyebrow>
           <h2 className="mt-7 text-[38px] font-medium leading-[1.14] md:text-[48px]">{x(S.name)}</h2>
           <p className="mt-8 max-w-[55ch] text-[15.5px] leading-[1.8] text-mute">
-            {x({ en: "Everything in this room is held in stock and fitted by our own installers. Hover a marker to see what was specified.",
-                 id: "Semua di ruangan ini tersedia dan dipasang oleh teknisi kami sendiri. Arahkan kursor ke penanda untuk melihat spesifikasinya." })}
+            {x({ en: "Everything in this room is held in stock and fitted by our own installers.", id: "Semua di ruangan ini tersedia dan dipasang oleh teknisi kami sendiri." })}{" "}
+            <span className="hover-only">{x({ en: "Hover a marker to see what was specified.", id: "Arahkan kursor ke penanda untuk melihat spesifikasinya." })}</span>
+            <span className="touch-only">{x({ en: "Tap a marker to see what was specified.", id: "Ketuk penanda untuk melihat spesifikasinya." })}</span>
           </p>
           <ul className="mt-10 border-t border-line">
             {items.map((it, n) => (
@@ -12732,7 +12752,7 @@ const AccountPage = () => {
                   {x({ en: "Orders placed in this browser will be listed here, with everything you chose and where it was going.",
                        id: "Pesanan yang dibuat di peramban ini akan tercantum di sini, lengkap dengan pilihan Anda dan tujuan pengirimannya." })}
                 </p>
-                <a href="#/shop/all" className="u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("allProducts")}</a>
+                <a href="#/shop/all" className="tap-y u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("allProducts")}</a>
               </div>
             )}
           </div>
@@ -13202,7 +13222,7 @@ const ListPage = ({ cat, view }) => {
       <div ref={sheetRef} className={"fixed inset-0 z-[96] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet lg:hidden " + (sheet ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0")}>
         <div className="flex h-14 items-center justify-between border-b border-line px-5">
           <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("filter")}</span>
-          <button onClick={() => setSheet(false)} aria-label={t("close")}><Icon name="close" /></button>
+          <button onClick={() => setSheet(false)} aria-label={t("close")} className="tap"><Icon name="close" /></button>
         </div>
         <div className="h-[calc(100%-116px)] overflow-y-auto px-5 pb-10">
           <label className="flex items-center gap-3 border-b border-line py-5 focus-within:border-ink">
@@ -13273,7 +13293,7 @@ const Lightbox = ({ open, product, index, setIndex, onClose }) => {
         <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">
           {product.model || x(product.name)}{product.colour ? " · " + x(product.colour) : ""}
         </span>
-        <button onClick={onClose} aria-label={t("close")} className="opacity-80 transition-opacity hover:opacity-100"><Icon name="close" size={20} /></button>
+        <button onClick={onClose} aria-label={t("close")} className="tap opacity-80 transition-opacity hover:opacity-100"><Icon name="close" size={20} /></button>
       </div>
       <div className="relative flex flex-1 items-center justify-center px-5 pb-10 md:px-16">
         {count > 1 ? (
@@ -13450,7 +13470,7 @@ const ProductPage = ({ slug }) => {
               </div>
               {showroomOf(p) ? (
                 <a href={"#/virtual-showroom/" + p.slug} data-showroom=""
-                  className="mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+                  className="tap-y mt-5 flex items-center justify-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
                   <VsTurn size={15} /><span className="u">{showroomOf(p).is3d ? t("vsInspectInShowroom") : t("vsSeeInShowroom")}</span>
                 </a>
               ) : null}
@@ -13592,7 +13612,7 @@ const SearchPage = ({ q }) => {
           <div className="py-20 text-center">
             <p className="text-[27px] font-medium">{t("noSearch")} “{q}”.</p>
             <p className="mx-auto mt-4 max-w-[46ch] text-[13.5px] leading-[1.75] text-mute">{t("searchHint")}</p>
-            <a href="#/shop/all" className="u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("viewAll")}</a>
+            <a href="#/shop/all" className="tap-y u mt-8 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("viewAll")}</a>
           </div>
         )}
         {res.stores.length || res.posts.length ? (
@@ -13810,7 +13830,7 @@ const CheckoutPage = () => {
   if (!items.length) return (
     <div className="mx-auto max-w-site px-5 py-[130px] text-center md:px-10 md:py-[190px]">
       <p className="text-[30px] font-medium">{t("emptyBag")}</p>
-      <a href="#/shop/all" className="u mt-8 inline-block text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("keepShopping")}</a>
+      <a href="#/shop/all" className="tap-y u mt-8 inline-block text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("keepShopping")}</a>
     </div>
   );
 
@@ -14245,199 +14265,309 @@ const AboutPage = () => {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CATALOGUE
-   The catalogue's landing page: the collections as cards, the two kitchen
-   sink catalogues to view or download, the Wellup Door Catalogue set as they
-   are (DcEntry: its PDF to view or download, the web catalogue online), and
-   the services around them. It is
-   set on a charcoal stage in both themes (.cl in the stylesheet), which the
-   bar runs over as it does over the home page's hero.
-   A collection is one entry in CL_COLLECTIONS: the grid gives it a card (a
-   fifth starts a new row), and the room filters and the count follow. Its
-   picture is in img/collections/, 800 × 1000. Only the kitchen sinks are the
-   shop's own so far: the other three pictures are studio images standing in
-   for its photographs, and their links go to the nearest part of the shop.
+   One catalogue, on the charcoal stage the bar runs over (.cl in the
+   stylesheet): its heading and a sentence, its two ways — View Catalogue,
+   the PDF itself, and Download PDF, the same file to keep — and the PDF to
+   read on the page, in the edition of the site's language (English, or
+   Bahasa Indonesia).
+   CAT_DOC names it: one of KS_DOCS (granite, stainless or doors), whose
+   files are in catalogue/. A computer's browser shows the PDF inside the
+   page with its own viewer. A phone cannot, so there the site draws the
+   pages itself with PDF.js (lib/pdfjs), one at a time; and where the phone
+   has no viewer of its own to open the file in (an Android phone would only
+   download it), View Catalogue opens those pages full screen instead.
    ═══════════════════════════════════════════════════════════════════════════ */
-const CL_COLLECTIONS = [
-  { id: "kitchen-sinks", rooms: ["kitchen"], to: "#/shop/kitchen-sinks", img: "img/collections/kitchen-sinks.jpg",
-    tag:   { en: "Kitchen", id: "Dapur" },
-    title: { en: "Kitchen Sinks", id: "Bak Cuci Dapur" },
-    body:  { en: "Granite and stainless steel collections", id: "Koleksi granit dan stainless steel" },
-    alt:   { en: "The GDU 8145 granite double-bowl sink in Pearl Black", id: "Bak cuci granit dua ruang GDU 8145, Hitam Mutiara" } },
-  { id: "doors", rooms: [], to: "#/shop/doors", img: "img/collections/doors.jpg",
-    tag:   { en: "Door", id: "Pintu" },
-    title: { en: "UPVC Doors", id: "Pintu UPVC" },
-    body:  { en: "19 Wellup models, from Rp 1.300.000", id: "19 model Wellup, mulai Rp 1.300.000" },
-    alt:   { en: "The PT 2602 UPVC door in Dark Grey, with a black list", id: "Pintu UPVC PT 2602 Dark Grey dengan List Hitam" } },
-  { id: "sanitary", rooms: ["kitchen", "bathroom"], to: "#/shop/c/sanitary", img: "img/collections/faucets.jpg",
-    tag:   { en: "Kitchen & Bath", id: "Dapur & Kamar Mandi" },
-    title: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" },
-    body:  { en: "Basins, mixers and showers", id: "Wastafel, keran dan shower" },
-    alt:   { en: "A brushed brass gooseneck mixer on a block of black marble", id: "Keran leher angsa kuningan sikat di atas balok marmer hitam" } },
-];
-/* the rooms the collections can be filtered by; a collection names the rooms it belongs to */
-const CL_ROOMS = [
-  { id: null,       label: { en: "All collections", id: "Semua koleksi" } },
-  { id: "kitchen",  label: { en: "Kitchen",  id: "Dapur" } },
-  { id: "bathroom", label: { en: "Bathroom", id: "Kamar Mandi" } },
-];
-const CL_LEDE = {
-  en: "Explore solutions for the kitchen and the bathroom, made to feel at home — granite and stainless steel sinks, UPVC doors, and sanitary and plumbing.",
-  id: "Jelajahi solusi dapur dan kamar mandi yang terasa seperti di rumah sendiri — bak cuci granit dan stainless steel, pintu UPVC, serta saniter dan perpipaan.",
+const CAT_DOC = "doors";
+/* the sentence under the heading, for each catalogue — what is in it, as its own pages say */
+const CAT_LEDES = {
+  granite:   { en: "The Granite Kitchen Sink Collection, 2026: a page for every sink — the kitchen it is shown in, its listed specifications and a technical drawing.",
+               id: "Koleksi Bak Cuci Dapur Granit 2026: satu halaman untuk setiap bak cuci — dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya." },
+  stainless: { en: "The Stainless Steel Kitchen Sink Collection, 2026: a page for every sink — the kitchen it is shown in, its listed specifications and a technical drawing.",
+               id: "Koleksi Bak Cuci Dapur Stainless Steel 2026: satu halaman untuk setiap bak cuci — dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya." },
+  doors:     { en: "The Wellup UPVC Door Collection, 2026: a page for every model — its colours as photographed, its specification as printed and every product code.",
+               id: "Koleksi Pintu UPVC Wellup 2026: satu halaman untuk setiap model — warnanya sesuai foto, spesifikasinya sesuai daftar harga, dan setiap kode produknya." },
 };
-const CL_SERVICES = [
-  { icon: "truck", to: "#/services",
-    title: { en: "Complimentary delivery", id: "Gratis pengiriman" },
-    body:  { en: "Across Jabodetabek, in 2–4 working days.", id: "Se-Jabodetabek, dalam 2–4 hari kerja." },
-    link:  { en: "Delivery details", id: "Detail pengiriman" } },
-  { icon: "cube", to: "#/virtual-showroom",
-    title: { en: "Virtual showroom", id: "Showroom virtual" },
-    body:  { en: "Walk through the collections, room by room.", id: "Jelajahi koleksi, ruang demi ruang." },
-    link:  { en: "Enter the showroom", id: "Masuk ke showroom" } },
-  { icon: "chat", to: "#/contact",
-    title: { en: "Help choosing", id: "Bantuan memilih" },
-    body:  { en: "Questions about a size, finish or model? Ask us.", id: "Ada pertanyaan soal ukuran, finishing, atau model? Tanyakan kepada kami." },
-    link:  { en: "Contact us", id: "Hubungi kami" } },
-];
 
-/* one of the catalogues (the two kitchen sink volumes, the door volume): its cover, which opens it here on the website,
-   and its two ways — View and PDF (or, where the files are not beside the page, Read) */
-const ClBook = ({ doc, n, lang, files }) => {
+/* PDF.js 5.7 (Mozilla, Apache License 2.0), beside the page in lib/pdfjs — its legacy build, which older phones run
+   too (an ES module, and its worker). It draws every page as the PDF has it, the catalogues' gradients included. It is
+   asked for only where the site draws a catalogue's pages itself, is only ever given the site's own PDFs, and runs
+   with eval turned off. */
+const PDFJS_DIR = "lib/pdfjs/";
+let pdfjsWait = null;
+const loadPdfJs = () => {
+  if (!pdfjsWait) {
+    const at = new URL(PDFJS_DIR, document.baseURI).href;
+    pdfjsWait = import(at + "pdf.min.mjs").then((lib) => {
+      if (!lib || !lib.getDocument) throw new Error("PDF.js did not start");
+      lib.GlobalWorkerOptions.workerSrc = at + "pdf.worker.min.mjs";
+      return lib;
+    });
+    pdfjsWait.catch(() => { pdfjsWait = null; });      // a later look may try again
+  }
+  return pdfjsWait;
+};
+/* each PDF opened once in a visit, and each of its pages drawn once at a width (to the next 100 px), as a picture */
+const catDocs = new Map(), catPics = new Map();
+const catOpen = (url) => {
+  if (!catDocs.has(url)) {
+    const p = loadPdfJs().then((lib) => lib.getDocument({ url, isEvalSupported: false, disableAutoFetch: true }).promise);
+    catDocs.set(url, p);
+    p.catch(() => catDocs.delete(url));
+  }
+  return catDocs.get(url);
+};
+const catPic = (url, n, cssW) => {
+  const px = Math.max(300, Math.min(1800, Math.ceil((cssW * Math.min(window.devicePixelRatio || 1, 2)) / 100) * 100));
+  const key = url + "#" + n + "@" + px;
+  if (!catPics.has(key)) {
+    const p = catOpen(url).then(async (pdf) => {
+      const page = await pdf.getPage(n);
+      const vp = page.getViewport({ scale: px / page.getViewport({ scale: 1 }).width });
+      const c = document.createElement("canvas");
+      c.width = Math.round(vp.width);
+      c.height = Math.round(vp.height);
+      await page.render({ canvas: c, canvasContext: c.getContext("2d", { alpha: false }), viewport: vp }).promise;
+      page.cleanup();
+      const blob = c.toBlob ? await new Promise((done) => c.toBlob(done, "image/jpeg", 0.9)) : null;
+      const src = blob ? URL.createObjectURL(blob) : c.toDataURL("image/jpeg", 0.9);
+      c.width = c.height = 0;
+      return src;
+    });
+    catPics.set(key, p);
+    p.catch(() => catPics.delete(key));
+  }
+  return catPics.get(key);
+};
+/* the width an element is laid out at, kept up to date */
+const useWidth = (ref, again = null) => {
+  const [w, setW] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    const measure = () => setW(el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", measure);
+      return () => window.removeEventListener("resize", measure);
+    }
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [again]);
+  return w;
+};
+
+/* on a phone: the catalogue a page at a time — the arrows, or a swipe, turn it; the cover is there at once (its
+   picture is made with the PDFs), and every page is the PDF's own, drawn at the width it is seen at */
+const CatPreview = ({ url, cover = null, pages = null, title, page, onPage }) => {
   const { x } = useStore();
-  const read = files === "missing";
-  const title = x(KS_DOCS[doc].title);
+  const [total, setTotal] = useState(pages);
+  const [pics, setPics] = useState({});
+  const [failed, setFailed] = useState(false);
+  const sheet = useRef(null), swipe = useRef(null);
+  const w = useWidth(sheet);
+  const n = page;
+  useEffect(() => {
+    let live = true;
+    setFailed(false);
+    setPics({});
+    catOpen(url).then((pdf) => { if (live) setTotal(pdf.numPages); }, () => { if (live) setFailed(true); });
+    return () => { live = false; };
+  }, [url]);
+  /* the page shown, and the pages either side, so a turn is instant */
+  useEffect(() => {
+    if (!w || failed) return undefined;
+    let live = true;
+    [n, n + 1, n - 1].forEach((k) => {
+      if (k < 1 || (total && k > total)) return;
+      catPic(url, k, w).then((src) => { if (live) setPics((s) => (s[k] === src ? s : { ...s, [k]: src })); },
+                             () => { if (live && k === n) setFailed(true); });
+    });
+    return () => { live = false; };
+  }, [url, n, w, total, failed]);
+  const last = total || 1;
+  const go = (d) => onPage(Math.max(1, Math.min(last, n + d)));
+  const down = (e) => { swipe.current = e.pointerType === "mouse" ? null : { x: e.clientX, y: e.clientY }; };
+  const up = (e) => {
+    const s0 = swipe.current;
+    swipe.current = null;
+    if (!s0) return;
+    const dx = e.clientX - s0.x, dy = e.clientY - s0.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > 1.5 * Math.abs(dy)) go(dx < 0 ? 1 : -1);
+  };
+  const keys = (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+  };
+  const pic = pics[n] || (n === 1 ? cover : null);
+  const of = (k) => x({ en: "Page " + k + " of " + last, id: "Halaman " + k + " dari " + last });
   return (
-    <figure className="cl-book" data-cl-book={doc + "-" + lang}>
-      <a {...(read ? ksDocLink(doc, lang, files) : ksViewLink(doc, lang))} className="cl-cover"
-        aria-label={(read ? x({ en: "Read the catalogue", id: "Baca katalog" }) : x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })) + ": " + title}>
-        <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-1.jpg")} alt={title} tone="#2B2926" className="no-dim" />
-      </a>
-      <figcaption className="cl-meta">
-        <span className="cl-name">{x(KS_DOCS[doc].name)}</span>
-        <span className="cl-acts">
-          {read ? (
-            <a {...ksDocLink(doc, lang, files)} className="cl-btn cl-solid"><KsIcon name="book" size={14} />{x({ en: "Read", id: "Baca" })}</a>
-          ) : (<>
-            <a {...ksViewLink(doc, lang)} className="cl-btn cl-solid" aria-label={x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })}>
-              {x({ en: "View", id: "Lihat" })}
-            </a>
-            <a {...ksDocLink(doc, lang, files)} className="cl-btn" aria-label={x({ en: "Download the PDF", id: "Unduh PDF" })}>
-              <KsIcon name="download" size={14} />PDF
-            </a>
-          </>)}
-        </span>
-        <span className="cl-facts">{"Volume 0" + (n + 1) + " · " + ksPdfLine(doc, lang, files)}</span>
-      </figcaption>
-    </figure>
+    <div className="cat-book" data-cat-preview="" onKeyDown={keys}>
+      <div ref={sheet} className="cat-sheet" role="img" aria-label={title + " — " + of(n)} data-cat-sheet={n}
+        onPointerDown={down} onPointerUp={up} onPointerCancel={() => { swipe.current = null; }}>
+        {pic ? <img key={pic} src={pic} alt="" draggable="false" decoding="async" data-cat-pic={pics[n] ? n : "cover"} /> : null}
+        {!pic ? <span className="cat-wait" aria-hidden="true">{of(n)}</span> : null}
+      </div>
+      <div className="cat-pager">
+        <button type="button" className="cat-arrow" onClick={() => go(-1)} disabled={failed || n <= 1}
+          aria-label={x({ en: "Previous page", id: "Halaman sebelumnya" })} data-cat-prev=""><Icon name="left" size={20} /></button>
+        <span className="cat-count" aria-live="polite" data-cat-count="">{of(n)}</span>
+        <button type="button" className="cat-arrow" onClick={() => go(1)} disabled={failed || n >= last}
+          aria-label={x({ en: "Next page", id: "Halaman berikutnya" })} data-cat-next=""><Icon name="right" size={20} /></button>
+      </div>
+      {failed ? (
+        <p className="cat-note" data-cat-failed="">{x({ en: "The pages cannot be shown here: View Catalogue or Download PDF opens the file itself.",
+                                                         id: "Halamannya tidak dapat ditampilkan di sini: Lihat Katalog atau Unduh PDF membuka filenya langsung." })}</p>
+      ) : null}
+    </div>
   );
 };
 
-/* a look inside a catalogue: its collection page (the second of the look inside's pages), which opens the PDF there —
-   or, where the files are not beside the page, the catalogue to read */
-const ClPeek = ({ doc, lang, files }) => {
+/* View Catalogue, on a phone with no viewer of its own: the PDF full screen, every page in turn, opened at the page
+   the preview is at. It is a step in the history, so the phone's Back closes it, as do its × and Escape. */
+const CatReader = ({ url, title, file, pages = null, start = 1, onClose }) => {
   const { x } = useStore();
-  const read = files === "missing";
-  const at = ((KS_PDF_PAGES[doc] || {}).peek || [1, 3, 7])[1];
-  const link = read ? ksDocLink(doc, lang, files) : ksViewLink(doc, lang, at);
-  const label = x({ en: "Look inside", id: "Lihat isinya" });
+  const [total, setTotal] = useState(pages);
+  const [failed, setFailed] = useState(false);
+  const [pics, setPics] = useState({});
+  const [near, setNear] = useState(() => new Set([start]));
+  const [at, setAt] = useState(start);
+  const box = useRef(null), first = useRef(null), shut = useRef(null), refs = useRef([]), opened = useRef(false);
+  const w = useWidth(first, total);
+  useEffect(() => {
+    const before = document.activeElement;
+    try { history.pushState({ catReader: 1 }, ""); } catch (e) { /* its × still closes it */ }
+    const back = () => onClose();
+    window.addEventListener("popstate", back);
+    document.documentElement.classList.add("cat-reading");
+    if (shut.current) shut.current.focus({ preventScroll: true });
+    return () => {
+      window.removeEventListener("popstate", back);
+      document.documentElement.classList.remove("cat-reading");
+      if (before && before.focus) before.focus({ preventScroll: true });
+    };
+  }, []);
+  const close = () => { if (history.state && history.state.catReader) history.back(); else onClose(); };
+  useEffect(() => {
+    let live = true;
+    catOpen(url).then((pdf) => { if (live) setTotal(pdf.numPages); }, () => { if (live) setFailed(true); });
+    return () => { live = false; };
+  }, [url]);
+  /* at the page it was opened at, once the pages are laid out; then each page drawn as it comes near */
+  useEffect(() => {
+    const el = refs.current[start - 1];
+    if (opened.current || !el || !box.current) return;
+    opened.current = true;
+    box.current.scrollTop = el.offsetTop - 12;
+  }, [total]);
+  useEffect(() => {
+    const root = box.current;
+    if (!root || !total) return undefined;
+    if (typeof IntersectionObserver === "undefined") { setNear(new Set(Array.from({ length: total }, (_, i) => i + 1))); return undefined; }
+    const io = new IntersectionObserver((es) => {
+      const seen = es.filter((e) => e.isIntersecting).map((e) => +e.target.getAttribute("data-n"));
+      if (seen.length) setNear((s0) => (seen.every((k) => s0.has(k)) ? s0 : new Set([...s0, ...seen])));
+    }, { root, rootMargin: "150% 0px" });
+    refs.current.forEach((el) => { if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, [total]);
+  useEffect(() => {
+    if (!w || failed) return undefined;
+    let live = true;
+    near.forEach((k) => {
+      catPic(url, k, w).then((src) => { if (live) setPics((s0) => (s0[k] === src ? s0 : { ...s0, [k]: src })); }, () => {});
+    });
+    return () => { live = false; };
+  }, [near, w, failed]);
+  const scrolled = () => {
+    const root = box.current;
+    if (!root) return;
+    const mark = root.scrollTop + root.clientHeight / 3;
+    let k = 1;
+    refs.current.forEach((el, i) => { if (el && el.offsetTop <= mark) k = i + 1; });
+    if (k !== at) setAt(k);
+  };
+  const keys = (e) => {
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); return; }
+    if (e.key !== "Tab") return;
+    const f = Array.from(e.currentTarget.querySelectorAll("a[href], button"));
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  };
   return (
-    <figure className="cl-book" data-cl-peek={doc + "-" + lang}>
-      <a {...link} className="cl-cover" aria-label={label + ": " + x(KS_DOCS[doc].title) + ", " + x({ en: "page ", id: "halaman " }) + String(at).padStart(2, "0")}>
-        <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-2.jpg")} tone="#E9E6E0" className="no-dim"
-          alt={x({ en: "Inside the " + KS_DOCS[doc].title.en + ": the collection, every model at a glance", id: "Isi " + KS_DOCS[doc].title.id + ": koleksinya, setiap model sekilas" })} />
-      </a>
-      <figcaption className="cl-meta">
-        <span className="cl-name">{label}</span>
-        <span className="cl-facts">{x({ en: "Every model at a glance, then a page for each · page " + String(at).padStart(2, "0"),
-                                         id: "Setiap model sekilas, lalu satu halaman untuk masing-masing · hal. " + String(at).padStart(2, "0") })}</span>
-      </figcaption>
-    </figure>
+    <div className="cat-reader" role="dialog" aria-modal="true" aria-label={title} onKeyDown={keys} data-cat-reader="">
+      <div className="cat-reader-bar">
+        <span className="cat-reader-title">{title}</span>
+        {total ? <span className="cat-reader-count" data-cat-reader-count="">{at + " / " + total}</span> : null}
+        <a href={url} download={file} className="cat-reader-btn" aria-label={x({ en: "Download PDF", id: "Unduh PDF" })} data-cat-reader-pdf=""><KsIcon name="download" size={20} /></a>
+        <button ref={shut} type="button" className="cat-reader-btn" onClick={close} aria-label={x({ en: "Close", id: "Tutup" })} data-cat-reader-close=""><Icon name="close" size={20} /></button>
+      </div>
+      <div ref={box} className="cat-reader-pages" onScroll={scrolled}>
+        {failed ? (
+          <p className="cat-note" data-cat-failed="">
+            {x({ en: "The pages cannot be shown here. ", id: "Halamannya tidak dapat ditampilkan di sini. " })}
+            <a href={url} target="_blank" rel="noopener" className="u text-ink">{x({ en: "Open the PDF", id: "Buka PDF" })}</a>
+          </p>
+        ) : Array.from({ length: total || 0 }, (_, i) => (
+          <div key={i} ref={(el) => { refs.current[i] = el; if (i === 0) first.current = el; }} data-n={i + 1} className="cat-reader-page">
+            {pics[i + 1] ? <img src={pics[i + 1]} alt={x({ en: "Page ", id: "Halaman " }) + (i + 1)} draggable="false" decoding="async" /> : null}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
+
+/* can the browser open a PDF in a viewer of its own (a computer's browser; Safari on an iPhone)? Then View Catalogue
+   opens the file itself, in a tab of its own; otherwise the site's own reader */
+const catOwnViewer = () => typeof navigator !== "undefined" && navigator.pdfViewerEnabled === true;
 
 const CataloguePage = () => {
   const { x, lang } = useStore();
   const files = useKsFiles();
-  const [room, setRoom] = useState(null);
-  const L = lang === "id" ? "id" : "en", other = L === "id" ? "en" : "id";
-  const shown = CL_COLLECTIONS.filter((c) => !room || c.rooms.includes(room));
-  useKsMeta(x({ en: "Catalogue", id: "Katalog" }), x(CL_LEDE));
+  const L = lang === "id" ? "id" : "en";
+  const doc = CAT_DOC;
+  const pdf = ksPdfHref(doc, L), file = ksPdfFile(doc, L), meta = ksPdfMeta(doc, L);
+  const title = tx(KS_DOCS[doc].title, L);
+  const [embed] = useState(() => ksCanEmbedPdf());
+  const [page, setPage] = useState(1);
+  const [reading, setReading] = useState(false);
+  useKsMeta(x({ en: "Catalogue", id: "Katalog" }), x(CAT_LEDES[doc]));
+  const view = (e) => {
+    if (catOwnViewer() || files === "missing") return;
+    e.preventDefault();
+    setReading(true);
+  };
   return (
-    <div className="cl">
-      <section className="cl-intro mx-auto max-w-site px-5 md:px-10">
+    <div className="cl" data-cat-page={doc + "-" + L}>
+      <section className="cat-head mx-auto max-w-site px-5 md:px-10">
         <Reveal className="cascade">
-          <p className="cl-eyebrow">{x({ en: "The Catalogue", id: "Katalog" })}</p>
-          <h1>{x({ en: "Thoughtful design for everyday living.", id: "Desain yang cermat untuk keseharian." })}</h1>
-          <p className="cl-lede">{x(CL_LEDE)}</p>
-          <div className="cl-rule" />
-        </Reveal>
-      </section>
-
-      <section className="mx-auto max-w-site px-5 md:px-10" aria-label={x({ en: "Collections", id: "Koleksi" })}>
-        <div className="cl-head">
-          <div className="cl-filters" role="group" aria-label={x({ en: "Show the collections for a room", id: "Tampilkan koleksi untuk satu ruangan" })}>
-            <span className="cl-label">{x({ en: "Browse", id: "Telusuri" })}</span>
-            {CL_ROOMS.map((r) => (
-              <button key={r.id || "all"} type="button" className="cl-chip" aria-pressed={room === r.id} onClick={() => setRoom(r.id)}>{x(r.label)}</button>
-            ))}
+          <h1>{x({ en: "Catalogue", id: "Katalog" })}</h1>
+          <p className="cat-lede">{x(CAT_LEDES[doc])}</p>
+          <div className="cat-acts">
+            <a href={pdf} target="_blank" rel="noopener" onClick={view} className="cat-btn cat-solid" data-cat-view={doc + "-" + L}>
+              <KsIcon name="external" size={16} />{x({ en: "View Catalogue", id: "Lihat Katalog" })}
+            </a>
+            <a href={pdf} download={file} className="cat-btn" data-cat-pdf={doc + "-" + L}>
+              <KsIcon name="download" size={16} />{x({ en: "Download PDF", id: "Unduh PDF" })}
+            </a>
           </div>
-          <p className="cl-count" aria-live="polite">
-            <b>{shown.length}</b> {L === "id" ? "koleksi" : shown.length === 1 ? "collection" : "collections"}
-          </p>
-        </div>
-        <Reveal still className="cl-grid cascade">
-          {shown.map((c) => (
-            <a key={c.id} href={c.to} className="cl-card" data-cl-card={c.id}>
-              <Media className="cl-media"><Photo src={c.img} alt={x(c.alt)} tone="#E7E1D7" className="no-dim" /></Media>
-              <span className="cl-body">
-                <span className="cl-tag"><span className="cl-no">{String(CL_COLLECTIONS.indexOf(c) + 1).padStart(2, "0")}</span>{x(c.tag)}</span>
-                <h2>{x(c.title)}</h2>
-                <span className="cl-desc">{x(c.body)}</span>
-                <span className="cl-cta">{x({ en: "Explore collection", id: "Jelajahi koleksi" })}<span className="cl-go"><Icon name="arrow" size={15} /></span></span>
-              </span>
-            </a>
-          ))}
+          <p className="cat-facts" data-cat-facts="">{ksPdfLine(doc, L, "ok") + " · " + (L === "id" ? "Bahasa Indonesia" : "English")}</p>
         </Reveal>
       </section>
-
-      <section className="cl-dl" aria-label={x({ en: "Kitchen sink catalogues", id: "Katalog bak cuci dapur" })}>
-        <div className="cl-dl-in mx-auto max-w-site px-5 md:px-10">
-          <Reveal className="cl-text cascade">
-            <p className="cl-eyebrow">{x({ en: "Kitchen sink catalogues · 2026", id: "Katalog bak cuci dapur · 2026" })}</p>
-            <h2>{x({ en: "Every model, specification and drawing, in one place.", id: "Setiap model, spesifikasi, dan gambar teknis dalam satu tempat." })}</h2>
-            <p className="cl-body-text">{x({ en: "Two volumes, granite and stainless steel, with a page for every sink: the kitchen it is shown in, its listed specifications and a technical drawing. In English and Indonesian.",
-                                             id: "Dua volume, granit dan stainless steel, dengan satu halaman untuk setiap bak cuci: dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya. Dalam bahasa Inggris dan Indonesia." })}</p>
-            <a href="#/shop/kitchen-sinks" className="cl-link group/l">
-              <span className="u">{x({ en: "Browse them online", id: "Lihat secara online" })}</span>
-              <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-            </a>
-            <p className="cl-also">
-              <span>{L === "id" ? "Also in English:" : "Juga dalam Bahasa Indonesia:"}</span>
-              {KS_DOC_LIST.map((d) => <a key={d} {...ksDocLink(d, other, files)} className="u">{tx(KS_DOCS[d].short, other)}</a>)}
-            </p>
-          </Reveal>
-          <Reveal still className="cl-books cascade">
-            {KS_DOC_LIST.map((d, n) => <ClBook key={d} doc={d} n={n} lang={L} files={files} />)}
-          </Reveal>
-        </div>
+      <section className="cat-view mx-auto max-w-site px-5 md:px-10" aria-label={title}>
+        {embed ? (
+          files === "ok" ? <iframe key={pdf} src={pdf} title={title} className="cat-frame" data-cat-frame="" />
+                         : <div className="cat-frame" aria-hidden="true" />
+        ) : (
+          <CatPreview url={pdf} cover={KS_IMG("pages/" + doc + "-" + L + "-1.jpg")} pages={meta && meta.pages} title={title} page={page} onPage={setPage} />
+        )}
+        {embed && files === "missing" ? (
+          <p className="cat-note" data-cat-failed="">{x({ en: "The catalogue's PDF is not beside this copy of the page.", id: "PDF katalog tidak ada di samping salinan halaman ini." })}</p>
+        ) : null}
       </section>
-
-      {/* the Wellup Door Catalogue, after the two kitchen sink catalogues */}
-      <DcEntry />
-
-      <section className="mx-auto max-w-site px-5 md:px-10" aria-label={x({ en: "Services", id: "Layanan" })}>
-        <Reveal still className="cl-svc cascade">
-          {CL_SERVICES.map((s) => (
-            <div key={s.to}>
-              {s.icon === "cube" ? <KsIcon name="cube" size={26} /> : <Icon name={s.icon} size={26} />}
-              <div>
-                <h3>{x(s.title)}</h3>
-                <p>{x(s.body)}</p>
-                <a href={s.to} className="u">{x(s.link)}</a>
-              </div>
-            </div>
-          ))}
-        </Reveal>
-      </section>
+      {reading ? <CatReader url={pdf} title={title} file={file} pages={meta && meta.pages} start={page} onClose={() => setReading(false)} /> : null}
     </div>
   );
 };
@@ -14499,7 +14629,7 @@ const ContactPage = () => {
                   <p className="mt-2 text-[14px] leading-[1.7] text-mute">{x(s.hours)}</p>
                   <p className="mt-2 text-[14px] leading-[1.7] text-mute">{s.phone}</p>
                   <a href={mapsUrl(s)} target="_blank" rel="noopener noreferrer"
-                    className="u mt-5 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("directions")}</a>
+                    className="tap-y u mt-5 inline-block text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">{t("directions")}</a>
                 </Reveal>
               ))}
             </div>
@@ -14580,7 +14710,7 @@ const CompareToggle = ({ slug, className = "", size = "sm" }) => {
   };
   return (
     <button onClick={press} aria-pressed={on} aria-label={on ? t("removeCompare") : t("addToCompare")}
-      className={"group/c inline-flex items-center gap-2 font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " +
+      className={"tap-y group/c inline-flex items-center gap-2 font-semibold uppercase tracking-[0.1em] transition-colors duration-300 " +
         (size === "sm" ? "text-[10.5px] " : "text-[11.5px] ") + (on ? "text-ink" : "text-mute hover:text-ink") + " " + className}>
       <span className={"grid h-[13px] w-[13px] shrink-0 place-items-center border transition-colors duration-300 " +
         (on ? "border-ink bg-ink text-bone" : "border-line text-transparent group-hover/c:border-ink")}>
@@ -14663,7 +14793,7 @@ const AddProductModal = ({ open, onClose }) => {
           (open ? "translate-y-0" : "translate-y-4")}>
         <div className="flex items-center justify-between border-b border-line px-6 py-5">
           <span className="text-[11.5px] font-medium uppercase tracking-[0.08em]">{t("addProduct")}</span>
-          <button onClick={onClose} aria-label={t("close")} className="text-mute hover:text-ink"><Icon name="close" size={17} /></button>
+          <button onClick={onClose} aria-label={t("close")} className="tap text-mute hover:text-ink"><Icon name="close" size={17} /></button>
         </div>
         <div className="flex items-center gap-3 border-b border-line px-6 py-4">
           <Icon name="search" size={16} />
@@ -15574,7 +15704,7 @@ const VsDoorHall = ({ row, g, sel, all, onDoor, onHand, onAdd, added, phase, pro
               onColour={(c) => onDoor(doorRowOf(g, c, row.listCol).slug)} onList={(l) => onDoor(doorRowOf(g, row.doorCol, l).slug)} onHand={onHand} />
             <DoorSummary row={row} sel={sel} />
             {spec ? <p className="mt-4 text-[12.5px] leading-[1.6] text-mute" data-vsd-spec=""><span className="text-ink/90">{x({ en: "Specification", id: "Spesifikasi" })}:</span> {x(spec)}</p> : null}
-            <div className="mt-8 grid gap-3">
+            <div className="mt-8 grid grid-cols-1 gap-3" data-vsd-acts="">
               <Action onClick={onAdd}>{added ? t("inYourBag") : t("addToCart")}</Action>
               <a href={doorHref(row, sel.id)} data-vsd-page="" className={btn + "border-ink text-ink hover:bg-ink hover:text-bone"}>
                 <span>{t("vsDoorPage")}</span><Icon name="arrow" size={13} />
@@ -17157,7 +17287,7 @@ const KsCard = ({ m, prefer = null, eager = false }) => {
       </a>
       <div className="flex flex-1 flex-col pt-5">
         <p className="text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.1em] text-mute md:text-[10.5px]" data-ks-card-type="">{ksTypeName(m, lang)}</p>
-        <a href={href} className="mt-2 block">
+        <a href={href} className="tap-y mt-2 block">
           <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[18px]" data-ks-card-name="">{m.model}</h3>
         </a>
         <p className="mt-1 text-[12.5px] leading-[1.55] text-mute md:text-[13px]" data-ks-card-size="">{ksSize(m, lang)}{m.kind === "steel" ? " · " + m.brand : ""}</p>
@@ -17169,7 +17299,7 @@ const KsCard = ({ m, prefer = null, eager = false }) => {
             <>
               {m.rows.map((r, n) => (
                 <button key={r.slug} type="button" onClick={() => setI(n)} aria-pressed={n === i} aria-label={x(r.colour)} title={x(r.colour)} data-ks-colour-pick={r.colourId}
-                  className={"h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 " + (n === i ? "border-accent" : "border-transparent hover:border-line")}>
+                  className={"tap h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 [--tap-h:34px] [--tap-w:32px] " + (n === i ? "border-accent" : "border-transparent hover:border-line")}>
                   <span className="block h-full w-full rounded-full" style={{ background: r.finishes[0].hex, boxShadow: KS_RING }} />
                 </button>
               ))}
@@ -17275,7 +17405,7 @@ const KsLineup = ({ colour, onColour }) => {
           <span className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Granite in", id: "Granit dalam" })}</span>
           {KS_ORDER.map((c) => (
             <button key={c} type="button" onClick={() => onColour(c)} aria-pressed={colour === c} data-ks-lineup-colour={c}
-              className={"group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
+              className={"tap-y group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 [--tap-h:36px] " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
               <span className={"grid h-[24px] w-[24px] place-items-center rounded-full border transition-colors duration-300 " + (colour === c ? "border-accent" : "border-transparent group-hover:border-line")}>
                 <span className="h-[16px] w-[16px] rounded-full" style={{ background: F[c].hex, boxShadow: KS_RING }} />
               </span>
@@ -17284,9 +17414,9 @@ const KsLineup = ({ colour, onColour }) => {
           ))}
         </div>
       </div>
-      <div className="mt-10 grid gap-8 md:gap-10">
+      <div className="mt-10 grid grid-cols-1 gap-8 md:gap-10">
         {groups.map((g, k) => (
-          <div key={g.id} data-ks-lineup-group={g.id}>
+          <div key={g.id} className="min-w-0" data-ks-lineup-group={g.id}>
             <a href={g.route} className="group/s mb-3.5 inline-flex items-baseline gap-2 text-[10.5px] font-semibold uppercase tracking-[0.11em] text-mute transition-colors duration-300 hover:text-ink">
               <span className="text-accent">{String(k + 1).padStart(2, "0")}</span><span className="u">{x(g.title)}</span><span className="tabular-nums">· {g.list.length}</span>
             </a>
@@ -17803,9 +17933,9 @@ const KsCollection = () => {
       {/* featured: one model of each kind — chosen, not ranked (no sales figures are known) */}
       <section className="mx-auto max-w-site px-5 pb-[90px] pt-[90px] md:px-10 md:pb-[120px] md:pt-[120px]" data-ks-selected="">
         <KsHead title={x({ en: "Featured products", id: "Produk pilihan" })} line={x({ en: "One of each kind of sink.", id: "Satu dari setiap jenis bak cuci." })}>
-          <div className="flex flex-wrap gap-x-7 gap-y-2">
+          <div className="flex flex-wrap gap-x-7 gap-y-4 md:gap-y-2">
             {["granite", "stainless-steel"].map((k) => (
-              <a key={k} href={KS_KINDS[k].route} className="group/l inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink">
+              <a key={k} href={KS_KINDS[k].route} className="group/l inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink [--tap-h:34px]">
                 <span className="u">{x({ en: "View all", id: "Lihat semua" })} · {x(KS_KINDS[k].short)}</span>
                 <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1"><Icon name="arrow" size={13} /></span>
               </a>
@@ -17969,7 +18099,7 @@ const KsCategory = ({ kind }) => {
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
             <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-ks-count={results.length}>{count(results.length)}</p>
             <div className="ml-auto flex items-center gap-5">
-              <button ref={sheetOpener} onClick={() => setSheet(true)} className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-ks-sheet-open="">
+              <button ref={sheetOpener} onClick={() => setSheet(true)} className="tap-y flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-ks-sheet-open="">
                 <KsIcon name="filter" size={15} />{t("filter")}{chips.length ? <span className="text-accent">({chips.length})</span> : null}
               </button>
               <label className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
@@ -18060,7 +18190,7 @@ const KsCategory = ({ kind }) => {
         role="dialog" aria-modal="true" aria-label={t("filter")}>
         <div className="flex h-14 items-center justify-between border-b border-line px-5">
           <span className="flex items-center gap-2.5 text-[11.5px] font-medium uppercase tracking-[0.08em]"><KsIcon name="filter" size={15} />{t("filter")}</span>
-          <button ref={sheetClose} onClick={() => setSheet(false)} aria-label={t("close")}><Icon name="close" /></button>
+          <button ref={sheetClose} onClick={() => setSheet(false)} aria-label={t("close")} className="tap"><Icon name="close" /></button>
         </div>
         <div className="h-[calc(100%-132px)] overflow-y-auto px-5 pb-10 pt-7">{sidebar(true)}</div>
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-4 border-t border-line bg-bone px-5 py-4">
@@ -18251,7 +18381,7 @@ const KsProduct = ({ kind, model, colour }) => {
             {/* the virtual showroom, where it holds this sink: opened at it, in the colour chosen */}
             {showroomOf(row) ? (
               <a href={"#/virtual-showroom/" + row.slug} data-ks-showroom=""
-                className="inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors duration-300 hover:text-accent">
+                className="tap-y inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors duration-300 hover:text-accent">
                 <VsTurn size={15} /><span className="u">{x({ en: "Preview in the virtual showroom", id: "Pratinjau di showroom virtual" })}</span>
               </a>
             ) : null}
@@ -19105,7 +19235,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
       </a>
       <div className="flex flex-1 flex-col pt-5">
         <p className="text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.1em] text-mute md:text-[10.5px]" data-door-type="">{x(doorTypeLabel(g.m.type))}</p>
-        <a href={href} className="mt-2 block">
+        <a href={href} className="tap-y mt-2 block">
           <h3 className="text-[16px] font-medium leading-[1.25] tracking-[-0.01em] text-ink md:text-[18px]" data-door-name="">{g.name}</h3>
         </a>
         <p className="mt-1 text-[12.5px] leading-[1.55] text-mute md:text-[13px]" data-door-short="">{x(doorCardLine(g))}</p>
@@ -19113,7 +19243,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
         <div className="mt-3.5 flex min-h-[22px] flex-wrap items-center gap-2" role="group" aria-label={x({ en: "Colour", id: "Warna" })} data-door-dots="">
           {g.colours.map((cc) => (
             <button key={cc} type="button" onClick={() => setC(cc)} aria-pressed={cc === c} aria-label={x(DOOR_COLOUR[cc])} title={x(DOOR_COLOUR[cc])} data-door-colour-pick={cc}
-              className={"h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 " + (cc === c ? "border-accent" : "border-transparent hover:border-line")}>
+              className={"tap h-[24px] w-[24px] rounded-full border p-[3px] transition-colors duration-300 [--tap-h:34px] [--tap-w:32px] " + (cc === c ? "border-accent" : "border-transparent hover:border-line")}>
               <span className="block h-full w-full rounded-full" style={{ background: g.m.cols[cc], boxShadow: KS_RING }} />
             </button>
           ))}
@@ -19123,7 +19253,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
           <div className="mt-2.5 flex flex-wrap gap-1.5" role="group" aria-label={x({ en: "List colour", id: "Warna list" })}>
             {g.m.lists.map((ll) => (
               <button key={ll} type="button" onClick={() => setL(ll)} aria-pressed={ll === l} data-door-list-pick={ll}
-                className={"flex h-[26px] items-center gap-1.5 border px-2 text-[10px] font-semibold uppercase tracking-[0.08em] transition-colors duration-300 " + (ll === l ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>
+                className={"tap flex h-[26px] items-center gap-1.5 border px-2 text-[10px] font-semibold uppercase tracking-[0.08em] transition-colors duration-300 [--tap-h:34px] [--tap-w:32px] " + (ll === l ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>
                 <span className="h-[10px] w-[10px] shrink-0 rounded-full" style={{ background: DOOR_LIST[ll].hex, boxShadow: KS_RING }} />{x({ en: DOOR_LIST[ll].en, id: DOOR_LIST[ll].id })}
               </button>
             ))}
@@ -19137,7 +19267,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
             return (
               <button key={hid} type="button" onClick={() => hh && setH(hid)} disabled={!hh} aria-pressed={!!hh && hid === sel.id} data-door-hand-pick={hid}
                 aria-label={hh ? hid : hid + " — " + x({ en: "not offered in this colour", id: "tidak tersedia untuk warna ini" })}
-                className={"grid h-[24px] min-w-[28px] place-items-center border px-1.5 text-[10.5px] font-semibold transition-colors duration-300 disabled:cursor-default disabled:border-dashed disabled:opacity-40 " + (hh && hid === sel.id ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>{hid}</button>
+                className={"tap grid h-[24px] min-w-[28px] place-items-center border px-1.5 text-[10.5px] font-semibold transition-colors duration-300 [--tap-h:34px] [--tap-w:34px] disabled:cursor-default disabled:border-dashed disabled:opacity-40 " + (hh && hid === sel.id ? "border-accent text-ink" : "border-line text-mute hover:text-ink")}>{hid}</button>
             );
           })}
         </div>
@@ -19153,7 +19283,7 @@ const DoorCard = ({ g, prefer = null, preferList = null, preferHand = null, hit 
             </a>
             <a href={doorHref(row, sel.id)} data-door-shop-link=""
               aria-label={x({ en: "Product page in the shop", id: "Halaman produk di toko" }) + ": " + g.name + ", " + x(row.colour) + ", " + sel.id}
-              className="text-[11px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
+              className="tap-y text-[11px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-300 hover:text-ink">
               <span className="u">{x({ en: "Product page", id: "Halaman produk" })}</span>
             </a>
           </div>
@@ -19284,7 +19414,7 @@ const DoorLineup = ({ colour, onColour, onSection }) => {
           <span className="text-[11px] font-semibold uppercase tracking-[0.11em] text-mute">{x({ en: "Show in", id: "Tampilkan" })}</span>
           {DOOR_ORDER.map((c) => (
             <button key={c} type="button" onClick={() => onColour(c)} aria-pressed={colour === c} data-door-lineup-colour={c}
-              className={"group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
+              className={"tap-y group flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 [--tap-h:36px] " + (colour === c ? "text-ink" : "text-mute hover:text-ink")}>
               <span className={"grid h-[24px] w-[24px] place-items-center rounded-full border transition-colors duration-300 " + (colour === c ? "border-accent" : "border-transparent group-hover:border-line")}>
                 <span className="h-[16px] w-[16px] rounded-full" style={{ background: DOOR_1XX[c], boxShadow: KS_RING }} />
               </span>
@@ -19520,7 +19650,7 @@ const DoorsPage = () => {
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-line pb-5">
             <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-door-count={results.length}>{modelsWord(results.length)}</p>
             <div className="ml-auto flex items-center gap-5">
-              <button ref={sheetOpener} onClick={() => setSheet(true)} className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-door-sheet-open="">
+              <button ref={sheetOpener} onClick={() => setSheet(true)} className="tap-y flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden" data-door-sheet-open="">
                 <KsIcon name="filter" size={15} />{t("filter")}{chips.length ? <span className="text-accent">({chips.length})</span> : null}
               </button>
               <label className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">
@@ -19602,7 +19732,7 @@ const DoorsPage = () => {
         role="dialog" aria-modal="true" aria-label={t("filter")}>
         <div className="flex h-14 items-center justify-between border-b border-line px-5">
           <span className="flex items-center gap-2.5 text-[11.5px] font-medium uppercase tracking-[0.08em]"><KsIcon name="filter" size={15} />{t("filter")}</span>
-          <button ref={sheetClose} onClick={() => setSheet(false)} aria-label={t("close")}><Icon name="close" /></button>
+          <button ref={sheetClose} onClick={() => setSheet(false)} aria-label={t("close")} className="tap"><Icon name="close" /></button>
         </div>
         <div className="h-[calc(100%-132px)] overflow-y-auto px-5 pb-10 pt-7">{sidebar(true)}</div>
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-4 border-t border-line bg-bone px-5 py-4">
@@ -20180,36 +20310,35 @@ const DoorCover = ({ eager = false }) => {
   );
 };
 
-/* ── on the Catalogue page, after the two kitchen sink catalogues and set as they are: a word on the door catalogue,
-   the way to it on the website and its PDF in the other language; beside them its cover, to view (the PDF, here on the
-   website) or download, and a look inside it ── */
-const DcEntry = () => {
-  const { x, lang } = useStore();
-  const files = useKsFiles();
-  const L = lang === "id" ? "id" : "en", other = L === "id" ? "en" : "id";
+/* one of the catalogues (on the door catalogue's page, the two kitchen sink volumes): its cover, which opens it here on
+   the website, and its two ways — View and PDF (or, where the files are not beside the page, Read) */
+const ClBook = ({ doc, n, lang, files }) => {
+  const { x } = useStore();
+  const read = files === "missing";
+  const title = x(KS_DOCS[doc].title);
   return (
-    <section className="cl-dl cl-dc" aria-labelledby="cl-dc-title" data-cl-doors="">
-      <div className="cl-dl-in mx-auto max-w-site px-5 md:px-10">
-        <Reveal className="cl-text cascade">
-          <p className="cl-eyebrow">{x({ en: "Door catalogue · 2026", id: "Katalog pintu · 2026" })}</p>
-          <h2 id="cl-dc-title">{x({ en: "Every door, colour and product code, in one place.", id: "Setiap pintu, warna, dan kode produk dalam satu tempat." })}</h2>
-          <p className="cl-body-text">{x({ en: "One volume, the Wellup UPVC doors, with a page for every model: its colours as photographed, its specification as printed and every product code, R and L. In English and Indonesian.",
-                                              id: "Satu volume, pintu UPVC Wellup, dengan satu halaman untuk setiap model: warnanya sesuai foto, spesifikasinya sesuai daftar harga, dan setiap kode produknya, R dan L. Dalam bahasa Inggris dan Indonesia." })}</p>
-          <a href={DC_ROUTE} className="cl-link group/l" data-cl-doors-online="">
-            <span className="u">{x({ en: "Browse it online", id: "Lihat secara online" })}</span>
-            <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-          </a>
-          <p className="cl-also">
-            <span>{L === "id" ? "Also in English:" : "Juga dalam Bahasa Indonesia:"}</span>
-            <a {...ksDocLink("doors", other, files)} className="u" data-cl-doors-other="">{tx(KS_DOCS.doors.short, other)}</a>
-          </p>
-        </Reveal>
-        <Reveal still className="cl-books cascade">
-          <ClBook doc="doors" n={2} lang={L} files={files} />
-          <ClPeek doc="doors" lang={L} files={files} />
-        </Reveal>
-      </div>
-    </section>
+    <figure className="cl-book" data-cl-book={doc + "-" + lang}>
+      <a {...(read ? ksDocLink(doc, lang, files) : ksViewLink(doc, lang))} className="cl-cover"
+        aria-label={(read ? x({ en: "Read the catalogue", id: "Baca katalog" }) : x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })) + ": " + title}>
+        <Photo src={KS_IMG("pages/" + doc + "-" + lang + "-1.jpg")} alt={title} tone="#2B2926" className="no-dim" />
+      </a>
+      <figcaption className="cl-meta">
+        <span className="cl-name">{x(KS_DOCS[doc].name)}</span>
+        <span className="cl-acts">
+          {read ? (
+            <a {...ksDocLink(doc, lang, files)} className="cl-btn cl-solid"><KsIcon name="book" size={14} />{x({ en: "Read", id: "Baca" })}</a>
+          ) : (<>
+            <a {...ksViewLink(doc, lang)} className="cl-btn cl-solid" aria-label={x({ en: "View the catalogue on the website", id: "Lihat katalog di situs" })}>
+              {x({ en: "View", id: "Lihat" })}
+            </a>
+            <a {...ksDocLink(doc, lang, files)} className="cl-btn" aria-label={x({ en: "Download the PDF", id: "Unduh PDF" })}>
+              <KsIcon name="download" size={14} />PDF
+            </a>
+          </>)}
+        </span>
+        <span className="cl-facts">{"Volume 0" + (n + 1) + " · " + ksPdfLine(doc, lang, files)}</span>
+      </figcaption>
+    </figure>
   );
 };
 
@@ -20380,7 +20509,7 @@ const DoorCatalogue = ({ section = null }) => {
                   <span className="col-start-1 row-start-1 font-serif-lx text-[30px] font-light leading-none text-accent md:text-[40px]" aria-hidden="true">{doorSectionNo(s)}</span>
                   <div className="col-start-2 row-start-1 min-w-0">
                     <h3 className="font-serif-lx text-[21px] font-light leading-[1.2] md:text-[25px]">
-                      <button type="button" onClick={() => toSection(s.id)} className="u text-left" data-dc-contents-go={s.id}>{x(s.title)}</button>
+                      <button type="button" onClick={() => toSection(s.id)} className="tap-y u text-left" data-dc-contents-go={s.id}>{x(s.title)}</button>
                     </h3>
                     <p className="mt-2 max-w-[58ch] text-[13.5px] leading-[1.65] text-mute">{x(s.line)}</p>
                   </div>
@@ -20432,7 +20561,7 @@ const DoorCatalogue = ({ section = null }) => {
             <div className="ml-auto flex items-center gap-6">
               <p className="whitespace-nowrap text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute" aria-live="polite" data-dc-count={results.length}>{countLine}</p>
               <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="dc-filter-panel" data-dc-filter-toggle=""
-                className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden">
+                className="tap-y flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink lg:hidden">
                 <KsIcon name="filter" size={15} />{t("filter")}{changed ? <span className="text-accent">({changed})</span> : null}
               </button>
               {changed ? <button type="button" onClick={clearAll} className="u whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.08em] text-mute hover:text-ink" data-dc-clear="">{t("clearAll")}</button> : null}
@@ -20544,8 +20673,8 @@ const DoorCatalogue = ({ section = null }) => {
             <h2 id="dc-also-title" className="mt-5 text-[30px] leading-[1.14] md:text-[40px]">{x({ en: "Kitchen sink catalogues", id: "Katalog bak cuci dapur" })}</h2>
             <p className="mt-5 max-w-[44ch] text-[15px] leading-[1.8] text-mute">{x({ en: "Two volumes, granite and stainless steel, with a page for every sink: its listed specifications and a technical drawing.",
                                                                                           id: "Dua volume, granit dan stainless steel, dengan satu halaman untuk setiap bak cuci: spesifikasi yang tercantum dan gambar teknisnya." })}</p>
-            <a href="#/catalogue" className="group/l mt-8 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink" data-dc-all="">
-              <span className="u">{x({ en: "All catalogues", id: "Semua katalog" })}</span>
+            <a href="#/shop/kitchen-sinks" className="group/l mt-8 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink" data-dc-all="">
+              <span className="u">{x({ en: "Browse them online", id: "Lihat secara online" })}</span>
               <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
             </a>
           </Reveal>

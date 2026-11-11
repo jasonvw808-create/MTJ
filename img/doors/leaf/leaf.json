@@ -230,8 +230,8 @@
  "pt-2601-white-white-list": {
   "edge": "#DEDDD9",
   "frame": "#DFDEDA",
-  "aspect": 0.396,
-  "px": 1242
+  "aspect": 0.37,
+  "px": 1330
  },
  "pt-2602-brown-black-list": {
   "edge": "#922E19",
@@ -246,10 +246,10 @@
   "px": 1333
  },
  "pt-2602-dark-grey-black-list": {
-  "edge": "#373B45",
+  "edge": "#353943",
   "frame": "#40444F",
-  "aspect": 0.417,
-  "px": 1332
+  "aspect": 0.387,
+  "px": 1432
  },
  "pt-2602-dark-grey-white-list": {
   "edge": "#424248",
@@ -272,14 +272,14 @@
  "pt-270-brown": {
   "edge": "#681E0C",
   "frame": "#7C2A18",
-  "aspect": 0.415,
-  "px": 1323
+  "aspect": 0.388,
+  "px": 1415
  },
  "pt-270-dark-grey": {
   "edge": "#454646",
   "frame": "#545555",
-  "aspect": 0.419,
-  "px": 1330
+  "aspect": 0.396,
+  "px": 1408
  },
  "pt-270-white": {
   "edge": "#E2E1DD",
@@ -326,8 +326,8 @@
  "pt-709-brown": {
   "edge": "#823227",
   "frame": "#A63F2B",
-  "aspect": 0.322,
-  "px": 698
+  "aspect": 0.305,
+  "px": 738
  },
  "pt-709-dark-grey": {
   "edge": "#4B4B4D",

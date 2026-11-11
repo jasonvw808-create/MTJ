@@ -2702,6 +2702,9 @@
   const LEAF_W = 0.70, LEAF_H = 2.0, LEAF_T = 0.04, LEAF_Y = 0.008, KW = 0.065, KD = 0.10, GAP = 0.004;
   /* the leaf's face: a little behind the frame's, as a door sits in its frame */
   const XF = XB + KD - 0.012;
+  /* the door's photograph read a little finer than the GPU's own choice of mipmap (in mip levels): at the sizes the
+     stage shows the door that choice is a level slightly smaller than the door on the screen, and looks soft */
+  const DOOR_BIAS = -0.8;
   /* the warm white of the strips and the spotlight (about 3000 K) */
   const W3K = [1.0, 0.86, 0.72];
   /* the hall's lens: about 38° across the shorter side of the view, so a door seen from in front is not stretched */
@@ -5241,6 +5244,7 @@ uniform float uExposure, uLift, uDecode, uAmb, uTri, uEnv, uStudio, uBounce;
 uniform vec4 uFlute;  // reeds: width, depth ÷ half-width, along x (1) or z (0), on
 uniform vec4 uFoc;    // the Door Hall's focus: its door's centre, and how strongly the room falls away from it
 uniform vec3 uFront;  // the way the Door Hall's door faces
+uniform float uDoorBias;  // how much finer a copy of the door's photograph is read than the GPU would choose
 uniform vec2 uViewport;
 uniform int uNL, uNW, uMode;
 uniform vec4 uLP[16], uLD[16], uLC[16];
@@ -5391,7 +5395,7 @@ void main() {
     tx = texture(uTex, p.zy) * w.x + texture(uTex, p.xz) * w.y + texture(uTex, p.xy) * w.z;
   } else
 #endif
-  if (uMat2.x > 0.5) tx = texture(uTex, vUv);
+  if (uMat2.x > 0.5) tx = uMode == 3 ? texture(uTex, vUv, uDoorBias) : texture(uTex, vUv);
   if (!gl_FrontFacing) N = -N;
   /* A fluted wall: half-round reeds side by side, drawn by turning the
      surface's normal across each one, with a little shade where two meet.
@@ -5912,7 +5916,7 @@ void main() {}`;
       gl.uniform3fv(U("uSky"), v.sky); gl.uniform3fv(U("uGround"), v.ground); gl.uniform3fv(U("uWarm"), v.warm);
       gl.uniform1f(U("uExposure"), v.exposure); gl.uniform1f(U("uAmb"), v.amb); gl.uniform1f(U("uEnv"), 1); gl.uniform1f(U("uStudio"), 0);
       gl.uniform2f(U("uViewport"), v.width, v.height);
-      gl.uniform3f(U("uFront"), 1, 0, 0);
+      gl.uniform3f(U("uFront"), 1, 0, 0); gl.uniform1f(U("uDoorBias"), DOOR_BIAS);
       gl.uniform1i(U("uTex"), 0); gl.uniform1i(U("uRefl"), 1);
       if (prog !== P.lit) return;
       bindShadows(U);
@@ -15354,7 +15358,7 @@ const DOOR_LEAF = {
   "pt-119-brown": ["#731C12", "#9A251F"], "pt-119-dark-grey": ["#474747", "#60605F"], "pt-119-white": ["#E4E2E1", "#E2E0DF"],
   "pt-2601-brown-black-list": ["#96321B", "#AA381D"], "pt-2601-brown-white-list": ["#922A17", "#AE351B"], "pt-2601-dark-grey-black-list": ["#4E5259", "#52565F"],
   "pt-2601-dark-grey-white-list": ["#4E525A", "#51555E"], "pt-2601-white-black-list": ["#E5E4E0", "#E6E5E1"], "pt-2601-white-white-list": ["#DEDDD9", "#DFDEDA"],
-  "pt-2602-brown-black-list": ["#922E19", "#B03C20"], "pt-2602-brown-white-list": ["#7A2211", "#912B16"], "pt-2602-dark-grey-black-list": ["#373B45", "#40444F"],
+  "pt-2602-brown-black-list": ["#922E19", "#B03C20"], "pt-2602-brown-white-list": ["#7A2211", "#912B16"], "pt-2602-dark-grey-black-list": ["#353943", "#40444F"],
   "pt-2602-dark-grey-white-list": ["#424248", "#47474F"], "pt-2602-white-black-list": ["#E8E6E2", "#E8E5E1"], "pt-2602-white-white-list": ["#DCDBD8", "#E0DFDD"],
   "pt-270-brown": ["#681E0C", "#7C2A18"], "pt-270-dark-grey": ["#454646", "#545555"], "pt-270-white": ["#E2E1DD", "#E9E8E4"],
   "pt-290-brown": ["#7B1B06", "#9A2C14"], "pt-290-dark-grey": ["#4D4E52", "#5D5E61"], "pt-290-white": ["#E6E4E2", "#EBEAE8"],
@@ -15367,7 +15371,8 @@ const doorLeafOf = (r) => (r && r.photos && DOOR_LEAF[r.photos[0]]) || ["#8A847C
 /* (PT 109, 409, 709, 809 and 909 have only the price list's own small pictures: their leaves are made from them enlarged
    four times — catalogues/source/tools/door_upscale.py — and the Door Hall says so) */
 const doorX4 = (r) => !!(r && r.photos && /^pt-(109|409|709|809|909)-/.test(r.photos[0]));
-const doorLeafImg = (r, small) => (r && r.photos && r.photos[0] ? "img/doors/leaf/" + (small ? "t/" : "") + r.photos[0] + ".webp" : "");
+const DOOR_LEAF_V = "4";
+const doorLeafImg = (r, small) => (r && r.photos && r.photos[0] ? "img/doors/leaf/" + (small ? "t/" : "") + r.photos[0] + ".webp?v=" + DOOR_LEAF_V : "");
 /* what the room is told about the door: its leaf, the colours of its edges and its frame, and its name */
 const doorPiece = (r, x) => { const k = doorLeafOf(r); return { image: doorLeafImg(r), edge: k[0], frame: k[1], title: r.model, sub: x(r.colour) }; };
 /* the opening asked for, where the door is offered in it — else the one it is offered in */

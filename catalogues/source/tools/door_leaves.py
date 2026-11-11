@@ -78,12 +78,19 @@ def measure(a):
     y0 = first_off_plate(rowp, plate, range(0, h // 4))
     yend = first_off_plate(rowp, plate, range(h - 1, 3 * h // 4, -1)) + 1
     H = yend - y0
+    # the foot. A rendered door stands on its shadow: a dark line a little above the plate (2-3% of the door's height,
+    # the floor's own soft shadow below it), and the leaf ends where the profile has fallen halfway from the door's own
+    # tone to it. A photographed one (PT 2601, 2602) stands on the plate itself: if the darkest line near the bottom is
+    # well above the plate, it is a panel's edge, not the foot, and the door ends where the plate begins.
     ymin = int(round(deepest(rowp, max(y0, yend - int(H * 0.07)), yend)))
-    door = float(np.median(rowp[max(y0, ymin - int(H * 0.05)):max(y0 + 1, ymin - int(H * 0.012))]))
-    half = (door + rowp[ymin]) / 2
-    yb = ymin
-    while yb > ymin - int(H * 0.03) and ((rowp[yb] < half) if door > rowp[ymin] else (rowp[yb] > half)):
-        yb -= 1
+    if yend - ymin > H * 0.045:
+        yb = yend - 1
+    else:
+        door = float(np.median(rowp[max(y0, ymin - int(H * 0.05)):max(y0 + 1, ymin - int(H * 0.012))]))
+        half = (door + rowp[ymin]) / 2
+        yb = ymin
+        while yb > ymin - int(H * 0.03) and ((rowp[yb] < half) if door > rowp[ymin] else (rowp[yb] > half)):
+            yb -= 1
     out = {"W": W, "y0": y0, "yb": float(yb), "H": H, "bands": {}}
     for k, (r0, r1) in {"hi": (y0 + H * 0.12, y0 + H * 0.36), "lo": (y0 + H * 0.60, y0 + H * 0.86)}.items():
         p = L[int(r0):int(r1), :].mean(axis=0)

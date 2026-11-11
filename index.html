@@ -965,31 +965,113 @@
   .vs-door-note p + p { margin-top: 8px; }
   .vs-dcard .vs-card-img { aspect-ratio: 4 / 5; }
 
+  /* ── the Wellup Door Hall, in the room: its rail of doors, the arrows by the portal, its panel ──
+     The door is the room's one bright thing; everything here is small, dark and quiet round it. */
+  .vs-stage { --vs-dpanel: 360px; --vs-brass: #C9A46A; }
+  /* the rail: its 19 models in a row, numbered, each in the colour (and list) chosen; the one on the stage in brass */
+  .vs-drail { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); max-width: calc(100% - 44px);
+    display: flex; gap: 5px; padding: 7px 9px 5px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+    background: rgb(16 15 13 / 0.58); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgb(var(--ink) / 0.1);
+    visibility: hidden; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--vs-ease), visibility 0s linear 0.5s, left 0.6s var(--vs-ease); }
+  .vs-drail::-webkit-scrollbar { display: none; }
+  .vs-stage[data-doorhall="true"] .vs-drail { visibility: visible; opacity: 1; pointer-events: auto; transition: opacity 0.5s var(--vs-ease), visibility 0s, left 0.6s var(--vs-ease); }
+  .vs-drail-item { flex: none; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 24px; }
+  .vs-drail-img { position: relative; display: block; width: 20px; height: 57px; background: #0c0b0a; outline: 1px solid transparent; outline-offset: 2px;
+    opacity: 0.62; transition: opacity 0.3s, outline-color 0.3s; }
+  .vs-drail-img img { display: block; width: 100%; height: 100%; object-fit: cover; -webkit-user-select: none; user-select: none; }
+  .vs-drail-no { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; line-height: 1; color: rgb(var(--ink) / 0.5); transition: color 0.3s; }
+  .vs-drail-item:hover .vs-drail-img, .vs-drail-item:focus-visible .vs-drail-img { opacity: 1; }
+  .vs-drail-item:hover .vs-drail-no { color: rgb(var(--ink) / 0.85); }
+  .vs-drail-item:focus-visible { outline: none; }
+  .vs-drail-item:focus-visible .vs-drail-img { outline-color: rgb(var(--ink) / 0.7); }
+  .vs-drail-item[aria-pressed="true"] .vs-drail-img { opacity: 1; outline-color: var(--vs-brass); }
+  .vs-drail-item[aria-pressed="true"] .vs-drail-no { color: var(--vs-brass); }
+  .vs-drail[data-busy="true"] .vs-drail-item[aria-pressed="true"] .vs-drail-img { animation: vs-dpulse 1s ease-in-out infinite alternate; }
+  @keyframes vs-dpulse { from { opacity: 1; } to { opacity: 0.55; } }
+  /* in the hall the rooms' chips stand in a column at the left, clear of the rail and of the door; the prompt to look
+     closer is not shown there (the door is always in front of you: E, or a touch on it, opens its panel) */
+  .vs-stage[data-doorhall="true"] .vs-bottom { bottom: 16px; }
+  .vs-stage[data-doorhall="true"] .vs-prompt { display: none; }
+  .vs-stage[data-doorhall="true"] .vs-hint { bottom: auto; top: 24px; }
+  @media (min-width: 768px) { .vs-stage[data-doorhall="true"] .vs-zones { flex-direction: column; align-items: flex-start; } }
+  /* beside the panel, the rail keeps to what the panel leaves (and the panel lets the room be used round it) */
+  @media (min-width: 768px) {
+    .vs-stage[data-doorhall="true"][data-panel="open"] .vs-drail { left: calc((100% - var(--vs-dpanel)) / 2); max-width: calc(100% - var(--vs-dpanel) - 44px); }
+    .vs-stage[data-doorhall="true"] .vs-scrim { display: none; }
+    .vs-stage[data-doorhall="true"][data-panel="open"] .vs-drawer { right: calc(var(--vs-dpanel) + 22px); }
+  }
+  /* the arrows either side of the portal: moved by the room, as the markers are */
+  .vs-darrows { position: absolute; inset: 0; z-index: 4; overflow: hidden; pointer-events: none; display: none; }
+  .vs-stage[data-immersive="true"][data-inspect="false"][data-doorhall="true"] .vs-darrows { display: block; }
+  .vs-stage[data-immersive="true"][data-inspect="false"][data-doorhall="true"][data-drawer="open"] .vs-darrows { display: none; }
+  .vs-darrow { position: absolute; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: grid; place-items: center;
+    border-radius: 50%; border: 1px solid rgb(var(--ink) / 0.28); background: rgb(16 15 13 / 0.5); color: rgb(var(--ink) / 0.85);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); pointer-events: auto; opacity: 0; visibility: hidden;
+    transition: opacity 0.35s var(--vs-ease), visibility 0s linear 0.35s, border-color 0.3s, color 0.3s, background-color 0.3s; }
+  .vs-darrow[data-on="true"] { opacity: 1; visibility: visible; transition: opacity 0.35s var(--vs-ease), visibility 0s, border-color 0.3s, color 0.3s, background-color 0.3s; }
+  .vs-darrow:hover, .vs-darrow:focus-visible { border-color: var(--vs-brass); color: var(--vs-brass); background: rgb(16 15 13 / 0.7); outline: none; }
+  /* the door's panel: narrower, darker, see-through — it supports the door, it does not compete with it (the door is
+     on the stage, so the panel shows no photograph of it) */
+  .vs-panel[data-door="true"] { width: min(var(--vs-dpanel), 100%); background: rgb(16 15 13 / 0.8); border-left-color: rgb(var(--ink) / 0.08); }
+  .vs-panel[data-door="true"] .vs-pbar { height: 52px; padding: 0 10px 0 22px; border-bottom-color: rgb(var(--ink) / 0.08); }
+  .vs-panel[data-door="true"] .vs-pscroll { padding: 18px 22px 26px; }
+  .vs-panel[data-door="true"] .vs-media, .vs-panel[data-door="true"] .vs-thumbs { display: none; }
+  .vs-panel[data-door="true"] .vs-name { margin-top: 0; font-size: 26px; }
+  .vs-panel[data-door="true"] .vs-text { margin-top: 8px; font-size: 13.5px; line-height: 1.6; }
+  .vs-panel[data-door="true"] .vs-price { margin-top: 12px; font-size: 18px; }
+  .vs-panel[data-door="true"] .vs-buy { margin-top: 16px; gap: 8px; }
+  .vs-panel[data-door="true"] .vs-cta, .vs-panel[data-door="true"] .vs-cta-alt { height: 44px; }
+  .vs-panel[data-door="true"] .vs-block { margin-top: 18px; padding-top: 14px; border-top-color: rgb(var(--ink) / 0.08); }
+  .vs-panel[data-door="true"] .vs-seg button { height: 38px; }
+  .vs-panel[data-door="true"] .vs-specs { margin-top: 18px; border-top-color: rgb(var(--ink) / 0.08); }
+  .vs-panel[data-door="true"] .vs-specs div { padding: 8px 0; font-size: 12.5px; border-bottom-color: rgb(var(--ink) / 0.06); }
+  @media (max-width: 767px) {
+    .vs-panel[data-door="true"] { width: 100%; max-height: 46%; border-top-color: rgb(var(--ink) / 0.08); }
+    .vs-panel[data-door="true"] .vs-pbar { height: 48px; padding: 0 6px 0 18px; }
+    .vs-panel[data-door="true"] .vs-pscroll { padding: 14px 18px 22px; }
+    .vs-panel[data-door="true"] .vs-name { font-size: 22px; }
+    /* on a phone: the rail beside the stick, swiped sideways; put away while the panel is up */
+    .vs-drail { left: 14px; right: 14px; bottom: 16px; transform: none; max-width: none; }
+    .vs-stage[data-touch="true"] .vs-drail { left: 140px; }
+    .vs-stage[data-doorhall="true"][data-panel="open"] .vs-drail { visibility: hidden; opacity: 0; pointer-events: none; }
+    .vs-stage[data-doorhall="true"][data-touch="false"] .vs-bottom { bottom: 108px; }
+  }
+
   /* ── the Wellup Door Hall on the page (#vs-doors) ──
-     The door's photograph, cut to the door and its frame, in a doorway drawn round it in the room's own palette: an end
-     wall of honed travertine lit from in front by two warm display lights and turning into shadow at either side, a line
-     of warm light where it meets the ceiling, the cut lined in dark bronze, and the dark stone floor mirroring the foot
-     of the door. Set on the doors' warm charcoal (.dcat), in either theme. */
+     The room's stage, drawn: in a dark room, a wall of warm greige limewash lit from above, a portal in it whose edges
+     glow warm, and in it the door — its leaf cut from its photograph (img/doors/leaf), at the listed 200 x 70 cm, in a
+     frame of its own colour behind a fine dark gap — on a dark terrazzo floor that softly mirrors it, its name on the
+     floor before it. Set on the doors' warm charcoal (.dcat), in either theme. */
   .vsd-scene, .vsd-photo { position: relative; overflow: hidden; aspect-ratio: 4 / 5; }
   @media (min-width: 1024px) { .vsd-scene, .vsd-photo { aspect-ratio: 1 / 1.04; } }
-  .vsd-scene { isolation: isolate; background: #6c6051; }
-  .vsd-wall { position: absolute; left: 0; right: 0; top: 0; bottom: 12%;
+  .vsd-scene { isolation: isolate; background: #141210; --fl: 15%; --dh: 56%; }
+  .vsd-wall { position: absolute; left: 0; right: 0; top: 0; bottom: var(--fl);
     background:
-      radial-gradient(30% 30% at 41% 3%, rgb(255 232 200 / 0.32), transparent 72%),
-      radial-gradient(30% 30% at 59% 3%, rgb(255 232 200 / 0.32), transparent 72%),
-      radial-gradient(58% 48% at 50% 64%, rgb(255 238 214 / 0.14), transparent 74%),
-      linear-gradient(90deg, rgb(20 18 16 / 0.72), rgb(20 18 16 / 0) 22%, rgb(20 18 16 / 0) 78%, rgb(20 18 16 / 0.72)),
-      repeating-linear-gradient(180deg, rgb(255 246 232 / 0.045) 0 1px, transparent 1px 12px, rgb(70 56 40 / 0.06) 12px 14px, transparent 14px 33px),
-      linear-gradient(180deg, #a09380 0%, #8a7d6a 58%, #75695a 100%); }
-  .vsd-slot { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: rgb(255 216 164 / 0.9); box-shadow: 0 0 26px 8px rgb(255 198 134 / 0.26); }
-  .vsd-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 12%; background: linear-gradient(180deg, #2b2824, #161412); }
-  .vsd-floor::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: linear-gradient(180deg, rgb(0 0 0 / 0.45), transparent); }
-  .vsd-way, .vsd-mirror { position: absolute; left: 50%; height: 68%; aspect-ratio: var(--a, 0.45); }
-  .vsd-way { bottom: 12%; transform: translateX(-50%); box-shadow: 0 0 0 3px #8a6846, 0 0 0 4px rgb(0 0 0 / 0.35), 0 22px 44px -10px rgb(0 0 0 / 0.55); }
-  .vsd-mirror { top: 88%; transform: translateX(-50%) scaleY(-1); opacity: 0.17; pointer-events: none;
-    -webkit-mask-image: linear-gradient(to top, #000, transparent 26%); mask-image: linear-gradient(to top, #000, transparent 26%); }
-  .vsd-door { position: absolute; inset: 0; overflow: hidden; background: #F4F3F0; }
-  .vsd-door img { position: absolute; max-width: none; -webkit-user-select: none; user-select: none; }
+      radial-gradient(34% 58% at 50% 30%, rgb(179 168 152 / 0.92), rgb(150 138 120 / 0.55) 46%, rgb(60 52 44 / 0) 82%),
+      radial-gradient(70% 90% at 50% 40%, #3a332c, #1d1a16 78%); }
+  .vsd-floor { position: absolute; left: 0; right: 0; bottom: 0; height: var(--fl);
+    background:
+      radial-gradient(40% 70% at 50% 0%, rgb(255 222 180 / 0.1), transparent 70%),
+      radial-gradient(circle at 23% 31%, rgb(78 72 64 / 0.32) 0 0.8px, transparent 1.3px) 0 0 / 13px 11px,
+      radial-gradient(circle at 67% 58%, rgb(78 72 64 / 0.22) 0 0.7px, transparent 1.2px) 3px 5px / 17px 14px,
+      linear-gradient(180deg, #2b2723, #171412); }
+  .vsd-portal { position: absolute; left: 50%; bottom: var(--fl); height: calc(var(--dh) * 1.2); aspect-ratio: 1 / 2; transform: translateX(-50%);
+    background: linear-gradient(180deg, #8f8270, #6f6455);
+    box-shadow: inset 0 0 0 1.5px rgb(255 228 186 / 0.95), inset 0 0 22px 7px rgb(255 206 152 / 0.62), inset 0 0 70px 4px rgb(255 206 152 / 0.18),
+      0 0 0 1px rgb(0 0 0 / 0.25); }
+  .vsd-frame { position: absolute; left: 50%; bottom: var(--fl); height: calc(var(--dh) * 1.0385); aspect-ratio: 0.4035; transform: translateX(-50%);
+    background: var(--frame, #8A847C); box-shadow: 0 10px 26px -8px rgb(0 0 0 / 0.55); }
+  .vsd-door { position: absolute; left: 50%; bottom: calc(var(--fl) + var(--dh) * 0.004); height: var(--dh); aspect-ratio: 0.35; transform: translateX(-50%);
+    overflow: hidden; background: var(--edge, #8A847C); box-shadow: 0 0 0 1px #0d0b09; }
+  .vsd-door img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; -webkit-user-select: none; user-select: none; }
+  .vsd-mirror { position: absolute; left: 50%; top: calc(100% - var(--fl)); height: var(--dh); aspect-ratio: 0.35; transform: translateX(-50%) scaleY(-1);
+    opacity: 0.2; pointer-events: none; filter: blur(1.5px);
+    -webkit-mask-image: linear-gradient(to top, #000, transparent 22%); mask-image: linear-gradient(to top, #000, transparent 22%); }
+  .vsd-mirror img { display: block; width: 100%; height: 100%; }
+  .vsd-plate { position: absolute; left: 50%; bottom: calc(var(--fl) * 0.36); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center;
+    gap: 2px; padding: 4px 12px 5px; background: #151311; border: 1px solid rgb(201 164 106 / 0.7); white-space: nowrap; }
+  .vsd-plate b { font-size: 9.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #EEE8DC; }
+  .vsd-plate span { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #C9A46A; }
   .vsd-badge { position: absolute; left: 14px; top: 14px; padding: 7px 11px; border: 1px solid rgb(var(--accent) / 0.6); background: rgb(23 21 19 / 0.76);
     font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--ink)); }
   .vsd-views { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -2002,6 +2084,39 @@
       return paint(S, S, (u, v) => { const s = n(u * 4, v * 256); const mm = fbm(m, u * 4, v * 4, 3);
         return mix3(a, b, s * 0.6 + mm * 0.4); }); },
     /* stoneware, for vases and bowls: a matt off-white glaze, flecked */
+    /* the Door Hall's walls: warm greige limewash (#B3A898 on the whole) — soft clouds of a lighter and a darker wash,
+       laid on with a brush, and a fine grain */
+    limewash: (S) => { const n = makeNoise(231, 6), m = makeNoise(232, 24, 12), g = makeNoise(233, 256);
+      const a = hex("#AA9F8F"), b = hex("#BCB1A1");
+      return paint(S, S, (u, v) => {
+        const t = 0.5 + (smooth(0.22, 0.78, fbm(n, u * 6, v * 6, 4)) - 0.5) * 0.85 + (m(u * 24, v * 12) - 0.5) * 0.14;
+        const gr = g(u * 256, v * 256) - 0.5;
+        return mix3(a, b, clamp(t, 0, 1)).map((x) => x * (1 + gr * 0.035)); }); },
+    /* the portal's back (1.2 x 2.4 m, u across from the left as you face it, v down from the top) and its reveals (u
+       from the back corner forwards): the same limewash, a little darker, and the hidden strips' warm glow on it —
+       bright at the corner where the strip is, falling away over a few centimetres and then softly over a hand's
+       breadth */
+    portalBack: (S) => { const n = makeNoise(231, 6), g = makeNoise(233, 256), w = Math.max(64, S >> 1), hpx = Math.max(128, S);
+      const a = hex("#AA9F8F"), b = hex("#BCB1A1"), warm = [255, 206, 152];
+      const glow = (d) => 0.95 * Math.exp(-d / 0.03) + 0.5 * Math.exp(-d / 0.14) + 0.12 * Math.exp(-d / 0.45);
+      return paint(w, hpx, (u, v) => {
+        const t = 0.5 + (smooth(0.22, 0.78, fbm(n, u * 3, v * 6, 4)) - 0.5) * 0.8, gr = g(u * 128, v * 256) - 0.5;
+        const k = Math.min(1, Math.max(glow(u * 1.2), glow((1 - u) * 1.2), glow(v * 2.4)));
+        return mix3(mix3(a, b, t).map((x) => x * 0.62 * (1 + gr * 0.03)), warm, k * 0.85); }); },
+    portalReveal: (S) => { const warm = [255, 206, 152], a = hex("#B3A898");
+      return paint(64, 8, (u) => { const d = u * 0.15, k = Math.min(1, 0.9 * Math.exp(-d / 0.035) + 0.45 * Math.exp(-d / 0.12));
+        return mix3(a.map((x) => x * 0.62), warm, k * 0.85); }); },
+    /* its floor: dark terrazzo — a dark matrix, chips of stone in it from #4E4840 down to #1A1714 at two sizes, and a
+       faint sparkle */
+    terrazzo: (S) => { const big = makeNoise(241, 40), mid = makeNoise(242, 96), fine = makeNoise(243, 256), tone = makeNoise(244, 6), pk = makeNoise(245, 64);
+      const m0 = hex("#24201C"), m1 = hex("#2D2824"), hiC = hex("#4E4840"), loC = hex("#1A1714");
+      return paint(S, S, (u, v) => {
+        let c = mix3(m0, m1, tone(u * 6, v * 6));
+        const b1 = big(u * 40, v * 40), b2 = mid(u * 96, v * 96);
+        if (b1 > 0.76) c = mix3(loC, hiC, pk(u * 64 + 7, v * 64 + 3));
+        else if (b2 > 0.8) c = mix3(loC, hiC, 0.25 + pk(u * 64 + 19, v * 64 + 11) * 0.75);
+        const f = fine(u * 256, v * 256);
+        return c.map((x) => x * (0.93 + f * 0.14)); }); },
     stoneware: (S) => { const n = makeNoise(201, 8), g = makeNoise(202, 256);
       const a = hex("#c9c1b2"), b = hex("#d6cfc2"), fl = hex("#6e665a");
       return paint(S, S, (u, v) => { const m = fbm(n, u * 8, v * 8, 3), gr = g(u * 256, v * 256);
@@ -2471,19 +2586,30 @@
      what the walk needs to find it, highlight it and stand in front of it. */
   const buildExhibit = (b, room, pl, i, o = {}) => {
     if (pl.kind === "doorway") {
-      /* the Door Hall's installation: the door chosen — its photograph standing in the doorway — and its nameplate */
+      /* the Door Hall's installation: the door chosen, standing in its frame in the portal. The leaf a 4 cm box with the
+         door's photograph on its face, its edges in the leaf's own colour; the frame round it in the frame's; between
+         them a dark 4 mm gap, the rebate behind it — all drawn as photographed (unlit, outside the filmic curve). Its
+         name on the floor before it. */
       const d = room.hall && room.hall.door;
       if (!d) return null;
       b.zone = HALL;
-      const r = [0, 0, -1], u = [0, 1, 0], n = [1, 0, 0], lw = 0.44, lh = lw / 5.33;
-      b.panel("print:" + i, d.c, r, u, d.w, d.h);
-      b.slab("dark", add(d.plaque, [0.008, 0, 0]), r, u, lw + 0.016, lh + 0.012, 0.008);
-      b.panel("label:" + i, add(d.plaque, [0.0092, 0, 0]), r, u, lw, lh);
+      const xf = d.x, xb = xf - LEAF_T, y0 = LEAF_Y, y1 = LEAF_Y + LEAF_H, zl = DZC + LEAF_W / 2, zr = DZC - LEAF_W / 2;
+      b.panel("doorleaf:" + i, [xf + 0.0004, (y0 + y1) / 2, DZC], [0, 0, -1], [0, 1, 0], LEAF_W, LEAF_H);
+      b.box("dooredge:" + i, xb, y0, zr, xf, y1, zl, { skip: "+x-x-y", k: 2.5 });
+      /* the gap and the rebate behind it: dark, a little larger than the leaf */
+      b.panel("dark", [xb - 0.006, (y0 + y1 + GAP) / 2, DZC], [0, 0, -1], [0, 1, 0], LEAF_W + 2 * GAP + 0.012, LEAF_H + GAP + 0.012);
+      /* the frame: two jambs to the floor and the head across them, against the portal's back */
+      const kx0 = XB, kx1 = XB + KD, ky1 = y1 + GAP, kyt = ky1 + KW;
+      b.box("doorframe:" + i, kx0, 0, zl + GAP, kx1, kyt, zl + GAP + KW, { skip: "-x-y", k: 2.5 });
+      b.box("doorframe:" + i, kx0, 0, zr - GAP - KW, kx1, kyt, zr - GAP, { skip: "-x-y", k: 2.5 });
+      b.box("doorframe:" + i, kx0, ky1, zr - GAP, kx1, kyt, zl + GAP, { skip: "-x-z+z", k: 2.5, off: [0.37, 0.11] });
+      /* its name on the floor, centred before it: a dark plaque, laid in */
+      b.panel("label:" + i, [DX1 + 0.3, 0.0025, DZC], [0, 0, -1], [-1, 0, 0], 0.84, 0.2);
       b.zone = 0;
-      const c = d.c.slice();
-      return { index: i, place: pl, c, n, w: d.w, h: d.h, light: d.light, sinkLight: -1, door: true,
-        pick: { c, r, u, n, hw: d.w / 2 + 0.05, up: d.h / 2 + 0.05, down: d.h / 2 },
-        view: { pos: [c[0] + 2.7, EYE, c[2]], at: [c[0], 1.1, c[2]] }, zone: HALL, anchor: [c[0] + 0.06, d.h - 0.32, c[2]] };
+      const c = [xf, y0 + LEAF_H / 2, DZC];
+      return { index: i, place: pl, c, n: [1, 0, 0], w: LEAF_W, h: LEAF_H, light: d.spot, sinkLight: -1, door: true,
+        pick: { c, r: [0, 0, -1], u: [0, 1, 0], n: [1, 0, 0], hw: LEAF_W / 2 + GAP + KW, up: LEAF_H / 2 + GAP + KW, down: LEAF_H / 2 },
+        view: { pos: [xf + 4.0, EYE, DZC], at: [xf, 1.08, DZC] }, zone: HALL, anchor: [xf + 0.03, 2.26, DZC] };
     }
     if (pl.kind === "station") {
       /* a kitchen's installation: its nameplate on the island's cabinet, below the stone, read as you walk up; and
@@ -2548,25 +2674,38 @@
   const inWing = (x) => x > W + 0.12;
 
   /* ── the Wellup Door Hall ─────────────────────────────────────────────────
-     A room of its own, through an opening in the lobby's left-hand wall — as the stainless room is through its right.
+     A room of its own, through an opening in the lobby's left-hand wall — as the stainless room is through its right —
+     given to the Wellup bathroom doors: a stage for one door at a time.
      Plan, in metres (the lobby's left wall is x = −7):
        x −7.25 → −13.65   the hall, 6.4 m long, looking in from the opening
        z −5.6 → −0.4      5.2 m across; the opening at z −4.0 → −2.0, straight across from the door
-     An entrance hall in the house's own palette — charcoal plaster, the dark stone floor, a line of warm light where
-     each wall meets the ceiling — and at its end a wall of honed travertine with a doorway cut in it, lined in bronze,
-     the door chosen standing in it: the door's own product photograph, the door and its frame as photographed, at the
-     door's listed height of 200 cm — a visual preview, not a 3D model. The stone is honed and toned down (travertineD), so
-     the door is the brightest thing on the wall; display light, whiter than the room's, falls on it in two pools from in
-     front, so a white door reads white and a brown one brown. A walnut bench on the left, a low walnut console with
-     stoneware on the right, an olive tree by the door.                                                          */
+     At its end, in a wall of warm greige limewash, a portal 120 cm wide, 240 high and 15 deep, its inside edges lit by
+     hidden strips of warm light (about 3000 K) along the top and both sides; in it the door chosen, at its listed size
+     of 70 x 200 cm, in a frame (kusen) of its own colour with a 4 mm shadow gap round the leaf. The leaf is a 4 cm box
+     with the door's own photograph on its face — cut to the leaf and straightened (img/doors/leaf) — drawn as it was
+     photographed: unlit and outside the filmic curve, so no light in the room tints it and a white door stays white;
+     its edges and its frame in the colours sampled from the same photograph. One warm spotlight in the ceiling right
+     above the door washes the portal wall and leaves a pool on the floor before it; away from the door the room falls
+     into the dark (HALL_FOCUS). A dark terrazzo floor that softly mirrors the door, a ceiling near black. A niche of
+     rolled towels far left, a small plant on the right, a round WC plaque by the portal: all in the dim, none of them
+     brighter than the door. Nothing stands between the door and you.                                          */
   const DX0 = -W - 0.25, DX1 = DX0 - 6.4, DZ0 = -5.6, DZ1 = -0.4, DOP0 = -4.0, DOP1 = -2.0, DZC = (DOP0 + DOP1) / 2;
   /* its light set */
   const HALL = 7;
   const inHall = (x) => x < -W - 0.12;
-  /* the door's photograph stands on the floor as tall as the door is listed, as wide as the photograph makes it at that
-     height; the travertine (CLAD thick) is cut round it and the cut lined in bronze (REV wide) */
-  const DOOR_H = 2.0, CLAD = 0.05, REV = 0.014;
-  const doorWidth = (aspect) => DOOR_H * clamp(aspect || 0.44, 0.3, 0.6);
+  /* ★ THE ONE VALUE TO TUNE: how hard the hall focuses on its door, 0 to 1 — the spotlight's strength against the room's
+     own fill light, and how far the room falls into the dark away from the door (0: the room evenly lit; 1: a stage) */
+  const HALL_FOCUS = 0.85;
+  /* the portal in the end wall (x = DX1): PW wide, PH high, PD deep, its back at XB; the leaf, 70 x 200 cm and 4 cm
+     thick, a hair above the floor; its frame: KW wide, KD deep against the portal's back, a GAP round the leaf */
+  const PW = 1.2, PH = 2.4, PD = 0.15, XB = DX1 - PD;
+  const LEAF_W = 0.70, LEAF_H = 2.0, LEAF_T = 0.04, LEAF_Y = 0.008, KW = 0.065, KD = 0.10, GAP = 0.004;
+  /* the leaf's face: a little behind the frame's, as a door sits in its frame */
+  const XF = XB + KD - 0.012;
+  /* the warm white of the strips and the spotlight (about 3000 K) */
+  const W3K = [1.0, 0.86, 0.72];
+  /* the hall's lens: about 38° across the shorter side of the view, so a door seen from in front is not stretched */
+  const HALL_FOV = 38 * Math.PI / 180;
 
   /* ── an island: a 900 mm sink base under a slab of stone, in its room's preset `I.theme`, drawn in its room's
      own language (`I.style`):
@@ -2743,77 +2882,111 @@
     return { island, envs: { [WING]: { warm: T.warm }, [WISL]: { warm: T.warm } } };
   };
 
-  /* ── the Door Hall: its shell, its light, its furniture, and the doorway the door chosen stands in ── */
+  /* ── the Door Hall: its shell, the portal the door stands in, its light, and what little else is in it ── */
   const buildHall = (b, ctx, o) => {
     const { solid, point, washes, decals, shade, downlight } = ctx;
-    const dw = doorWidth(o.aspect), dz0 = DZC - dw / 2, dz1 = DZC + dw / 2, XC = DX1 + CLAD;
+    const F = HALL_FOCUS, uvf = (p) => [p[0] / 1.2, p[2] / 1.2], kL = K.limewash;
+    const uvw = (p) => [p[2] * kL, p[1] * kL], uvd = (p) => [(p[0] + p[2]) * kL, p[1] * kL], uvc = (p) => [(p[0] + p[2]) * kL, (p[1] + p[0]) * kL];
     b.zone = HALL;
-    /* floor (and the threshold through the wall), ceiling */
-    b.face("floor", [DX1, 0, DZ1], [DX0, 0, DZ1], [DX0, 0, DZ0], [DX1, 0, DZ0], [0, 1, 0], (p) => [p[0] / 1.2, p[2] / 1.2]);
-    b.face("floor", [DX0, 0, DOP1], [-W, 0, DOP1], [-W, 0, DOP0], [DX0, 0, DOP0], [0, 1, 0], (p) => [p[0] / 1.2, p[2] / 1.2]);
-    b.face("ceiling", [DX1, H, DZ0], [DX0, H, DZ0], [DX0, H, DZ1], [DX1, H, DZ1], [0, -1, 0], (p) => [p[0] / 3, p[2] / 3]);
-    /* the two long walls, each with its slot of warm light where it meets the ceiling */
+    /* floor — dark terrazzo, a soft mirror — through the threshold, the hall, and into the portal; the ceiling near black */
+    b.face("terrazzo", [DX1, 0, DZ1], [DX0, 0, DZ1], [DX0, 0, DZ0], [DX1, 0, DZ0], [0, 1, 0], uvf);
+    b.face("terrazzo", [DX0, 0, DOP1], [-W, 0, DOP1], [-W, 0, DOP0], [DX0, 0, DOP0], [0, 1, 0], uvf);
+    b.face("terrazzo", [XB, 0, DZC + PW / 2], [DX1, 0, DZC + PW / 2], [DX1, 0, DZC - PW / 2], [XB, 0, DZC - PW / 2], [0, 1, 0], uvf);
+    b.face("hallCeiling", [DX1, H, DZ0], [DX0, H, DZ0], [DX0, H, DZ1], [DX1, H, DZ1], [0, -1, 0], uvf);
+    /* the two long walls */
     for (const [z, dir] of [[DZ0, 1], [DZ1, -1]]) {
       const outer = z - dir * 0.25;
-      b.box("plaster", DX1, 0, Math.min(z, outer), DX0, H, Math.max(z, outer), { skip: dir > 0 ? "-z+y-y-x+x" : "+z+y-y-x+x" });
-      const za = z + dir * 0.02, zb = z + dir * 0.05;
-      b.box("emit", DX1, H - 0.003, Math.min(za, zb), DX0, H, Math.max(za, zb), { skip: "+y" });
-      washes.push({ a: [DX1, H - 0.01, z + dir * 0.04], b: [DX0, H - 0.01, z + dir * 0.04], color: WARM, power: 1, zone: HALL, zones: [HALL] });
+      b.box("limewash", DX1, 0, Math.min(z, outer), DX0, H, Math.max(z, outer), { skip: dir > 0 ? "-z+y-y-x+x" : "+z+y-y-x+x" });
       decals.push({ kind: "foot", axis: "z", at: z, a: DX1, b: DX0, dir });
     }
     /* the lobby's side, round the opening, which is lined in bronze through the wall */
-    b.box("plaster", DX0, 0, DZ0, -W, H, DOP0 - 0.012, { skip: "+x+y-y+z-z" });
-    b.box("plaster", DX0, 0, DOP1 + 0.012, -W, H, DZ1, { skip: "+x+y-y+z-z" });
-    b.box("plaster", DX0, LINTEL, DOP0 - 0.012, -W, H, DOP1 + 0.012, { skip: "+x+y-y+z-z" });
-    b.box("emit", DX0 - 0.05, H - 0.003, DZ0, DX0 - 0.02, H, DZ1, { skip: "+y" });
-    washes.push({ a: [DX0 - 0.04, H - 0.01, DZ0], b: [DX0 - 0.04, H - 0.01, DZ1], color: WARM, power: 0.7, zone: HALL, zones: [HALL] });
+    b.box("limewash", DX0, 0, DZ0, -W, H, DOP0 - 0.012, { skip: "+x+y-y+z-z" });
+    b.box("limewash", DX0, 0, DOP1 + 0.012, -W, H, DZ1, { skip: "+x+y-y+z-z" });
+    b.box("limewash", DX0, LINTEL, DOP0 - 0.012, -W, H, DOP1 + 0.012, { skip: "+x+y-y+z-z" });
     decals.push({ kind: "foot", axis: "x", at: DX0, a: DZ0, b: DOP0 - 0.012, dir: -1 }, { kind: "foot", axis: "x", at: DX0, a: DOP1 + 0.012, b: DZ1, dir: -1 });
     b.box("brass", DX0, 0, DOP0 - 0.012, -W, LINTEL, DOP0, { skip: "-z-y" });
     b.box("brass", DX0, 0, DOP1, -W, LINTEL, DOP1 + 0.012, { skip: "+z-y" });
     b.box("brass", DX0, LINTEL - 0.012, DOP0 - 0.012, -W, LINTEL, DOP1 + 0.012, { skip: "+y" });
-    /* the end wall: honed travertine floor to ceiling, the doorway cut in it and lined in bronze, a bronze threshold */
-    b.box("plaster", DX1 - 0.25, 0, DZ0, DX1, H, DZ1, { skip: "-x+y-y+z-z" });
-    b.box("travertineD", DX1, 0, DZ0, XC, H, dz0 - REV, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
-    b.box("travertineD", DX1, 0, dz1 + REV, XC, H, DZ1, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
-    b.box("travertineD", DX1, DOOR_H + REV, dz0 - REV, XC, H, dz1 + REV, { skip: "-x-y+y-z+z", off: [0.2, 0.1] });
-    b.box("bronze", DX1, 0, dz0 - REV, XC + 0.003, DOOR_H, dz0, { skip: "-x-y+y-z" });
-    b.box("bronze", DX1, 0, dz1, XC + 0.003, DOOR_H, dz1 + REV, { skip: "-x-y+y+z" });
-    b.box("bronze", DX1, DOOR_H, dz0 - REV, XC + 0.003, DOOR_H + REV, dz1 + REV, { skip: "-x+y-z+z" });
-    b.box("bronze", DX1, 0, dz0, XC + 0.03, 0.006, dz1, { skip: "-x-y" });
-    b.box("emit", XC + 0.02, H - 0.003, DZ0, XC + 0.05, H, DZ1, { skip: "+y" });
-    washes.push({ a: [XC + 0.04, H - 0.01, DZ0], b: [XC + 0.04, H - 0.01, DZ1], color: DISPLAY, power: 0.5, zone: HALL, zones: [HALL] });
-    decals.push({ kind: "foot", axis: "x", at: XC, a: DZ0, b: dz0 - REV, dir: 1 }, { kind: "foot", axis: "x", at: XC, a: dz1 + REV, b: DZ1, dir: 1 });
-    /* light: two cans down the middle of the hall; display light on the door, from in front of it, either side */
-    downlight([DX0 - 1.6, H, DZC], [DX0 - 1.6, 0, DZC], 4.5, 48, 22, 6, [HALL]);
-    downlight([DX0 - 3.7, H, DZC], [DX0 - 3.7, 0, DZC], 4.5, 48, 22, 6, [HALL]);
-    const doorLight = downlight([XC + 1.35, H, DZC + 0.5], [XC, 1.0, DZC + 0.08], 7.5, 26, 15, 7, [HALL], DISPLAY, "emitN");
-    downlight([XC + 1.35, H, DZC - 0.5], [XC, 1.0, DZC - 0.08], 7.5, 26, 15, 7, [HALL], DISPLAY, "emitN");
-    point([DX0 - 3.0, 2.9, DZC], WARM, 0.6, 7, [HALL]);
-    /* on the left as you come in, a walnut bench on a recessed plinth, under its own light */
-    const BX0 = DX0 - 3.4, BX1 = DX0 - 1.7, BZ0 = DZ1 - 0.42;
-    b.box("dark", BX0 + 0.06, 0, BZ0 + 0.05, BX1 - 0.06, 0.07, DZ1 - 0.04, { skip: "-y" });
-    b.box("walnut", BX0, 0.07, BZ0, BX1, 0.45, DZ1 - 0.012, { skip: "-y+z", off: [0.3, 0.2] });
-    solid(BX0, BZ0, BX1, DZ1, 0.45);
-    shade(BX0 - 0.12, BZ0 - 0.18, BX1 + 0.12, DZ1, 0.55);
-    downlight([(BX0 + BX1) / 2, H, DZ1 - 0.6], [(BX0 + BX1) / 2, 0.45, DZ1 - 0.25], 3.5, 44, 22, 5, [HALL]);
-    /* on the right, a low walnut console with stoneware on it, under its own light */
-    const CXC = DX0 - 4.1;
-    credenza(b, ctx, placer(b, CXC, DZ0, 0), 1.5, { depth: 0.4, h: 0.7, body: "walnut" });
-    vase(b, "stoneware", CXC - 0.35, 0.7, DZ0 + 0.2, "vessel", 0.82);
-    vase(b, "basalt", CXC + 0.32, 0.7, DZ0 + 0.21, "round", 1.0);
-    downlight([CXC, H, DZ0 + 0.6], [CXC, 0.7, DZ0 + 0.25], 3.5, 44, 22, 5, [HALL]);
-    /* an olive tree in the corner by the door */
-    plant(b, ctx, XC + 0.62, DZ1 - 0.64, "tree", { seed: 37, pot: "basalt", h: 1.95 });
+    /* the end wall: limewash, with the portal cut in it, and the towel niche far left (z towards DZ1, as you face it) */
+    const NZ0 = DZ1 - 1.15, NZ1 = DZ1 - 0.65, NY0 = 0.98, NY1 = 1.56, ND = 0.2;
+    const holes = [[DZC - PW / 2, DZC + PW / 2, 0, PH], [NZ0, NZ1, NY0, NY1]];
+    const zs = [...new Set([DZ0, DZ1, ...holes.flatMap((h) => [h[0], h[1]])])].sort((p, q) => p - q);
+    const ys = [...new Set([0, H, ...holes.flatMap((h) => [h[2], h[3]])])].sort((p, q) => p - q);
+    for (let i = 0; i < zs.length - 1; i++) for (let j = 0; j < ys.length - 1; j++) {
+      const za = zs[i], zb = zs[i + 1], ya = ys[j], yb = ys[j + 1], zm = (za + zb) / 2, ym = (ya + yb) / 2;
+      if (holes.some((h) => zm > h[0] && zm < h[1] && ym > h[2] && ym < h[3])) continue;
+      b.face("limewash", [DX1, ya, zb], [DX1, ya, za], [DX1, yb, za], [DX1, yb, zb], [1, 0, 0], uvw);
+    }
+    decals.push({ kind: "foot", axis: "x", at: DX1, a: DZ0, b: DZC - PW / 2, dir: 1 }, { kind: "foot", axis: "x", at: DX1, a: DZC + PW / 2, b: DZ1, dir: 1 });
+    /* a recess cut into the end wall: its back, its sides, its top (and, for the niche, its sill) */
+    const recess = (z0, z1, y0, y1, d, sill) => {
+      const x0 = DX1 - d, x1 = DX1;
+      b.face("limewash", [x0, y0, z1], [x0, y0, z0], [x0, y1, z0], [x0, y1, z1], [1, 0, 0], uvw);
+      b.face("limewash", [x1, y0, z1], [x0, y0, z1], [x0, y1, z1], [x1, y1, z1], [0, 0, -1], uvd);
+      b.face("limewash", [x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0], [0, 0, 1], uvd);
+      b.face("limewash", [x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1], [0, -1, 0], uvc);
+      if (sill) b.face("limewash", [x0, y0, z1], [x1, y0, z1], [x1, y0, z0], [x0, y0, z0], [0, 1, 0], uvc);
+    };
+    recess(NZ0, NZ1, NY0, NY1, ND, true);
+    /* the portal: its back and its reveals in plaster of their own (portalBack, portalReveal), which carries the glow of
+       the hidden strips — warm and bright along its top and both sides, falling away towards the door: the outline of
+       light round it. The strips themselves are a fine line in the portal's back corners, half hidden by the reveals. */
+    const zl = DZC + PW / 2, zr = DZC - PW / 2;
+    b.face("portalBack", [XB, 0, zr], [XB, 0, zl], [XB, PH, zl], [XB, PH, zr], [1, 0, 0], (p) => [(zl - p[2]) / PW, 1 - p[1] / PH]);
+    const rv = (p) => [(p[0] - XB) / PD, 0.5];
+    b.face("portalReveal", [DX1, 0, zl], [XB, 0, zl], [XB, PH, zl], [DX1, PH, zl], [0, 0, -1], rv);
+    b.face("portalReveal", [XB, 0, zr], [DX1, 0, zr], [DX1, PH, zr], [XB, PH, zr], [0, 0, 1], rv);
+    b.face("portalReveal", [XB, PH, zr], [DX1, PH, zr], [DX1, PH, zl], [XB, PH, zl], [0, -1, 0], rv);
+    const e = 0.008;
+    b.box("ledStrip", XB, 0.025, zl - e, XB + e, PH - e, zl, { skip: "-x+z" });
+    b.box("ledStrip", XB, 0.025, zr, XB + e, PH - e, zr + e, { skip: "-x-z" });
+    b.box("ledStrip", XB, PH - e, zr, XB + e, PH, zl, { skip: "-x+y+z-z" });
+    /* the one spotlight, in the ceiling right above the door: it washes the portal wall and pools on the floor before it
+       (the door itself is lit only by its photograph) */
+    const spotI = downlight([DX1 + 0.8, H, DZC], [DX1 + 0.05, 0.75, DZC], 5 + 3.5 * F, 34, 11, 7, [HALL], W3K, "emit");
+    /* the room's own light, little of it: a soft fill, and a faint wash down the wall you came in by */
+    point([DX0 - 2.6, 2.9, DZC], WARM, 0.55 * (1 - 0.75 * F), 7, [HALL]);
+    washes.push({ a: [DX0 - 0.04, H - 0.01, DZ0], b: [DX0 - 0.04, H - 0.01, DZ1], color: WARM, power: 0.28 * (1 - 0.6 * F), zone: HALL, zones: [HALL] });
+    /* in the niche, far left: white towels, rolled — three below, two on them */
+    const roll = (cy, cz, r) => {
+      const seg = 14, xa = DX1 - ND + 0.015, xb = DX1 - 0.025;
+      const at = (k) => { const a = (k / seg) * Math.PI * 2; return [Math.cos(a), Math.sin(a)]; };
+      for (let k = 0; k < seg; k++) {
+        const [c0, s0] = at(k), [c1, s1] = at(k + 1), [cm, sm] = at(k + 0.5);
+        b.face("towel", [xa, cy + r * s0, cz + r * c0], [xb, cy + r * s0, cz + r * c0], [xb, cy + r * s1, cz + r * c1], [xa, cy + r * s1, cz + r * c1], [0, sm, cm],
+          (p) => [p[0] * 3, (k / seg) * 2]);
+        b.face("towelEnd", [xb, cy, cz], [xb, cy + r * s0, cz + r * c0], [xb, cy + r * s1, cz + r * c1], [xb, cy, cz], [1, 0, 0], (p) => [p[1] * 9, p[2] * 9]);
+      }
+    };
+    const tr = 0.052, tz = (NZ0 + NZ1) / 2;
+    point([DX1 + 0.12, NY1 - 0.02, tz], W3K, 0.1, 0.6, [HALL]);
+    for (const dz of [-0.108, 0, 0.108]) roll(NY0 + tr, tz + dz, tr);
+    for (const dz of [-0.054, 0.054]) roll(NY0 + tr * 2.7, tz + dz, tr);
+    shade(DX1 - ND, NZ0, DX1, NZ1, 0.0);
+    /* on the right, well away from the door: a small plant in a dark pot */
+    const PX = DX1 + 0.62, PZ = DZ0 + 0.62;
+    plant(b, ctx, PX, PZ, "pot", { seed: 41, pot: "basalt", potR: 0.13, potH: 0.3, leaves: 15, size: 1.15 });
+    solid(PX - 0.17, PZ - 0.17, PX + 0.17, PZ + 0.17, 0.62);
+    shade(PX - 0.3, PZ - 0.3, PX + 0.3, PZ + 0.3, 0.45);
+    /* the door's own shade where it stands: on the portal's back round the frame, on the floor round its foot, a line
+       of contact before it */
+    const fw = LEAF_W + 2 * (GAP + KW), fh = LEAF_Y + LEAF_H + GAP + KW;
+    decals.push({ kind: "quad", c: [XB + 0.0015, fh / 2 - 0.03, DZC], r: [0, 0, -1], u: [0, 1, 0], w: fw + 0.22, h: fh + 0.18, k: 0.5 });
+    shade(XB, DZC - fw / 2 - 0.06, DX1 - 0.005, DZC + fw / 2 + 0.06, 0.55);
+    decals.push({ kind: "edge", a: [XB + KD, 0.0012, DZC - fw / 2], b: [XB + KD, 0.0012, DZC + fw / 2], out: [1, 0, 0], w: 0.09, k: 0.55 });
     /* the room's name over the opening on the lobby's side; the way back over it on this side */
     b.zone = LOBBY;
     b.panel("sign:4", [-W + 0.003, 3.08, DZC], [0, 0, -1], [0, 1, 0], 2.4, 0.3);
     b.zone = HALL;
     b.panel("sign:3", [DX0 - 0.003, 3.08, DZC], [0, 0, 1], [0, 1, 0], 2.4, 0.3);
-    solid(DX1 - 1, DZ0 - 1, DX0, DZ0); solid(DX1 - 1, DZ1, DX0, DZ1 + 1); solid(DX1 - 1, DZ0, XC, DZ1);
-    /* where the door stands (its photograph just in front of the wall behind the stone, in the cut), and its nameplate
-       on the stone beside it, to the right as you face it */
-    return { door: { c: [DX1 + 0.004, DOOR_H / 2, DZC], w: dw, h: DOOR_H, light: doorLight, plaque: [XC + 0.001, 1.3, dz0 - REV - 0.42] },
-             envs: { [HALL]: { warm: [0.068, 0.058, 0.046] } } };
+    /* the round WC plaque, on the wall by the portal, to its right as you face it */
+    b.panel("sign:5", [DX1 + 0.004, 1.5, DZC - PW / 2 - 0.27], [0, 0, -1], [0, 1, 0], 0.15, 0.15);
+    solid(DX1 - 1, DZ0 - 1, DX0, DZ0); solid(DX1 - 1, DZ1, DX0, DZ1 + 1);
+    /* the end wall either side of the portal and above it, and the portal's back — not the portal itself, so that a look
+       reaches the door standing in it */
+    solid(DX1 - 1, DZ0, DX1, DZC - PW / 2); solid(DX1 - 1, DZC + PW / 2, DX1, DZ1);
+    solid(DX1 - 1, DZC - PW / 2, DX1, DZC + PW / 2, H, PH); solid(DX1 - 1, DZC - PW / 2, XB, DZC + PW / 2);
+    return { door: { x: XF, spot: spotI }, focus: [XF, 1.0, DZC, F], envs: { [HALL]: { warm: [0.05, 0.044, 0.036] } } };
   };
 
   /* ── furnishing ──────────────────────────────────────────────────────────
@@ -4936,7 +5109,7 @@
 
   /* texture repeats per metre for each surface */
   const K = { plaster: 0.4, walnut: 1.0, marble: 0.6, brass: 2.0, tile: 1 / 1.2, dark: 1, emit: 1, glass: 1, mirror: 1, ceramic: 1, charcoal: 1.6,
-    oak: 1.0, walnutK: 1.0, graphite: 0.8, pietra: 0.55, travertine: 0.55, travertineD: 0.55, inox: 2.0, stoneware: 3, basalt: 3, fabric: 2.5,
+    oak: 1.0, walnutK: 1.0, graphite: 0.8, pietra: 0.55, travertine: 0.55, limewash: 0.45, terrazzo: 0.8, inox: 2.0, stoneware: 3, basalt: 3, fabric: 2.5,
     smokedOak: 1.0, nero: 0.5, greyStone: 0.5, greyStoneLight: 0.5, microcement: 0.32, ceilingS: 0.32, ribbed: 0.32, bronze: 2.0, champagne: 2.0, boucle: 2.5 };
 
   const MAT = {
@@ -4948,8 +5121,21 @@
     pietra:  { tex: "pietra", rough: 0.16, spec: 1 },
     nero:    { tex: "nero", rough: 0.14, spec: 1 },
     travertine: { tex: "travertine", rough: 0.42, spec: 0.75 },
-    /* the Door Hall's end wall: the same stone, honed, in the hall's lower light */
-    travertineD: { tex: "travertine", color: [0.56, 0.57, 0.6], rough: 0.52, spec: 0.55 },
+    /* the Door Hall: walls of warm greige limewash; dark terrazzo underfoot, a soft mirror; a ceiling near black (#141210);
+       the portal's hidden strips of warm light (about 3000 K); rolled white towels. And the door — its photograph, its
+       edges, its frame — drawn as photographed (`unlit`: no light, no filmic curve, shaded only by which way a face
+       turns), its colours its own textures */
+    limewash: { tex: "limewash", rough: 0.92, spec: 0.22 },
+    terrazzo: { tex: "terrazzo", rough: 0.34, spec: 0.7, refl: 0.6 },
+    hallCeiling: { color: [0.0070, 0.0060, 0.0050], rough: 0.95, spec: 0.1 },
+    ledStrip: { color: W3K, emit: 2.6 },
+    portalBack:   { tex: "portalBack", color: [1.3, 1.3, 1.3], rough: 0.92, spec: 0.2, glow: 0.3 },
+    portalReveal: { tex: "portalReveal", color: [1.3, 1.3, 1.3], rough: 0.92, spec: 0.2, glow: 0.3 },
+    towel:   { tex: "fabric", color: [4.4, 4.3, 4.1], rough: 0.96, spec: 0.08 },
+    towelEnd:{ tex: "fabric", color: [3.7, 3.6, 3.4], rough: 0.96, spec: 0.08 },
+    doorleaf:  { unlit: 1 },
+    dooredge:  { unlit: 1 },
+    doorframe: { unlit: 1 },
     /* honed grey stone: a soft sheen, not a polish */
     greyStone: { tex: "greyStone", rough: 0.38, spec: 0.7 },
     greyStoneLight: { tex: "greyStoneLight", rough: 0.38, spec: 0.7 },
@@ -5023,7 +5209,8 @@
   const matOf = (key) => {
     const i = key.indexOf(":"), base = i < 0 ? key : key.slice(0, i);
     const m = MAT[base] || MAT.dark;
-    return { base, m, tex: m.tex || (base === "print" || base === "label" || base === "sign" || base === "logo" || base === "mark" ? key : null) };
+    return { base, m, tex: m.tex || (base === "print" || base === "label" || base === "sign" || base === "logo" || base === "mark" ||
+      base === "doorleaf" || base === "dooredge" || base === "doorframe" ? key : null) };
   };
 
   const VS_MAIN = `#version 300 es
@@ -5052,6 +5239,8 @@ uniform vec4 uMat;    // roughness, metal, specular, emission
 uniform vec4 uMat2;   // textured, glass, floor reflection, own light
 uniform float uExposure, uLift, uDecode, uAmb, uTri, uEnv, uStudio, uBounce;
 uniform vec4 uFlute;  // reeds: width, depth ÷ half-width, along x (1) or z (0), on
+uniform vec4 uFoc;    // the Door Hall's focus: its door's centre, and how strongly the room falls away from it
+uniform vec3 uFront;  // the way the Door Hall's door faces
 uniform vec2 uViewport;
 uniform int uNL, uNW, uMode;
 uniform vec4 uLP[16], uLD[16], uLC[16];
@@ -5220,6 +5409,15 @@ void main() {
   float cover = 1.0;
   if (uMode == 1) { cover = tx.a; if (cover < 0.004) discard; tx.rgb /= cover; }
   vec3 alb = uTint * tx.rgb;
+  if (uMode == 3) {
+    /* drawn as photographed: the texture's own colour, no light and no filmic curve — only a little less on a face
+       turned away (the photograph's own face, square to the room, at full strength) — and put back in sRGB exactly */
+    float sh = 0.6 + 0.4 * max(dot(N, uFront), 0.0) + 0.22 * max(N.y, 0.0);
+    vec3 c = clamp(alb * sh, 0.0, 1.0);
+    vec3 o = mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), c));
+    oColor = vec4(o + (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0, 1.0);
+    return;
+  }
   float rough = uMat.x, metal = uMat.y;
   float a = max(rough * rough, 0.0025), a2 = a * a, k = a * 0.5;
   vec3 F0 = mix(vec3(0.04 * uMat.z), alb, metal);
@@ -5284,6 +5482,8 @@ void main() {
   vec3 col = dif * (Ld * reed + (Lw + amb) * ao) / PI + spec;
   col += uTint * uMat.w;
   col += alb * uMat2.w * (1.0 + uLift * 1.6);
+  /* the Door Hall: away from its door the room falls into the dark, like a vignette round the door */
+  if (uFoc.w > 0.0) { vec3 q = (vPos - uFoc.xyz) * vec3(0.30, 0.40, 0.38); col *= mix(1.0, 0.14 + 0.86 * exp(-dot(q, q)), uFoc.w); }
   vec3 outc = pow(aces(col * uExposure), vec3(1.0 / 2.2));
   float alpha = 1.0;
   if (uMat2.z > 0.0) {
@@ -5446,7 +5646,7 @@ void main() {}`;
         const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
         for (let i = 0; i < arr.length; i += 8) for (let a = 0; a < 3; a++) { const v = arr[i + a]; if (v < lo[a]) lo[a] = v; if (v > hi[a]) hi[a] = v; }
         batches.push({ key: mat, zone: +zone, info, geo: vaoOf(new Float32Array(arr), [3, 3, 2]), lo, hi,
-          pass: info.m.glass ? "glass" : info.m.cut ? "cut" : "solid", floor: mat === "floor" });
+          pass: info.m.glass ? "glass" : info.m.cut ? "cut" : "solid", floor: mat === "floor" || mat === "terrazzo" });
       });
       batches.sort((a, b) => a.zone - b.zone);
       freeVao(decalShade); freeVao(decalFoot); freeVao(glowGeo);
@@ -5667,6 +5867,11 @@ void main() {}`;
       const e = (v.envs && v.envs[zone]) || v;
       gl.uniform3fv(U("uSky"), e.sky || v.sky); gl.uniform3fv(U("uGround"), e.ground || v.ground); gl.uniform3fv(U("uWarm"), e.warm || v.warm);
     };
+    /* the Door Hall's focus, given with its set of lights (v.focus[zone]; none elsewhere) */
+    const setFocus = (U, v, zone) => {
+      const f = v.focus && v.focus[zone];
+      gl.uniform4f(U("uFoc"), f ? f[0] : 0, f ? f[1] : 0, f ? f[2] : 0, f ? f[3] : 0);
+    };
     const IDENT = M4.ident();
     const setMat = (U, info, key, lift, decodeFallback) => {
       const m = info.m, t = info.tex ? texs.get(info.tex) : null;
@@ -5677,7 +5882,7 @@ void main() {}`;
       gl.uniform4f(U("uMat2"), info.tex ? 1 : 0, m.glass ? Math.min(1, m.glass) : 0, m.refl || 0, m.glow || 0);
       gl.uniform1f(U("uLift"), lift || 0);
       gl.uniform1f(U("uTri"), 0);
-      gl.uniform1i(U("uMode"), m.glass ? 2 : m.cut ? 1 : 0);
+      gl.uniform1i(U("uMode"), m.glass ? 2 : m.cut ? 1 : m.unlit ? 3 : 0);
       gl.uniform4f(U("uFlute"), m.flute ? m.flute[0] : 0, m.flute ? m.flute[1] : 0, m.flute ? m.flute[2] || 0 : 0, m.flute ? 1 : 0);
       gl.uniform1f(U("uEnv"), m.env == null ? 1 : m.env); gl.uniform1f(U("uStudio"), m.studio || 0);
     };
@@ -5707,6 +5912,7 @@ void main() {}`;
       gl.uniform3fv(U("uSky"), v.sky); gl.uniform3fv(U("uGround"), v.ground); gl.uniform3fv(U("uWarm"), v.warm);
       gl.uniform1f(U("uExposure"), v.exposure); gl.uniform1f(U("uAmb"), v.amb); gl.uniform1f(U("uEnv"), 1); gl.uniform1f(U("uStudio"), 0);
       gl.uniform2f(U("uViewport"), v.width, v.height);
+      gl.uniform3f(U("uFront"), 1, 0, 0);
       gl.uniform1i(U("uTex"), 0); gl.uniform1i(U("uRefl"), 1);
       if (prog !== P.lit) return;
       bindShadows(U);
@@ -5734,7 +5940,7 @@ void main() {}`;
       let cur = P.main, zone = -1;
       const use = (prog, z) => {
         if (prog !== cur) { gl.useProgram(prog.p); cur = prog; zone = -1; }
-        if (z !== zone) { zone = z; setLights(prog.U, v.lights, v.washes, z, v.gain, v.washGain); setEnv(prog.U, v, z); }
+        if (z !== zone) { zone = z; setLights(prog.U, v.lights, v.washes, z, v.gain, v.washGain); setEnv(prog.U, v, z); setFocus(prog.U, v, z); }
         return prog.U;
       };
       const progFor = (z) => (lit && shadow.zones.includes(z) ? P.lit : P.main);
@@ -6044,8 +6250,8 @@ void main() {}`;
     sanitary: { pos: [0, EYE, -14.4], yaw: 0, pitch: -0.05 },
     /* just inside the stainless room, looking down it: the island ahead, the far run beyond */
     stainless: { pos: [GX0 + 1.2, EYE, GZC], yaw: -Math.PI / 2, pitch: -0.1 },
-    /* just inside the Door Hall, the door ahead at the end of it */
-    doors: { pos: [DX0 - 2.1, EYE, DZC], yaw: Math.PI / 2, pitch: -0.07 },
+    /* in the Door Hall, straight in front of the door (fitted to the view when you go there: see doorFront) */
+    doors: { pos: [XF + 4.0, EYE, DZC], yaw: Math.PI / 2, pitch: -0.134 },
   };
   const zoneName = (p) => (inHall(p[0]) ? "doors" : inWing(p[0]) ? "stainless" : p[2] > LP ? "entrance" : p[2] >= PART ? "kitchen" : "sanitary");
   const angleTo = (from, to) => { let d = to - from; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
@@ -6120,20 +6326,38 @@ void main() {}`;
     }
     return c;
   };
-  /* The door: its own product photograph, cut to the door and its frame (`crop`, fractions of the picture), at the
-     proportions of that part (`aspect`, width over height); without one, the door's place and its name. */
-  const composeDoor = (im, ex, S = 1024) => {
-    const a = clamp(ex.aspect || 0.44, 0.3, 0.6), h = S, w = Math.max(8, Math.round(S * a)), c = canvas(w, h), x = c.getContext("2d");
-    if (im) {
-      const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, k = ex.crop || [0, 0, 1, 1];
-      x.imageSmoothingQuality = "high";
-      x.drawImage(im, k[0] * iw, k[1] * ih, (k[2] - k[0]) * iw, (k[3] - k[1]) * ih, 0, 0, w, h);
-    } else {
-      x.fillStyle = "#24221f"; x.fillRect(0, 0, w, h);
-      x.strokeStyle = "rgba(201,168,124,0.55)"; x.lineWidth = Math.max(3, w * 0.012); x.strokeRect(w * 0.04, w * 0.04, w * 0.92, h - w * 0.08);
-      x.fillStyle = "#C9A87C"; x.textAlign = "center"; x.textBaseline = "middle";
-      fitText(x, ex.title || "", w * 0.8, Math.round(w * 0.1), 500); x.fillText(ex.title || "", w / 2, h / 2);
-    }
+  /* the door's leaf when its photograph cannot be read: its outline and its name — never another door's picture */
+  const composeDoorMissing = (ex) => {
+    const w = 350, h = 1000, c = canvas(w, h), x = c.getContext("2d");
+    x.fillStyle = "#2a2724"; x.fillRect(0, 0, w, h);
+    x.strokeStyle = "rgba(201,164,106,0.55)"; x.lineWidth = 6; x.strokeRect(14, 14, w - 28, h - 28);
+    x.fillStyle = "#C9A46A"; x.textAlign = "center"; x.textBaseline = "middle";
+    fitText(x, ex.title || "", w * 0.8, 40, 500); x.fillText(ex.title || "", w / 2, h / 2);
+    return c;
+  };
+  /* the door's name on the floor before it: a dark plaque, its model in ivory and its colour in brass — drawn tall,
+     as the floor is seen at a glance from where you stand, so that from there it reads upright */
+  const composeFloorLabel = (ex) => {
+    const w = 1024, h = 340, k = 3.0, c = canvas(w, h), x = c.getContext("2d");
+    x.fillStyle = "#151311"; x.fillRect(0, 0, w, h);
+    x.strokeStyle = "rgba(201,164,106,0.75)"; x.lineWidth = 5; x.strokeRect(12, 12, w - 24, h - 24);
+    x.textAlign = "center"; x.textBaseline = "alphabetic";
+    x.save(); x.scale(1, k);
+    const title = (ex.title || "").toUpperCase(), sub = (ex.sub || "").toUpperCase();
+    if ("letterSpacing" in x) x.letterSpacing = "7px";
+    x.fillStyle = "#EEE8DC"; fitText(x, title, w - 130, 50, 500); x.fillText(title, w / 2, sub ? 58 : 74);
+    if (sub) { if ("letterSpacing" in x) x.letterSpacing = "5px"; x.fillStyle = "#C9A46A"; fitText(x, sub, w - 150, 30, 500); x.fillText(sub, w / 2, 96); }
+    x.restore();
+    return c;
+  };
+  /* the small round WC plaque by the portal: brass letters on a dark disc */
+  const composeWC = () => {
+    const S2 = 256, c = canvas(S2, S2), x = c.getContext("2d");
+    x.beginPath(); x.arc(S2 / 2, S2 / 2, S2 / 2 - 6, 0, Math.PI * 2); x.fillStyle = "#1A1815"; x.fill();
+    x.lineWidth = 7; x.strokeStyle = "rgba(201,164,106,0.9)"; x.stroke();
+    x.fillStyle = "#C9A46A"; x.textAlign = "center"; x.textBaseline = "middle";
+    if ("letterSpacing" in x) x.letterSpacing = "4px";
+    x.font = "500 96px " + FONT; x.fillText("WC", S2 / 2 + 2, S2 / 2 + 6);
     return c;
   };
   /* the room's name above the opening: brass lettering, nothing behind it */
@@ -6181,11 +6405,13 @@ void main() {}`;
     const S = {
       pos: SPOTS.entrance.pos.slice(), yaw: SPOTS.entrance.yaw, pitch: SPOTS.entrance.pitch,
       vel: [0, 0], keys: new Set(), stick: [0, 0], mode: "preview", input: true, locked: false,
-      focus: -1, selected: -1, zone: "", glide: null, scale: 1, lost: false, alive: true, ready: false,
+      focus: -1, selected: -1, zone: "", glide: null, scale: 1, lost: false, alive: true, ready: false, hallK: 0,
       visible: true, pageVisible: typeof document === "undefined" || !document.hidden, t0: 0,
     };
     let R = null, room = null, exhibits = [], scene = null, labels = opts.labels || {};
-    const cache = { tex: new Map(), print: new Map(), label: new Map(), sign: new Map(), logo: null, model: null, grain: new Map(), steel: null };
+    const cache = { tex: new Map(), print: new Map(), label: new Map(), sign: new Map(), logo: null, model: null, grain: new Map(), steel: null,
+      /* the Door Hall's door: its leaf, its edges and its frame, by texture name */
+      doorTex: new Map() };
     const lift = new Map();
     const lifts = new Map();
 
@@ -6264,16 +6490,52 @@ void main() {}`;
     const doorAt = pieces.findIndex((e) => e && e.group === "door");
     /* (whether the photograph of the door in the doorway could be read) */
     let doorToken = 0, doorOk = true;
+    /* the doors' photographs read so far, the most recently used last — kept to a few, so a phone's memory is spared */
+    const doorImgs = new Map();
+    const doorImage = async (src) => {
+      if (doorImgs.has(src)) { const im = doorImgs.get(src); doorImgs.delete(src); doorImgs.set(src, im); return im; }
+      const im = await loadImage(src);
+      /* (a picture the room may not read — from another site, or a page opened from a folder — is no use to it) */
+      const t = canvas(1, 1).getContext("2d"); t.drawImage(im, 0, 0, 1, 1); t.getImageData(0, 0, 1, 1);
+      doorImgs.set(src, im);
+      while (doorImgs.size > 9) doorImgs.delete(doorImgs.keys().next().value);
+      return im;
+    };
+    /* a colour with the faint mottle of a real surface in it (a tile that repeats) */
+    const grainOf = (hexc, seed) => {
+      const S2 = 128, c = canvas(S2, S2), x = c.getContext("2d"), im = x.createImageData(S2, S2), d = im.data;
+      const base = hex(/^#[0-9a-f]{6}$/i.test(hexc || "") ? hexc : "#8A847C"), n = makeNoise(seed, 16), m = makeNoise(seed + 1, 64), f = makeNoise(seed + 2, 128);
+      for (let y = 0; y < S2; y++) for (let xx = 0; xx < S2; xx++) {
+        const u = xx / S2, v = y / S2, k = 1 + (n(u * 16, v * 4) - 0.5) * 0.035 + (m(u * 64, v * 16) - 0.5) * 0.02 + (f(u * 128, v * 128) - 0.5) * 0.012, i = (y * S2 + xx) * 4;
+        d[i] = clamp(base[0] * k, 0, 255); d[i + 1] = clamp(base[1] * k, 0, 255); d[i + 2] = clamp(base[2] * k, 0, 255); d[i + 3] = 255;
+      }
+      x.putImageData(im, 0, 0);
+      return c;
+    };
+    /* the door's three textures: its leaf (the photograph, or its outline and name), its edges, its frame */
+    const setDoorTex = (i, d, im) => {
+      cache.doorTex.set("doorleaf:" + i, im || composeDoorMissing(d));
+      cache.doorTex.set("dooredge:" + i, grainOf(d.edge, 3));
+      cache.doorTex.set("doorframe:" + i, grainOf(d.frame, 5));
+    };
+    const doorTexFor = async (i, d) => {
+      let im = null;
+      if (d.image) { try { im = await doorImage(d.image); } catch (e) { im = null; } }
+      setDoorTex(i, d, im);
+      return !!im;
+    };
     const isleById = (id) => ISLES.find((I) => I.id === id) || null;
     /* the island whose sink casts the two shadows the renderer draws: the one in the room you are in */
     let shadowIsle = KIS;
+    /* (the Door Hall's shadow, given as an island would be) */
+    const HALL_SH = { id: "hall", zone: HALL };
     S.veil = 0; S.fade = null; S.next = new Map();
     S.orbit = null; S.ig = null; S.walkPose = null;
 
     /* ── loading what a sink needs, when it is first chosen: its model, and its kitchen's surfaces ── */
     const texJobs = new Map();
     /* (the stones a sink is set into are seen close, turning round it: drawn finer) */
-    const texSize = (n) => (["floor", "marble", "pietra", "nero", "travertine", "greyStone", "greyStoneLight"].includes(n) ? Q().tex : Math.min(Q().tex, 512));
+    const texSize = (n) => (["floor", "marble", "pietra", "nero", "travertine", "greyStone", "greyStoneLight", "terrazzo", "portalBack"].includes(n) ? Q().tex : Math.min(Q().tex, 512));
     const ensureTex = (names) => Promise.all(names.filter((n) => TEX[n] && !cache.tex.has(n)).map((n) => {
       if (!texJobs.has(n)) texJobs.set(n, TEX[n](texSize(n)).then((c) => {
         cache.tex.set(n, c); texJobs.delete(n);
@@ -6312,7 +6574,7 @@ void main() {}`;
       const sinkOf = (M) => ({ cut: M.cut, size: M.size, depth: M.depth, flange: M.flange });
       const o = { theme: KIS.station >= 0 ? KIS.themeOf(KIS.finish) : THEMES.charcoal };
       if (KIS.station >= 0 && KIS.model) Object.assign(o, { sink: sinkOf(KIS.model), display: KIS.display, frontPower: SINK.frontPower });
-      if (doorAt >= 0) o.hall = { aspect: pieces[doorAt].aspect };
+      if (doorAt >= 0) o.hall = {};
       if (steel.length) o.wing = { theme: WIS.station >= 0 ? WIS.themeOf(WIS.finish) : THEMES.steel,
         island: WIS.station >= 0 && WIS.model ? { sink: sinkOf(WIS.model), display: WIS.display, frontPower: SO.frontPower } : null };
       room = buildRoom(b, o);
@@ -6344,6 +6606,7 @@ void main() {}`;
       cache.tex.forEach((c, name) => R.texture(name, c, { an: name === "floor" ? Q().aniso : 2 }));
       cache.print.forEach((c, i) => R.texture("print:" + i, c, { repeat: false, an: 4 }));
       cache.label.forEach((c, i) => R.texture("label:" + i, c, { repeat: false, an: 4 }));
+      cache.doorTex.forEach((c, key) => R.texture(key, c, { repeat: !key.startsWith("doorleaf:"), an: 16 }));
       cache.sign.forEach((c, k) => R.texture("sign:" + k, c, { repeat: false, premult: true, an: 4 }));
       if (cache.logo) R.texture("logo", cache.logo, { repeat: false, premult: true, an: 4 });
       cache.grain.forEach((im, k) => R.texture("~grain:" + k, im, { an: Q().aniso }));
@@ -6431,6 +6694,8 @@ void main() {}`;
     };
     /* the pendant above a station and the downlight in front of it cast shadows on its island — and inside the bowls */
     const isleShadows = (I) => {
+      /* in the Door Hall, its spotlight casts the frame's and the door's shadow on the portal and the floor */
+      if (I === HALL_SH) { R.setShadows(room && room.hall ? [{ light: room.lights[room.hall.door.spot], size: 1024, soft: 4 }] : [], [HALL]); return; }
       const hero = exById(I.hero), list = [];
       if (hero && hero.sinkLight >= 0) list.push({ light: room.lights[hero.sinkLight], size: 1024, soft: 4.5 });
       if (I.front() >= 0) list.push({ light: room.lights[I.front()], size: 1024, soft: 1.6 });
@@ -6575,7 +6840,12 @@ void main() {}`;
     const lookFov = (aspect) => clamp(2 * Math.atan(Math.tan(IFOV / 2) / aspect), 0.62, 1.1);
     const orbitEye = (o) => [o.target[0] + o.dist * Math.sin(o.yaw) * Math.cos(o.el), o.target[1] + o.dist * Math.sin(o.el),
       o.target[2] + o.dist * Math.cos(o.yaw) * Math.cos(o.el)];
-    const walkView = (aspect, pose = S) => ({ eye: pose.pos.slice(), at: add(pose.pos, fwdOf(pose.yaw, pose.pitch)), fov: walkFov(aspect), shift: 0 });
+    /* the Door Hall's lens: HALL_FOV across the shorter side of the view (a phone held upright sees as much door as a
+       laptop), eased in as you go in (S.hallK) */
+    const hallFov = (aspect) => (aspect >= 1 ? HALL_FOV : Math.min(1.4, 2 * Math.atan(Math.tan(HALL_FOV / 2) / aspect)));
+    const fovNow = (aspect) => lerp(walkFov(aspect), hallFov(aspect), S.hallK);
+    const fovAt = (aspect, pos) => (room && room.hall && inHall(pos[0]) ? hallFov(aspect) : walkFov(aspect));
+    const walkView = (aspect, pose = S) => ({ eye: pose.pos.slice(), at: add(pose.pos, fwdOf(pose.yaw, pose.pitch)), fov: pose === S ? fovNow(aspect) : fovAt(aspect, pose.pos), shift: 0 });
     const orbitView = (aspect) => ({ eye: orbitEye(S.orbit), at: S.orbit.target.slice(), fov: lookFov(aspect), shift: S.orbit.shift });
     const mixView = (a, b, e) => ({ eye: a.eye.map((v, i) => lerp(v, b.eye[i], e)), at: a.at.map((v, i) => lerp(v, b.at[i], e)),
       fov: lerp(a.fov, b.fov, e), shift: lerp(a.shift, b.shift, e) });
@@ -6630,6 +6900,27 @@ void main() {}`;
       p[0] = clamp(p[0], (room.hall ? DX1 : -W) + RADIUS, (steel.length ? GX1 : W) - RADIUS); p[2] = clamp(p[2], -D + RADIUS, (steel.length ? GZ1 : 0) - RADIUS);
     };
 
+    /* The Door Hall's door, framed: from straight in front — or `deg` to one side (+ to your left as you face it) — as
+       near as shows the whole portal, the arrows either side of it and its name on the floor, within what `free` leaves
+       of the view (the shares of it covered at the left, right, top and bottom: by a panel, the rail of doors, the
+       bars), and turned and tilted so that they sit in the middle of what is left. `k` < 1 comes nearer (the close
+       view), looking at the door `atY` high. */
+    const doorFront = (deg = 0, k = 1, atY = 1.08, free = null) => {
+      const aspect = cv.width / cv.height, ty = Math.tan(hallFov(aspect) / 2), tx = ty * aspect, f = free || {};
+      /* what is free of the view, in tangents: across (right +) and up */
+      const x0 = (-1 + 2 * (f.l || 0)) * tx, x1 = (1 - 2 * (f.r || 0)) * tx, y0 = (-1 + 2 * (f.b || 0)) * ty, y1 = (1 - 2 * (f.t || 0)) * ty;
+      /* what must be seen: the portal's head, above the eye, and the near edge of the name on the floor, below it (or, if
+         `free` says so, only the door in its frame) — the tilts that keep both in, from D away; the nearest D at which
+         there is one */
+      const top = (f.head === false ? LEAF_Y + LEAF_H + GAP + KW + 0.04 : PH + 0.04) - EYE, near = f.label === false ? 0 : DX1 + 0.42 - XF, air = 0.02;
+      const tilts = (D) => [Math.atan2(top, D - (DX1 - XF)) - Math.atan(y1) + air, -Math.atan2(EYE, D - near) - Math.atan(y0) - air];
+      let D = clamp(1.8 / Math.max(0.1, x1 - x0), 2.6, 6.0), b = tilts(D);
+      while (b[0] > b[1] && D < 6.0) { D = Math.min(6.0, D + 0.05); b = tilts(D); }
+      const turn = Math.atan((x0 + x1) / 2), a = (deg * Math.PI) / 180, Dk = k < 1 ? Math.max(1.6, D * k) : D;
+      const pos = [XF + Dk * Math.cos(a), EYE, DZC + Dk * Math.sin(a)], lf = lookFrom(pos, [XF, atY, DZC]);
+      return { pos, yaw: lf.yaw + turn, pitch: k < 1 ? lf.pitch - Math.atan((y0 + y1) / 2) : (b[0] + b[1]) / 2, at: [XF, atY, DZC] };
+    };
+    const spotOf = (name, o) => (name === "doors" && room && room.hall ? doorFront(0, 1, 1.08, o && o.free) : SPOTS[name]);
     const glideTo = (pos, yaw, pitch, ms = 1100) => {
       if (calm()) ms = 0;
       S.glide = { from: { pos: S.pos.slice(), yaw: S.yaw, pitch: S.pitch }, to: { pos: pos.slice(), yaw: S.yaw + angleTo(S.yaw, yaw), pitch }, t: 0, ms };
@@ -6686,19 +6977,27 @@ void main() {}`;
       }
       /* changing the sink on an island, its colourway or how it stands: made ready, then dissolved in */
       if (stepFade(dt)) busy = true;
+      /* the Door Hall's longer lens: taken up on the way in, let go on the way out */
+      const hk = room && room.hall && inHall(S.pos[0]) ? 1 : 0;
+      if (S.hallK !== hk) {
+        S.hallK = calm() ? hk : S.hallK + (hk - S.hallK) * (1 - Math.exp(-dt * 4));
+        if (Math.abs(S.hallK - hk) < 0.003) S.hallK = hk;
+        busy = true;
+      }
 
       cam = camera();
       /* what is in front of you */
       let focus = -1;
       if (S.mode === "walk" && !S.glide) {
-        const hit = pickAlong(S.pos, cam.f, 4.6);
+        /* (in the Door Hall the door is seen from further back: it is in front of you from anywhere in the hall) */
+        const hit = pickAlong(S.pos, cam.f, room && room.hall && inHall(S.pos[0]) ? 7 : 4.6);
         focus = hit.index;
       }
       if (focus !== S.focus) { S.focus = focus; emit("onFocus", focus, focus >= 0 ? exById(focus).data : null); }
       const zn = zoneName(S.pos);
       if (zn !== S.zone) { S.zone = zn; emit("onZone", zn); }
       /* the two shadows the renderer draws go to the station in the gallery the view is in */
-      const sI = inWing(cam.eye[0]) && WIS.model && WIS.model.meshes ? WIS : KIS;
+      const sI = room && room.hall && inHall(cam.eye[0]) ? HALL_SH : inWing(cam.eye[0]) && WIS.model && WIS.model.meshes ? WIS : KIS;
       if (sI !== shadowIsle) { shadowIsle = sI; if (R && !S.lost && room) isleShadows(sI); }
 
       /* the light on what you are looking at comes up a little */
@@ -6780,7 +7079,7 @@ void main() {}`;
       const capture = !!S.fade && S.fade.stage === "cut" && !S.fade.captured;
       R.render({
         vp: c.vp, cam: c.eye, right: c.right, up: c.up, width: cv.width, height: cv.height,
-        lights: room.lights, washes: room.washes, envs: room.envs, lift,
+        lights: room.lights, washes: room.washes, envs: room.envs, lift, focus: room.hall ? { [HALL]: room.hall.focus } : null,
         sky: [0.009, 0.008, 0.007], ground: [0.005, 0.0047, 0.0044], warm: [0.075, 0.052, 0.032],
         exposure: opts.exposure || 1.5, gain: opts.gain || 1, washGain: opts.washGain || 9, glow: 1, amb: opts.amb || 18,
         reflect: q.refl > 0, reflScale: q.refl, capture, veil: S.veil,
@@ -6796,7 +7095,7 @@ void main() {}`;
     let spotsShown = false;
     const hotspots = (c) => {
       if (typeof opts.onFrame !== "function") return;
-      if (S.mode !== "walk" || !room) { if (spotsShown) { spotsShown = false; emit("onFrame", { hotspots: [] }); } return; }
+      if (S.mode !== "walk" || !room) { if (spotsShown) { spotsShown = false; emit("onFrame", { hotspots: [], door: null }); } return; }
       const v = c.vp, out = [];
       for (const ex of exhibits) {
         const a = ex.anchor;
@@ -6815,8 +7114,18 @@ void main() {}`;
         }
         out.push({ index: ex.index, x, y, on, dist });
       }
+      /* the Door Hall: the two points either side of its portal, at the door's middle, for the arrows beside it */
+      let door = null;
+      if (room.hall && inHall(c.eye[0])) {
+        const at = (p) => {
+          const px = v[0] * p[0] + v[4] * p[1] + v[8] * p[2] + v[12], py = v[1] * p[0] + v[5] * p[1] + v[9] * p[2] + v[13], w = v[3] * p[0] + v[7] * p[1] + v[11] * p[2] + v[15];
+          const x = ((px / w) * 0.5 + 0.5) * cssW, y = (0.5 - (py / w) * 0.5) * cssH;
+          return { x, y, on: w > 0 && x > -40 && x < cssW + 40 && y > -40 && y < cssH + 40 };
+        };
+        door = { l: at([DX1 + 0.02, 1.02, DZC + PW / 2 + 0.2]), r: at([DX1 + 0.02, 1.02, DZC - PW / 2 - 0.2]) };
+      }
       spotsShown = true;
-      emit("onFrame", { hotspots: out });
+      emit("onFrame", { hotspots: out, door });
     };
 
     /* ── the loop: it runs while there is something to draw ── */
@@ -7014,17 +7323,9 @@ void main() {}`;
     };
     /* the sink's colourways: each a photograph-derived texture carrying its colour and its grain */
     const flat = (hexc) => { const c = canvas(4, 4), x = c.getContext("2d"); x.fillStyle = hexc || "#808080"; x.fillRect(0, 0, 4, 4); return c; };
-    /* the door's picture, as the room draws it — and whether its photograph could be read */
-    const doorFor = async (ex) => {
-      let im = null;
-      if (ex.image) { try { im = await loadImage(ex.image); } catch (e) { im = null; } }
-      let c = composeDoor(im, ex, Q().tex);
-      try { c.getContext("2d").getImageData(0, 0, 1, 1); } catch (e) { c = composeDoor(null, ex, Q().tex); im = null; }
-      return { c, ok: !!im };
-    };
     /* the rooms' names over their openings */
     const signs = () => {
-      if (doorAt >= 0) cache.sign.set(4, composeSign(labels.doors || "Wellup Doors"));
+      if (doorAt >= 0) { cache.sign.set(4, composeSign(labels.doors || "Wellup Doors")); cache.sign.set(5, composeWC()); }
       cache.sign.set(0, composeSign(labels.sanitary || "Sanitary Gallery"));
       cache.sign.set(1, composeSign(labels.kitchen || "Granite Kitchen Sinks"));
       cache.sign.set(3, composeSign(labels.entrance || "Entrance"));
@@ -7047,7 +7348,7 @@ void main() {}`;
     const load = async () => {
       build();
       const live = ISLES.filter((I) => I.station >= 0);
-      const names = [...new Set(BASE_TEX.concat(...live.map((I) => themeTex(I.themeOf(I.finish))), doorAt >= 0 ? ["travertine"] : []))].filter((n) => TEX[n]);
+      const names = [...new Set(BASE_TEX.concat(...live.map((I) => themeTex(I.themeOf(I.finish))), doorAt >= 0 ? ["limewash", "terrazzo", "portalBack", "portalReveal"] : []))].filter((n) => TEX[n]);
       const weight = { floor: 3, marble: 3, walnut: 2, plaster: 2 };
       const total = names.reduce((s, n) => s + (weight[n] || 1), 0) + exhibits.length * 0.35 + live.length * 2 + 2;
       let done = 0;
@@ -7063,9 +7364,9 @@ void main() {}`;
         /* (an island shows its sink, not a print of it) */
         /* (the door: its photograph cut to the door — and if it cannot be read, the page is told, and the door's
            place shows its name instead) */
-        if (ex.door) { const got = await doorFor(ex.data); cache.print.set(ex.index, got.c); doorOk = got.ok; if (!got.ok) later("onDoorBusy", false, ex.index, true); }
+        if (ex.door) { doorOk = await doorTexFor(ex.index, ex.data); if (!doorOk) later("onDoorBusy", false, ex.index, true); }
         else if (!ex.station) cache.print.set(ex.index, await printFor(ex.data, ex.data.image));
-        cache.label.set(ex.index, composeLabel(ex.data));
+        cache.label.set(ex.index, ex.door ? composeFloorLabel(ex.data) : composeLabel(ex.data));
         done += 0.35; tick("products");
       }));
       /* each island's nameplate names the sink it begins with */
@@ -7099,7 +7400,7 @@ void main() {}`;
       get locked() { return S.locked; },
       enter({ lock: wantLock = true, at } = {}) {
         S.mode = "walk"; S.input = true; S.keys.clear(); S.stick = [0, 0]; S.vel = [0, 0];
-        const spot = at && SPOTS[at] ? SPOTS[at] : SPOTS.entrance;
+        const spot = at && SPOTS[at] ? spotOf(at) : SPOTS.entrance;
         glideTo(spot.pos, spot.yaw, spot.pitch, 700);
         if (wantLock) lock();
         invalidate();
@@ -7117,11 +7418,14 @@ void main() {}`;
       turn(rad) { S.yaw += rad; invalidate(); },
       setSelected(i) { S.selected = i == null ? -1 : i; invalidate(); },
       /* walk to stand in front of an exhibit; `shift` keeps it clear of a panel covering part of the view */
-      view(i, { shift = 0, rise = 0 } = {}) {
-        const ex = exById(i); if (!ex) return;
+      view(i, { shift = 0, rise = 0, free = null } = {}) {
+        const ex0 = exById(i); if (!ex0) return;
+        /* (the Door Hall's door: seen from straight in front, framed in what `free` leaves of the view) */
+        const df = ex0.door ? doorFront(0, 1, 1.08, free) : null;
+        const ex = df ? { ...ex0, view: { pos: df.pos, at: df.at } } : ex0;
         const lf = lookFrom(ex.view.pos, ex.view.at);
-        const aspect = cv.width / cv.height, ty = Math.tan(walkFov(aspect) / 2), tx = ty * aspect;
-        const yaw = lf.yaw - Math.atan(shift * tx), pitch = lf.pitch - Math.atan(rise * ty);
+        const aspect = cv.width / cv.height, ty = Math.tan(fovAt(aspect, ex.view.pos) / 2), tx = ty * aspect;
+        const yaw = df ? df.yaw : lf.yaw - Math.atan(shift * tx), pitch = df ? df.pitch : lf.pitch - Math.atan(rise * ty);
         if (S.mode === "inspect") {
           /* turning round the sink: the view leaves it for the other piece directly, in one glide */
           S.walkPose = { pos: [ex.view.pos[0], EYE, ex.view.pos[2]], yaw: S.yaw + angleTo(S.yaw, yaw), pitch };
@@ -7138,50 +7442,53 @@ void main() {}`;
       exhibitAt(i) { const ex = exById(i); return ex ? { c: ex.c.slice(), view: ex.view } : null; },
       /* ── the Door Hall's door ── */
       get door() { return doorAt; },
-      /* the door in the doorway as the room has it — its photograph, its nameplate, its proportions, and whether the
+      /* the door in the doorway as the room has it — its photograph, its nameplate, its colours, and whether the
          photograph could be read (for the page's own checks) */
       doorState() {
         const d = doorAt >= 0 ? pieces[doorAt] : null;
-        return d ? { index: doorAt, image: d.image, title: d.title, sub: d.sub, aspect: d.aspect, ok: doorOk } : null;
+        return d ? { index: doorAt, image: d.image, title: d.title, sub: d.sub, edge: d.edge, frame: d.frame, ok: doorOk,
+          ready: !!d.image && doorImgs.has(d.image), held: doorImgs.size } : null;
       },
-      /* Another door in the doorway: its photograph is read first (the page is told meanwhile), then the doorway is made to
-         its width and the door stands in it. If the photograph cannot be read, the doorway shows the door's name in its
-         place — never the door that was there before under the new one's name — and the page is told so. A door asked
-         for meanwhile is the one shown. */
+      /* Another door — or the same in another colour — in the frame: the leaf, its edges and its frame are changed, and
+         the name on the floor; nothing is rebuilt (every door is 70 x 200 cm, in the same frame). A photograph read
+         before (see preloadDoors) is in at once; another is read first, and the page told meanwhile. If it cannot be
+         read, the leaf shows the door's outline and name — never the door that was there before — and the page is
+         told so. A door asked for meanwhile is the one shown. */
       async setDoor(i, d) {
         const ex = exById(i);
         if (!ex || !ex.door || !d) return false;
         const token = ++doorToken;
-        later("onDoorBusy", true, i);
-        const next = { ...pieces[i], ...d };
-        let got = null;
-        try { got = await doorFor(next); } catch (e) { got = { c: composeDoor(null, next, Q().tex), ok: false }; }
+        const wait = !(d.image && doorImgs.has(d.image));
+        if (wait) later("onDoorBusy", true, i);
+        let im = null;
+        if (d.image) { try { im = await doorImage(d.image); } catch (e) { im = null; } }
         if (token !== doorToken || !S.alive) return false;
         Object.assign(pieces[i], d);
-        doorOk = got.ok;
-        cache.print.set(i, got.c);
-        const lc = composeLabel(pieces[i]); cache.label.set(i, lc);
-        build();
+        doorOk = !!im;
+        setDoorTex(i, pieces[i], im);
+        const lc = composeFloorLabel(pieces[i]); cache.label.set(i, lc);
         if (R && !S.lost) {
-          R.upload(scene); isleShadows(shadowIsle);
-          R.texture("print:" + i, got.c, { repeat: false, an: 4 }); R.texture("label:" + i, lc, { repeat: false, an: 4 });
+          for (const k of ["doorleaf:", "dooredge:", "doorframe:"]) R.texture(k + i, cache.doorTex.get(k + i), { repeat: k !== "doorleaf:", an: 16 });
+          R.texture("label:" + i, lc, { repeat: false, an: 4 });
         }
         invalidate();
-        later("onDoorBusy", false, i, !got.ok);
-        return got.ok;
+        later("onDoorBusy", false, i, !im);
+        return !!im;
       },
-      /* the door seen from in front, from the left or the right as you face it, or close to: a glide to stand there
-         (`shift` and `rise` keep it clear of a panel over part of the view, as for `view`) */
-      doorView(name = "front", { shift = 0, rise = 0 } = {}) {
+      /* read these doors' photographs ahead (the other colours of the door shown), so choosing one is instant */
+      preloadDoors(list) { (list || []).forEach((src) => { if (src && !doorImgs.has(src)) doorImage(src).catch(() => {}); }); },
+      /* the door seen from in front, from the left or the right as you face it (no more than 25° to either side, so a
+         photograph is never seen edge-on), or close to: a glide to stand there, framed in what `free` leaves of the
+         view (as for `view`) */
+      doorView(name = "front", { free = null } = {}) {
         const ex = exhibits.find((e) => e.door);
-        const V = { front: [2.7, 0, 1.1], left: [2.1, 1.55, 1.05], right: [2.1, -1.55, 1.05], close: [1.6, 0, 1.15] }[name];
+        const V = { front: [0, 1, 1.08], left: [25, 1, 1.08], right: [-25, 1, 1.08], close: [0, 0.52, 1.2] }[name];
         if (!ex || !V || S.mode === "inspect") return false;
-        const pos = [ex.c[0] + V[0], EYE, ex.c[2] + V[1]], lf = lookFrom(pos, [ex.c[0], V[2], ex.c[2]]);
-        const aspect = cv.width / cv.height, ty = Math.tan(walkFov(aspect) / 2), tx = ty * aspect;
-        glideTo(pos, lf.yaw - Math.atan(shift * tx), lf.pitch - Math.atan(rise * ty), 1000);
+        const f = doorFront(V[0], V[1], V[2], free);
+        glideTo(f.pos, f.yaw, f.pitch, 1000);
         return true;
       },
-      goTo(name) { const s = SPOTS[name]; if (s) glideTo(s.pos, s.yaw, s.pitch, 1200); },
+      goTo(name, o) { const s = SPOTS[name] ? spotOf(name, o) : null; if (s) glideTo(s.pos, s.yaw, s.pitch, 1200); },
       async setImage(i, src) {
         const ex = exById(i); if (!ex) return;
         const c = await printFor(ex.data, src);
@@ -7194,7 +7501,7 @@ void main() {}`;
           const d = pieces[e.index]; if (!d) return;
           d.title = e.title; d.sub = e.sub;
           const ex = exById(e.index); if (!ex) return;
-          const c = composeLabel(ex.data); cache.label.set(ex.index, c);
+          const c = ex.door ? composeFloorLabel(ex.data) : composeLabel(ex.data); cache.label.set(ex.index, c);
           if (R && !S.lost) R.texture("label:" + ex.index, c, { repeat: false, an: 4 });
         });
         /* (each station's nameplate names the sink on it) */
@@ -8054,19 +8361,19 @@ const T = {
   vsChipDoors:   { en: "Doors",             id: "Pintu" },
   vsDoorStyle:   { en: "Visual preview · from the product photographs", id: "Pratinjau visual · dari foto produk" },
   vsDoorBadge:   { en: "Visual preview",    id: "Pratinjau visual" },
-  vsDoorLede:    { en: "Every Wellup UPVC door in the Price List 2026, one at a time in a doorway of its own. Choose a model, its colour, its list where it has one, and the opening: the price and the product code follow your choice.",
-                   id: "Semua pintu UPVC Wellup di Price List 2026, satu per satu di ambang pintunya sendiri. Pilih model, warna, list bila ada, dan arah bukaannya: harga dan kode produknya mengikuti pilihan Anda." },
-  vsDoorNote:    { en: "Visual preview. The door is shown from its product photograph, set in a doorway at about its listed size. It is not a 3D model, so it cannot be opened or seen from behind. R or L changes the product code; the photograph stays as it was taken.",
-                   id: "Pratinjau visual. Pintu ditampilkan dari foto produknya, ditempatkan di ambang pintu kira-kira seukuran yang tercantum. Ini bukan model 3D, sehingga tidak dapat dibuka atau dilihat dari belakang. R atau L mengubah kode produk; fotonya tetap seperti saat diambil." },
+  vsDoorLede:    { en: "Every Wellup UPVC door in the Price List 2026, one at a time on a lit stage of its own. Choose a model, its colour, its list where it has one, and the opening: the price and the product code follow your choice.",
+                   id: "Semua pintu UPVC Wellup di Price List 2026, satu per satu di panggung bercahayanya sendiri. Pilih model, warna, list bila ada, dan arah bukaannya: harga dan kode produknya mengikuti pilihan Anda." },
+  vsDoorNote:    { en: "Visual preview. The door is its product photograph, cut to the door leaf and straightened to the listed 200 x 70 cm; its thickness and the frame round it are drawn for display. It is not a 3D model of the door, so it cannot be opened or seen from behind. R or L changes the product code; the photograph stays as it was taken.",
+                   id: "Pratinjau visual. Pintu ditampilkan dari foto produknya, dipotong pada daun pintu dan diluruskan ke ukuran tercantum 200 x 70 cm; ketebalan dan kusen di sekelilingnya digambar untuk tampilan. Ini bukan model 3D pintu, sehingga tidak dapat dibuka atau dilihat dari belakang. R atau L mengubah kode produk; fotonya tetap seperti saat diambil." },
   vsDoorLoading: { en: "Hanging the door…", id: "Memasang pintu…" },
-  vsDoorFailed:  { en: "The photograph of this door could not be loaded, so its doorway shows its name. Its details are still correct.",
-                   id: "Foto pintu ini tidak dapat dimuat, sehingga ambang pintunya menampilkan namanya. Detailnya tetap benar." },
+  vsDoorFailed:  { en: "The photograph of this door could not be loaded, so the stage shows its name. Its details are still correct.",
+                   id: "Foto pintu ini tidak dapat dimuat, sehingga panggung menampilkan namanya. Detailnya tetap benar." },
   vsAllDoors:    { en: "All doors",         id: "Semua pintu" },
   vsChooseDoor:  { en: "Choose another door", id: "Pilih pintu lain" },
   vsPrevDoor:    { en: "Previous door",     id: "Pintu sebelumnya" },
   vsNextDoor:    { en: "Next door",         id: "Pintu berikutnya" },
-  vsDoorDrawerLede: { en: "Every Wellup UPVC door, in the colour (and list) you have chosen where the model comes in it. The door in the doorway changes; you stay where you are.",
-                   id: "Semua pintu UPVC Wellup, dalam warna (dan list) pilihan Anda bila model itu tersedia dalam warna tersebut. Pintu di ambang pintu berganti; Anda tetap di tempat." },
+  vsDoorDrawerLede: { en: "Every Wellup UPVC door, in the colour (and list) you have chosen where the model comes in it. The door on the stage changes; you stay where you are.",
+                   id: "Semua pintu UPVC Wellup, dalam warna (dan list) pilihan Anda bila model itu tersedia dalam warna tersebut. Pintu di panggung berganti; Anda tetap di tempat." },
   vsDoorViews:   { en: "View the door",     id: "Lihat pintu" },
   vsDoorFront:   { en: "Front",             id: "Depan" },
   vsDoorLeft:    { en: "Left",              id: "Kiri" },
@@ -8077,7 +8384,7 @@ const T = {
   vsDoorPage:    { en: "View product page", id: "Lihat halaman produk" },
   vsDoorEnter:   { en: "Walk into the Door Hall in 3D", id: "Masuk ke Ruang Pintu dalam 3D" },
   vsDoorsLink:   { en: "Enter the Door Hall", id: "Masuk ke Ruang Pintu" },
-  vsDoorScene:   { en: "In a doorway",      id: "Di ambang pintu" },
+  vsDoorScene:   { en: "On the stage",      id: "Di panggung" },
   vsDoorPhoto:   { en: "Front photo",       id: "Foto depan" },
   vsDoorAngle:   { en: "Angled photo",      id: "Foto miring" },
 };
@@ -15004,40 +15311,40 @@ const SINK_ROOMS = {
 };
 const ZONE_ISLE = { kitchen: "kitchen", stainless: "steel" };
 /* ── the Wellup Door Hall's door ──
-   Any of the shop's door records (DOORS): the door piece's place in the list (DOOR_AT) holds the one in the doorway,
-   and everything said about it — its name, colour, list, codes, price and specification — is read from that record.
-   In the room it is its front photograph (img/doors, 800 x 1000) cut to the door and its frame: DOOR_FRAME, measured
-   from each photograph — its left, top, right and bottom as shares of the picture — so the doorway is cut to the
-   door's own proportions. (The photographs are all framed alike, so a door without a measure takes the usual one.) */
+   Any of the shop's door records (DOORS): the door piece's place in the list (DOOR_AT) holds the one on the stage, and
+   everything said about it — its name, colour, list, codes, price and specification — is read from that record. */
 const DOOR_AT = SHOWROOM_LIST.findIndex((e) => e.group === "door");
-const DOOR_PIC = [800, 1000];
-const DOOR_FRAME = {
-  "pt-109-brown": [0.2475, 0.055, 0.7512, 0.953], "pt-109-dark-grey": [0.245, 0.055, 0.7538, 0.955], "pt-109-white": [0.2588, 0.056, 0.74, 0.955],
-  "pt-110-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-110-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-110-white": [0.2562, 0.056, 0.7438, 0.954],
-  "pt-111-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-111-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-111-white": [0.2562, 0.056, 0.7425, 0.954],
-  "pt-112-brown": [0.2312, 0.055, 0.77, 0.954], "pt-112-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-112-white": [0.2562, 0.056, 0.7425, 0.954],
-  "pt-113-brown": [0.2512, 0.054, 0.75, 0.954], "pt-113-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-113-white": [0.2562, 0.056, 0.7438, 0.954],
-  "pt-114-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-114-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-114-white": [0.2562, 0.056, 0.7438, 0.954],
-  "pt-115-brown": [0.2512, 0.055, 0.75, 0.954], "pt-115-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-115-white": [0.2562, 0.056, 0.7425, 0.954],
-  "pt-116-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-116-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-116-white": [0.2562, 0.056, 0.7438, 0.954],
-  "pt-117-brown": [0.2512, 0.055, 0.7488, 0.954], "pt-117-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-117-white": [0.2562, 0.056, 0.7425, 0.954],
-  "pt-118-brown": [0.25, 0.054, 0.7488, 0.954], "pt-118-dark-grey": [0.2488, 0.055, 0.75, 0.955], "pt-118-white": [0.2562, 0.056, 0.7438, 0.954],
-  "pt-119-brown": [0.2512, 0.054, 0.7488, 0.954], "pt-119-dark-grey": [0.25, 0.055, 0.75, 0.954], "pt-119-white": [0.2562, 0.056, 0.7425, 0.954],
-  "pt-2601-brown-black-list": [0.2462, 0.054, 0.7525, 0.956], "pt-2601-brown-white-list": [0.2462, 0.054, 0.7538, 0.956], "pt-2601-dark-grey-black-list": [0.24, 0.055, 0.76, 0.955],
-  "pt-2601-dark-grey-white-list": [0.2438, 0.055, 0.7562, 0.955], "pt-2601-white-black-list": [0.245, 0.055, 0.7538, 0.955], "pt-2601-white-white-list": [0.2575, 0.055, 0.7425, 0.955],
-  "pt-2602-brown-black-list": [0.2475, 0.054, 0.75, 0.956], "pt-2602-brown-white-list": [0.28, 0.054, 0.7188, 0.956], "pt-2602-dark-grey-black-list": [0.2537, 0.055, 0.7462, 0.955],
-  "pt-2602-dark-grey-white-list": [0.28, 0.055, 0.72, 0.955], "pt-2602-white-black-list": [0.2462, 0.055, 0.7538, 0.955], "pt-2602-white-white-list": [0.27, 0.055, 0.7312, 0.949],
-  "pt-270-brown": [0.2412, 0.055, 0.7588, 0.955], "pt-270-dark-grey": [0.24, 0.055, 0.76, 0.955], "pt-270-white": [0.2462, 0.055, 0.7525, 0.955],
-  "pt-290-brown": [0.2325, 0.055, 0.7675, 0.956], "pt-290-dark-grey": [0.23, 0.055, 0.7688, 0.955], "pt-290-white": [0.25, 0.055, 0.7488, 0.955],
-  "pt-409-brown": [0.2312, 0.056, 0.7688, 0.955], "pt-409-dark-grey": [0.23, 0.056, 0.7712, 0.955], "pt-409-white": [0.2588, 0.055, 0.735, 0.955],
-  "pt-709-brown": [0.3012, 0.055, 0.6988, 0.955], "pt-709-dark-grey": [0.2925, 0.055, 0.7062, 0.955], "pt-709-white": [0.3038, 0.055, 0.695, 0.955],
-  "pt-809-brown": [0.2325, 0.054, 0.765, 0.956], "pt-809-dark-grey": [0.2312, 0.055, 0.7675, 0.955], "pt-809-white": [0.2375, 0.055, 0.7612, 0.955],
-  "pt-909-brown": [0.235, 0.055, 0.7638, 0.956], "pt-909-dark-grey": [0.2312, 0.055, 0.7688, 0.955], "pt-909-white": [0.2388, 0.056, 0.7625, 0.955],
+/* In the room the door is its leaf, cut from that photograph and straightened to the listed 70 x 200 cm
+   (img/doors/leaf/<photo>.webp, 700 x 2000; img/doors/leaf/t/ the same small, for the rail of models), with the colour
+   of its edges and of its frame as sampled from the same photograph — DOOR_LEAF, from img/doors/leaf/leaf.json
+   (made by catalogues/source/tools/door_leaves.py). */
+const DOOR_LEAF = {
+  "pt-109-brown": ["#75332E", "#933A36"], "pt-109-dark-grey": ["#51514F", "#646461"], "pt-109-white": ["#ECECEA", "#E2E1DF"],
+  "pt-110-brown": ["#731C12", "#9A241E"], "pt-110-dark-grey": ["#474747", "#60605F"], "pt-110-white": ["#E4E2E1", "#E0E0DE"],
+  "pt-111-brown": ["#731C13", "#9A251F"], "pt-111-dark-grey": ["#474747", "#60605F"], "pt-111-white": ["#E3E2E1", "#E1E0DF"],
+  "pt-112-brown": ["#741D14", "#A3332A"], "pt-112-dark-grey": ["#474747", "#60605F"], "pt-112-white": ["#E4E2E1", "#E1E0DE"],
+  "pt-113-brown": ["#731C13", "#9A251E"], "pt-113-dark-grey": ["#474747", "#60605F"], "pt-113-white": ["#E4E2E1", "#E0E0DF"],
+  "pt-114-brown": ["#731C13", "#9A251E"], "pt-114-dark-grey": ["#474747", "#60605F"], "pt-114-white": ["#E4E2E1", "#E1E0DF"],
+  "pt-115-brown": ["#731C12", "#9A251F"], "pt-115-dark-grey": ["#474747", "#61615F"], "pt-115-white": ["#E3E2E1", "#E1E0E0"],
+  "pt-116-brown": ["#731C13", "#9A251E"], "pt-116-dark-grey": ["#474747", "#60605F"], "pt-116-white": ["#E3E2E1", "#E2E0DF"],
+  "pt-117-brown": ["#731C12", "#9A241E"], "pt-117-dark-grey": ["#474747", "#60605F"], "pt-117-white": ["#E3E2E1", "#E2E0E0"],
+  "pt-118-brown": ["#731C12", "#9A251F"], "pt-118-dark-grey": ["#474747", "#60605F"], "pt-118-white": ["#E4E2E1", "#E1E0DF"],
+  "pt-119-brown": ["#731C12", "#9A251F"], "pt-119-dark-grey": ["#474747", "#60605F"], "pt-119-white": ["#E4E2E1", "#E2E0DF"],
+  "pt-2601-brown-black-list": ["#96321B", "#AA381D"], "pt-2601-brown-white-list": ["#922A17", "#AE351B"], "pt-2601-dark-grey-black-list": ["#4E5259", "#52565F"],
+  "pt-2601-dark-grey-white-list": ["#4E525A", "#51555E"], "pt-2601-white-black-list": ["#E5E4E0", "#E6E5E1"], "pt-2601-white-white-list": ["#DEDDD9", "#DFDEDA"],
+  "pt-2602-brown-black-list": ["#922E19", "#B03C20"], "pt-2602-brown-white-list": ["#7A2211", "#912B16"], "pt-2602-dark-grey-black-list": ["#373B45", "#40444F"],
+  "pt-2602-dark-grey-white-list": ["#424248", "#47474F"], "pt-2602-white-black-list": ["#E8E6E2", "#E8E5E1"], "pt-2602-white-white-list": ["#DCDBD8", "#E0DFDD"],
+  "pt-270-brown": ["#681E0C", "#7C2A18"], "pt-270-dark-grey": ["#454646", "#545555"], "pt-270-white": ["#E2E1DD", "#E9E8E4"],
+  "pt-290-brown": ["#7B1B06", "#9A2C14"], "pt-290-dark-grey": ["#4D4E52", "#5D5E61"], "pt-290-white": ["#E6E4E2", "#EBEAE8"],
+  "pt-409-brown": ["#7F332F", "#903A34"], "pt-409-dark-grey": ["#57585A", "#636266"], "pt-409-white": ["#E9E9E7", "#D8D8D4"],
+  "pt-709-brown": ["#823227", "#A63F2B"], "pt-709-dark-grey": ["#4B4B4D", "#45464A"], "pt-709-white": ["#DFE0DB", "#DDDEDA"],
+  "pt-809-brown": ["#7E332E", "#903C33"], "pt-809-dark-grey": ["#565758", "#5D5D5F"], "pt-809-white": ["#EBEAE8", "#D8D8D7"],
+  "pt-909-brown": ["#7D342F", "#8F3934"], "pt-909-dark-grey": ["#57585A", "#5D5D60"], "pt-909-white": ["#EAEAE8", "#DEDDDB"],
 };
-const doorFrameOf = (r) => (r && r.photos && DOOR_FRAME[r.photos[0]]) || [0.25, 0.05, 0.75, 0.95];
-const doorAspectOf = (r) => { const k = doorFrameOf(r); return ((k[2] - k[0]) * DOOR_PIC[0]) / ((k[3] - k[1]) * DOOR_PIC[1]); };
-/* what the room is told about the door: its photograph, the part of it that is the door, and its nameplate */
-const doorPiece = (r, x) => ({ image: SINK_IMG[r.photos[0]], crop: doorFrameOf(r), aspect: doorAspectOf(r), title: r.model, sub: x(r.colour) });
+const doorLeafOf = (r) => (r && r.photos && DOOR_LEAF[r.photos[0]]) || ["#8A847C", "#8A847C"];
+const doorLeafImg = (r, small) => (r && r.photos && r.photos[0] ? "img/doors/leaf/" + (small ? "t/" : "") + r.photos[0] + ".webp" : "");
+/* what the room is told about the door: its leaf, the colours of its edges and its frame, and its name */
+const doorPiece = (r, x) => { const k = doorLeafOf(r); return { image: doorLeafImg(r), edge: k[0], frame: k[1], title: r.model, sub: x(r.colour) }; };
 /* the opening asked for, where the door is offered in it — else the one it is offered in */
 const doorSelOf = (r, want) => (r ? r.hands.find((h) => h.id === want) || r.hands[0] : null) || { id: "R", code: "" };
 /* the door seen from in front, from either side, or close to (in the room) */
@@ -15173,11 +15480,9 @@ const VsDoorHall = ({ row, g, sel, all, onDoor, onHand, onAdd, added, phase, pro
   const [broken, setBroken] = useState(null);
   const views = [["hall", "vsDoorScene"], ["photo", "vsDoorPhoto"]].concat(row.photos.length > 1 ? [["angle", "vsDoorAngle"]] : []);
   const now = views.some(([k]) => k === view) ? view : "hall";
-  const k = doorFrameOf(row), kw = k[2] - k[0], kh = k[3] - k[1];
-  const crop = { width: 100 / kw + "%", height: 100 / kh + "%", left: (-k[0] / kw) * 100 + "%", top: (-k[1] / kh) * 100 + "%" };
+  const leaf = doorLeafOf(row), pic = doorLeafImg(row);
   const spec = specOf(row, "Specification"), sec = doorSectionOf(g);
-  const said = x({ en: "Visual preview: ", id: "Pratinjau visual: " }) + doorAlt(row, 0, lang) + x({ en: ", standing in a doorway", id: ", berdiri di ambang pintu" });
-  const pic = SINK_IMG[row.photos[0]];
+  const said = x({ en: "Visual preview: ", id: "Pratinjau visual: " }) + doorAlt(row, 0, lang) + x({ en: ", in a lit portal in the Door Hall", id: ", di portal bercahaya di Ruang Pintu" });
   const btn = "inline-flex h-[52px] w-full items-center justify-center gap-3 whitespace-nowrap border px-6 text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-[background-color,color,border-color] duration-500 ease-quiet ";
   return (
     <section id="vs-doors" className="dcat vsd" aria-label={t("vsDoorRoom")} data-vs-doors="" data-door-slug={row.slug} data-door-hand={sel.id}>
@@ -15186,13 +15491,14 @@ const VsDoorHall = ({ row, g, sel, all, onDoor, onHand, onAdd, added, phase, pro
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             {now === "hall" ? (
-              <div className="vsd-scene" role="img" aria-label={said} style={{ "--a": doorAspectOf(row) }} data-vsd-scene="">
-                <span className="vsd-wall" /><span className="vsd-slot" /><span className="vsd-floor" />
-                {broken === row.slug ? null : <span className="vsd-mirror"><span className="vsd-door"><img src={pic} alt="" style={crop} draggable="false" /></span></span>}
-                <span className="vsd-way"><span className="vsd-door">
+              <div className="vsd-scene" role="img" aria-label={said} style={{ "--edge": leaf[0], "--frame": leaf[1] }} data-vsd-scene="">
+                <span className="vsd-wall" /><span className="vsd-floor" /><span className="vsd-portal" /><span className="vsd-frame" />
+                {broken === row.slug ? null : <span className="vsd-mirror"><img src={pic} alt="" draggable="false" /></span>}
+                <span className="vsd-door">
                   {broken === row.slug ? <CatNoPhoto label={row.model} small className="absolute inset-0" />
-                    : <img key={row.slug} src={pic} alt="" style={crop} draggable="false" data-vsd-door="" onError={() => setBroken(row.slug)} />}
-                </span></span>
+                    : <img key={row.slug} src={pic} alt="" draggable="false" data-vsd-door="" onError={() => setBroken(row.slug)} />}
+                </span>
+                <span className="vsd-plate" aria-hidden="true"><b>{row.model}</b><span>{x(row.colour)}</span></span>
                 <span className="vsd-badge">{t("vsDoorBadge")}</span>
               </div>
             ) : (
@@ -15300,7 +15606,7 @@ const ShowroomPage = () => {
   const [doorHand, setDoorHand]     = useState(deep && deep.door ? deep.hand : "R");
   const [doorBusy, setDoorBusy]     = useState(false);
   const [doorFailed, setDoorFailed] = useState(false);
-  const doorIn = useRef(null), doorLinked = useRef(null), doorGo = useRef(false);
+  const doorIn = useRef(null), doorLinked = useRef(null), doorGo = useRef(false), railRef = useRef(null), arrowRefs = useRef({ l: null, r: null });
   const doorAll = useMemo(() => doorModels(), []);
   const doorRow = DOOR_AT >= 0 ? bySlug(shown[DOOR_AT]) : null;
   const doorG = doorRow ? doorAll.find((g) => g.m.code === doorRow.code) || null : null;
@@ -15361,6 +15667,31 @@ const ShowroomPage = () => {
     return Math.min(0.6, pn.offsetWidth / Math.max(1, st.clientWidth));
   };
 
+  /* What the Door Hall's door is framed in: the view less the panel beside it (below it on a phone), the rail of doors
+     and the bars — as shares of the view, for the room (see doorFront there). */
+  const doorFree = (panelOpen) => {
+    const st = stageRef.current, pn = panelRef.current, rl = railRef.current;
+    if (!st) return null;
+    const S = st.getBoundingClientRect(), W = Math.max(1, S.width), Hh = Math.max(1, S.height), ph = phone(), sheet = panelOpen && ph;
+    /* (how much of the view, from the bottom, an element covers) */
+    const above = (el) => { if (!el || !el.offsetHeight) return 0; const q = el.getBoundingClientRect(); return Math.min(0.6, Math.max(0, (S.bottom - q.top) / Hh)); };
+    let r = 0.03, b = 0.03;
+    if (panelOpen && pn) { if (ph) b = Math.min(0.6, pn.offsetHeight / Hh) + 0.03; else r = Math.min(0.6, pn.offsetWidth / W + 0.02); }
+    if (!sheet) { b = Math.max(b, above(rl) + 0.03); if (ph) b = Math.max(b, above(st.querySelector(".vs-zones")) + 0.02); }
+    /* (with a phone's panel up, the door alone is framed: the name on the floor and the portal's head may fall outside) */
+    return { l: 0.03, r, t: ph ? 0.13 : 0.06, b, label: !sheet, head: !sheet };
+  };
+  /* the arrows by the portal, where the room says its sides are on the screen */
+  const placeArrows = (d) => {
+    for (const k of ["l", "r"]) {
+      const el = arrowRefs.current[k], q = d && d[k], on = !!(q && q.on);
+      if (!el) continue;
+      if (on) el.style.transform = "translate3d(" + Math.round(q.x) + "px," + Math.round(q.y) + "px,0)";
+      const v = on ? "true" : "false";
+      if (el.getAttribute("data-on") !== v) el.setAttribute("data-on", v);
+    }
+  };
+
   const openPanel = (i) => {
     const room = roomRef.current;
     if (!room || i < 0 || i >= SHOWROOM_LIST.length) return;
@@ -15372,6 +15703,8 @@ const ShowroomPage = () => {
     /* walk up to it, keeping it clear of the panel — or, turning round the sink, keep turning
        (another piece chosen meanwhile: the view leaves the sink for it) */
     if (inspecting && pieceOf(i) === isles[isle].station) room.setInspectShift(inspectShift(true));
+    /* (the Door Hall's door: framed in what the panel and the rail leave, once the panel is laid out for it) */
+    else if (i === DOOR_AT) window.requestAnimationFrame(() => { const r = roomRef.current; if (r) r.view(i, { free: doorFree(true) }); });
     else room.view(i, phone() ? { rise: 0.4 } : { shift: 0.27 });
     /* and take the keyboard (and a screen reader) to it */
     window.requestAnimationFrame(() => { const el = panelRef.current; if (el) el.focus({ preventScroll: true }); });
@@ -15459,11 +15792,11 @@ const ShowroomPage = () => {
   const doorModel = (g) => { if (g && doorRow) chooseDoor(doorRowOf(g, doorRow.doorCol, doorRow.listCol).slug); };
   const stepDoor = (d) => { if (!doorG) return; const n = doorAll.length, j = doorAll.indexOf(doorG); doorModel(doorAll[(j + d + n) % n]); };
   /* the door from in front, from either side or close to — clear of the panel */
-  const viewDoor = (k) => { const room = roomRef.current; if (room) room.doorView(k, phone() ? { rise: 0.4 } : { shift: sel >= 0 ? 0.27 : 0 }); };
+  const viewDoor = (k) => { const room = roomRef.current; if (room) room.doorView(k, { free: doorFree(sel >= 0) }); };
   /* into the Door Hall and up to the door, its panel open */
   const enterDoors = () => {
     if (!roomRef.current || phase !== "ready" || DOOR_AT < 0) return;
-    enter("doors", false);
+    enter("doors", false, false);
     window.requestAnimationFrame(() => live.current.openPanel(DOOR_AT));
   };
   /* to the Door Hall on the page (once the page has settled where a new address puts it) */
@@ -15478,7 +15811,8 @@ const ShowroomPage = () => {
     /* the door's photograph on its way to the doorway — and, if it could not be read, said so */
     doorBusy: (on, failed) => { setDoorBusy(!!on); if (!on) { setDoorFailed(!!failed); if (failed) say(t("vsDoorFailed")); } },
     /* the markers over what can be chosen: moved straight on the page, every frame, with no render */
-    frame: ({ hotspots }) => {
+    frame: ({ hotspots, door }) => {
+      placeArrows(door);
       const seen = new Set();
       for (const h of hotspots) {
         const el = spotRefs.current[h.index];
@@ -15555,6 +15889,21 @@ const ShowroomPage = () => {
   }, [zone, immersive]);
   /* leaving a kitchen or the Door Hall, its list of models is put away */
   useEffect(() => { if (!roomIsle && !doorRoom) setDrawer(false); }, [roomIsle, doorRoom]);
+  /* the door on the stage: its other colours (and lists), and the doors either side of it in the rail, read ahead — so
+     choosing one of them is instant */
+  useEffect(() => {
+    const room = roomRef.current;
+    if (!room || phase !== "ready" || !doorG || !doorRow || !room.preloadDoors) return;
+    const n = doorAll.length, j = doorAll.indexOf(doorG);
+    const near = [doorAll[(j + 1) % n], doorAll[(j - 1 + n) % n]].map((o) => doorLeafImg(doorRowOf(o, doorRow.doorCol, doorRow.listCol)));
+    room.preloadDoors(doorG.rows.map((r) => doorLeafImg(r)).concat(near));
+  }, [phase, doorRow ? doorRow.slug : null]);
+  /* the rail, swiped sideways on a phone: the door on the stage kept in view */
+  useEffect(() => {
+    const rl = railRef.current, on = rl && rl.querySelector('[aria-pressed="true"]');
+    if (!rl || !on || rl.scrollWidth <= rl.clientWidth + 1) return;
+    rl.scrollLeft = Math.max(0, on.offsetLeft - (rl.clientWidth - on.offsetWidth) / 2);
+  }, [doorRow ? doorRow.code : null, doorRoom]);
 
   /* the nameplates and the signs above the openings follow the language */
   useEffect(() => {
@@ -15584,11 +15933,13 @@ const ShowroomPage = () => {
     return () => { alive = false; };
   }, [phase]);
 
-  const enter = (at, lock = !touch) => {
+  const enter = (at, lock = !touch, frame = true) => {
     const room = roomRef.current;
     if (!room || phase !== "ready") return;
     setSel(-1); setImmersive(true);
     room.enter({ lock, at });
+    /* (into the Door Hall: once the room fills the screen, the door is framed above the rail) */
+    if (at === "doors" && frame) window.requestAnimationFrame(() => window.requestAnimationFrame(() => { const r = roomRef.current; if (r) r.goTo("doors", { free: doorFree(false) }); }));
     window.requestAnimationFrame(() => { try { canvasRef.current.focus({ preventScroll: true }); } catch (e) {} });
   };
   const leave = () => {
@@ -15679,7 +16030,7 @@ const ShowroomPage = () => {
     const room = roomRef.current;
     if (!room) return;
     if (sel >= 0) closePanel(false);
-    setDrawer(false); setTourAt(-1); room.goTo(z);
+    setDrawer(false); setTourAt(-1); room.goTo(z, z === "doors" ? { free: doorFree(false) } : undefined);
   };
 
   /* a colourway chosen in the panel is the one in the room: on the island, the sink's own — and its kitchen with it */
@@ -15758,6 +16109,7 @@ const ShowroomPage = () => {
           data-inspect={inspecting ? "true" : "false"} data-display={display} data-sink3d={sinks3d.length ? "true" : "false"}
           data-sinkfocus={isSink(focus) ? "true" : "false"} data-sinkpanel={isSink(sel) ? "true" : "false"}
           data-room={RI ? roomIsle : "none"} data-drawer={drawerOpen ? "open" : "closed"} data-busy={busy ? "true" : "false"}
+          data-doorhall={doorRoom && !RI ? "true" : "false"}
           style={{ "--p": phase === "ready" ? 1 : progress }}>
           <canvas ref={canvasRef} className="vs-canvas" tabIndex={-1} role="img" aria-label={t("vsCanvas")} />
           <div className="vs-shade" aria-hidden="true" />
@@ -15879,30 +16231,26 @@ const ShowroomPage = () => {
                   <VsGrid size={15} /><span className="vs-model-all-t">{t("vsAllModels")}</span><span className="vs-num">{RI ? String(RI.stations.length).padStart(2, "0") : ""}</span>
                 </button>
               </div>
-              {/* in the Door Hall, the door in its doorway — and the others, one step at a time or all at once */}
-              <div className="vs-model vs-hit" hidden={!doorRoom || !!RI} data-busy={doorBusy ? "true" : "false"} aria-busy={doorBusy} data-vs-door-bar="">
-                <button type="button" className="vs-chip vs-sq" onClick={() => stepDoor(-1)} aria-label={t("vsPrevDoor")}><Icon name="left" size={16} /></button>
-                <button type="button" className="vs-model-now" onClick={() => toggleDrawer()} aria-expanded={drawerOpen} aria-controls="vs-drawer">
-                  <span className="vs-model-img bg-[#F4F3F0]">
-                    {doorRow ? <Photo key={doorRow.slug} src={pImg(doorRow, 0, 160)} alt="" tone={PLATE} className="h-full w-full object-contain no-dim" /> : null}
-                    <i className="vs-spin" aria-hidden="true" />
-                  </span>
-                  <span className="vs-model-txt">
-                    <span className="vs-model-name">{doorRow ? doorRow.model : ""}</span>
-                    <span className="vs-model-sub">{doorBusy ? t("vsDoorLoading") : doorRow ? x(doorRow.colour) + " · " + doorSel.id : ""}</span>
-                  </span>
-                  <span className="vs-model-price">{doorRow ? rp(doorRow.price) : ""}</span>
-                </button>
-                <button type="button" className="vs-chip vs-sq" onClick={() => stepDoor(1)} aria-label={t("vsNextDoor")}><Icon name="right" size={16} /></button>
-                <button type="button" className="vs-chip vs-model-all" onClick={() => toggleDrawer()} aria-expanded={drawerOpen} aria-controls="vs-drawer">
-                  <VsGrid size={15} /><span className="vs-model-all-t">{t("vsAllDoors")}</span><span className="vs-num">{String(doorAll.length).padStart(2, "0")}</span>
-                </button>
-              </div>
               <div className="vs-tour vs-hit" hidden={!!RI || doorRoom}>
                 <button type="button" className="vs-chip vs-sq" onClick={() => tour(-1)} aria-label={t("vsPrev")}><Icon name="left" size={16} /></button>
                 <span className="vs-tour-at" aria-live="polite">{TOUR.indexOf(tourAt) >= 0 ? TOUR.indexOf(tourAt) + 1 + " / " + TOUR.length : TOUR.length + " " + t("items")}<span className="vs-tour-name">{tourName}</span></span>
                 <button type="button" className="vs-chip vs-sq" onClick={() => tour(1)} aria-label={t("vsNext")}><Icon name="right" size={16} /></button>
               </div>
+            </div>
+            {/* in the Door Hall: its models in a row, numbered, each in the colour (and list) chosen — a touch puts it on the
+                stage; the one there is outlined in brass (laid out, unseen, outside the hall, so the view can be framed above it) */}
+            <div ref={railRef} className="vs-drail" role="group" aria-label={t("vsDoorModel")} aria-hidden={!doorRoom || !!RI}
+              data-busy={doorBusy ? "true" : "false"} aria-busy={doorBusy} data-vs-door-rail="">
+              {doorRow ? doorAll.map((o, n) => {
+                const r = doorRowOf(o, doorRow.doorCol, doorRow.listCol), on = o.m.code === doorRow.code;
+                return (
+                  <button key={o.key} type="button" className="vs-drail-item" aria-pressed={on} aria-label={String(n + 1).padStart(2, "0") + " · " + o.name + " · " + x(r.colour)}
+                    title={o.name} tabIndex={doorRoom && !RI ? 0 : -1} onClick={() => chooseDoor(r.slug)} data-vs-door-thumb={o.key} data-slug={r.slug}>
+                    <span className="vs-drail-img"><img src={doorLeafImg(r, true)} alt="" draggable="false" /></span>
+                    <span className="vs-drail-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
+                  </button>
+                );
+              }) : null}
             </div>
             <p className="vs-lost" role="status">{t("vsLost")}</p>
           </div>
@@ -16026,11 +16374,20 @@ const ShowroomPage = () => {
             </div>
           </div>
 
+          {/* the Door Hall: the door before and after this one, beside the portal */}
+          <div className="vs-darrows" aria-hidden={!doorRoom || !!RI}>
+            <button ref={(el) => { arrowRefs.current.l = el; }} type="button" className="vs-darrow" data-on="false" onClick={() => stepDoor(-1)}
+              aria-label={t("vsPrevDoor")} tabIndex={doorRoom && !RI ? 0 : -1} data-vs-door-arrow="prev"><Icon name="left" size={16} /></button>
+            <button ref={(el) => { arrowRefs.current.r = el; }} type="button" className="vs-darrow" data-on="false" onClick={() => stepDoor(1)}
+              aria-label={t("vsNextDoor")} tabIndex={doorRoom && !RI ? 0 : -1} data-vs-door-arrow="next"><Icon name="right" size={16} /></button>
+          </div>
+
           {/* the room around an open panel: touching it puts the panel away */}
           <div className="vs-scrim" aria-hidden="true" onClick={() => closePanel(true)} />
 
           {/* the piece: everything the shop knows about it, and the bag */}
-          <aside ref={panelRef} className="vs-panel" role="dialog" aria-modal="false" aria-labelledby="vs-panel-title" aria-hidden={sel < 0} tabIndex={-1}>
+          <aside ref={panelRef} className="vs-panel" role="dialog" aria-modal="false" aria-labelledby="vs-panel-title" aria-hidden={sel < 0} tabIndex={-1}
+            data-door={isDoor ? "true" : "false"}>
             <div className="vs-pbar">
               <p className="vs-label">{x(p.range || catLabel(p.cat))}</p>
               <div className="vs-row">

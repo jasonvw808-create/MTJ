@@ -49,13 +49,16 @@ KS_PDF_META in index.html, and the model page numbers in KS_PDF_PAGES if any mod
 
 THE CATALOGUE PAGE
 ------------------
-The website's Catalogue page (#/catalogue) shows one catalogue: a heading, a sentence, View Catalogue (the PDF
-itself) and Download PDF (the same file), and the PDF to read on the page, in the edition of the site's language.
-Which catalogue it is is one line in index.html:
+The website's Catalogue page (#/catalogue) shows every catalogue as its cover, with its name under it, in the
+edition of the site's language: the three volumes of CAT_DOC_LIST in index.html (granite, stainless, doors), side by
+side. A cover (or its name, or View) opens the PDF itself in a tab of its own, where the browser shows it in its own
+viewer; Download PDF gives the same file to keep.
 
-     const CAT_DOC = "doors";          // or "granite", or "stainless"
+  the covers       img/pages/<volume>-<en|id>-1.jpg, the first page of each PDF (publish_site.py makes them)
+  the names        CAT_TITLES in index.html ("Granite Kitchen Sink Catalogue" ...)
+  the line under   pages and size, from KS_PDF_META (publish_site.py writes them)
 
-with the sentence under the heading for each in CAT_LEDES, beside it. On a computer the browser's own viewer shows
-the PDF in the page; on a phone, which cannot, the page draws the PDF's pages itself with PDF.js, kept in lib/pdfjs/
-(see the README there). The other catalogues stay where they were: the kitchen sink volumes on the kitchen sink
-pages, and every volume in the PDF viewer (View in the catalogue).
+A browser with no PDF viewer of its own (most Android phones) would only download the file, so there a cover opens
+the site's own reader instead: the PDF full screen, its pages drawn with PDF.js, kept in lib/pdfjs/ (see the README
+there). A fourth catalogue needs its files here, an entry in KS_DOCS, CAT_DOC_LIST and CAT_TITLES, and its numbers
+in KS_PDF_META.

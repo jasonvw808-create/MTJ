@@ -7,10 +7,10 @@ PDF.js, BESIDE THE WEBSITE
 
 From the npm package pdfjs-dist@5.7.284, legacy/build/, unchanged.
 
-The Catalogue page (#/catalogue) uses it on a phone, where a browser cannot show a PDF inside a page: it draws the
-catalogue's pages from the PDF itself, one at a time, and, on a phone with no viewer of its own, full screen for
-View Catalogue. It is loaded only there, is only ever given the site's own catalogues, and runs with eval turned off.
-A computer's browser shows the PDF with its own viewer and never loads it.
+The Catalogue page (#/catalogue) uses it where a browser has no PDF viewer of its own (most Android phones, which
+would only download a PDF): there a catalogue's cover opens the site's own reader, which draws the PDF's pages full
+screen with it. It is loaded only then, is only ever given the site's own catalogues, and runs with eval turned off.
+A browser that shows PDFs itself (a computer's; Safari on an iPhone) opens the file in a tab and never loads it.
 
 To update it: take legacy/build/pdf.min.mjs and pdf.worker.min.mjs from a newer pdfjs-dist, put them here under
 the same names, and check the Catalogue page on a phone. (Version 3, whose builds are not modules, cannot draw the

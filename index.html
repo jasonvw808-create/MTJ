@@ -1329,55 +1329,58 @@
   .kc-index-logo { position: absolute; left: 0; bottom: 0; display: block; height: 6.5mm; width: auto; }
 
   /* ── THE CATALOGUE PAGE (#/catalogue, .cl) ─────────────────────────────────────────────────────────────────
-     One catalogue on a charcoal stage, in both themes: the dark theme's own values are held here, so every utility
-     inside follows them. A light serif for the heading, as in the catalogues; Inter for the rest. The bar runs over
-     the stage as it does over the home page's hero (36 + 96 px), so the opening leaves room for it. */
+     The catalogues as their covers, on a charcoal stage in both themes: the dark theme's own values are held here, so
+     every utility inside follows them. A light serif for the heading and the names, as in the catalogues; Inter for
+     the rest. The bar runs over the stage as it does over the home page's hero (36 + 96 px), so the opening leaves
+     room for it. */
   .cl { --bone: 23 23 23; --shell: 34 34 34; --concrete: 41 41 41; --ink: 245 240 232; --mute: 168 162 154;
         --line: 58 56 53; --accent: 182 154 114; color-scheme: dark;
         --cl-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
         background: rgb(var(--bone)); color: rgb(var(--ink)); }
-  .cat-head { padding-top: 176px; text-align: center; }
-  .cat-head h1 { font-family: var(--cl-serif); font-weight: 300; font-size: clamp(46px, 6.4vw, 84px); line-height: 1; letter-spacing: -.018em;
+  .cat-head { padding-top: 172px; text-align: center; }
+  .cat-head h1 { font-family: var(--cl-serif); font-weight: 300; font-size: clamp(40px, 4.4vw, 58px); line-height: 1.04; letter-spacing: -.016em;
                  font-variation-settings: "opsz" 60; }
-  .cat-lede { max-width: 36em; margin: 20px auto 0; font-size: 15.5px; line-height: 1.7; color: rgb(var(--mute)); text-wrap: balance; }
-  .cat-acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
-  .cat-btn { display: inline-flex; align-items: center; justify-content: center; gap: 11px; min-height: 52px; padding: 0 30px;
-             border: 1px solid rgb(var(--ink) / .45); white-space: nowrap; font-size: 11.5px; font-weight: 600; letter-spacing: .16em;
-             text-transform: uppercase; color: rgb(var(--ink));
-             transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
-  .cat-btn:hover { border-color: rgb(var(--ink)); }
-  .cat-btn.cat-solid { border-color: #F3EFE8; background: #F3EFE8; color: #1B1A18; }
-  .cat-btn.cat-solid:hover { border-color: rgb(var(--ink) / .6); background: transparent; color: rgb(var(--ink)); }
-  .cat-facts { margin-top: 18px; font-size: 12px; letter-spacing: .04em; color: rgb(var(--mute)); }
-  .cat-view { padding-top: 44px; padding-bottom: 88px; }
-  /* a computer: the browser's own viewer, as tall as the window allows */
-  .cat-frame { display: block; width: 100%; max-width: 1180px; height: 640px; height: clamp(560px, calc(100vh - 110px), 1240px);
-               height: clamp(560px, calc(100svh - 110px), 1240px); margin: 0 auto; border: 1px solid rgb(var(--line)); background: #2B2926; }
-  /* a phone: a page at a time, drawn by PDF.js (an A4 page: 297 / 210 of its width tall) */
-  .cat-book { max-width: 560px; margin: 0 auto; }
-  .cat-sheet { position: relative; overflow: hidden; background: #FFFFFF; box-shadow: 0 2px 0 rgb(255 255 255 / .03), 0 28px 50px -22px rgb(0 0 0 / .8);
-               touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; }
-  .cat-sheet::before { content: ""; display: block; padding-top: 141.43%; }
-  .cat-sheet img { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
-  .cat-wait { position: absolute; left: 0; top: 0; display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;
-              font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #8A857D; }
-  .cat-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
-  .cat-arrow { display: flex; flex: none; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid rgb(var(--line));
-               border-radius: 50%; color: rgb(var(--ink)); transition: border-color .4s, opacity .4s; }
-  .cat-arrow:hover:not(:disabled) { border-color: rgb(var(--ink) / .6); }
-  .cat-arrow:disabled { opacity: .35; }
-  .cat-count { font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgb(var(--mute)); font-variant-numeric: tabular-nums; }
+  .cat-lede { max-width: 34em; margin: 14px auto 0; font-size: 15px; line-height: 1.7; color: rgb(var(--mute)); text-wrap: balance; }
+  .cat-shelf { padding-top: 40px; padding-bottom: 96px; }
+  /* a cover for each catalogue, its name under it: two across on a phone, the three side by side from 640 px */
+  .cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 16px; max-width: 936px; margin: 0 auto; }
+  .cat-card { display: flex; flex-direction: column; min-width: 0; }
+  .cat-cover { display: block; aspect-ratio: 210 / 297; overflow: hidden; background: rgb(var(--concrete));
+               box-shadow: 0 2px 0 rgb(255 255 255 / .03), 0 28px 50px -22px rgb(0 0 0 / .8); }
+  .cat-cover img, .cat-cover .ph-fallback { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cat-cover:hover img { transform: scale(1.025); }
+  .cat-card-text { display: flex; flex: 1; flex-direction: column; }
+  .cat-card h2 { margin-top: 18px; font-family: var(--cl-serif); font-weight: 400; font-size: 17px; line-height: 1.25; letter-spacing: -.004em;
+                 font-variation-settings: "opsz" 24; text-wrap: balance; }
+  .cat-card h2 a { transition: color .3s; }
+  .cat-card h2 a:hover { color: rgb(var(--accent)); }
+  /* the file's line and the two ways, at the foot of the card: level across a row, whatever the names' lengths */
+  .cat-card-foot { margin-top: auto; padding-top: 8px; }
+  .cat-card-facts { font-size: 12px; line-height: 1.5; letter-spacing: .02em; color: rgb(var(--mute)); }
+  .cat-card-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .cat-btn-s { display: inline-flex; flex: 1 1 auto; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 6px 12px;
+               border: 1px solid rgb(var(--ink) / .4); font-size: 10.5px; font-weight: 600; line-height: 1.3; letter-spacing: .14em; text-align: center;
+               text-transform: uppercase; color: rgb(var(--ink));
+               transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1), color .5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cat-btn-s svg { flex: none; }
+  .cat-btn-s:hover { border-color: rgb(var(--ink)); }
+  .cat-btn-s.cat-solid { border-color: #F3EFE8; background: #F3EFE8; color: #1B1A18; }
+  .cat-btn-s.cat-solid:hover { border-color: rgb(var(--ink) / .6); background: transparent; color: rgb(var(--ink)); }
   .cat-note { max-width: 44ch; margin: 16px auto 0; font-size: 13px; line-height: 1.6; text-align: center; color: rgb(var(--mute)); }
-  /* the two buttons one above the other where they would not fit side by side */
-  @media (max-width: 479px) {
-    .cat-acts { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+  @media (min-width: 640px) {
+    .cat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 28px; }
   }
   @media (min-width: 768px) {
-    .cat-head { padding-top: 220px; }
-    .cat-lede { font-size: 17px; }
-    .cat-view { padding-top: 56px; padding-bottom: 120px; }
+    .cat-head { padding-top: 188px; }
+    .cat-lede { font-size: 16px; }
+    .cat-shelf { padding-top: 48px; padding-bottom: 128px; }
+    .cat-card h2 { margin-top: 22px; font-size: 19px; }
   }
-  /* the PDF full screen, on a phone with no viewer of its own (View Catalogue there) */
+  @media (min-width: 1024px) {
+    .cat-grid { gap: 56px 48px; }
+    .cat-card h2 { font-size: 21px; }
+  }
+  /* a catalogue full screen, in the site's own reader: where the browser has no PDF viewer of its own */
   html.cat-reading, html.cat-reading body { overflow: hidden; }
   .cat-reader { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 120; display: flex; flex-direction: column; background: #121110; color: #F5F0E8; }
   .cat-reader-bar { display: flex; flex: none; align-items: center; gap: 2px; min-height: 56px; padding: env(safe-area-inset-top) 4px 0 16px;
@@ -1553,6 +1556,11 @@
     [data-crumbs] .tap-y { --tap-h: 28px; }
     /* the announcement bar's arrows, which a mouse finds by hovering over the bar: shown as the hover shows them */
     [data-announce] [data-announce-step] { opacity: .6; }
+  }
+  /* … and on a phone they stand in the page's own margin, clear of a message that fills its line */
+  @media (pointer: coarse) and (max-width: 767.98px) {
+    [data-announce] [data-announce-step] { left: 3px; }
+    [data-announce] [data-announce-step] ~ [data-announce-step] { left: auto; right: 3px; }
   }
   /* what to do with a room's markers: hover them with a mouse, tap them on a touch screen */
   .touch-only { display: none; }
@@ -14265,28 +14273,25 @@ const AboutPage = () => {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CATALOGUE
-   One catalogue, on the charcoal stage the bar runs over (.cl in the
-   stylesheet): its heading and a sentence, its two ways — View Catalogue,
-   the PDF itself, and Download PDF, the same file to keep — and the PDF to
-   read on the page, in the edition of the site's language (English, or
-   Bahasa Indonesia).
-   CAT_DOC names it: one of KS_DOCS (granite, stainless or doors), whose
-   files are in catalogue/. A computer's browser shows the PDF inside the
-   page with its own viewer. A phone cannot, so there the site draws the
-   pages itself with PDF.js (lib/pdfjs), one at a time; and where the phone
-   has no viewer of its own to open the file in (an Android phone would only
-   download it), View Catalogue opens those pages full screen instead.
+   The catalogues, as their covers, on the charcoal stage the bar runs over
+   (.cl in the stylesheet): "Catalogue", a sentence, and a cover for each
+   volume of CAT_DOC_LIST — the granite and the stainless steel kitchen
+   sinks, the Wellup UPVC doors — with its name under it, in the edition of
+   the site's language (English, or Bahasa Indonesia).
+   A cover opens its PDF: the file itself, in a tab of its own, where the
+   browser shows it in its own viewer (a computer; Safari on an iPhone).
+   A browser with no viewer of its own would only download the file (most
+   Android phones), so there a cover opens the site's own reader instead:
+   the PDF full screen, drawn with PDF.js (lib/pdfjs). Under each name are
+   View (the same) and Download PDF (the file, to keep).
    ═══════════════════════════════════════════════════════════════════════════ */
-const CAT_DOC = "doors";
-/* the sentence under the heading, for each catalogue — what is in it, as its own pages say */
-const CAT_LEDES = {
-  granite:   { en: "The Granite Kitchen Sink Collection, 2026: a page for every sink — the kitchen it is shown in, its listed specifications and a technical drawing.",
-               id: "Koleksi Bak Cuci Dapur Granit 2026: satu halaman untuk setiap bak cuci — dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya." },
-  stainless: { en: "The Stainless Steel Kitchen Sink Collection, 2026: a page for every sink — the kitchen it is shown in, its listed specifications and a technical drawing.",
-               id: "Koleksi Bak Cuci Dapur Stainless Steel 2026: satu halaman untuk setiap bak cuci — dapur tempatnya ditampilkan, spesifikasi yang tercantum, dan gambar teknisnya." },
-  doors:     { en: "The Wellup UPVC Door Collection, 2026: a page for every model — its colours as photographed, its specification as printed and every product code.",
-               id: "Koleksi Pintu UPVC Wellup 2026: satu halaman untuk setiap model — warnanya sesuai foto, spesifikasinya sesuai daftar harga, dan setiap kode produknya." },
+/* each catalogue's name on the page (its PDF's own title is "… Collection") */
+const CAT_TITLES = {
+  granite:   { en: "Granite Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur Granit" },
+  stainless: { en: "Stainless Steel Kitchen Sink Catalogue", id: "Katalog Bak Cuci Dapur Stainless Steel" },
+  doors:     { en: "Wellup UPVC Door Catalogue", id: "Katalog Pintu UPVC Wellup" },
 };
+const CAT_LEDE = { en: "Open a catalogue to read it, or download the PDF.", id: "Buka katalog untuk membacanya, atau unduh PDF-nya." };
 
 /* PDF.js 5.7 (Mozilla, Apache License 2.0), beside the page in lib/pdfjs — its legacy build, which older phones run
    too (an ES module, and its worker). It draws every page as the PDF has it, the catalogues' gradients included. It is
@@ -14317,7 +14322,7 @@ const catOpen = (url) => {
   return catDocs.get(url);
 };
 const catPic = (url, n, cssW) => {
-  const px = Math.max(300, Math.min(1800, Math.ceil((cssW * Math.min(window.devicePixelRatio || 1, 2)) / 100) * 100));
+  const px = Math.max(300, Math.min(1800, Math.ceil((cssW * Math.min(window.devicePixelRatio || 1, 3)) / 100) * 100));
   const key = url + "#" + n + "@" + px;
   if (!catPics.has(key)) {
     const p = catOpen(url).then(async (pdf) => {
@@ -14357,74 +14362,8 @@ const useWidth = (ref, again = null) => {
   return w;
 };
 
-/* on a phone: the catalogue a page at a time — the arrows, or a swipe, turn it; the cover is there at once (its
-   picture is made with the PDFs), and every page is the PDF's own, drawn at the width it is seen at */
-const CatPreview = ({ url, cover = null, pages = null, title, page, onPage }) => {
-  const { x } = useStore();
-  const [total, setTotal] = useState(pages);
-  const [pics, setPics] = useState({});
-  const [failed, setFailed] = useState(false);
-  const sheet = useRef(null), swipe = useRef(null);
-  const w = useWidth(sheet);
-  const n = page;
-  useEffect(() => {
-    let live = true;
-    setFailed(false);
-    setPics({});
-    catOpen(url).then((pdf) => { if (live) setTotal(pdf.numPages); }, () => { if (live) setFailed(true); });
-    return () => { live = false; };
-  }, [url]);
-  /* the page shown, and the pages either side, so a turn is instant */
-  useEffect(() => {
-    if (!w || failed) return undefined;
-    let live = true;
-    [n, n + 1, n - 1].forEach((k) => {
-      if (k < 1 || (total && k > total)) return;
-      catPic(url, k, w).then((src) => { if (live) setPics((s) => (s[k] === src ? s : { ...s, [k]: src })); },
-                             () => { if (live && k === n) setFailed(true); });
-    });
-    return () => { live = false; };
-  }, [url, n, w, total, failed]);
-  const last = total || 1;
-  const go = (d) => onPage(Math.max(1, Math.min(last, n + d)));
-  const down = (e) => { swipe.current = e.pointerType === "mouse" ? null : { x: e.clientX, y: e.clientY }; };
-  const up = (e) => {
-    const s0 = swipe.current;
-    swipe.current = null;
-    if (!s0) return;
-    const dx = e.clientX - s0.x, dy = e.clientY - s0.y;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > 1.5 * Math.abs(dy)) go(dx < 0 ? 1 : -1);
-  };
-  const keys = (e) => {
-    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
-  };
-  const pic = pics[n] || (n === 1 ? cover : null);
-  const of = (k) => x({ en: "Page " + k + " of " + last, id: "Halaman " + k + " dari " + last });
-  return (
-    <div className="cat-book" data-cat-preview="" onKeyDown={keys}>
-      <div ref={sheet} className="cat-sheet" role="img" aria-label={title + " — " + of(n)} data-cat-sheet={n}
-        onPointerDown={down} onPointerUp={up} onPointerCancel={() => { swipe.current = null; }}>
-        {pic ? <img key={pic} src={pic} alt="" draggable="false" decoding="async" data-cat-pic={pics[n] ? n : "cover"} /> : null}
-        {!pic ? <span className="cat-wait" aria-hidden="true">{of(n)}</span> : null}
-      </div>
-      <div className="cat-pager">
-        <button type="button" className="cat-arrow" onClick={() => go(-1)} disabled={failed || n <= 1}
-          aria-label={x({ en: "Previous page", id: "Halaman sebelumnya" })} data-cat-prev=""><Icon name="left" size={20} /></button>
-        <span className="cat-count" aria-live="polite" data-cat-count="">{of(n)}</span>
-        <button type="button" className="cat-arrow" onClick={() => go(1)} disabled={failed || n >= last}
-          aria-label={x({ en: "Next page", id: "Halaman berikutnya" })} data-cat-next=""><Icon name="right" size={20} /></button>
-      </div>
-      {failed ? (
-        <p className="cat-note" data-cat-failed="">{x({ en: "The pages cannot be shown here: View Catalogue or Download PDF opens the file itself.",
-                                                         id: "Halamannya tidak dapat ditampilkan di sini: Lihat Katalog atau Unduh PDF membuka filenya langsung." })}</p>
-      ) : null}
-    </div>
-  );
-};
-
-/* View Catalogue, on a phone with no viewer of its own: the PDF full screen, every page in turn, opened at the page
-   the preview is at. It is a step in the history, so the phone's Back closes it, as do its × and Escape. */
+/* A catalogue opened where the browser has no PDF viewer of its own: the PDF full screen, every page in turn, each
+   drawn as it comes near. It is a step in the history, so the phone's Back closes it, as do its × and Escape. */
 const CatReader = ({ url, title, file, pages = null, start = 1, onClose }) => {
   const { x } = useStore();
   const [total, setTotal] = useState(pages);
@@ -14519,55 +14458,76 @@ const CatReader = ({ url, title, file, pages = null, start = 1, onClose }) => {
   );
 };
 
-/* can the browser open a PDF in a viewer of its own (a computer's browser; Safari on an iPhone)? Then View Catalogue
-   opens the file itself, in a tab of its own; otherwise the site's own reader */
+/* can the browser open a PDF in a viewer of its own (a computer's browser; Safari on an iPhone)? Then a catalogue
+   opens as the file itself, in a tab of its own; otherwise in the site's own reader */
 const catOwnViewer = () => typeof navigator !== "undefined" && navigator.pdfViewerEnabled === true;
+
+/* one catalogue on the Catalogue page: its cover and its name, which open it; then View (the same) and Download PDF.
+   Without the catalogue's files beside the page, each way goes to the catalogue as the website itself draws it. */
+const CatCard = ({ doc, lang, files, onOpen }) => {
+  const { x } = useStore();
+  const gone = files === "missing";
+  const pdf = ksPdfHref(doc, lang), file = ksPdfFile(doc, lang), id = doc + "-" + lang;
+  const title = tx(CAT_TITLES[doc], lang);
+  const open = gone ? { href: catReadAt(doc, lang) } : { href: pdf, target: "_blank", rel: "noopener", onClick: (e) => onOpen(e, doc) };
+  const said = x({ en: "View the catalogue", id: "Lihat katalog" }) + ": " + title;
+  return (
+    <figure className="cat-card" data-cat-card={id}>
+      {/* the cover: for a mouse or a finger; a keyboard and a screen reader have the name under it */}
+      <a {...open} className="cat-cover" tabIndex={-1} aria-hidden="true" data-cat-cover={id}>
+        <Photo src={KS_IMG("pages/" + id + "-1.jpg")} alt="" tone="#2B2926" className="no-dim" />
+      </a>
+      <figcaption className="cat-card-text">
+        <h2><a {...open} data-cat-title={id}>{title}</a></h2>
+        <div className="cat-card-foot">
+          <p className="cat-card-facts" data-cat-facts={id}>{ksPdfLine(doc, lang, files)}</p>
+          <div className="cat-card-acts">
+            <a {...open} className="cat-btn-s cat-solid" aria-label={said} data-cat-view={id}>{x({ en: "View", id: "Lihat" })}</a>
+            {gone ? null : (
+              <a href={pdf} download={file} className="cat-btn-s" aria-label={x({ en: "Download PDF", id: "Unduh PDF" }) + ": " + title} data-cat-pdf={id}>
+                <KsIcon name="download" size={14} />{x({ en: "Download PDF", id: "Unduh PDF" })}
+              </a>
+            )}
+          </div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+};
 
 const CataloguePage = () => {
   const { x, lang } = useStore();
   const files = useKsFiles();
   const L = lang === "id" ? "id" : "en";
-  const doc = CAT_DOC;
-  const pdf = ksPdfHref(doc, L), file = ksPdfFile(doc, L), meta = ksPdfMeta(doc, L);
-  const title = tx(KS_DOCS[doc].title, L);
-  const [embed] = useState(() => ksCanEmbedPdf());
-  const [page, setPage] = useState(1);
-  const [reading, setReading] = useState(false);
-  useKsMeta(x({ en: "Catalogue", id: "Katalog" }), x(CAT_LEDES[doc]));
-  const view = (e) => {
-    if (catOwnViewer() || files === "missing") return;
+  const [reading, setReading] = useState(null);       // the catalogue open in the site's own reader, if any
+  useKsMeta(x({ en: "Catalogue", id: "Katalog" }),
+    x({ en: "The catalogues of Maju Terus Jaya as PDFs: granite and stainless steel kitchen sinks, and Wellup UPVC doors. Open one to read it, or download it.",
+        id: "Katalog Maju Terus Jaya dalam bentuk PDF: bak cuci dapur granit dan stainless steel, serta pintu UPVC Wellup. Buka untuk membacanya, atau unduh." }));
+  /* a press on a catalogue: the link itself where the browser shows PDFs (and for a press that asks for a tab or a
+     window of its own); otherwise the reader */
+  const open = (e, doc) => {
+    if (catOwnViewer() || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
     e.preventDefault();
-    setReading(true);
+    setReading(doc);
   };
+  const meta = reading ? ksPdfMeta(reading, L) : null;
   return (
-    <div className="cl" data-cat-page={doc + "-" + L}>
+    <div className="cl" data-cat-page="catalogues">
       <section className="cat-head mx-auto max-w-site px-5 md:px-10">
         <Reveal className="cascade">
           <h1>{x({ en: "Catalogue", id: "Katalog" })}</h1>
-          <p className="cat-lede">{x(CAT_LEDES[doc])}</p>
-          <div className="cat-acts">
-            <a href={pdf} target="_blank" rel="noopener" onClick={view} className="cat-btn cat-solid" data-cat-view={doc + "-" + L}>
-              <KsIcon name="external" size={16} />{x({ en: "View Catalogue", id: "Lihat Katalog" })}
-            </a>
-            <a href={pdf} download={file} className="cat-btn" data-cat-pdf={doc + "-" + L}>
-              <KsIcon name="download" size={16} />{x({ en: "Download PDF", id: "Unduh PDF" })}
-            </a>
-          </div>
-          <p className="cat-facts" data-cat-facts="">{ksPdfLine(doc, L, "ok") + " · " + (L === "id" ? "Bahasa Indonesia" : "English")}</p>
+          <p className="cat-lede">{x(CAT_LEDE)}</p>
         </Reveal>
       </section>
-      <section className="cat-view mx-auto max-w-site px-5 md:px-10" aria-label={title}>
-        {embed ? (
-          files === "ok" ? <iframe key={pdf} src={pdf} title={title} className="cat-frame" data-cat-frame="" />
-                         : <div className="cat-frame" aria-hidden="true" />
-        ) : (
-          <CatPreview url={pdf} cover={KS_IMG("pages/" + doc + "-" + L + "-1.jpg")} pages={meta && meta.pages} title={title} page={page} onPage={setPage} />
-        )}
-        {embed && files === "missing" ? (
-          <p className="cat-note" data-cat-failed="">{x({ en: "The catalogue's PDF is not beside this copy of the page.", id: "PDF katalog tidak ada di samping salinan halaman ini." })}</p>
-        ) : null}
+      <section className="cat-shelf mx-auto max-w-site px-5 md:px-10" aria-label={x({ en: "The catalogues", id: "Daftar katalog" })}>
+        <Reveal still className="cat-grid cascade">
+          {CAT_DOC_LIST.map((d) => <CatCard key={d} doc={d} lang={L} files={files} onOpen={open} />)}
+        </Reveal>
       </section>
-      {reading ? <CatReader url={pdf} title={title} file={file} pages={meta && meta.pages} start={page} onClose={() => setReading(false)} /> : null}
+      {reading ? (
+        <CatReader key={reading + L} url={ksPdfHref(reading, L)} title={tx(CAT_TITLES[reading], L)} file={ksPdfFile(reading, L)}
+          pages={meta && meta.pages} onClose={() => setReading(null)} />
+      ) : null}
     </div>
   );
 };
@@ -20673,8 +20633,8 @@ const DoorCatalogue = ({ section = null }) => {
             <h2 id="dc-also-title" className="mt-5 text-[30px] leading-[1.14] md:text-[40px]">{x({ en: "Kitchen sink catalogues", id: "Katalog bak cuci dapur" })}</h2>
             <p className="mt-5 max-w-[44ch] text-[15px] leading-[1.8] text-mute">{x({ en: "Two volumes, granite and stainless steel, with a page for every sink: its listed specifications and a technical drawing.",
                                                                                           id: "Dua volume, granit dan stainless steel, dengan satu halaman untuk setiap bak cuci: spesifikasi yang tercantum dan gambar teknisnya." })}</p>
-            <a href="#/shop/kitchen-sinks" className="group/l mt-8 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink" data-dc-all="">
-              <span className="u">{x({ en: "Browse them online", id: "Lihat secara online" })}</span>
+            <a href="#/catalogue" className="group/l mt-8 inline-flex items-center gap-3 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink" data-dc-all="">
+              <span className="u">{x({ en: "All catalogues", id: "Semua katalog" })}</span>
               <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
             </a>
           </Reveal>

@@ -46,7 +46,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,200..400&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -8449,20 +8448,11 @@ const LOCALE = { en: "en-US", id: "id-ID" };
 const localeOf = (lang) => LOCALE[lang] || LOCALE.en;
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   IMAGERY — placeholder interior / architecture photography
+   IMAGERY — every picture on the site is the shop's own: its product photographs and its own renders (img/).
+   TONE is the ground a picture stands on while it loads.
    ═══════════════════════════════════════════════════════════════════════════ */
-const PH = [
-  "1600585154340-be6161a56a0c", "1600607687939-ce8a6c25118c", "1600566753086-00f18fb6b3ea",
-  "1600566753190-17f0baa2a6c3", "1584622650111-993a426fbf0a", "1620626011761-996317b8d101",
-  "1507089947368-19c1da9775ae", "1556911220-bff31c812dba", "1556909114-f6e7ad7d3136",
-  "1600489000022-c2086d79f9d4", "1600121848594-d8644e57abab", "1541123437800-1bb1317badc2",
-  "1518005020951-eccb494ad742", "1497366216548-37526070297c", "1584622781564-1d987f7333c1",
-  "1615874959474-d609969a20ed", "1493809842364-78817add7ffb", "1522708323590-d24dbb6b0267",
-];
-const IMG = (n, w = 1000) =>
-  `https://images.unsplash.com/photo-${PH[n % PH.length]}?auto=format&fit=crop&w=${w}&q=80`;
 const TONE = ["#DFDCD5", "#D6D2CA", "#E4E1DA", "#CFCBC2", "#E8E5DE", "#D2CEC6"];
-const toneOf = (n) => TONE[n % TONE.length];
+const toneOf = (n) => TONE[(n || 0) % TONE.length];
 
 /* ═══════════════════════════════════════════════════════════════════════════
    GRANITE SINK PHOTOGRAPHY
@@ -8499,9 +8489,9 @@ Object.assign(SINK_IMG, {"lps-5040":"data:image/webp;base64,UklGRmomAABXRUJQVlA4
 /* A product carries either `imgs` (indices into the stock library) or `photos`
    (keys into SINK_IMG). One resolver, so every call site handles both. */
 const pImg   = (p, n = 0, w = 1000) =>
-  (p.photos && p.photos.length ? SINK_IMG[p.photos[n % p.photos.length]] : IMG(p.imgs[n % p.imgs.length], w));
-const pTone  = (p, n = 0) => (p.photos ? PLATE : toneOf(p.imgs[n % p.imgs.length]));
-const pCount = (p) => (p.photos ? p.photos.length : p.imgs.length);
+  (p && p.photos && p.photos.length ? SINK_IMG[p.photos[n % p.photos.length]] : "");   // no photograph, no picture
+const pTone  = (p, n = 0) => (p && p.photos ? PLATE : toneOf(n));
+const pCount = (p) => (p && p.photos ? p.photos.length : 0);
 /* studio cut-outs sit inside the tile; lifestyle photography fills it */
 const pFit   = (p) => (p.fit === "contain" ? "object-contain no-dim" : "object-cover");
 const pPlate = (p) => (p.fit === "contain" ? "bg-[#F4F3F0]" : "bg-concrete");
@@ -8597,317 +8587,9 @@ const finishOf = (v) => (v && typeof v === "object" && v.name ? v
   : FINISH_BY_NAME[String(v == null ? "" : v).trim().toLowerCase()] || null);
 const canonFinish = (v) => { const f = finishOf(v); return f ? f.name.en : String(v == null ? "" : v); };
 
-/* PLACEHOLDER CATALOGUE — invented names, materials, specifications and
-   prices, written to demonstrate the layout. Replace with real JSM data.  */
-const CATALOG = [
-  /* ── KITCHEN ────────────────────────────────────────────────────────── */
-  { slug:"lugu-undermount-sink", name:"Lugu Undermount Sink", cat:"kitchen", line:"signature",
-    price:4850000, unit:"each", tag:{en:"New",id:"Baru"}, isNew:true, imgs:[8,7,9,10],
-    material:{ en:"Brushed 304 stainless steel", id:"Baja nirkarat 304 sikat" },
-    desc:{ en:"A single-bowl undermount sink pressed from 1.2 mm 304 steel, sound-deadened underneath and finished by hand along the grain.",
-           id:"Bak cuci undermount satu ruang dari baja 304 setebal 1,2 mm, dilapis peredam di bagian bawah dan difinis manual searah serat." },
-    finishes:[F.steel, F.black], stock:["kemang","bsd","gading"],
-    spec:[ [{en:"Dimensions",id:"Dimensi"}, "540 × 440 × 200 mm"],
-           [{en:"Material",id:"Material"}, {en:"304 stainless steel, 1.2 mm",id:"Baja nirkarat 304, 1,2 mm"}],
-           [{en:"Drain",id:"Saluran"}, {en:"90 mm, basket strainer included",id:"90 mm, saringan disertakan"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"10 years",id:"10 tahun"}] ] },
-
-  { slug:"tarik-pull-down-mixer", name:"Tarik Pull-Down Mixer", cat:"sanitary", line:"signature",
-    price:6200000, unit:"each", imgs:[7,9,8,6],
-    material:{ en:"Brushed brass, PVD finish", id:"Kuningan sikat, finishing PVD" },
-    desc:{ en:"A pull-down kitchen mixer with a braided hose and a magnetic dock, in a PVD finish that will not tarnish over a wet sink.",
-           id:"Keran dapur tarik dengan selang berjalin dan dudukan magnetik, finishing PVD yang tidak kusam di atas bak basah." },
-    finishes:[F.brass, F.steel, F.black], stock:["kemang","sutera"],
-    spec:[ [{en:"Height",id:"Tinggi"}, "420 mm"],
-           [{en:"Spout reach",id:"Jangkauan"}, "230 mm"],
-           [{en:"Cartridge",id:"Katrid"}, {en:"35 mm ceramic",id:"Keramik 35 mm"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"5 years",id:"5 tahun"}] ] },
-
-  { slug:"batur-worktop", name:"Batur Worktop", cat:"kitchen", line:"pro",
-    price:3400000, unit:"perM2", imgs:[9,10,11,8],
-    material:{ en:"Honed basalt composite, 20 mm", id:"Komposit basal halus, 20 mm" },
-    desc:{ en:"A dense basalt composite worktop, ground flat and sealed open so it reads as stone rather than a photograph of stone.",
-           id:"Meja dapur komposit basal padat, digerinda rata dan disegel terbuka sehingga terbaca sebagai batu, bukan gambar batu." },
-    finishes:[F.stone, F.black], stock:["bsd","gading"],
-    spec:[ [{en:"Thickness",id:"Ketebalan"}, "20 mm"],
-           [{en:"Slab size",id:"Ukuran lembar"}, "3200 × 1600 mm"],
-           [{en:"Finish",id:"Finishing"}, {en:"Honed, open-sealed",id:"Halus, segel terbuka"}],
-           [{en:"Cut to size",id:"Potong sesuai ukuran"}, {en:"In-store service",id:"Layanan di toko"}] ] },
-
-  /* ── BATHROOM ───────────────────────────────────────────────────────── */
-  { slug:"tirta-basin-mixer", name:"Tirta Basin Mixer", cat:"sanitary", line:"signature",
-    price:4750000, unit:"each", tag:{en:"New",id:"Baru"}, isNew:true, imgs:[5,4,14,15],
-    material:{ en:"Brushed brass, PVD finish", id:"Kuningan sikat, finishing PVD" },
-    desc:{ en:"A tall basin mixer for wall-hung bowls, weighted so the lever falls closed rather than snapping.",
-           id:"Keran wastafel tinggi untuk wastafel gantung, dengan bobot agar tuas menutup halus, tidak menghentak." },
-    finishes:[F.brass, F.chrome, F.black], stock:["kemang","sutera","bsd"],
-    spec:[ [{en:"Height",id:"Tinggi"}, "285 mm"],
-           [{en:"Spout reach",id:"Jangkauan"}, "135 mm"],
-           [{en:"Flow rate",id:"Debit air"}, "5.7 L/min"],
-           [{en:"Warranty",id:"Garansi"}, {en:"5 years",id:"5 tahun"}] ] },
-
-  { slug:"sela-wall-hung-basin", name:"Sela Wall-Hung Basin", cat:"sanitary", line:"signature",
-    price:7300000, unit:"each", imgs:[4,14,5,2],
-    material:{ en:"Glazed fine porcelain", id:"Porselen halus berglasir" },
-    desc:{ en:"A wall-hung basin with a soft inner radius, fired twice and glazed once so the surface stays even at the rim.",
-           id:"Wastafel gantung dengan radius dalam lembut, dibakar dua kali dan diglasir sekali agar permukaan rata hingga bibir." },
-    finishes:[F.white, F.stone], stock:["kemang","gading"],
-    spec:[ [{en:"Dimensions",id:"Dimensi"}, "600 × 460 × 140 mm"],
-           [{en:"Fixing",id:"Pemasangan"}, {en:"Concealed bracket",id:"Braket tersembunyi"}],
-           [{en:"Overflow",id:"Lubang luber"}, {en:"Concealed",id:"Tersembunyi"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"10 years",id:"10 tahun"}] ] },
-
-  { slug:"curah-rain-shower", name:"Curah Rain Shower", cat:"sanitary", line:"signature",
-    price:8900000, unit:"each", imgs:[14,15,4,5],
-    material:{ en:"Brushed steel, 300 mm head", id:"Baja sikat, kepala 300 mm" },
-    desc:{ en:"A 300 mm ceiling rose with silicone nozzles that clear by hand, and a thermostatic valve that holds temperature when a tap opens elsewhere.",
-           id:"Kepala shower plafon 300 mm dengan nozel silikon yang bisa dibersihkan dengan tangan, dan katup termostatik yang menjaga suhu saat keran lain dibuka." },
-    finishes:[F.steel, F.brass, F.black], stock:["kemang","sutera"],
-    spec:[ [{en:"Head",id:"Kepala"}, "300 × 300 mm"],
-           [{en:"Valve",id:"Katup"}, {en:"Thermostatic, 38 °C limit",id:"Termostatik, batas 38 °C"}],
-           [{en:"Pressure",id:"Tekanan"}, {en:"1.5–5 bar",id:"1,5–5 bar"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"5 years",id:"5 tahun"}] ] },
-
-  /* ── FLOORING & WALL ────────────────────────────────────────────────── */
-  { slug:"pasir-porcelain-tile", name:"Pasir Porcelain Tile", cat:"flooring", line:"essential",
-    price:389000, unit:"perM2", imgs:[11,2,3,12],
-    material:{ en:"Through-body porcelain, R10", id:"Porselen full body, R10" },
-    desc:{ en:"A through-body porcelain in a sand tone, rated R10 for wet floors and rectified so the joint can run at 2 mm.",
-           id:"Porselen full body warna pasir, kelas R10 untuk lantai basah dan rektifikasi agar nat bisa 2 mm." },
-    finishes:[F.stone, F.oak], stock:["bsd","gading","sutera"],
-    spec:[ [{en:"Format",id:"Ukuran"}, "600 × 1200 mm"],
-           [{en:"Thickness",id:"Ketebalan"}, "9 mm"],
-           [{en:"Slip rating",id:"Anti selip"}, "R10 / A+B"],
-           [{en:"Per box",id:"Per dus"}, {en:"1.44 m² (2 pcs)",id:"1,44 m² (2 keping)"}] ] },
-
-  { slug:"kayu-engineered-oak", name:"Kayu Engineered Oak", cat:"flooring", line:"signature",
-    price:1250000, unit:"perM2", imgs:[16,17,10,0],
-    material:{ en:"Engineered oak, 4 mm wear layer", id:"Oak rekayasa, lapis aus 4 mm" },
-    desc:{ en:"A wide engineered board on a birch core, brushed and hardwax-oiled — repairable in place rather than replaced.",
-           id:"Papan lebar rekayasa dengan inti birch, disikat dan diminyaki hardwax — bisa diperbaiki di tempat, bukan diganti." },
-    finishes:[F.oak, F.stone], stock:["kemang","bsd"],
-    spec:[ [{en:"Board",id:"Papan"}, "1900 × 190 × 14 mm"],
-           [{en:"Wear layer",id:"Lapis aus"}, "4 mm"],
-           [{en:"Finish",id:"Finishing"}, {en:"Hardwax oil",id:"Minyak hardwax"}],
-           [{en:"Underfloor heating",id:"Pemanas lantai"}, {en:"Suitable",id:"Sesuai"}] ] },
-
-  { slug:"lempeng-wall-panel", name:"Lempeng Wall Panel", cat:"flooring", line:"pro",
-    price:940000, unit:"perM2", imgs:[12,11,13,3],
-    material:{ en:"Fibre-cement panel, honed", id:"Panel serat semen, dihaluskan" },
-    desc:{ en:"A fibre-cement wall panel with a honed face, cut on site and fixed on a batten grid for a flat concrete wall without the pour.",
-           id:"Panel dinding serat semen dengan muka halus, dipotong di lokasi dan dipasang pada rangka kayu untuk dinding beton rata tanpa cor." },
-    finishes:[F.stone, F.black], stock:["bsd"],
-    spec:[ [{en:"Panel",id:"Panel"}, "2400 × 1200 mm"],
-           [{en:"Thickness",id:"Ketebalan"}, "9 mm"],
-           [{en:"Fire rating",id:"Ketahanan api"}, {en:"Non-combustible",id:"Tidak mudah terbakar"}],
-           [{en:"Fixing",id:"Pemasangan"}, {en:"Concealed screw",id:"Sekrup tersembunyi"}] ] },
-
-  /* ── LIGHTING ───────────────────────────────────────────────────────── */
-  { slug:"pelita-cabinet-light", name:"Pelita Cabinet Light", cat:"lighting", line:"essential",
-    price:1150000, unit:"each", imgs:[13,16,0,1],
-    material:{ en:"Anodised aluminium, 2700 K", id:"Aluminium anodisa, 2700 K" },
-    desc:{ en:"A slim under-cabinet strip at 2700 K with a diffuser deep enough that you see the light and not the diodes.",
-           id:"Lampu bawah kabinet ramping 2700 K dengan difuser cukup dalam sehingga yang terlihat cahayanya, bukan diodanya." },
-    finishes:[F.steel, F.black], stock:["kemang","sutera","bsd"],
-    spec:[ [{en:"Length",id:"Panjang"}, "600 mm"],
-           [{en:"Colour",id:"Suhu warna"}, "2700 K, CRI 95"],
-           [{en:"Output",id:"Keluaran"}, "540 lm"],
-           [{en:"Dimming",id:"Peredupan"}, {en:"Trailing edge",id:"Trailing edge"}] ] },
-
-  { slug:"sinar-pendant", name:"Sinar Pendant", cat:"lighting", line:"signature",
-    price:2650000, unit:"each", tag:{en:"Icon",id:"Ikon"}, imgs:[0,1,17,16],
-    material:{ en:"Spun brass, opal glass", id:"Kuningan pintal, kaca opal" },
-    desc:{ en:"A spun brass pendant with an opal glass shade, weighted to hang plumb from a single point over an island.",
-           id:"Lampu gantung kuningan pintal dengan kap kaca opal, berbobot agar menggantung tegak dari satu titik di atas island." },
-    finishes:[F.raw, F.black, F.white], stock:["kemang"],
-    spec:[ [{en:"Diameter",id:"Diameter"}, "260 mm"],
-           [{en:"Drop",id:"Panjang kabel"}, {en:"1500 mm, adjustable",id:"1500 mm, dapat disetel"}],
-           [{en:"Lamp",id:"Bohlam"}, {en:"E27, max 8 W LED",id:"E27, maks 8 W LED"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"2 years",id:"2 tahun"}] ] },
-
-  { slug:"lorong-track-spot", name:"Lorong Track Spot", cat:"lighting", line:"pro",
-    price:780000, unit:"each", imgs:[1,13,12,0],
-    material:{ en:"Die-cast aluminium, 3000 K", id:"Aluminium cetak, 3000 K" },
-    desc:{ en:"A deep-baffle track spot that keeps the source out of sight at normal standing height. Sold per head; track priced separately.",
-           id:"Lampu sorot rel dengan baffle dalam sehingga sumber cahaya tak terlihat pada tinggi berdiri normal. Dijual per kepala; rel dihitung terpisah." },
-    finishes:[F.black, F.steel], stock:["bsd","gading"],
-    spec:[ [{en:"Beam",id:"Sudut sorot"}, "36°"],
-           [{en:"Colour",id:"Suhu warna"}, "3000 K, CRI 90"],
-           [{en:"Output",id:"Keluaran"}, "780 lm"],
-           [{en:"Track",id:"Rel"}, {en:"3-circuit, sold separately",id:"3 sirkuit, dijual terpisah"}] ] },
-
-  /* ── HARDWARE & TOOLS ───────────────────────────────────────────────── */
-  { slug:"ambang-cabinet-pull", name:"Ambang Cabinet Pull", cat:"hardware", line:"signature",
-    price:320000, unit:"each", tag:{en:"Icon",id:"Ikon"}, imgs:[10,6,9,7],
-    material:{ en:"Solid unlacquered brass", id:"Kuningan padat tanpa pelapis" },
-    desc:{ en:"A solid brass pull left unlacquered, so it darkens unevenly with use — which is the reason to specify it.",
-           id:"Tarikan kuningan padat tanpa pelapis, sehingga menggelap tidak merata seiring pemakaian — justru itu alasan memilihnya." },
-    finishes:[F.raw, F.black, F.steel], stock:["kemang","sutera","bsd","gading"],
-    spec:[ [{en:"Length",id:"Panjang"}, "160 mm"],
-           [{en:"Centres",id:"Jarak lubang"}, "128 mm"],
-           [{en:"Projection",id:"Ketinggian"}, "32 mm"],
-           [{en:"Fixing",id:"Pemasangan"}, {en:"M4 bolts included",id:"Baut M4 disertakan"}] ] },
-
-  { slug:"engsel-soft-hinge", name:"Engsel Soft-Close Hinge", cat:"hardware", line:"essential",
-    price:145000, unit:"each", imgs:[6,10,7,9],
-    material:{ en:"Nickel-plated steel", id:"Baja lapis nikel" },
-    desc:{ en:"A clip-on soft-close hinge rated to 80,000 cycles, with three-way adjustment you can reach with the door hung.",
-           id:"Engsel clip-on soft-close teruji 80.000 siklus, dengan penyetelan tiga arah yang bisa dijangkau saat pintu terpasang." },
-    finishes:[F.steel], stock:["kemang","sutera","bsd","gading"],
-    spec:[ [{en:"Opening",id:"Bukaan"}, "110°"],
-           [{en:"Cycles",id:"Siklus"}, "80,000"],
-           [{en:"Adjustment",id:"Penyetelan"}, {en:"3-way",id:"3 arah"}],
-           [{en:"Cup",id:"Mangkuk"}, "35 mm"] ] },
-
-  { slug:"kunci-mortice-set", name:"Kunci Mortice Set", cat:"hardware", line:"pro",
-    price:1480000, unit:"each", imgs:[12,13,11,6],
-    material:{ en:"Blackened steel, brass core", id:"Baja hitam, inti kuningan" },
-    desc:{ en:"A mortice lock set with a solid lever and a euro cylinder, keyed alike across a house on request.",
-           id:"Set kunci mortice dengan tuas padat dan silinder euro, bisa disamakan kuncinya untuk satu rumah atas permintaan." },
-    finishes:[F.black, F.raw, F.steel], stock:["bsd","gading"],
-    spec:[ [{en:"Backset",id:"Backset"}, "60 mm"],
-           [{en:"Cylinder",id:"Silinder"}, {en:"Euro profile, 5 keys",id:"Profil euro, 5 kunci"}],
-           [{en:"Keyed alike",id:"Kunci sama"}, {en:"On request",id:"Atas permintaan"}],
-           [{en:"Warranty",id:"Garansi"}, {en:"5 years",id:"5 tahun"}] ] },
-
-  /* ── PAINT & SURFACES ───────────────────────────────────────────────── */
-  { slug:"kapur-matt-emulsion", name:"Kapur Matt Emulsion", cat:"paint", line:"signature",
-    price:685000, unit:"perTin", imgs:[3,2,11,12],
-    material:{ en:"Mineral matt emulsion, 2 % sheen", id:"Emulsi mineral doff, kilap 2 %" },
-    desc:{ en:"A chalk-matt mineral emulsion with almost no sheen, so a wall reads as a plane of colour rather than a reflection.",
-           id:"Emulsi mineral doff berkapur hampir tanpa kilap, sehingga dinding terbaca sebagai bidang warna, bukan pantulan." },
-    finishes:[F.white, F.stone, F.oak], stock:["kemang","sutera","bsd","gading"],
-    spec:[ [{en:"Coverage",id:"Daya sebar"}, {en:"12 m² per litre",id:"12 m² per liter"}],
-           [{en:"Sheen",id:"Tingkat kilap"}, "2 %"],
-           [{en:"Coats",id:"Lapisan"}, {en:"Two, four hours apart",id:"Dua, jeda empat jam"}],
-           [{en:"VOC",id:"VOC"}, {en:"Low, water based",id:"Rendah, berbasis air"}] ] },
-
-  { slug:"lindung-wood-oil", name:"Lindung Wood Oil", cat:"paint", line:"essential",
-    price:420000, unit:"perTin", imgs:[17,16,10,3],
-    material:{ en:"Penetrating hardwax oil", id:"Minyak hardwax penetrasi" },
-    desc:{ en:"A penetrating hardwax oil for interior timber. It wears rather than peels, and a worn patch is repaired by re-oiling that patch alone.",
-           id:"Minyak hardwax penetrasi untuk kayu interior. Ia aus, bukan mengelupas, dan bagian yang aus cukup diminyaki ulang di bagian itu saja." },
-    finishes:[F.oak, F.white], stock:["kemang","bsd"],
-    spec:[ [{en:"Coverage",id:"Daya sebar"}, {en:"20 m² per litre",id:"20 m² per liter"}],
-           [{en:"Dry time",id:"Waktu kering"}, {en:"6 hours, touch dry",id:"6 jam, kering sentuh"}],
-           [{en:"Coats",id:"Lapisan"}, {en:"Two, thinly",id:"Dua, tipis"}],
-           [{en:"Food safe",id:"Aman pangan"}, {en:"When cured",id:"Setelah matang"}] ] },
-
-  { slug:"dasar-primer-sealer", name:"Dasar Primer Sealer", cat:"paint", line:"pro",
-    price:395000, unit:"perTin", imgs:[2,3,12,11],
-    material:{ en:"Alkali-resisting primer", id:"Primer tahan alkali" },
-    desc:{ en:"An alkali-resisting primer for new plaster and render — the coat that decides whether the two above it last.",
-           id:"Primer tahan alkali untuk plester dan acian baru — lapisan yang menentukan apakah dua lapisan di atasnya bertahan." },
-    finishes:[F.white], stock:["sutera","bsd","gading"],
-    spec:[ [{en:"Coverage",id:"Daya sebar"}, {en:"10 m² per litre",id:"10 m² per liter"}],
-           [{en:"Substrate",id:"Permukaan"}, {en:"New plaster, render, concrete",id:"Plester baru, acian, beton"}],
-           [{en:"Recoat",id:"Lapis ulang"}, {en:"After 4 hours",id:"Setelah 4 jam"}],
-           [{en:"Thinning",id:"Pengenceran"}, {en:"Up to 10 % water",id:"Hingga 10 % air"}] ] },
-];
-
-/* PLACEHOLDER METRICS — invented ratings, review counts, units sold and the
-   date each product was listed. These drive Highest Rated, Best Selling and
-   Newest. Replace this one table with real figures; nothing else changes.   */
-const METRICS = {
-  "lugu-undermount-sink":  { rating: 4.8, reviews: 214, sold: 1290, added: "2026-08-18" },
-  "tarik-pull-down-mixer": { rating: 4.6, reviews: 168, sold:  940, added: "2026-05-02" },
-  "batur-worktop":         { rating: 4.4, reviews:  57, sold:  310, added: "2025-11-20" },
-  "tirta-basin-mixer":     { rating: 4.9, reviews: 302, sold: 1640, added: "2026-08-24" },
-  "sela-wall-hung-basin":  { rating: 4.7, reviews: 121, sold:  480, added: "2026-02-11" },
-  "curah-rain-shower":     { rating: 4.5, reviews:  96, sold:  365, added: "2026-03-27" },
-  "pasir-porcelain-tile":  { rating: 4.3, reviews: 411, sold: 3820, added: "2025-09-08" },
-  "kayu-engineered-oak":   { rating: 4.7, reviews: 188, sold:  620, added: "2026-01-15" },
-  "lempeng-wall-panel":    { rating: 4.1, reviews:  34, sold:  205, added: "2025-10-02" },
-  "pelita-cabinet-light":  { rating: 4.5, reviews: 143, sold: 1120, added: "2026-04-19" },
-  "sinar-pendant":         { rating: 4.8, reviews:  77, sold:  260, added: "2026-06-30" },
-  "lorong-track-spot":     { rating: 4.2, reviews:  65, sold:  880, added: "2025-12-05" },
-  "ambang-cabinet-pull":   { rating: 4.9, reviews: 486, sold: 4210, added: "2025-08-14" },
-  "engsel-soft-hinge":     { rating: 4.4, reviews: 372, sold: 5140, added: "2025-07-22" },
-  "kunci-mortice-set":     { rating: 4.6, reviews:  58, sold:  340, added: "2026-02-28" },
-  "kapur-matt-emulsion":   { rating: 4.7, reviews: 259, sold: 2470, added: "2026-07-09" },
-  "lindung-wood-oil":      { rating: 4.5, reviews: 131, sold: 1310, added: "2026-03-03" },
-  "dasar-primer-sealer":   { rating: 4.2, reviews:  88, sold: 1780, added: "2025-10-26" },
-};
-/* PLACEHOLDER DETAIL — warranty and headline features, used by the comparison
-   table. `warrantyYears` is the sortable form; 0 means none is offered.     */
-const DETAILS = {
-  "lugu-undermount-sink":  { warrantyYears: 10, feat: [
-    { en: "Sound-deadening pads underneath", id: "Peredam suara di bagian bawah" },
-    { en: "Basket strainer included",        id: "Saringan disertakan" },
-    { en: "Fits 600 mm cabinets",            id: "Muat kabinet 600 mm" } ] },
-  "tarik-pull-down-mixer": { warrantyYears: 5, feat: [
-    { en: "Magnetic dock holds the spray head", id: "Dudukan magnetik menahan kepala semprot" },
-    { en: "Braided steel hose",              id: "Selang baja berjalin" },
-    { en: "Two spray patterns",              id: "Dua pola semprotan" } ] },
-  "batur-worktop":         { warrantyYears: 15, feat: [
-    { en: "Cut to size in store",            id: "Dipotong sesuai ukuran di toko" },
-    { en: "Open-sealed, repairable",         id: "Segel terbuka, bisa diperbaiki" },
-    { en: "Heat resistant to 300 °C",        id: "Tahan panas hingga 300 °C" } ] },
-  "tirta-basin-mixer":     { warrantyYears: 5, feat: [
-    { en: "Weighted lever closes softly",    id: "Tuas berbobot, menutup halus" },
-    { en: "Flow limiter fitted",             id: "Pembatas debit terpasang" },
-    { en: "Fits wall-hung basins",           id: "Cocok untuk wastafel gantung" } ] },
-  "sela-wall-hung-basin":  { warrantyYears: 10, feat: [
-    { en: "Concealed bracket fixing",        id: "Braket pemasangan tersembunyi" },
-    { en: "Concealed overflow",              id: "Lubang luber tersembunyi" },
-    { en: "Even glaze to the rim",           id: "Glasir rata hingga bibir" } ] },
-  "curah-rain-shower":     { warrantyYears: 5, feat: [
-    { en: "Silicone nozzles clear by hand",  id: "Nozel silikon dibersihkan dengan tangan" },
-    { en: "Thermostatic 38 °C limit",        id: "Termostatik, batas 38 °C" },
-    { en: "Ceiling or wall mount",           id: "Pasang plafon atau dinding" } ] },
-  "pasir-porcelain-tile":  { warrantyYears: 10, feat: [
-    { en: "Rectified for 2 mm joints",       id: "Rektifikasi untuk nat 2 mm" },
-    { en: "R10 slip rating",                 id: "Kelas anti selip R10" },
-    { en: "Suitable for wet floors",         id: "Sesuai untuk lantai basah" } ] },
-  "kayu-engineered-oak":   { warrantyYears: 20, feat: [
-    { en: "Repairable in place",             id: "Bisa diperbaiki di tempat" },
-    { en: "Underfloor heating ready",        id: "Siap pemanas lantai" },
-    { en: "Birch core, 4 mm wear layer",     id: "Inti birch, lapis aus 4 mm" } ] },
-  "lempeng-wall-panel":    { warrantyYears: 10, feat: [
-    { en: "Cut on site",                     id: "Dipotong di lokasi" },
-    { en: "Non-combustible",                 id: "Tidak mudah terbakar" },
-    { en: "Concealed fixings",               id: "Pemasangan tersembunyi" } ] },
-  "pelita-cabinet-light":  { warrantyYears: 3, feat: [
-    { en: "Deep diffuser hides the diodes",  id: "Difuser dalam menyembunyikan dioda" },
-    { en: "Trailing-edge dimmable",          id: "Bisa diredupkan trailing edge" },
-    { en: "CRI 95 colour rendering",         id: "Rendisi warna CRI 95" } ] },
-  "sinar-pendant":         { warrantyYears: 2, feat: [
-    { en: "Weighted to hang plumb",          id: "Berbobot agar menggantung tegak" },
-    { en: "Adjustable drop",                 id: "Panjang kabel dapat disetel" },
-    { en: "Opal glass shade",                id: "Kap kaca opal" } ] },
-  "lorong-track-spot":     { warrantyYears: 3, feat: [
-    { en: "Deep baffle keeps the source hidden", id: "Baffle dalam menyembunyikan sumber cahaya" },
-    { en: "3-circuit track compatible",      id: "Kompatibel rel 3 sirkuit" },
-    { en: "36° beam angle",                  id: "Sudut sorot 36°" } ] },
-  "ambang-cabinet-pull":   { warrantyYears: 10, feat: [
-    { en: "Solid brass, not plated",         id: "Kuningan padat, bukan lapis" },
-    { en: "M4 bolts included",               id: "Baut M4 disertakan" },
-    { en: "Darkens with use",                id: "Menggelap seiring pemakaian" } ] },
-  "engsel-soft-hinge":     { warrantyYears: 5, feat: [
-    { en: "Rated to 80,000 cycles",          id: "Teruji 80.000 siklus" },
-    { en: "Three-way adjustment",            id: "Penyetelan tiga arah" },
-    { en: "Clip-on mounting",                id: "Pemasangan clip-on" } ] },
-  "kunci-mortice-set":     { warrantyYears: 5, feat: [
-    { en: "Keyed alike on request",          id: "Kunci bisa disamakan atas permintaan" },
-    { en: "Euro cylinder, five keys",        id: "Silinder euro, lima kunci" },
-    { en: "Solid lever, no hollow core",     id: "Tuas padat, bukan berongga" } ] },
-  "kapur-matt-emulsion":   { warrantyYears: 0, feat: [
-    { en: "2 % sheen, chalk matt",           id: "Kilap 2 %, doff berkapur" },
-    { en: "Low VOC, water based",            id: "VOC rendah, berbasis air" },
-    { en: "12 m² per litre",                 id: "12 m² per liter" } ] },
-  "lindung-wood-oil":      { warrantyYears: 0, feat: [
-    { en: "Wears rather than peels",         id: "Aus, bukan mengelupas" },
-    { en: "Spot repairable",                 id: "Bisa diperbaiki setempat" },
-    { en: "Food safe when cured",            id: "Aman pangan setelah matang" } ] },
-  "dasar-primer-sealer":   { warrantyYears: 0, feat: [
-    { en: "Alkali resisting",                id: "Tahan alkali" },
-    { en: "Recoat after four hours",         id: "Lapis ulang setelah empat jam" },
-    { en: "Thins up to 10 % with water",     id: "Diencerkan hingga 10 % dengan air" } ] },
-};
-
-CATALOG.forEach((p) => Object.assign(p,
-  METRICS[p.slug] || { rating: 4.5, reviews: 0, sold: 0, added: "2025-01-01" },
-  DETAILS[p.slug] || { warrantyYears: 0, feat: [] }));
+/* Every product on the site: the granite and the stainless steel kitchen sinks and the doors, added below from the
+   shop's own lists. (The sample products the site began with, written to show the layout, are no longer in it.) */
+const CATALOG = [];
 
 /* The house sells under its own three lines; a third-party brand would sit
    here instead, read from the product record. */
@@ -9212,6 +8894,8 @@ const GRANITE = [
            [{en:"Material",id:"Material"}, {en:"Granite composite",id:"Komposit granit"}],
            [{en:"Colour / finish",id:"Warna / finishing"}, {en:"Titanium Grey",id:"Abu Titanium"}] ] },
 ];
+/* stock, ratings, sales and a warranty were never supplied for these: none is shown (as for the stainless steel sinks) */
+GRANITE.forEach((p) => Object.assign(p, { stock: [], ask: true, noRatings: true, rating: 0, reviews: 0, sold: 0, warrantyYears: 0 }));
 CATALOG.push(...GRANITE);
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -9702,9 +9386,9 @@ const ANNOUNCEMENTS = [
 ];
 
 const ROOMS = [
-  { cat:"kitchen",  eyebrow:{en:"The Kitchen",id:"Dapur"},    title:{en:"Steel & Stone",id:"Baja & Batu"},      img:IMG(8,1100),  tone:TONE[0] },
-  { cat:"bathroom", eyebrow:{en:"The Bathroom",id:"Kamar Mandi"}, title:{en:"Porcelain",id:"Porselen"},        img:IMG(5,1100),  tone:TONE[1] },
-  { cat:"flooring", eyebrow:{en:"Surfaces",id:"Permukaan"},   title:{en:"Concrete & Oak",id:"Beton & Oak"},     img:IMG(11,1100), tone:TONE[2] },
+  { cat:"kitchen",  eyebrow:{en:"The Kitchen",id:"Dapur"},    title:{en:"Steel & Stone",id:"Baja & Batu"},      img:"img/home/cat-kitchen-sinks.webp",  tone:TONE[0] },
+  { cat:"bathroom", eyebrow:{en:"The Bathroom",id:"Kamar Mandi"}, title:{en:"Porcelain",id:"Porselen"},        img:"img/home/cat-sanitary.webp",  tone:TONE[1] },
+  { cat:"flooring", eyebrow:{en:"Surfaces",id:"Permukaan"},   title:{en:"Concrete & Oak",id:"Beton & Oak"},     img:"img/home/inspire-material.webp", tone:TONE[2] },
 ];
 
 const FINISH_NOTES = {
@@ -9717,11 +9401,11 @@ const FINISH_NOTES = {
 };
 
 const SITU = [
-  { name:{ en:"The Kemang Kitchen", id:"Dapur Kemang" }, img:IMG(9,1500), tone:TONE[3],
+  { name:{ en:"The Kemang Kitchen", id:"Dapur Kemang" }, img:"img/home/inspire-kitchen.webp", tone:TONE[3],
     items:[ { slug:"tarik-pull-down-mixer", x:38, y:31 },
             { slug:"lugu-undermount-sink",  x:45, y:52 },
             { slug:"batur-worktop",         x:62, y:60 } ] },
-  { name:{ en:"The Menteng Bathroom", id:"Kamar Mandi Menteng" }, img:IMG(4,1500), tone:TONE[4],
+  { name:{ en:"The Menteng Bathroom", id:"Kamar Mandi Menteng" }, img:"img/home/cat-sanitary.webp", tone:TONE[4],
     items:[ { slug:"curah-rain-shower",     x:52, y:24 },
             { slug:"tirta-basin-mixer",     x:47, y:44 },
             { slug:"sela-wall-hung-basin",  x:40, y:58 } ] },
@@ -9734,27 +9418,27 @@ const SERVICES = [
 ];
 
 const JOURNAL = [
-  { slug:"hone-not-polish", img:IMG(11,900), tone:TONE[0],
+  { slug:"hone-not-polish", img:"img/home/inspire-material.webp", tone:TONE[0],
     title:{ en:"Why We Hone, Not Polish", id:"Mengapa Kami Menghaluskan, Bukan Mengilapkan" },
     text:{ en:"A flat, open surface reads as stone. A shined one reads as a photograph of stone.",
            id:"Permukaan rata dan terbuka terbaca sebagai batu. Yang mengilap terbaca sebagai foto batu." } },
-  { slug:"brass-left-alone", img:IMG(10,900), tone:TONE[1],
+  { slug:"brass-left-alone", img:"img/kitchens/w-7546-tsbn.webp", tone:TONE[1],
     title:{ en:"Brass, Left Alone", id:"Kuningan, Dibiarkan Saja" },
     text:{ en:"Unlacquered brass darkens unevenly, and that is the point of specifying it.",
            id:"Kuningan tanpa pelapis menggelap tidak merata, dan justru itu alasan memilihnya." } },
-  { slug:"water-tiled-correctly", img:IMG(4,900), tone:TONE[2],
+  { slug:"water-tiled-correctly", img:"img/home/cat-sanitary.webp", tone:TONE[2],
     title:{ en:"Water, Tiled Correctly", id:"Air, dan Keramik yang Benar" },
     text:{ en:"Falls, thresholds and the small decisions that keep a wet room dry.",
            id:"Kemiringan, ambang, dan keputusan kecil yang menjaga ruang basah tetap kering." } },
-  { slug:"kitchen-in-kemang", img:IMG(9,900), tone:TONE[3],
+  { slug:"kitchen-in-kemang", img:"img/home/inspire-kitchen.webp", tone:TONE[3],
     title:{ en:"A Kitchen in Kemang", id:"Sebuah Dapur di Kemang" },
     text:{ en:"Three metals, one stone, and a client who wanted none of it to shine.",
            id:"Tiga logam, satu batu, dan klien yang tak ingin satu pun mengilap." } },
-  { slug:"fewer-fittings", img:IMG(13,900), tone:TONE[4],
+  { slug:"fewer-fittings", img:"img/kitchens/gsu-7545.webp", tone:TONE[4],
     title:{ en:"The Case for Fewer Fittings", id:"Alasan Memilih Lebih Sedikit" },
     text:{ en:"Specifying less, and specifying it once — a note on renovation restraint.",
            id:"Memilih lebih sedikit, dan sekali saja — catatan tentang menahan diri saat renovasi." } },
-  { slug:"measure-first", img:IMG(12,900), tone:TONE[5],
+  { slug:"measure-first", img:"img/home/brand.webp", tone:TONE[5],
     title:{ en:"Measuring Before You Choose", id:"Mengukur Sebelum Memilih" },
     text:{ en:"The six measurements worth taking before a single product is selected.",
            id:"Enam ukuran yang perlu diambil sebelum satu produk pun dipilih." } },
@@ -9782,7 +9466,6 @@ const FOOTER = [
       { label:{en:"Enter the shop",id:"Masuk ke toko"}, to:"#/shop" },
       { label:{en:"All Products",id:"Semua Produk"}, to:"#/shop/all" },
       { label:{en:"New Arrivals",id:"Baru Tiba"}, to:"#/shop/new" },
-      { label:{en:"Best Sellers",id:"Terlaris"}, to:"#/shop/best" },
       { label:{en:"Granite Kitchen Sinks",id:"Bak Cuci Granit"}, to:"#/shop/c/sinks" },
       { label:{en:"Stainless Steel Kitchen Sinks",id:"Bak Cuci Stainless Steel"}, to:"#/shop/c/steelsinks" },
       { label:{en:"UPVC Doors",id:"Pintu UPVC"}, to:"#/shop/doors" } ] },
@@ -9832,7 +9515,7 @@ const parseRoute = (hash) => {
     if (a === "doors")    return shop("doors");
     if (a === "all")      return shop("list", { cat: null });
     if (a === "new")      return shop("list", { cat: null, view: "new" });
-    if (a === "best")     return shop("list", { cat: null, view: "best" });
+    if (a === "best")     return shop("list", { cat: null, view: null });   // sales were never counted: an old link shows everything
     if (a === "p")        return shop("product", { slug: b, hand: (parts[(inShop ? 1 : 0) + 2] || "").toUpperCase() === "L" ? "L" : null });
     if (a === "search")   return shop("search", { q: b ? decodeURIComponent(b) : "" });
     if (a === "bag")      return shop("bag");
@@ -10573,7 +10256,7 @@ const Icon = ({ name, size = 18, className = "" }) => {
 const markReady = (el) => { if (el && el.complete && el.naturalWidth > 0) el.setAttribute("data-ready", ""); };
 const Photo = ({ src, alt = "", className = "", style, tone = "#E4E1DA", eager = false }) => {
   const [failed, setFailed] = useState(false);
-  if (failed) return <div className={"ph-fallback " + className} style={{ ...style, background: tone }} aria-label={alt} role="img" />;
+  if (failed || !src) return <div className={"ph-fallback " + className} style={{ ...style, background: tone }} aria-label={alt} role="img" />;
   return <img ref={markReady} src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async"
     onLoad={(e) => e.currentTarget.setAttribute("data-ready", "")}
     onError={() => setFailed(true)} className={className} style={style} draggable="false" />;
@@ -10810,8 +10493,8 @@ const Rating = ({ product, size = 12, className = "" }) => {
   const label = n
     ? `${product.rating.toFixed(1)} / 5 — ${n} ${n === 1 ? tx(T.review, lang) : tx(T.reviews, lang)}`
     : tx(T.noReviews, lang);
-  /* (none supplied: said so, rather than drawn as no stars) */
-  if (product.noRatings) return <span className={"block text-[11px] text-mute " + className}>{label}</span>;
+  /* none supplied: none shown */
+  if (product.noRatings) return null;
   return (
     <span className={"flex items-center gap-2 " + className} role="img" aria-label={label}>
       <Stars value={product.rating} size={size} />
@@ -10826,9 +10509,7 @@ const Rating = ({ product, size = 12, className = "" }) => {
    ═══════════════════════════════════════════════════════════════════════════ */
 const SORT_OPTIONS = [
   { id: "featured", key: "sortFeatured" },
-  { id: "selling",  key: "sortSelling" },
   { id: "new",      key: "sortNew" },
-  { id: "rating",   key: "sortRated" },
   { id: "asc",      key: "sortLow" },
   { id: "desc",     key: "sortHigh" },
 ];
@@ -11544,7 +11225,6 @@ const SHOP_NAV = [
   { id: "doors", label: { en: "Door", id: "Pintu" }, to: "#/shop/doors" },
   { id: "sanitary", label: { en: "Sanitary & Plumbing", id: "Saniter & Perpipaan" }, to: "#/shop/c/sanitary" },
   { id: "new",   label: { en: "New Arrivals",   id: "Baru Tiba" },      to: "#/shop/new" },
-  { id: "best",  label: { en: "Best Sellers",   id: "Terlaris" },       to: "#/shop/best" },
 ];
 
 /* The panel under Products, and under the store's Categories. Same shape,
@@ -11966,7 +11646,6 @@ const SHOP_FOOTER = [
   { label: { en: "Shop", id: "Belanja" }, items: [
       { label: { en: "All Products", id: "Semua Produk" }, to: "#/shop/all" },
       { label: { en: "New Arrivals", id: "Baru Tiba" },    to: "#/shop/new" },
-      { label: { en: "Best Sellers", id: "Terlaris" },     to: "#/shop/best" },
       { label: { en: "Granite Kitchen Sinks", id: "Bak Cuci Granit" }, to: "#/shop/c/sinks" },
       { label: { en: "Stainless Steel Kitchen Sinks", id: "Bak Cuci Stainless Steel" }, to: "#/shop/c/steelsinks" },
       { label: { en: "UPVC Doors", id: "Pintu UPVC" }, to: "#/shop/doors" } ] },
@@ -12696,8 +12375,6 @@ const HomePage = () => {
       <LxFeatured />
       <LxBrand />
       <LxInspiration />
-      <InSitu />
-      <Finishes />
       <Services />
       <JournalRail />
       <Newsletter />
@@ -12805,7 +12482,7 @@ const AccountPage = () => {
    ═══════════════════════════════════════════════════════════════════════════ */
 const ShopHome = () => {
   const { t, x } = useStore();
-  const featured = useMemo(() => CATALOG.filter((p) => listed(p) && (p.tag || p.isNew)).slice(0, 8), []);
+  const featured = useMemo(() => ["gdu-8145-pearl-black", "gsu-7545-titanium-grey", "w-7546-tsbn", "wl-18"].map(bySlug).filter(listed), []);
   const arrivals = useMemo(() => oneEach(CATALOG.filter(listed).sort((a, b) => (a.added < b.added ? 1 : -1))).slice(0, 8), []);
   const best     = useMemo(() => CATALOG.filter(listed).sort((a, b) => b.sold - a.sold).slice(0, 8), []);
   const sinks    = useMemo(() => CATALOG.filter((p) => p.cat === "sinks").slice(0, 3), []);
@@ -12821,9 +12498,11 @@ const ShopHome = () => {
       {/* hero */}
       <section className="relative h-[74vh] min-h-[520px] w-full overflow-hidden bg-concrete">
         <div className="absolute inset-0 frame in">
-          <Photo src={IMG(7, 2000)} alt="" tone="#CFCBC2" eager className="drift h-full w-full object-cover object-[60%_center]" />
+          <Photo src="img/home/closing.webp" alt="" tone="#CFCBC2" eager className="drift h-full w-full object-cover object-[60%_center]" />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-[72%] bg-gradient-to-t from-black/58 via-black/16 to-transparent" />
+        {/* the words stand on the left: the picture is darkened there, whatever it shows */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
         <div className="on-dark absolute inset-0 mx-auto flex max-w-site flex-col justify-end px-5 pb-[12vh] md:px-10">
           <div className="w-full max-w-[820px] text-white">
             <Reveal className="block" delay={80}>
@@ -12874,7 +12553,7 @@ const ShopHome = () => {
                   </div>
                   <div className="mt-6 flex items-baseline justify-between gap-5">
                     <p className="font-serif-lx text-[24px] font-light leading-[1.15] text-ink lg:text-[22px]">{x(catLabel(id))}</p>
-                    <p className="shrink-0 text-[11.5px] font-medium uppercase tracking-[0.08em] tabular-nums text-mute">{n2} {t("items")}</p>
+                    <p className="shrink-0 text-[11.5px] font-medium uppercase tracking-[0.08em] tabular-nums text-mute">{n2 ? n2 + " " + t("items") : x({ en: "Ask us", id: "Tanya kami" })}</p>
                   </div>
                 </a>
               </Reveal>
@@ -12913,13 +12592,6 @@ const ShopHome = () => {
           </div>
         </div>
       </section>
-
-      <Collection layout="rail"
-        eyebrow={{ en: "Most Wanted", id: "Paling Dicari" }}
-        title={{ en: "Best sellers", id: "Terlaris" }}
-        lede={{ en: "What actually leaves the warehouse, counted rather than curated.",
-                id: "Yang benar-benar keluar dari gudang — dihitung, bukan dikurasi." }}
-        items={best} to="#/shop/best" linkLabel={t("bestSellers")} />
 
       {/* a short word from the brand, and the way back to it */}
       <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[170px]">
@@ -13004,7 +12676,7 @@ const ProductsPage = () => {
                 <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16">
                   <div className={"md:col-span-7 " + (flip ? "md:order-2 md:col-start-6" : "")}>
                     <div className={"frame aspect-[4/3] w-full " + (g.img || g.pic ? "bg-concrete" : pPlate(any))}>
-                      <Photo src={g.pic || (g.img ? IMG(g.img, 1600) : pImg(any, 0, 1600))} alt={x(catLabel(g.id))}
+                      <Photo src={g.pic || pImg(any, 0, 1600)} alt={x(catLabel(g.id))}
                         tone={g.tone || pTone(any)}
                         className={"h-full w-full " + (g.img || g.pic ? "object-cover" : pFit(any))} />
                     </div>
@@ -13073,7 +12745,36 @@ const Tick = ({ on }) => (
   </span>
 );
 
-const ListPage = ({ cat, view }) => {
+/* A range the shop carries but has not listed online yet: its picture, and who to ask. */
+const AskRange = ({ cat }) => {
+  const { t, x } = useStore();
+  const col = COLLECTIONS.find((c) => c.cats.includes(cat));
+  return (
+    <>
+      <PageHead trail={[{ label: t("home"), to: "#/" }, { label: x(catLabel(cat)) }]} title={x(catLabel(cat))}
+        sub={x({ en: "This range is not listed online yet. Tell us what you are looking for and we will tell you what we have.",
+                 id: "Rangkaian ini belum ditampilkan di situs. Beri tahu kami apa yang Anda cari, dan kami akan memberi tahu apa yang tersedia." })} />
+      <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[150px]" data-ask-range={cat}>
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-16">
+          {col ? (
+            <div className="md:col-span-7">
+              <div className="frame aspect-[4/3] w-full bg-concrete"><Photo src={col.img} alt={x(col.title)} tone={col.tone} className="h-full w-full object-cover" /></div>
+            </div>
+          ) : null}
+          <div className="md:col-span-5">
+            <p className="max-w-[40ch] text-[16px] leading-[1.75] text-mute">{col ? x(col.body) : null}</p>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <a href="#/contact" className="inline-flex h-[52px] items-center justify-center whitespace-nowrap border border-ink bg-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">{x({ en: "Ask us", id: "Tanya kami" })}</a>
+              <a href="#/catalogue" className="inline-flex h-[52px] items-center justify-center whitespace-nowrap border border-ink px-8 text-[11.5px] font-semibold uppercase tracking-[0.1em] text-ink transition-[background-color,color] duration-500 ease-quiet hover:bg-ink hover:text-bone">{x({ en: "See the catalogues", id: "Lihat katalog" })}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+const ListPage = (props) => (props.cat && !CATALOG.some((p) => p.cat === props.cat) ? <AskRange cat={props.cat} /> : <ListPageFull {...props} />);
+const ListPageFull = ({ cat, view }) => {
   const { t, x, lang } = useStore();
   const [cats, setCats]   = useState(cat ? [cat] : []);
   const [lines, setLines] = useState([]);
@@ -13124,7 +12825,7 @@ const ListPage = ({ cat, view }) => {
   const toggle = (setter) => (v) => setter((prev) => (prev.includes(v) ? prev.filter((y) => y !== v) : [...prev, v]));
   const filters = [
     ...(cat ? [] : [{ id: "cat", label: t("category"), sel: cats, on: toggle(setCats),
-        options: CATS.map((c) => ({ value: c.id, label: x(c.label) })) }]),
+        options: CATS.filter((c) => CATALOG.some((p) => p.cat === c.id)).map((c) => ({ value: c.id, label: x(c.label) })) }]),
     ...(poolModels.length > 1 ? [{ id: "model", label: t("model"), sel: models, on: toggle(setModels),
         options: poolModels.map((m) => ({ value: m, label: m })) }] : []),
     { id: "fin",  label: isColourPool ? t("colour") : t("finish"), sel: fins, on: toggle(setFins),
@@ -13154,10 +12855,7 @@ const ListPage = ({ cat, view }) => {
         title={cat ? x(catLabel(cat)) : (lang === "id" ? "Semua produk" : "All products")}
         sub={cat === "sinks" ? t("sinkIntro") : cat === "steelsinks" ? t("steelIntro")
           : x({ en: "Fixtures, surfaces and finishes held in stock across our stores.", id: "Produk, permukaan dan finishing yang tersedia di seluruh toko kami." })}>
-        {cat === "sinks" ? (
-          /* Remove this line once real pricing and stock are in place. */
-          <p className="mt-5 max-w-[60ch] border-l border-line pl-4 text-[12px] leading-[1.7] text-mute">{t("placeholderNote")}</p>
-        ) : cat === "steelsinks" ? (
+        {cat === "steelsinks" ? (
           <p className="mt-5 max-w-[60ch] border-l border-line pl-4 text-[12px] leading-[1.7] text-mute">{t("steelNote")}</p>
         ) : null}
         {ksKindOfCat(cat) ? <KsListNote kind={ksKindOfCat(cat)} /> : null}
@@ -14041,7 +13739,7 @@ const OrderPage = ({ id }) => {
             {o.items.map((it, n) => (
               <div key={n} className="flex gap-4">
                 <div className="w-[70px] shrink-0 overflow-hidden bg-concrete">
-                  <div className="aspect-[4/5] bg-concrete"><Photo src={typeof it.img === "number" ? IMG(it.img, 250) : it.img} alt="" tone={TONE[0]} className="h-full w-full object-cover" /></div>
+                  <div className="aspect-[4/5] bg-concrete"><Photo src={typeof it.img === "number" ? "" : it.img} alt="" tone={TONE[0]} className="h-full w-full object-cover" /></div>
                 </div>
                 <div className="flex-1">
                   <p className="text-[13px]">{x(it.name)}</p>
@@ -14180,10 +13878,11 @@ const AboutPage = () => {
   const par = useParallax(60);
 
   const figures = [
-    { n: "1998", label: { en: "Trading since", id: "Berdagang sejak" } },
-    { n: "4",    label: { en: "Counters in Jabodetabek", id: "Toko di Jabodetabek" } },
-    { n: "35",   label: { en: "Products, deliberately", id: "Produk, dengan sengaja" } },
-    { n: "10",   label: { en: "Year warranty, printed", id: "Tahun garansi, tercetak" } },
+    /* counted from the site's own lists, so they are true whenever the lists change */
+    { n: String(CATALOG.filter((p) => p.cat === "sinks" || p.cat === "steelsinks").length), label: { en: "Kitchen sinks, granite and steel", id: "Bak cuci dapur, granit dan stainless" } },
+    { n: String(DOOR_MODELS.length), label: { en: "UPVC door models", id: "Model pintu UPVC" } },
+    { n: "3", label: { en: "Door colours", id: "Warna pintu" } },
+    { n: String(CAT_DOC_LIST.length), label: { en: "Catalogues to download", id: "Katalog untuk diunduh" } },
   ];
 
   return (
@@ -14197,7 +13896,7 @@ const AboutPage = () => {
       <section className="w-full overflow-hidden bg-concrete">
         <div className="frame relative h-[62vh] min-h-[400px] w-full">
           <div ref={par} className="par absolute inset-x-0 -top-[6%] h-[112%]">
-            <Photo src={IMG(12, 2000)} alt="" tone={TONE[3]} eager className="h-full w-full object-cover" />
+            <Photo src="img/home/brand.webp" alt="" tone={TONE[3]} eager className="h-full w-full object-cover" />
           </div>
         </div>
       </section>
@@ -14239,7 +13938,7 @@ const AboutPage = () => {
                 id: "Setiap produk kami tersedia dalam finishing yang kami tentukan sendiri. Sampel keenamnya tersedia di setiap toko, dan boleh dibawa pulang sebelum Anda memutuskan." }}
         links={[{ label: { en: "Delivery & installation", id: "Pengiriman & pemasangan" }, to: "#/services" },
                 { label: { en: "Visit a store", id: "Kunjungi toko" }, to: "#/contact" }]}
-        img={IMG(14, 1600)} tone={TONE[1]} ratio="aspect-[5/6]" />
+        img="img/home/inspire-material.webp" tone={TONE[1]} ratio="aspect-[5/6]" />
 
       {/* the journal, which lives here now rather than as a section of its own */}
       <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[190px]">
@@ -14578,9 +14277,6 @@ const ContactPage = () => {
             <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2">
               {STORES.map((s, n) => (
                 <Reveal key={s.id} delay={n * 90}>
-                  <div className="frame mb-7 aspect-[4/3] w-full bg-concrete">
-                    <Photo src={IMG(s.img, 900)} alt={s.name} tone={TONE[n % TONE.length]} className="h-full w-full object-cover" />
-                  </div>
                   <p className="text-[21px] font-medium tracking-[-0.012em] text-ink">{s.name}</p>
                   <p className="mt-2 text-[11.5px] font-medium uppercase tracking-[0.08em] text-mute">{x(s.city)}</p>
                   <p className="mt-4 max-w-[34ch] text-[14px] leading-[1.7] text-mute">{s.address}</p>
@@ -14795,10 +14491,6 @@ const ComparePage = () => {
     { id: "brand", label: t("brand"), value: (p) => brandOf(p), cell: (p) => brandOf(p) },
     { id: "price", label: t("price"), value: (p) => p.price, best: "min", note: t("lowestPrice"),
       cell: (p) => <span className="text-[14px]">{rp(p.price)}{unitLabel(p.unit) ? <span className="text-mute"> {x(unitLabel(p.unit))}</span> : null}</span> },
-    { id: "rating", label: t("rating"), value: (p) => p.rating, best: "max", note: t("topRated"),
-      cell: (p) => <Rating product={p} /> },
-    { id: "reviews", label: t("reviewCount"), value: (p) => p.reviews, best: "max", note: t("mostReviewed"),
-      cell: (p) => <span className="tabular-nums">{num(p.reviews)}</span> },
     { id: "avail", label: t("availability2"), value: (p) => p.stock.length, best: "max", note: t("mostAvailable"),
       cell: (p) => p.ask ? t("askInStore") : (<><span className="tabular-nums">{p.stock.length}</span> {p.stock.length === 1 ? t("storeOne") : t("stores2")}
         <span className="mt-1 block text-[11px] leading-[1.6] text-mute">{stockLine(p)}</span></>) },
@@ -16615,7 +16307,6 @@ const ShowroomPage = () => {
                   <div key={i}><dt>{x(k)}</dt><dd>{x(v)}</dd></div>
                 ))}
               </dl>
-              <p className="vs-fine" hidden={p.cat !== "sinks"}>{t("placeholderNote")}</p>
               <p className="vs-fine" hidden={!sinkHere || p.cat === "steelsinks"}>{t("vs3dNote")}</p>
               {/* a stainless sink: what its 3D model is — for all of them, for its kind, then for itself — and where its price and specification come from */}
               <div className="vs-fine vs-steel-note" hidden={p.cat !== "steelsinks"}>

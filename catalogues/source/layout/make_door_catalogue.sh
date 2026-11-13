@@ -1,9 +1,9 @@
 #!/bin/bash
 # Build the door catalogue (Volume 03, Wellup UPVC Door Collection) in English and Bahasa Indonesia, as presentation
 # (A4) and print (A4 + 3 mm bleed) editions: four PDFs.
-#   make_door_catalogue.sh <door photos> <editorial> <logos> <work_dir> <pdf_out_dir> [index.html]
+#   make_door_catalogue.sh <door photos> <editorial> <logos> <work_dir> <pdf_out_dir> [index.src.html]
 # door photos: catalogues/images/doors; editorial: catalogues/images/editorial (cover-doors.jpg, intro-doors.jpg,
-# stone-dark.jpg); logos: LOGO_LIGHT.webp and LOGO_INK.webp. With index.html, the door records are first read from
+# stone-dark.jpg); logos: LOGO_LIGHT.webp and LOGO_INK.webp. With index.src.html, the door records are first read from
 # the website again (tools/extract_doors.js); the build checks every printed fact against them at the end.
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"

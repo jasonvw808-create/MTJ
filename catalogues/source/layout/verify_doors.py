@@ -2,7 +2,7 @@
 
     python verify_doors.py <doors.json> <work dir> <pdf dir>
 
-doors.json: the door records as tools/extract_doors.js reads them from index.html; work dir: the built pages; pdf dir:
+doors.json: the door records as tools/extract_doors.js reads them from index.src.html; work dir: the built pages; pdf dir:
 the finished PDFs. For each of the four editions:
   · every model has exactly one page of its own, headed with its name;
   · on it, the printed size, specification as printed, model, colours, lists and opening match its records, and its

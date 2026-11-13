@@ -8116,7 +8116,6 @@ const T = {
   recent:      { en: "Recent searches",  id: "Pencarian terakhir" },
   popular:     { en: "Popular",          id: "Populer" },
   showResults: { en: "Show all results", id: "Lihat semua hasil" },
-  inStock:     { en: "In stock at",      id: "Tersedia di" },
   availability:{ en: "Availability",     id: "Ketersediaan" },
   directions:  { en: "Directions",       id: "Petunjuk arah" },
   visitStore:  { en: "Visit a store",    id: "Kunjungi toko" },
@@ -8136,7 +8135,6 @@ const T = {
   catalogue:   { en: "Catalogue",        id: "Katalog" },
   requestCopy: { en: "Request a copy",   id: "Minta salinan" },
   shopTheRange:{ en: "Shop the range",   id: "Lihat rangkaian" },
-  directions:  { en: "Directions",       id: "Petunjuk arah" },
   sendMessage: { en: "Send a message",   id: "Kirim pesan" },
   messageSent: { en: "Message sent",     id: "Pesan terkirim" },
   sendAnother: { en: "Send another",     id: "Kirim lagi" },
@@ -18560,11 +18558,12 @@ const KspImg = ({ srcs, alt = "", className, onFail, onPick }) => {
    photograph of the same sink, on the shop's plate (the frame takes the plate's colour, so it reads as one). */
 const KcPic = ({ name, row = null, alt = "", className = "" }) => {
   const files = useKsFiles();
-  const srcs = [KC_CAT_PICS && files === "ok" ? kcImg(name) : null, row ? pImg(row, 0, 1000) : null].filter(Boolean);
+  const own = row ? pImg(row, 0, 1000) : null;   // the shop's own photograph of this sink, which stands on the plate
+  const srcs = [KC_CAT_PICS && files === "ok" ? kcImg(name) : null, own].filter(Boolean);
   const [plate, setPlate] = useState(false);
   return (
     <div className={"kc-pic " + (plate ? "kc-pic-plate " : "") + className}>
-      <KspImg srcs={srcs} alt={alt} onPick={(k) => setPlate(!!srcs[k] && /^data:/.test(srcs[k]))} />
+      <KspImg srcs={srcs} alt={alt} onPick={(k) => setPlate(!!own && srcs[k] === own)} />
     </div>
   );
 };

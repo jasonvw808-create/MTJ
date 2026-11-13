@@ -1,6 +1,6 @@
 # Items to confirm before print
 
-The two kitchen sink volumes use only the facts in the supplied records: the granite listings and the stainless steel **Price List 2024 (14 August 2024)**, as held in `index.html` (`GRANITE`, `STAINLESS`), and the measurements the site took from the supplied product photographs (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`). Where the source is unclear or inconsistent, nothing was guessed. The value is marked **†** in the catalogue and listed below.
+The two kitchen sink volumes use only the facts in the supplied records: the granite listings and the stainless steel **Price List 2024 (14 August 2024)**, as held in `index.src.html` (`GRANITE`, `STAINLESS`), and the measurements the site took from the supplied product photographs (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`). Where the source is unclear or inconsistent, nothing was guessed. The value is marked **†** in the catalogue and listed below.
 
 ## General
 
@@ -41,7 +41,7 @@ The two kitchen sink volumes use only the facts in the supplied records: the gra
 
 ## Wellup UPVC Door Collection (Volume 03)
 
-The door volume uses only the website's door records (`DOOR_MODELS`, `DOORS` in `index.html`), taken from the Wellup **PRICE LIST 2026 (Door & Lock)**, and the shop's door photographs. It prints no prices, as the kitchen sink volumes do not.
+The door volume uses only the website's door records (`DOOR_MODELS`, `DOORS` in `index.src.html`), taken from the Wellup **PRICE LIST 2026 (Door & Lock)**, and the shop's door photographs. It prints no prices, as the kitchen sink volumes do not.
 
 | # | Model | Item | What the catalogue does |
 |---|-------|------|-------------------------|
@@ -58,8 +58,8 @@ The door volume uses only the website's door records (`DOOR_MODELS`, `DOORS` in 
 
 ## Data sources
 
-- Granite: `GRANITE` records in `index.html` (6 models; 17 colourways).
-- Stainless steel: `STAINLESS` records in `index.html`, transcribed from the Price List 2024 (25 models: 11 Pressed, 14 Hand Made).
-- Shapes, bowls, drainboards and fittings: the measurement tables in `index.html` (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`), taken from the supplied product photographs.
-- Doors: `DOOR_MODELS` and `DOORS` records in `index.html`, from the Wellup PRICE LIST 2026 (Door & Lock): 19 models, 63 colourways and lists, 125 product codes (D4). Photographs: `img/doors` on the website, and at full size in `images/doors` (made by `source/tools/door_photos.py`).
+- Granite: `GRANITE` records in `index.src.html` (6 models; 17 colourways).
+- Stainless steel: `STAINLESS` records in `index.src.html`, transcribed from the Price List 2024 (25 models: 11 Pressed, 14 Hand Made).
+- Shapes, bowls, drainboards and fittings: the measurement tables in `index.src.html` (`SINK_3D`, `COUNTER_3D`, `STEEL_3D`), taken from the supplied product photographs.
+- Doors: `DOOR_MODELS` and `DOORS` records in `index.src.html`, from the Wellup PRICE LIST 2026 (Door & Lock): 19 models, 63 colourways and lists, 125 product codes (D4). Photographs: `img/doors` on the website, and at full size in `images/doors` (made by `source/tools/door_photos.py`).
 - Prices are not included in any volume, as in the original catalogues.

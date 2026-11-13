@@ -1,6 +1,6 @@
 """The catalogue's words in Bahasa Indonesia, keyed by the English text build.py writes.
 
-The terms follow the shop's own website (index.html): bowls as "ruang", the drainboard as "papan tiris",
+The terms follow the shop's own website (index.src.html): bowls as "ruang", the drainboard as "papan tiris",
 the colours as Hitam Mutiara, Putih Murni and Abu Titanium, width × depth as "lebar × kedalaman"; the
 names the price list prints (finishes, edges, ranges, brands, included items) stay as printed, as they do
 on the website. Product facts are the same as in the English edition: only the words change."""

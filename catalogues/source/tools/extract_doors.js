@@ -1,7 +1,7 @@
-// The door records, as the website builds them: the UPVC door block of index.html (from DOOR_COLOUR to
+// The door records, as the website builds them: the UPVC door block of index.src.html (from DOOR_COLOUR to
 // CATALOG.push(...DOORS)) and the door catalogue's sections, run as they are, then written out as JSON for the
 // door catalogue's generator.
-//   node extract_doors.js <index.html> <out.json>
+//   node extract_doors.js <index.src.html> <out.json>
 const fs = require('fs');
 const vm = require('vm');
 const [,, htmlPath, outPath] = process.argv;

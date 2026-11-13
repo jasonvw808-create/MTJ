@@ -1,4 +1,4 @@
-// Extract the sink records and the embedded product photographs from index.html
+// Extract the sink records and the embedded product photographs from index.src.html
 const fs = require('fs');
 const path = require('path');
 const [,, htmlPath, outDir] = process.argv;

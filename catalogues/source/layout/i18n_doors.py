@@ -1,7 +1,7 @@
 """The door catalogue's words in Bahasa Indonesia, keyed by the English text build_doors.py writes; the words the
 kitchen sink volumes share with it (Contents, Index, Notes ...) are in i18n.py.
 
-The terms follow the shop's website (index.html): the colours as the price list prints them (White, Brown, Dark Grey),
+The terms follow the shop's website (index.src.html): the colours as the price list prints them (White, Brown, Dark Grey),
 the lists as List Putih and List Hitam, the opening as "arah bukaan", the frame as "kusen", the types as printed
 (1/2 Kaca + Jalusi ...). Product facts are the same as in the English edition: only the words change."""
 

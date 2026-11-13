@@ -1,6 +1,14 @@
-# GitHub Pages builds the website from this repository with Jekyll. The website is index.html with img/ and
-# catalogue/ (the catalogues' presentation PDFs and the pictures of their pages). catalogues/ holds the catalogue
-# generator, its full-size images and the print editions: the website never loads them, so they are left out of
-# what is published, which keeps every deployment small.
+# GitHub Pages builds the website from this repository's main branch with Jekyll. The website is index.html (built
+# from index.src.html by tools/build.mjs: see README.md) with assets/, lib/, img/ and catalogue/ (the catalogues'
+# presentation PDFs and the pictures of their pages).
+#
+# Left out of what is published, because the website never loads them: catalogues/ (the catalogue generator, its
+# full-size images and the print editions), which keeps every deployment small; and the page's source and its build.
 exclude:
   - catalogues
+  - index.src.html
+  - tools
+  - package.json
+  - package-lock.json
+  - node_modules
+  - README.md

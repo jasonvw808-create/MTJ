@@ -1,5 +1,5 @@
 """The six granite composite sinks, rebuilt from the measurements the shop's site
-took from the supplied product photographs (index.html: SINK_3D, COUNTER_3D) and the
+took from the supplied product photographs (index.src.html: SINK_3D, COUNTER_3D) and the
 listed sizes. Millimetres in the tables; metres in the scene. x across, y front->back
 (the site's z is front->back with the back negative, so y = -z).
 

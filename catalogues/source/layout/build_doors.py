@@ -3,7 +3,7 @@ sink volumes' design (catalogue.css, with doors.css for the pages only this volu
 
     python build_doors.py <doors.json> <out_dir> [print|screen] [en|id]
 
-Every fact comes from doors.json, which tools/extract_doors.js writes from the website's own door records (index.html:
+Every fact comes from doors.json, which tools/extract_doors.js writes from the website's own door records (index.src.html:
 the Wellup PRICE LIST 2026, Door & Lock, as printed): the models, their types as printed, colours, lists, R and L and
 every product code. Nothing is added to them. What the price list does not say is said to be unstated, and marked †
 where it needs the store's confirmation. No prices are printed, as in the kitchen sink volumes."""

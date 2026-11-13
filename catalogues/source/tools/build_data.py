@@ -1,4 +1,4 @@
-"""Compile the catalogue's facts from the records extracted out of index.html.
+"""Compile the catalogue's facts from the records extracted out of index.src.html.
 
 Only what the source records hold is carried over (model codes, colours, sizes, bowls,
 installation, material, finish, edge, thickness, included items). Anything unclear or

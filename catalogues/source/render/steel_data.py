@@ -1,5 +1,5 @@
 """The 25 stainless steel sinks' measurements, as the shop's site took them from the supplied
-product photographs and the Price List 2024 (index.html: STEEL_3D, STEEL_EST). Millimetres;
+product photographs and the Price List 2024 (index.src.html: STEEL_3D, STEEL_EST). Millimetres;
 x across, z front to back with the back negative, from the middle of the sink.
 
 VERIFIED (price list): overall size, height, sheet thickness, finish, edge.

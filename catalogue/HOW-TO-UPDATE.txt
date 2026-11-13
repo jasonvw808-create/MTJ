@@ -1,7 +1,8 @@
 THE CATALOGUES: THE WEBSITE'S COPY
 ==================================
 
-This folder holds what the website (index.html) shows and offers for download:
+This folder holds what the website shows and offers for download. (The website's source is index.src.html;
+the page visitors get, index.html, is built from it when a change is published: see README.md.)
 
   MTJ_Granite_Kitchen_Sink_Catalogue.pdf              Volume 01, Granite, English
   MTJ_Granite_Kitchen_Sink_Catalogue_ID.pdf           Volume 01, Granite, Bahasa Indonesia
@@ -26,36 +27,37 @@ TO UPDATE THEM
 
      layout/make_catalogues.sh <renders> <photos> <logos> <work dir> <pdf dir>
 
-   The doors, from the website's own door records (given index.html, it reads them again first):
+   The doors, from the website's own door records (given index.src.html, it reads them again first):
 
-     layout/make_door_catalogue.sh <images/doors> <images/editorial> <logos> <work dir> <pdf dir> [index.html]
+     layout/make_door_catalogue.sh <images/doors> <images/editorial> <logos> <work dir> <pdf dir> [index.src.html]
 
 2. Copy them to the website (all three volumes, or only those named: granite, stainless, doors):
 
      python layout/publish_site.py <pdf dir> <work dir> <website folder> [volume ...]
 
-   This copies the PDFs here and makes the look-inside pictures. It also writes into index.html each
+   This copies the PDFs here and makes the look-inside pictures. It also writes into index.src.html each
    PDF's page count and file size (KS_PDF_META) and every model's page number (KS_PDF_PAGES), so that
    "View in the catalogue" opens the right page.
 
-   The edition shown beside the catalogues (KS_EDITION in index.html, e.g. "November 2026") is set by hand.
+   The edition shown beside the catalogues (KS_EDITION in index.src.html, e.g. "November 2026") is set by hand.
 
 3. Commit and push. GitHub Pages publishes the site from the main branch. A change pushed to a claude/...
-   branch goes live by itself: .github/workflows/publish-to-website.yml merges it into main.
+   branch goes live by itself: .github/workflows/publish-to-website.yml merges it into main and builds
+   index.html from index.src.html there.
 
 If you replace a PDF by hand instead, keep the same file name. Then update its page count and file size in
-KS_PDF_META in index.html, and the model page numbers in KS_PDF_PAGES if any models moved to different pages.
+KS_PDF_META in index.src.html, and the model page numbers in KS_PDF_PAGES if any models moved to different pages.
 
 
 THE CATALOGUE PAGE
 ------------------
 The website's Catalogue page (#/catalogue) shows every catalogue as its cover, with its name under it, in the
-edition of the site's language: the three volumes of CAT_DOC_LIST in index.html (granite, stainless, doors), side by
+edition of the site's language: the three volumes of CAT_DOC_LIST in index.src.html (granite, stainless, doors), side by
 side. A cover (or its name, or View) opens the PDF itself in a tab of its own, where the browser shows it in its own
 viewer; Download PDF gives the same file to keep.
 
   the covers       img/pages/<volume>-<en|id>-1.jpg, the first page of each PDF (publish_site.py makes them)
-  the names        CAT_TITLES in index.html ("Granite Kitchen Sink Catalogue" ...)
+  the names        CAT_TITLES in index.src.html ("Granite Kitchen Sink Catalogue" ...)
   the line under   pages and size, from KS_PDF_META (publish_site.py writes them)
 
 A browser with no PDF viewer of its own (most Android phones) would only download the file, so there a cover opens

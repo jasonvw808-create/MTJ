@@ -1596,13 +1596,14 @@
 
   /* ── the parts every section shares ── */
   .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
-  .lx-section { position: relative; padding: 96px 0; background: rgb(var(--bone)); }
+  .lx-section { position: relative; padding: 64px 0; background: rgb(var(--bone)); }
   .lx-section.lx-alt { background: rgb(var(--shell)); }
   .lx-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: rgb(var(--accent)); }
-  .lx-h2 { margin-top: 22px; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(36px, 4.6vw, 66px);
-    line-height: 1.06; letter-spacing: -0.014em; color: rgb(var(--ink)); text-wrap: balance; }
+  /* Heading/L of the Figma type scale: Source Serif 4 Regular, 32/38 */
+  .lx-h2 { margin-top: 16px; font-family: var(--lx-serif); font-weight: 400; font-size: 32px;
+    line-height: 38px; letter-spacing: -0.01em; color: rgb(var(--ink)); text-wrap: balance; }
   .lx-lede { max-width: 46ch; font-size: 16px; line-height: 1.75; color: rgb(var(--mute)); }
-  .lx-head { display: grid; gap: 26px; margin-bottom: 52px; }
+  .lx-head { display: grid; gap: 24px; margin-bottom: 32px; }
   .lx-head-links { display: flex; flex-wrap: wrap; gap: 14px 32px; margin-top: 26px; }
   /* a way on, in words: a short bronze rule under it that runs the full width when you reach it */
   .lx-link { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: .2em;
@@ -1644,8 +1645,9 @@
                 linear-gradient(0deg, rgb(27 25 23 / .97) 0%, rgb(27 25 23 / .8) 34%, rgb(27 25 23 / .25) 64%, rgb(27 25 23 / .35) 100%); }
   .lx-hero-in { position: relative; z-index: 1; display: flex; height: 100%; max-width: 1600px; margin: 0 auto;
     padding: 0 20px 92px; flex-direction: column; justify-content: flex-end; }
+  /* Display/XL: Source Serif 4 Light, 72/76 on a computer, 44 on a phone */
   .lx-display { margin-top: 22px; max-width: 16ch; font-family: var(--lx-serif); font-weight: 300;
-    font-size: clamp(46px, 7.2vw, 112px); line-height: 1.02; letter-spacing: -0.022em; color: #F1EADE; }
+    font-size: clamp(44px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.018em; color: #F1EADE; }
   .lx-hero-lede { margin-top: 26px; max-width: 44ch; font-size: 16px; line-height: 1.75; color: rgb(241 234 222 / .84); }
   .lx-hero .lx-actions { margin-top: 36px; }
   .lx-hero .lx-eyebrow { color: rgb(var(--accent)); }
@@ -1683,37 +1685,18 @@
   .lx-brand { display: grid; gap: 48px; align-items: center; }
   .lx-brand-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: rgb(var(--concrete)); }
   .lx-brand-media .par { position: absolute; inset: -6% 0; }
-  .lx-brand-lead { margin-top: 30px; max-width: 30ch; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(22px, 1.9vw, 28px);
-    line-height: 1.45; color: rgb(var(--ink)); }
+  /* Body/L: Inter 18/30 (Source Serif is kept for 24 px and up) */
+  .lx-brand-lead { margin-top: 24px; max-width: 40ch; font-size: 18px; line-height: 30px; color: rgb(var(--ink)); }
   .lx-brand-body { margin-top: 22px; max-width: 52ch; font-size: 15.5px; line-height: 1.85; color: rgb(var(--mute)); }
   .lx-brand-note { margin-top: 24px; padding-left: 18px; border-left: 1px solid rgb(var(--accent)); font-size: 14px; line-height: 1.7; color: rgb(var(--ink) / .86); }
   .lx-brand .lx-actions { margin-top: 38px; }
 
-  /* ── 5 · inspiration: a magazine spread ── */
-  .lx-mag { display: grid; grid-template-columns: minmax(0, 1fr); gap: 52px; }
-  .lx-mag-media { position: relative; display: block; overflow: hidden; background: rgb(var(--concrete)); }
-  .lx-mag-a .lx-mag-media { aspect-ratio: 5 / 4; }
-  .lx-mag-b .lx-mag-media { aspect-ratio: 4 / 5; }
-  .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
-  .lx-mag-cap { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; margin-top: 20px; }
-  .lx-mag-no { grid-row: span 2; font-family: var(--lx-serif); font-size: 15px; line-height: 1.5; color: rgb(var(--accent)); }
-  .lx-mag-label { font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--ink)); }
-  .lx-mag-text { font-size: 14px; line-height: 1.65; color: rgb(var(--mute)); }
-  .lx-quote { font-family: var(--lx-serif); font-weight: 300; font-size: clamp(28px, 2.7vw, 42px); line-height: 1.24;
-    letter-spacing: -0.01em; color: rgb(var(--ink)); text-wrap: balance; }
-  .lx-quote::before { content: ''; display: block; width: 44px; height: 1px; margin-bottom: 30px; background: rgb(var(--accent)); }
-  .lx-quote-by { margin-top: 24px; font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute)); }
-
-  /* ── 7 · the close ── */
-  .lx-close { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: 78svh; background: #1B1917; }
-  .lx-close .media, .lx-close .par { position: absolute; inset: 0; }
-  .lx-close .par { inset: -8% 0; }
-  .lx-close-shade { position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(180deg, rgb(27 25 23 / .92) 0%, rgb(27 25 23 / .72) 45%, rgb(27 25 23 / .86) 100%); }
-  .lx-close-in { position: relative; z-index: 1; width: 100%; padding-top: 112px; padding-bottom: 112px; text-align: center; }
-  .lx-close .lx-h2 { margin-left: auto; margin-right: auto; max-width: 21ch; color: #F1EADE; }
-  .lx-close .lx-actions { justify-content: center; margin-top: 44px; }
-  .lx-close-rule { width: 44px; height: 1px; margin: 34px auto 0; background: rgb(var(--accent)); }
+  /* ── 5 · the catalogues: three covers, the page's own shape (A4 upright), each name under it ── */
+  .lx-cls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
+  .lx-cl { display: flex; flex-direction: column; }
+  .lx-cl-cover { position: relative; display: block; overflow: hidden; aspect-ratio: 210 / 297; background: #2B2926; }
+  .lx-cl-name { display: block; margin-top: 16px; font-size: 16px; font-weight: 500; line-height: 1.5; color: rgb(var(--ink)); }
+  .lx-cl-facts { display: block; margin-top: 4px; font-size: 14px; line-height: 1.6; color: rgb(var(--mute)); }
 
   @media (max-width: 479.98px) {
     .lx-actions .lx-btn { width: 100%; }
@@ -1726,14 +1709,11 @@
   }
   @media (min-width: 640px) and (max-width: 1023.98px) {
     .lx-brand-media { aspect-ratio: 16 / 11; }
-    .lx-mag { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 28px; align-items: center; }
-    .lx-mag-a, .lx-mag-c { grid-column: 1 / -1; }
-    .lx-mag-a .lx-mag-media, .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
   }
   @media (min-width: 768px) {
     .lx-wrap { padding: 0 40px; }
-    .lx-section { padding: 144px 0; }
-    .lx-head { margin-bottom: 72px; }
+    .lx-section { padding: 96px 0; }
+    .lx-head { margin-bottom: 48px; }
     .lx-hero-in { padding: 0 40px; justify-content: center; }
     .lx-hero-in > .reveal { margin-top: 64px; }
     .lx-hero-shade { background: linear-gradient(180deg, rgb(27 25 23 / .7) 0%, rgb(27 25 23 / 0) 24%),
@@ -1743,21 +1723,18 @@
     .lx-cue { display: flex; }
     .lx-cat-no { top: 34px; left: 40px; }
     .lx-cat-in { padding: 40px; }
-    .lx-close-in { padding-top: 150px; padding-bottom: 150px; }
   }
   @media (min-width: 1024px) {
-    .lx-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 64px; margin-bottom: 84px; }
+    .lx-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 64px; }
     .lx-head > :last-child { padding-bottom: 6px; }
     .lx-cats { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr));
       gap: 16px; height: clamp(640px, 54vw, 880px); }
     .lx-cat, .lx-cat:first-child { aspect-ratio: auto; }
     .lx-cat:first-child { grid-column: auto; grid-row: 1 / span 2; }
     .lx-brand { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 96px; }
-    .lx-mag { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 96px 32px; align-items: start; }
-    .lx-mag-a { grid-column: 1 / span 7; }
-    .lx-mag-b { grid-column: 9 / span 4; margin-top: 22%; }
-    .lx-mag-q { grid-column: 1 / span 5; align-self: center; padding-right: 24px; }
-    .lx-mag-c { grid-column: 6 / span 7; }
+  }
+  @media (min-width: 640px) {
+    .lx-cls { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; max-width: 816px; }
   }
   @media (min-width: 1200px) {
     .lx-products { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
@@ -11961,107 +11938,16 @@ const InSitu = () => {
   );
 };
 
-const Services = () => {
-  const { x } = useStore();
-  return (
-    <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
-      <Reveal still>
-        <div className="cascade grid grid-cols-1 border-t border-line md:grid-cols-3">
-          {SERVICES.map((s, n) => (
-            <a key={n} href={n === 2 ? "#/contact" : "#/services"}
-              className={"group flex flex-col items-center border-b border-line px-6 py-12 text-center md:border-b-0 " + (n > 0 ? "md:border-l md:border-line" : "")}>
-              <span className="text-ink/80"><Icon name={s.icon} size={26} /></span>
-              <p className="mt-6 text-[12px] font-medium uppercase tracking-[0.08em] text-ink">{x(s.label)}</p>
-              <span className="mt-4 inline-flex items-center gap-3 text-[12px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 group-hover:text-ink">
-                <span className="u">{x(s.link)}</span>
-                <span className="transition-transform duration-500 ease-quiet group-hover:translate-x-1.5"><Icon name="arrow" size={15} /></span>
-              </span>
-            </a>
-          ))}
-        </div>
-      </Reveal>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   JOURNAL
-   ═══════════════════════════════════════════════════════════════════════════ */
-const JournalRail = () => {
-  const { t, x, lang } = useStore();
-  const rail = useRail(JOURNAL.length);
-  return (
-    <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
-      <Reveal still className="cascade mb-12 flex items-end justify-between md:mb-16">
-        <div>
-          <Eyebrow>{x({ en: "Journal", id: "Artikel" })}</Eyebrow>
-          <h2 className="mt-7 text-[36px] font-medium leading-[1.14] md:text-[48px]">{lang === "id" ? "Dari " + BRAND_SHORT : "Inside " + BRAND_SHORT}</h2>
-        </div>
-        <div className="flex items-center gap-6">
-          <span className="text-[12px] font-semibold tabular-nums tracking-[0.1em] text-mute">{String(rail.i + 1).padStart(2, "0")} / {String(JOURNAL.length).padStart(2, "0")}</span>
-          <Arrows onPrev={() => rail.go(rail.i - 1)} onNext={() => rail.go(rail.i + 1)} disablePrev={rail.i === 0} disableNext={rail.i >= rail.maxI} />
-        </div>
-      </Reveal>
-      <Reveal still delay={100}>
-        <div ref={rail.ref} onScroll={rail.onScroll} className="cascade no-bar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 md:mx-0 md:gap-6 md:px-0">
-          {JOURNAL.map((j, n) => (
-            <article key={j.slug} className="w-[80%] shrink-0 snap-start sm:w-[48%] lg:w-[calc((100%-48px)/3)]">
-              <a href={`#/journal/${j.slug}`} className="group block">
-                <Media className="aspect-[4/5] w-full overflow-hidden bg-concrete" delay={100 + Math.min(n, 8) * 80}>
-                  <Photo src={j.img} alt={x(j.title)} tone={j.tone} className="h-full w-full object-cover transition-transform duration-[800ms] ease-quiet group-hover:scale-[1.03]" />
-                </Media>
-                <h3 className="mt-6 text-[24px] font-medium leading-[1.28] md:text-[27px]">{x(j.title)}</h3>
-                <p className="mt-3 max-w-[45ch] text-[14px] leading-[1.75] text-mute">{x(j.text)}</p>
-                <span className="u mt-5 inline-block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">{t("read")}</span>
-              </a>
-            </article>
-          ))}
-        </div>
-      </Reveal>
-    </section>
-  );
-};
-
-const Newsletter = () => {
-  const { t, x } = useStore();
-  const [v, setV] = useState("");
-  const [sent, setSent] = useState(false);
-  return (
-    <section className="grain relative w-full bg-concrete">
-      <div className="relative mx-auto max-w-site px-5 py-[110px] text-center md:px-10 md:py-[170px]">
-        <Reveal still className="cascade mx-auto max-w-[560px]">
-          <h2 className="text-[36px] font-medium leading-[1.14] md:text-[46px]">{x({ en: "Plans, Slowly Made", id: "Rencana yang Matang" })}</h2>
-          <p className="mx-auto mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
-            {x({ en: "New rooms, new finishes, and notes from our fitters — a few times a year, never more.",
-                 id: "Ruangan baru, finishing baru, dan catatan dari teknisi kami — beberapa kali setahun, tidak lebih." })}
-          </p>
-          <form onSubmit={(e) => { e.preventDefault(); if (v.includes("@")) setSent(true); }}
-            className="mx-auto mt-12 flex max-w-[420px] items-center gap-4 border-b border-ink/25 pb-3 transition-colors duration-500 focus-within:border-ink">
-            <input type="email" required value={v} onChange={(e) => setV(e.target.value)} placeholder={t("email")} aria-label={t("email")}
-              className="w-full bg-transparent text-[12.5px] font-medium uppercase tracking-[0.06em] text-ink placeholder:text-mute focus:outline-none" />
-            <button type="submit" aria-label={t("apply")} className="shrink-0 text-ink/85 transition-[transform,color] duration-500 ease-quiet hover:translate-x-1 hover:text-ink"><Icon name="arrow" size={17} /></button>
-          </form>
-          <p className={"mt-5 text-[12px] leading-[1.7] transition-opacity duration-500 " + (sent ? "text-accent" : "text-mute")}>
-            {sent ? t("requestSent") : x({ en: "By subscribing you agree to our Privacy Policy.", id: "Dengan berlangganan Anda menyetujui Kebijakan Privasi kami." })}
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-};
-
 /* ═══════════════════════════════════════════════════════════════════════════
    HOME  (brand side) — dark luxury
    Set on charcoal in both themes: the shell carries [data-lux] while this page
    is open, and the .lx-* rules in the stylesheet draw the new sections. The
-   order: the opening, the collections, a few products, the house, rooms to
-   imagine — then the parts of the earlier home page that do something of
-   their own (the room you can shop, the specimen wall and its sample box, the
-   services, the journal, the newsletter) — and the way on.
+   order (the approved Figma page, November 2026): the opening, the three
+   collections, four kitchen sinks, the house, the three catalogues — then the
+   footer. Nothing else: the inspiration spread, the services row, the journal
+   rail, the newsletter and the closing band were taken off.
    Pictures: the house's own renders of its kitchen sinks, web-sized in
-   img/home/ (from catalogues/images/). Where the house has none yet — the
-   bathroom and the building materials — the pictures the earlier home page
-   used for them are kept.
+   img/home/ (from catalogues/images/), and the catalogues' own covers.
    Products: the kitchen sinks only, since the rest of CATALOG is still the
    placeholder written to show the layout. A price is shown only where one was
    supplied — the stainless steel price list's; the granite prices are
@@ -12270,91 +12156,37 @@ const LxBrand = () => {
   );
 };
 
-/* one picture of the spread, with its number, its name and a line under it */
-const LxMagTile = ({ tile, n }) => {
-  const { x } = useStore();
+/* ── 5 · the catalogues: each one's cover and its name, in the site's language; they open on the Catalogue page ── */
+const LxCatalogues = () => {
+  const { x, lang } = useStore();
+  const files = useKsFiles();
+  const L = lang === "id" ? "id" : "en";
   return (
-    <figure className={tile.cls}>
-      <a href={tile.to} className="lx-hover block">
-        <Media className="lx-mag-media" delay={n * 90}><Photo src={tile.img} alt="" tone="#2C2824" className="lx-fill lx-zoom" /></Media>
-        <figcaption className="lx-mag-cap">
-          <span className="lx-mag-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
-          <span className="lx-mag-label">{x(tile.label)}</span>{" "}
-          <span className="lx-mag-text">{x(tile.text)}</span>
-        </figcaption>
-      </a>
-    </figure>
-  );
-};
-
-/* ── 5 · rooms to imagine: a magazine spread — a kitchen, a bathroom, a material, and the house's own line ── */
-const LxInspiration = () => {
-  const { x } = useStore();
-  const model = (name) => ksModels("stainless-steel").find((mm) => mm.model === name);
-  const tdg = model("W 8550 TDG"), lps = model("LPS 9643 A");
-  const tiles = [
-    { cls: "lx-mag-a", img: LX_IMG("inspire-kitchen.webp"), to: tdg ? ksDetailHref(tdg) : "#/shop/kitchen-sinks",
-      label: { en: "Modern kitchens", id: "Dapur modern" },
-      text:  { en: "W 8550 TDG, hand made in stainless steel, on a light quartz island.",
-               id: "W 8550 TDG, hand made dari stainless steel, di atas meja island kuarsa terang." } },
-    { cls: "lx-mag-b", img: "img/collections/sanitaryware.jpg", to: "#/shop/c/sanitary",
-      label: { en: "Bathrooms", id: "Kamar mandi" },
-      text:  { en: "Clean, lasting forms for the bathroom.", id: "Bentuk yang bersih dan awet untuk kamar mandi." } },
-    { cls: "lx-mag-c", img: LX_IMG("inspire-material.webp"), to: lps ? ksDetailHref(lps) : "#/shop/kitchen-sinks",
-      label: { en: "Materials", id: "Material" },
-      text:  { en: "Mat polished stainless steel — the drainer of the LPS 9643 A.",
-               id: "Stainless steel mat polished — papan tiris LPS 9643 A." } },
-  ];
-  return (
-    <section className="lx-section lx-alt" aria-labelledby="lx-insp-h">
+    <section className="lx-section lx-alt" aria-labelledby="lx-cl-h">
       <div className="lx-wrap">
         <Reveal className="lx-head">
           <div>
-            <p className="lx-eyebrow rv">{x({ en: "Interior Inspiration", id: "Inspirasi Interior" })}</p>
-            <h2 id="lx-insp-h" className="lx-h2"><span className="rise"><span>{x({ en: "Imagine it in your home", id: "Bayangkan di rumah Anda" })}</span></span></h2>
+            <p className="lx-eyebrow rv">{x({ en: "Catalogue", id: "Katalog" })}</p>
+            <h2 id="lx-cl-h" className="lx-h2"><span className="rise"><span>{x({ en: "Three catalogues, to read or download", id: "Tiga katalog, untuk dibaca atau diunduh" })}</span></span></h2>
           </div>
           <div>
-            <p className="lx-lede rv rv-2">
-              {x({ en: "Kitchens, bathrooms and the materials around them — a few rooms to start from.",
-                   id: "Dapur, kamar mandi, dan material di sekitarnya — beberapa ruangan sebagai titik awal." })}
-            </p>
-            <div className="lx-head-links rv rv-3">
-              <a href="#/virtual-showroom" className="lx-link"><LxLinkText>{x({ en: "Enter the virtual showroom", id: "Masuk ke showroom virtual" })}</LxLinkText></a>
+            <div className="lx-head-links rv rv-2">
+              <a href="#/catalogue" className="lx-link"><LxLinkText>{x({ en: "Open the catalogues", id: "Buka katalog" })}</LxLinkText></a>
             </div>
           </div>
         </Reveal>
-        <Reveal still className="lx-mag cascade">
-          <LxMagTile tile={tiles[0]} n={0} />
-          <LxMagTile tile={tiles[1]} n={1} />
-          <blockquote className="lx-mag-q">
-            <p className="lx-quote">{x({ en: "A room is finished when nothing in it asks for attention.",
-                                          id: "Sebuah ruangan selesai ketika tidak ada satu pun di dalamnya yang menuntut perhatian." })}</p>
-            <p className="lx-quote-by">{x({ en: "Maju Terus Jaya — House of Materials", id: "Maju Terus Jaya — Rumah Material" })}</p>
-          </blockquote>
-          <LxMagTile tile={tiles[2]} n={2} />
+        <Reveal still className="lx-cls cascade">
+          {CAT_DOC_LIST.map((d, n) => (
+            <a key={d} href="#/catalogue" className="lx-cl lx-hover" data-lx-cat-doc={d}>
+              <Media className="lx-cl-cover" delay={n * 90}>
+                <Photo src={KS_IMG("pages/" + d + "-" + L + "-1.jpg")} alt="" tone="#2B2926" className="no-dim lx-fill lx-zoom" />
+              </Media>
+              <span className="lx-cl-name">{tx(CAT_TITLES[d], L)}</span>
+              <span className="lx-cl-facts">{ksPdfLine(d, L, files)}</span>
+            </a>
+          ))}
         </Reveal>
       </div>
-    </section>
-  );
-};
-
-/* ── 7 · the way on: GST 7546 under a deep shade ── */
-const LxClose = () => {
-  const { x } = useStore();
-  const par = useParallax(60);
-  return (
-    <section className="lx-close" aria-labelledby="lx-close-h">
-      <Media><div ref={par} className="par"><Photo src={LX_IMG("closing.webp")} alt="" tone="#2C2824" className="lx-fill" /></div></Media>
-      <div className="lx-close-shade" />
-      <Reveal className="lx-close-in lx-wrap on-dark">
-        <p className="lx-eyebrow rv">{BRAND}</p>
-        <h2 id="lx-close-h" className="lx-h2"><span className="rise"><span>{x({ en: "Find the Perfect Elements for Your Space.", id: "Temukan Elemen yang Tepat untuk Ruang Anda." })}</span></span></h2>
-        <div className="lx-close-rule rv rv-2" />
-        <div className="lx-actions rv rv-3">
-          <LxButton to="#/shop/all">{x({ en: "Explore Products", id: "Jelajahi Produk" })}</LxButton>
-          <LxButton to="#/contact" ghost>{x({ en: "Contact Us", id: "Hubungi Kami" })}</LxButton>
-        </div>
-      </Reveal>
     </section>
   );
 };
@@ -12374,11 +12206,7 @@ const HomePage = () => {
       <LxCategories />
       <LxFeatured />
       <LxBrand />
-      <LxInspiration />
-      <Services />
-      <JournalRail />
-      <Newsletter />
-      <LxClose />
+      <LxCatalogues />
     </>
   );
 };

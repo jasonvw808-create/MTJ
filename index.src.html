@@ -1595,17 +1595,14 @@
   .f-err-msg { display: block; margin-top: 8px; font-size: 12px; line-height: 1.5; color: rgb(var(--err)); }
 
   /* ── the parts every section shares ── */
-  .page-title { font-family: var(--lx-serif); font-weight: 300; font-size: 36px; line-height: 42px; letter-spacing: -0.012em; color: rgb(var(--ink)); }
-  @media (min-width: 768px) { .page-title { font-size: 48px; line-height: 54px; } }
   .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
-  .lx-section { position: relative; padding: 64px 0; background: rgb(var(--bone)); }
+  .lx-section { position: relative; padding: 96px 0; background: rgb(var(--bone)); }
   .lx-section.lx-alt { background: rgb(var(--shell)); }
   .lx-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: rgb(var(--accent)); }
-  /* Heading/L of the Figma type scale: Source Serif 4 Regular, 32/38 */
-  .lx-h2 { margin-top: 16px; font-family: var(--lx-serif); font-weight: 400; font-size: 32px;
-    line-height: 38px; letter-spacing: -0.01em; color: rgb(var(--ink)); text-wrap: balance; }
+  .lx-h2 { margin-top: 22px; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(36px, 4.6vw, 66px);
+    line-height: 1.06; letter-spacing: -0.014em; color: rgb(var(--ink)); text-wrap: balance; }
   .lx-lede { max-width: 46ch; font-size: 16px; line-height: 1.75; color: rgb(var(--mute)); }
-  .lx-head { display: grid; gap: 24px; margin-bottom: 32px; }
+  .lx-head { display: grid; gap: 26px; margin-bottom: 52px; }
   .lx-head-links { display: flex; flex-wrap: wrap; gap: 14px 32px; margin-top: 26px; }
   /* a way on, in words: a short bronze rule under it that runs the full width when you reach it */
   .lx-link { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: .2em;
@@ -1647,35 +1644,27 @@
                 linear-gradient(0deg, rgb(27 25 23 / .97) 0%, rgb(27 25 23 / .8) 34%, rgb(27 25 23 / .25) 64%, rgb(27 25 23 / .35) 100%); }
   .lx-hero-in { position: relative; z-index: 1; display: flex; height: 100%; max-width: 1600px; margin: 0 auto;
     padding: 0 20px 92px; flex-direction: column; justify-content: flex-end; }
-  /* Display/XL: Source Serif 4 Light, 72/76 on a computer, 44 on a phone */
   .lx-display { margin-top: 22px; max-width: 16ch; font-family: var(--lx-serif); font-weight: 300;
-    font-size: clamp(44px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.018em; color: #F1EADE; }
+    font-size: clamp(46px, 7.2vw, 112px); line-height: 1.02; letter-spacing: -0.022em; color: #F1EADE; }
   .lx-hero-lede { margin-top: 26px; max-width: 44ch; font-size: 16px; line-height: 1.75; color: rgb(241 234 222 / .84); }
   .lx-hero .lx-actions { margin-top: 36px; }
   .lx-hero .lx-eyebrow { color: rgb(var(--accent)); }
   .lx-cue { position: absolute; bottom: 36px; left: 50%; z-index: 1; display: none; align-items: center; gap: 16px;
     transform: translateX(-50%); color: rgb(241 234 222 / .62); pointer-events: none; }
 
-  /* ── 2 · the collections: equal cards in one row; the row takes as many as there are ── */
-  .lx-cats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .lx-cat { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
-    aspect-ratio: 1 / 1; background: rgb(var(--concrete)); }
+  /* ── 2 · the collections ── */
+  .lx-cats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .lx-cat { position: relative; isolation: isolate; display: block; overflow: hidden; aspect-ratio: 4 / 5; background: rgb(var(--concrete)); }
   .lx-cat .media { position: absolute; inset: 0; }
   .lx-cat-shade { position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(0deg, rgb(27 25 23 / .96) 0%, rgb(27 25 23 / .82) 40%, rgb(27 25 23 / .3) 68%, rgb(27 25 23 / 0) 88%); }
-  /* the words are not positioned, so the card's link (below) spreads over the whole card; each part is lifted over the shade */
-  .lx-cat-in { padding: 24px; }
-  .lx-cat-in > :not(.lx-cat-go), .lx-cat-go > * { position: relative; z-index: 2; }
-  .lx-cat-title, .lx-cat-text { pointer-events: none; }
-  .lx-cat-title { font-family: var(--lx-serif); font-weight: 400; font-size: 32px; line-height: 38px; letter-spacing: -0.01em; color: #F1EADE; }
-  .lx-cat-text { margin-top: 8px; min-height: 44px; max-width: 34ch; font-size: 14px; line-height: 22px; color: rgb(241 234 222 / .8); }
-  .lx-cat .lx-link { margin-top: 20px; color: #F1EADE; }
-  /* the card's own link covers the whole card */
-  .lx-cat-go::after { content: ''; position: absolute; inset: 0; z-index: 1; }
-  .lx-cat-sub { min-height: 24px; display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 14px; }
-  .lx-cat-sub a { font-size: 13px; line-height: 24px; color: rgb(241 234 222 / .72); text-decoration: underline; text-decoration-color: rgb(241 234 222 / .3);
-    text-underline-offset: 4px; transition: color .4s var(--lx-ease), text-decoration-color .4s var(--lx-ease); }
-  .lx-cat-sub a:hover, .lx-cat-sub a:focus-visible { color: #F1EADE; text-decoration-color: rgb(var(--accent)); }
+    background: linear-gradient(180deg, rgb(27 25 23 / .5) 0%, rgb(27 25 23 / 0) 24%),
+                linear-gradient(0deg, rgb(27 25 23 / .94) 0%, rgb(27 25 23 / .62) 40%, rgb(27 25 23 / .12) 72%, rgb(27 25 23 / 0) 100%); }
+  .lx-cat-no { position: absolute; top: 24px; left: 24px; z-index: 1; font-family: var(--lx-serif); font-size: 15px; color: rgb(var(--accent)); }
+  .lx-cat-in { position: absolute; inset: auto 0 0 0; z-index: 1; padding: 26px 24px; }
+  .lx-cat-title { margin-top: 12px; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(30px, 2.9vw, 46px);
+    line-height: 1.05; letter-spacing: -0.012em; color: #F1EADE; }
+  .lx-cat-text { margin-top: 10px; max-width: 34ch; font-size: 14.5px; line-height: 1.6; color: rgb(241 234 222 / .76); }
+  .lx-cat .lx-link { margin-top: 22px; color: #F1EADE; }
 
   /* ── 3 · featured: a row of four that scrolls sideways on a phone ── */
   .lx-products { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 16px; overflow-x: auto;
@@ -1690,33 +1679,41 @@
   .lx-product-price { display: block; margin-top: 12px; font-size: 15px; font-weight: 500; letter-spacing: .01em; color: rgb(var(--ink)); font-variant-numeric: tabular-nums; }
   .lx-product .lx-link { margin-top: auto; padding-top: 22px; }
 
-  /* ── 4 · the house: the words, and a large picture beside them ── */
-  .lx-brand { display: grid; gap: 40px; align-items: center; }
-  .lx-brand-media { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: rgb(var(--concrete)); }
+  /* ── 4 · the house ── */
+  .lx-brand { display: grid; gap: 48px; align-items: center; }
+  .lx-brand-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: rgb(var(--concrete)); }
   .lx-brand-media .par { position: absolute; inset: -6% 0; }
-  .lx-h2-l { font-weight: 300; font-size: 36px; line-height: 42px; }
-  /* Body/L: Inter 18/30 (Source Serif is kept for 24 px and up) */
-  .lx-brand-lead { margin-top: 24px; max-width: 44ch; font-size: 18px; line-height: 30px; color: rgb(var(--mute)); }
-  .lx-brand .lx-actions { margin-top: 32px; }
+  .lx-brand-lead { margin-top: 30px; max-width: 30ch; font-family: var(--lx-serif); font-weight: 300; font-size: clamp(22px, 1.9vw, 28px);
+    line-height: 1.45; color: rgb(var(--ink)); }
+  .lx-brand-body { margin-top: 22px; max-width: 52ch; font-size: 15.5px; line-height: 1.85; color: rgb(var(--mute)); }
+  .lx-brand-note { margin-top: 24px; padding-left: 18px; border-left: 1px solid rgb(var(--accent)); font-size: 14px; line-height: 1.7; color: rgb(var(--ink) / .86); }
+  .lx-brand .lx-actions { margin-top: 38px; }
 
-  /* ── 4b · design inspiration: four rooms in a row (two by two on a tablet, one under another on a phone) ── */
-  .lx-rooms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
-  .lx-room { display: flex; flex-direction: column; }
-  .lx-room-media { position: relative; display: block; overflow: hidden; aspect-ratio: 3 / 4; background: rgb(var(--concrete)); }
-  .lx-room-label { display: block; margin-top: 16px; font-size: 16px; font-weight: 500; line-height: 24px; color: rgb(var(--ink)); }
-  .lx-room-what { display: block; margin-top: 2px; font-size: 14px; line-height: 22px; color: rgb(var(--mute)); }
+  /* ── 5 · inspiration: a magazine spread ── */
+  .lx-mag { display: grid; grid-template-columns: minmax(0, 1fr); gap: 52px; }
+  .lx-mag-media { position: relative; display: block; overflow: hidden; background: rgb(var(--concrete)); }
+  .lx-mag-a .lx-mag-media { aspect-ratio: 5 / 4; }
+  .lx-mag-b .lx-mag-media { aspect-ratio: 4 / 5; }
+  .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
+  .lx-mag-cap { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; margin-top: 20px; }
+  .lx-mag-no { grid-row: span 2; font-family: var(--lx-serif); font-size: 15px; line-height: 1.5; color: rgb(var(--accent)); }
+  .lx-mag-label { font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--ink)); }
+  .lx-mag-text { font-size: 14px; line-height: 1.65; color: rgb(var(--mute)); }
+  .lx-quote { font-family: var(--lx-serif); font-weight: 300; font-size: clamp(28px, 2.7vw, 42px); line-height: 1.24;
+    letter-spacing: -0.01em; color: rgb(var(--ink)); text-wrap: balance; }
+  .lx-quote::before { content: ''; display: block; width: 44px; height: 1px; margin-bottom: 30px; background: rgb(var(--accent)); }
+  .lx-quote-by { margin-top: 24px; font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgb(var(--mute)); }
 
-  /* ── 6 · the way on ── */
-  .lx-contact { padding: 64px 0; background: rgb(var(--bone)); border-top: 1px solid rgb(var(--line)); }
-  .lx-contact-in { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
-  .lx-contact .lx-h2 { margin-top: 0; font-weight: 300; font-size: 36px; line-height: 42px; }
-
-  /* ── 5 · the catalogues: three covers, the page's own shape (A4 upright), each name under it ── */
-  .lx-cls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
-  .lx-cl { display: flex; flex-direction: column; }
-  .lx-cl-cover { position: relative; display: block; overflow: hidden; aspect-ratio: 210 / 297; background: #2B2926; }
-  .lx-cl-name { display: block; margin-top: 16px; font-size: 16px; font-weight: 500; line-height: 1.5; color: rgb(var(--ink)); }
-  .lx-cl-facts { display: block; margin-top: 4px; font-size: 14px; line-height: 1.6; color: rgb(var(--mute)); }
+  /* ── 7 · the close ── */
+  .lx-close { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: 78svh; background: #1B1917; }
+  .lx-close .media, .lx-close .par { position: absolute; inset: 0; }
+  .lx-close .par { inset: -8% 0; }
+  .lx-close-shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgb(27 25 23 / .92) 0%, rgb(27 25 23 / .72) 45%, rgb(27 25 23 / .86) 100%); }
+  .lx-close-in { position: relative; z-index: 1; width: 100%; padding-top: 112px; padding-bottom: 112px; text-align: center; }
+  .lx-close .lx-h2 { margin-left: auto; margin-right: auto; max-width: 21ch; color: #F1EADE; }
+  .lx-close .lx-actions { justify-content: center; margin-top: 44px; }
+  .lx-close-rule { width: 44px; height: 1px; margin: 34px auto 0; background: rgb(var(--accent)); }
 
   @media (max-width: 479.98px) {
     .lx-actions .lx-btn { width: 100%; }
@@ -1724,17 +1721,19 @@
   @media (min-width: 640px) {
     .lx-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .lx-cat:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
-    .lx-rooms { gap: 40px 24px; }
     .lx-products { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 52px 24px; overflow: visible; margin: 0; padding: 0; }
   }
   @media (min-width: 640px) and (max-width: 1023.98px) {
-    .lx-brand-media { aspect-ratio: 16 / 10; }
+    .lx-brand-media { aspect-ratio: 16 / 11; }
+    .lx-mag { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 28px; align-items: center; }
+    .lx-mag-a, .lx-mag-c { grid-column: 1 / -1; }
+    .lx-mag-a .lx-mag-media, .lx-mag-c .lx-mag-media { aspect-ratio: 16 / 10; }
   }
   @media (min-width: 768px) {
     .lx-wrap { padding: 0 40px; }
-    .lx-section { padding: 96px 0; }
-    .lx-head { margin-bottom: 48px; }
+    .lx-section { padding: 144px 0; }
+    .lx-head { margin-bottom: 72px; }
     .lx-hero-in { padding: 0 40px; justify-content: center; }
     .lx-hero-in > .reveal { margin-top: 64px; }
     .lx-hero-shade { background: linear-gradient(180deg, rgb(27 25 23 / .7) 0%, rgb(27 25 23 / 0) 24%),
@@ -1742,22 +1741,23 @@
       linear-gradient(0deg, rgb(27 25 23 / 1) 0%, rgb(27 25 23 / 0) 22%); }
     .lx-hero-media img { object-position: 62% 50%; }
     .lx-cue { display: flex; }
-    .lx-cat-in { padding: 32px; }
-    .lx-contact { padding: 96px 0; }
-    .lx-h2-l, .lx-contact .lx-h2 { font-size: 48px; line-height: 54px; }
+    .lx-cat-no { top: 34px; left: 40px; }
+    .lx-cat-in { padding: 40px; }
+    .lx-close-in { padding-top: 150px; padding-bottom: 150px; }
   }
   @media (min-width: 1024px) {
-    .lx-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 64px; }
+    .lx-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 64px; margin-bottom: 84px; }
     .lx-head > :last-child { padding-bottom: 6px; }
-    .lx-cats { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; }
-    .lx-cat, .lx-cat:first-child { grid-column: auto; aspect-ratio: 4 / 5; }
-    .lx-brand { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 96px; }
-    .lx-brand-media { aspect-ratio: 7 / 6; }
-    .lx-rooms { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-    .lx-contact-in { flex-direction: row; align-items: center; justify-content: space-between; gap: 48px; }
-  }
-  @media (min-width: 640px) {
-    .lx-cls { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; max-width: 816px; }
+    .lx-cats { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 16px; height: clamp(640px, 54vw, 880px); }
+    .lx-cat, .lx-cat:first-child { aspect-ratio: auto; }
+    .lx-cat:first-child { grid-column: auto; grid-row: 1 / span 2; }
+    .lx-brand { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 96px; }
+    .lx-mag { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 96px 32px; align-items: start; }
+    .lx-mag-a { grid-column: 1 / span 7; }
+    .lx-mag-b { grid-column: 9 / span 4; margin-top: 22%; }
+    .lx-mag-q { grid-column: 1 / span 5; align-self: center; padding-right: 24px; }
+    .lx-mag-c { grid-column: 6 / span 7; }
   }
   @media (min-width: 1200px) {
     .lx-products { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
@@ -9391,6 +9391,14 @@ const ROOMS = [
   { cat:"flooring", eyebrow:{en:"Surfaces",id:"Permukaan"},   title:{en:"Concrete & Oak",id:"Beton & Oak"},     img:"img/home/inspire-material.webp", tone:TONE[2] },
 ];
 
+const FINISH_NOTES = {
+  steel: { en:"304 grade, hand-brushed along the grain.", id:"Kelas 304, disikat manual searah serat." },
+  brass: { en:"PVD over solid brass. It will not tarnish.", id:"PVD di atas kuningan padat. Tidak akan kusam." },
+  raw:   { en:"Left bare, to darken with the years.", id:"Dibiarkan polos, menggelap seiring tahun." },
+  white: { en:"Fired twice, glazed once, unpolished.", id:"Dibakar dua kali, diglasir sekali, tanpa poles." },
+  stone: { en:"Ground flat, sealed open, never shined.", id:"Digerinda rata, disegel terbuka, tak pernah dikilapkan." },
+  black: { en:"Oxidised by hand, waxed while warm.", id:"Dioksidasi manual, dililin selagi hangat." },
+};
 
 const SITU = [
   { name:{ en:"The Kemang Kitchen", id:"Dapur Kemang" }, img:"img/home/inspire-kitchen.webp", tone:TONE[3],
@@ -9446,9 +9454,7 @@ const FOOTER = [
       { label:{en:"About " + BRAND_SHORT, id:"Tentang " + BRAND_SHORT}, to:"#/about" },
       { label:{en:"Our Story",id:"Kisah Kami"}, to:"#/about" },
       { label:{en:"Journal",id:"Artikel"}, to:"#/journal" },
-      { label:{en:"Products",id:"Produk"}, to:"#/products" },
       { label:{en:"Catalogue",id:"Katalog"}, to:"#/catalogue" },
-      { label:{en:"Virtual Showroom",id:"Showroom Virtual"}, to:"#/virtual-showroom" },
       { label:{en:"Careers",id:"Karier"}, to:"#/about" } ] },
   { label:{en:"Customer Service",id:"Layanan Pelanggan"}, items:[
       { label:{en:"Delivery",id:"Pengiriman"}, to:"#/services" },
@@ -11100,14 +11106,14 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
   useLockScroll(open);
 
   return (
-    <div ref={inertRef} className={"fixed inset-0 z-[95] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet lg:hidden " + (open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0")}>
+    <div ref={inertRef} className={"fixed inset-0 z-[95] bg-bone transition-[opacity,transform] duration-[400ms] ease-quiet xl:hidden " + (open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0")}>
       <div className="flex h-16 items-center justify-between border-b border-line px-5">
         <Logo h={20} />
         <button onClick={onClose} aria-label={t("close")} className="tap"><Icon name="close" /></button>
       </div>
 
       <div className="h-[calc(100%-64px)] overflow-y-auto overscroll-contain px-5 pb-24">
-        {/* the same four items as the bar above, in the same order, with the
+        {/* the same seven items as the bar above, in the same order, with the
             same mark on the last — the phone must not tell a different
             story about how this site is put together */}
         <nav aria-label={t("menu")} className="mt-8 flex flex-col">
@@ -11190,9 +11196,9 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
    ═══════════════════════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════════════════════
    NAVIGATION
-   One bar, four items, both experiences. SHOP is one of them rather
+   One bar, seven items, both experiences. SHOP is the last of them rather
    than a button bolted to the end: same family, same size, same tracking,
-   same spacing as the other three. Its emphasis comes from a hairline rule beneath
+   same spacing as the other six. Its emphasis comes from a hairline rule beneath
    it and a mark at its left — enough to read as the primary action, not
    enough to look like it belongs to a different site.
 
@@ -11203,11 +11209,12 @@ const MobileMenu = ({ open, onClose, shop = false }) => {
 const SITE_NAV = [
   { id: "home",     label: { en: "Home",       id: "Beranda" },      to: "#/" },
   { id: "about",    label: { en: "About Us",   id: "Tentang Kami" }, to: "#/about" },
-  { id: "shop",     label: { en: "Shop",       id: "Belanja" },      to: "#/shop", lead: true },
+  { id: "products", label: { en: "Products",   id: "Produk" },       to: "#/products", panel: "products" },
+  { id: "cat",      label: { en: "Catalogue",  id: "Katalog" },      to: "#/catalogue" },
+  { id: "showroom", label: { en: "Virtual Showroom", id: "Showroom Virtual" }, to: "#/virtual-showroom" },
   { id: "contact",  label: { en: "Contact",    id: "Kontak" },       to: "#/contact" },
+  { id: "shop",     label: { en: "Shop",       id: "Belanja" },      to: "#/shop", lead: true },
 ];
-/* Products, Catalogue and the Virtual Showroom left the bar (November 2026): they are in the footer's Company column
-   and on the home page, and their pages are as they were. */
 
 const SHOP_NAV = [
   { id: "all",   label: { en: "All Products",   id: "Semua Produk" },   to: "#/shop/all" },
@@ -11367,7 +11374,7 @@ const SiteHeader = () => {
               <Logo onDark={!solid} h={solid ? 22 : 26} className="hidden sm:inline-flex" />
             </a>
 
-            <nav aria-label={t("menu")} className="hidden items-center gap-9 lg:flex xl:gap-11">
+            <nav aria-label={t("menu")} className="hidden items-center gap-7 xl:flex min-[1360px]:gap-9 2xl:gap-11">
               {SITE_NAV.map((n) => (
                 <a key={n.id} href={n.to}
                   data-nav={n.id}
@@ -11424,7 +11431,7 @@ const SiteHeader = () => {
                 </span>
               </a>
 
-              <button onClick={() => setMobile(true)} className="tap flex items-center lg:hidden" aria-label={t("menu")}>
+              <button onClick={() => setMobile(true)} className="tap flex items-center xl:hidden" aria-label={t("menu")}>
                 <span className="flex h-[13px] w-[19px] flex-col justify-between">
                   <span className="block h-px w-full bg-current" />
                   <span className="block h-px w-full bg-current" />
@@ -11838,62 +11845,55 @@ const StoryBlock = ({ flip = false, eyebrow, title, body, note, links = [], img,
   );
 };
 
-/* ── the colours and finishes the products come in: each one pictured by a product in it, and counted from the lists.
-   (It replaces "the specimen wall": six invented finishes, and samples at every store no one had confirmed.) ── */
-const REAL_FINISHES = [
-  { id: "granite", to: "#/shop/c/sinks", title: { en: "Granite sinks", id: "Bak cuci granit" },
-    items: [["pearl", F.pearl.name], ["pure", F.pure.name], ["titan", F.titan.name]],
-    has: (p, v) => p.cat === "sinks" && p.colourId === v },
-  { id: "steel", to: "#/shop/c/steelsinks", title: { en: "Stainless steel sinks", id: "Bak cuci stainless steel" },
-    items: [["ss-satin", SSF.satin.name], ["ss-mat", SSF.mat.name], ["ss-electro", SSF.electro.name], ["ss-nano", SSF.nano.name]],
-    has: (p, v) => p.cat === "steelsinks" && (p.finishes || []).some((f) => f.id === v) },
-  { id: "doors", to: "#/shop/doors", title: { en: "UPVC doors", id: "Pintu UPVC" },
-    items: Object.keys(DOOR_COLOUR).map((c) => [c, DOOR_COLOUR[c]]),
-    has: (p, v) => p.cat === "doors" && p.doorCol === v },
-];
+const Finishes = () => {
+  const { t, x } = useStore();
+  const [active, setActive] = useState(0);
+  const [form, setForm] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [email, setEmail] = useState("");
+  const f = FINISH_LIST[active];
 
-const RealFinishes = () => {
-  const { x, lang } = useStore();
-  const live = CATALOG.filter(listed);
-  const groups = REAL_FINISHES.map((g) => ({ ...g, items: g.items.map(([v, name]) => {
-    const all = live.filter((p) => g.has(p, v));
-    return { v, name, p: all.find((p) => !p.listCol) || all[0], n: all.length };   // a door without a list pictures its colour best
-  }).filter((it) => it.p) })).filter((g) => g.items.length);
-  const products = (n) => n + (lang === "id" ? " produk" : n === 1 ? " product" : " products");
   return (
-    <section id="finishes" className="w-full scroll-mt-[90px] bg-shell">
-      <div className="mx-auto max-w-site px-5 py-16 md:px-10 md:py-24">
-        <Reveal className="lx-head">
-          <div>
-            <p className="lx-eyebrow rv">{x({ en: "Colours & finishes", id: "Warna & finishing" })}</p>
-            <h2 className="lx-h2"><span className="rise"><span>{x({ en: "What each collection comes in", id: "Pilihan warna setiap koleksi" })}</span></span></h2>
+    <section id="finishes" className="grain relative w-full scroll-mt-[90px] bg-concrete">
+      <div className="relative mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
+        <Reveal still className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="cascade lg:col-span-4">
+            <Eyebrow>{x({ en: "The Specimen Wall", id: "Dinding Sampel" })}</Eyebrow>
+            <h2 className="mt-7 text-[38px] font-medium leading-[1.08] md:text-[52px]">
+              {x({ en: "Six finishes,", id: "Enam finishing," })}<br />{x({ en: "chosen by hand", id: "dipilih dengan tangan" })}
+            </h2>
+            <p className="mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
+              {x({ en: "Every fixture we carry is offered in a finish we have specified ourselves. Samples of all six are held at each store, and may be taken home before you commit to a room.",
+                   id: "Setiap produk kami tersedia dalam finishing yang kami tentukan sendiri. Sampel keenamnya tersedia di setiap toko, dan boleh dibawa pulang sebelum Anda memutuskan." })}
+            </p>
+
+            {!form ? (
+              <button onClick={() => setForm(true)} className="tap-y u mt-9 inline-block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">{t("sampleBox")}</button>
+            ) : sent ? (
+              <p className="mt-9 text-[12px] leading-[1.7] text-accent">{t("requestSent")}</p>
+            ) : (
+              <form onSubmit={(e) => { e.preventDefault(); if (email.includes("@")) setSent(true); }}
+                className="mt-9 flex max-w-[360px] items-center gap-4 border-b border-ink/25 pb-3 focus-within:border-ink">
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("email")} aria-label={t("email")}
+                  className="w-full bg-transparent text-[12.5px] font-medium uppercase tracking-[0.06em] text-ink placeholder:text-mute focus:outline-none" />
+                <button type="submit" aria-label={t("sampleBox")} className="shrink-0 text-ink/85 transition-transform duration-500 ease-quiet hover:translate-x-1"><Icon name="arrow" size={17} /></button>
+              </form>
+            )}
           </div>
-          <div>
-            <p className="lx-lede rv rv-2">{x({ en: "Each colour is shown on a product made in it. Colours on a screen are never exact: ask us to see one in store.",
-                                                 id: "Setiap warna ditampilkan pada produk yang dibuat dalam warna itu. Warna di layar tidak pernah persis: tanyakan kepada kami untuk melihatnya di toko." })}</p>
+
+          <div className="lg:col-span-8">
+            <div className="cascade grid grid-cols-2 gap-[1px] border border-line bg-line sm:grid-cols-3">
+              {FINISH_LIST.map((s, n) => (
+                <button key={s.id} onMouseEnter={() => setActive(n)} onFocus={() => setActive(n)} onClick={() => go("#/shop/search/" + encodeURIComponent(x(s.name)))}
+                  className="group relative bg-bone p-6 text-left transition-colors duration-500 ease-quiet hover:bg-shell md:p-8">
+                  <span className="block aspect-square w-full transition-transform duration-[800ms] ease-quiet group-hover:scale-[1.03]" style={{ background: s.hex }} />
+                  <span className={"mt-5 block text-[12px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (active === n ? "text-ink" : "text-mute")}>{x(s.name)}</span>
+                </button>
+              ))}
+            </div>
+            <p className="rv rv-6 mt-7 text-[21px] font-normal leading-[1.5] text-mute md:text-[23px]">{x(FINISH_NOTES[f.id])}</p>
           </div>
         </Reveal>
-        <div className="flex flex-col gap-12 md:gap-16">
-          {groups.map((g) => (
-            <Reveal still key={g.id} className="block">
-              <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-line pb-4">
-                <h3 className="text-[18px] font-medium leading-[26px] text-ink">{x(g.title)}</h3>
-                <a href={g.to} className="lx-link"><LxLinkText>{x({ en: "Shop", id: "Belanja" })}</LxLinkText></a>
-              </div>
-              <div className="cascade grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
-                {g.items.map((it) => (
-                  <a key={it.v} href={"#/shop/p/" + it.p.slug} className="lx-hover group block" data-finish={it.v}>
-                    <span className={"relative block aspect-square overflow-hidden " + pPlate(it.p)}>
-                      <Photo src={pImg(it.p, 0, 700)} alt="" tone={pTone(it.p)} className={"lx-fill lx-zoom " + pFit(it.p)} />
-                    </span>
-                    <span className="mt-4 block text-[16px] font-medium leading-[24px] text-ink">{x(it.name)}</span>
-                    <span className="block text-[14px] leading-[22px] text-mute">{products(it.n)}</span>
-                  </a>
-                ))}
-              </div>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -11961,16 +11961,107 @@ const InSitu = () => {
   );
 };
 
+const Services = () => {
+  const { x } = useStore();
+  return (
+    <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
+      <Reveal still>
+        <div className="cascade grid grid-cols-1 border-t border-line md:grid-cols-3">
+          {SERVICES.map((s, n) => (
+            <a key={n} href={n === 2 ? "#/contact" : "#/services"}
+              className={"group flex flex-col items-center border-b border-line px-6 py-12 text-center md:border-b-0 " + (n > 0 ? "md:border-l md:border-line" : "")}>
+              <span className="text-ink/80"><Icon name={s.icon} size={26} /></span>
+              <p className="mt-6 text-[12px] font-medium uppercase tracking-[0.08em] text-ink">{x(s.label)}</p>
+              <span className="mt-4 inline-flex items-center gap-3 text-[12px] font-medium uppercase tracking-[0.08em] text-mute transition-colors duration-500 group-hover:text-ink">
+                <span className="u">{x(s.link)}</span>
+                <span className="transition-transform duration-500 ease-quiet group-hover:translate-x-1.5"><Icon name="arrow" size={15} /></span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </Reveal>
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   JOURNAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+const JournalRail = () => {
+  const { t, x, lang } = useStore();
+  const rail = useRail(JOURNAL.length);
+  return (
+    <section className="mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
+      <Reveal still className="cascade mb-12 flex items-end justify-between md:mb-16">
+        <div>
+          <Eyebrow>{x({ en: "Journal", id: "Artikel" })}</Eyebrow>
+          <h2 className="mt-7 text-[36px] font-medium leading-[1.14] md:text-[48px]">{lang === "id" ? "Dari " + BRAND_SHORT : "Inside " + BRAND_SHORT}</h2>
+        </div>
+        <div className="flex items-center gap-6">
+          <span className="text-[12px] font-semibold tabular-nums tracking-[0.1em] text-mute">{String(rail.i + 1).padStart(2, "0")} / {String(JOURNAL.length).padStart(2, "0")}</span>
+          <Arrows onPrev={() => rail.go(rail.i - 1)} onNext={() => rail.go(rail.i + 1)} disablePrev={rail.i === 0} disableNext={rail.i >= rail.maxI} />
+        </div>
+      </Reveal>
+      <Reveal still delay={100}>
+        <div ref={rail.ref} onScroll={rail.onScroll} className="cascade no-bar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 md:mx-0 md:gap-6 md:px-0">
+          {JOURNAL.map((j, n) => (
+            <article key={j.slug} className="w-[80%] shrink-0 snap-start sm:w-[48%] lg:w-[calc((100%-48px)/3)]">
+              <a href={`#/journal/${j.slug}`} className="group block">
+                <Media className="aspect-[4/5] w-full overflow-hidden bg-concrete" delay={100 + Math.min(n, 8) * 80}>
+                  <Photo src={j.img} alt={x(j.title)} tone={j.tone} className="h-full w-full object-cover transition-transform duration-[800ms] ease-quiet group-hover:scale-[1.03]" />
+                </Media>
+                <h3 className="mt-6 text-[24px] font-medium leading-[1.28] md:text-[27px]">{x(j.title)}</h3>
+                <p className="mt-3 max-w-[45ch] text-[14px] leading-[1.75] text-mute">{x(j.text)}</p>
+                <span className="u mt-5 inline-block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">{t("read")}</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </Reveal>
+    </section>
+  );
+};
+
+const Newsletter = () => {
+  const { t, x } = useStore();
+  const [v, setV] = useState("");
+  const [sent, setSent] = useState(false);
+  return (
+    <section className="grain relative w-full bg-concrete">
+      <div className="relative mx-auto max-w-site px-5 py-[110px] text-center md:px-10 md:py-[170px]">
+        <Reveal still className="cascade mx-auto max-w-[560px]">
+          <h2 className="text-[36px] font-medium leading-[1.14] md:text-[46px]">{x({ en: "Plans, Slowly Made", id: "Rencana yang Matang" })}</h2>
+          <p className="mx-auto mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
+            {x({ en: "New rooms, new finishes, and notes from our fitters — a few times a year, never more.",
+                 id: "Ruangan baru, finishing baru, dan catatan dari teknisi kami — beberapa kali setahun, tidak lebih." })}
+          </p>
+          <form onSubmit={(e) => { e.preventDefault(); if (v.includes("@")) setSent(true); }}
+            className="mx-auto mt-12 flex max-w-[420px] items-center gap-4 border-b border-ink/25 pb-3 transition-colors duration-500 focus-within:border-ink">
+            <input type="email" required value={v} onChange={(e) => setV(e.target.value)} placeholder={t("email")} aria-label={t("email")}
+              className="w-full bg-transparent text-[12.5px] font-medium uppercase tracking-[0.06em] text-ink placeholder:text-mute focus:outline-none" />
+            <button type="submit" aria-label={t("apply")} className="shrink-0 text-ink/85 transition-[transform,color] duration-500 ease-quiet hover:translate-x-1 hover:text-ink"><Icon name="arrow" size={17} /></button>
+          </form>
+          <p className={"mt-5 text-[12px] leading-[1.7] transition-opacity duration-500 " + (sent ? "text-accent" : "text-mute")}>
+            {sent ? t("requestSent") : x({ en: "By subscribing you agree to our Privacy Policy.", id: "Dengan berlangganan Anda menyetujui Kebijakan Privasi kami." })}
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
 /* ═══════════════════════════════════════════════════════════════════════════
    HOME  (brand side) — dark luxury
    Set on charcoal in both themes: the shell carries [data-lux] while this page
    is open, and the .lx-* rules in the stylesheet draw the new sections. The
-   order (the approved Figma page, November 2026): the opening, the three
-   collections, four kitchen sinks, the house, the three catalogues — then the
-   footer. Nothing else: the inspiration spread, the services row, the journal
-   rail, the newsletter and the closing band were taken off.
+   order: the opening, the collections, a few products, the house, rooms to
+   imagine — then the parts of the earlier home page that do something of
+   their own (the room you can shop, the specimen wall and its sample box, the
+   services, the journal, the newsletter) — and the way on.
    Pictures: the house's own renders of its kitchen sinks, web-sized in
-   img/home/ (from catalogues/images/), and the catalogues' own covers.
+   img/home/ (from catalogues/images/). Where the house has none yet — the
+   bathroom and the building materials — the pictures the earlier home page
+   used for them are kept.
    Products: the kitchen sinks only, since the rest of CATALOG is still the
    placeholder written to show the layout. A price is shown only where one was
    supplied — the stainless steel price list's; the granite prices are
@@ -12017,11 +12108,11 @@ const LxHero = () => {
             <span className="rise"><span>{x({ en: "Living Spaces.", id: "Ruang Hunian Anda." })}</span></span>
           </h1>
           <p className="lx-hero-lede rv rv-3">
-            {x({ en: "Thoughtfully selected products for modern kitchens, bathrooms and contemporary living spaces.",
-                 id: "Produk pilihan untuk dapur, kamar mandi, dan ruang hunian kontemporer." })}
+            {x({ en: "Discover thoughtfully selected materials and products that bring elegance, functionality, and lasting quality to your spaces.",
+                 id: "Temukan material dan produk pilihan yang menghadirkan keanggunan, fungsi, dan kualitas yang tahan lama untuk ruang Anda." })}
           </p>
           <div className="lx-actions rv rv-4">
-            <LxButton to="#lx-cats">{x({ en: "Explore Our Collections", id: "Jelajahi Koleksi Kami" })}</LxButton>
+            <LxButton to="#/products">{x({ en: "Explore Our Collection", id: "Jelajahi Koleksi Kami" })}</LxButton>
             <LxButton to="#/about" ghost>{x({ en: "Discover MTJ", id: "Kenali MTJ" })}</LxButton>
           </div>
         </Reveal>
@@ -12038,56 +12129,44 @@ const LxHero = () => {
   );
 };
 
-/* ── 2 · the collections: one card for each, side by side. A new collection is one more entry in HOME_COLLECTIONS:
-   the row takes it without any other change (three across on a computer, four if there are four, and so on). ── */
-const HOME_COLLECTIONS = [
-  { id: "sanitary", to: "#/shop/c/sanitary", img: "img/collections/faucets.jpg", tone: "#D9D1C4",
-    title: { en: "Faucets & Sanitary", id: "Keran & Saniter" },
-    body:  { en: "Faucets, basins and sanitary ware for the bathroom and the kitchen.",
-             id: "Keran, wastafel, dan perlengkapan saniter untuk kamar mandi dan dapur." } },
-  { id: "kitchen-sinks", to: "#/shop/kitchen-sinks", img: LX_IMG("cat-kitchen-sinks.webp"), tone: "#BDB5A8",
-    title: { en: "Kitchen Sink", id: "Bak Cuci Dapur" },
-    body:  { en: "Granite composite and stainless steel, single and double bowl.",
-             id: "Komposit granit dan stainless steel, satu dan dua ruang." },
-    sub: [{ label: { en: "Granite", id: "Granit" }, to: "#/shop/kitchen-sinks/granite" },
-          { label: { en: "Stainless Steel", id: "Stainless Steel" }, to: "#/shop/kitchen-sinks/stainless-steel" }] },
-  { id: "doors", to: "#/shop/doors", img: "img/collections/doors.jpg", tone: "#D6CEC1",
-    title: { en: "uPVC Doors", id: "Pintu uPVC" },
-    body:  { en: "Wellup uPVC doors, in 19 models.", id: "Pintu uPVC Wellup, dalam 19 model." } },
-];
+/* ── 2 · the collections: one large card and two beside it — the three of COLLECTIONS ── */
+const LX_CATS = COLLECTIONS;
 
 const LxCategories = () => {
   const { x } = useStore();
   return (
-    <section id="lx-cats" className="lx-section" aria-labelledby="lx-cats-h">
+    <section className="lx-section" aria-labelledby="lx-cats-h">
       <div className="lx-wrap">
         <Reveal className="lx-head">
           <div>
             <p className="lx-eyebrow rv">{x({ en: "The Collections", id: "Koleksi" })}</p>
-            <h2 id="lx-cats-h" className="lx-h2"><span className="rise"><span>{x({ en: "Our collections", id: "Koleksi kami" })}</span></span></h2>
+            <h2 id="lx-cats-h" className="lx-h2"><span className="rise"><span>{x({ en: "Explore the collections", id: "Jelajahi koleksi" })}</span></span></h2>
           </div>
           <div>
-            <div className="lx-head-links rv rv-2">
-              <a href="#/products" className="lx-link"><LxLinkText>{x({ en: "All collections", id: "Semua koleksi" })}</LxLinkText></a>
+            <p className="lx-lede rv rv-2">
+              {x({ en: "Kitchen sinks in granite composite and stainless steel, UPVC doors by Wellup, and sanitary and plumbing for the bathroom and the kitchen.",
+                   id: "Bak cuci dapur dari komposit granit dan stainless steel, pintu UPVC Wellup, serta saniter dan perpipaan untuk kamar mandi dan dapur." })}
+            </p>
+            <div className="lx-head-links rv rv-3">
+              <a href="#/products" className="lx-link"><LxLinkText>{x({ en: "See the collections", id: "Lihat koleksi" })}</LxLinkText></a>
+              <a href="#/catalogue" className="lx-link"><LxLinkText>{x({ en: "Download the catalogue", id: "Unduh katalog" })}</LxLinkText></a>
             </div>
           </div>
         </Reveal>
+
         <Reveal still className="lx-cats cascade">
-          {HOME_COLLECTIONS.map((c, n) => (
-            <div key={c.id} className="lx-cat lx-hover" data-lx-cat={c.id}>
+          {LX_CATS.map((c, n) => (
+            <a key={c.id} href={c.to} className="lx-cat lx-hover" data-lx-cat={c.id}>
               <Media delay={n * 90}><Photo src={c.img} alt="" tone={c.tone} className="lx-fill lx-zoom" /></Media>
               <div className="lx-cat-shade" />
+              <span className="lx-cat-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
               <div className="lx-cat-in">
+                <p className="lx-eyebrow">{x(c.eyebrow)}</p>
                 <h3 className="lx-cat-title">{x(c.title)}</h3>
                 <p className="lx-cat-text">{x(c.body)}</p>
-                {/* the whole card is the way in (the link's ::after covers it); the kinds, where there are some, sit over it */}
-                <a href={c.to} className="lx-link lx-cat-go"><LxLinkText>{x({ en: "Explore Collection", id: "Jelajahi Koleksi" })}</LxLinkText></a>
-                {/* a row on every card, empty where there are no kinds, so the titles line up across the row */}
-                <p className="lx-cat-sub" aria-hidden={c.sub ? undefined : "true"}>
-                  {(c.sub || []).map((s) => <a key={s.to} href={s.to}>{x(s.label)}</a>)}
-                </p>
+                <span className="lx-link"><LxLinkText>{x({ en: "Explore Collection", id: "Jelajahi Koleksi" })}</LxLinkText></span>
               </div>
-            </div>
+            </a>
           ))}
         </Reveal>
       </div>
@@ -12130,7 +12209,7 @@ const LxFeatured = () => {
   const items = lxFeatured();
   if (!items.length) return null;
   return (
-    <section className="lx-section" aria-labelledby="lx-feat-h">
+    <section className="lx-section lx-alt" aria-labelledby="lx-feat-h">
       <div className="lx-wrap">
         <Reveal className="lx-head">
           <div>
@@ -12155,124 +12234,125 @@ const LxFeatured = () => {
   );
 };
 
-/* ── 4 · the house: what MTJ is, in a few plain words — only what it can say for certain: what it sells ── */
+/* ── 4 · the house: the home page's own words about it, beside GSU 8045 in Titanium Grey ── */
 const LxBrand = () => {
   const { x } = useStore();
   const par = useParallax(40);
   return (
-    <section className="lx-section lx-alt" aria-labelledby="lx-brand-h">
+    <section className="lx-section" aria-labelledby="lx-brand-h">
       <div className="lx-wrap lx-brand">
-        <Reveal className="lx-brand-words">
-          <p className="lx-eyebrow rv">{x({ en: "About MTJ", id: "Tentang MTJ" })}</p>
-          <h2 id="lx-brand-h" className="lx-h2 lx-h2-l"><span className="rise"><span>{x({ en: "Carefully selected for modern homes", id: "Dipilih dengan cermat untuk hunian modern" })}</span></span></h2>
-          <p className="lx-brand-lead rv rv-2">
-            {x({ en: "Maju Terus Jaya brings together kitchen sinks in granite composite and stainless steel, Wellup uPVC doors, and faucets and sanitary ware — for the kitchen, the bathroom and the rooms around them.",
-                 id: "Maju Terus Jaya menghadirkan bak cuci dapur dari komposit granit dan stainless steel, pintu uPVC Wellup, serta keran dan perlengkapan saniter — untuk dapur, kamar mandi, dan ruangan di sekitarnya." })}
-          </p>
-          <div className="lx-actions rv rv-3">
-            <LxButton to="#/about" ghost>{x({ en: "Discover MTJ", id: "Kenali MTJ" })}</LxButton>
-          </div>
-        </Reveal>
         <Media className="lx-brand-media">
           <div ref={par} className="par">
             <Photo src={LX_IMG("brand.webp")} tone="#3A3631" className="lx-fill"
               alt={x({ en: "The GSU 8045 granite sink in Titanium Grey", id: "Bak cuci granit GSU 8045 warna Abu Titanium" })} />
           </div>
         </Media>
+        <Reveal>
+          <p className="lx-eyebrow rv">{x({ en: "Our Story", id: "Kisah Kami" })}</p>
+          <h2 id="lx-brand-h" className="lx-h2"><span className="rise"><span>{x({ en: "A house built on one question", id: "Rumah yang dibangun dari satu pertanyaan" })}</span></span></h2>
+          <p className="lx-brand-lead rv rv-2">
+            {x({ en: "A building materials house for people who intend to stay — where a tap, a basin and a square metre of stone are chosen with the same care as the room itself.",
+                 id: "Rumah bahan bangunan untuk mereka yang berniat tinggal lama — di mana keran, wastafel dan satu meter persegi batu dipilih secermat ruangannya sendiri." })}
+          </p>
+          <p className="lx-brand-body rv rv-3">
+            {x({ en: "Will this still be good in ten years? It is the only test a product has to pass to reach our floor, and most do not. What survives it is a narrow range — fewer taps than our competitors, fewer tiles, fewer of almost everything.",
+                 id: "Apakah ini masih akan baik sepuluh tahun lagi? Itulah satu-satunya ujian yang harus dilewati sebuah produk untuk sampai ke lantai kami, dan sebagian besar gagal. Yang bertahan adalah rangkaian yang ringkas — lebih sedikit keran dari pesaing kami, lebih sedikit keramik, lebih sedikit hampir segalanya." })}
+          </p>
+          <p className="lx-brand-note rv rv-4">
+            {x({ en: "We have been answering it in Jakarta since 1998.", id: "Kami sudah menjawabnya di Jakarta sejak 1998." })}
+          </p>
+          <div className="lx-actions rv rv-5">
+            <LxButton to="#/about" ghost>{x({ en: "Discover More", id: "Selengkapnya" })}</LxButton>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 };
 
-/* ── 4b · design inspiration: four rooms, each with the MTJ product that is in it ── */
+/* one picture of the spread, with its number, its name and a line under it */
+const LxMagTile = ({ tile, n }) => {
+  const { x } = useStore();
+  return (
+    <figure className={tile.cls}>
+      <a href={tile.to} className="lx-hover block">
+        <Media className="lx-mag-media" delay={n * 90}><Photo src={tile.img} alt="" tone="#2C2824" className="lx-fill lx-zoom" /></Media>
+        <figcaption className="lx-mag-cap">
+          <span className="lx-mag-no" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span>
+          <span className="lx-mag-label">{x(tile.label)}</span>{" "}
+          <span className="lx-mag-text">{x(tile.text)}</span>
+        </figcaption>
+      </a>
+    </figure>
+  );
+};
+
+/* ── 5 · rooms to imagine: a magazine spread — a kitchen, a bathroom, a material, and the house's own line ── */
 const LxInspiration = () => {
   const { x } = useStore();
-  const find = (kind, name) => ksModels(kind).find((mm) => mm.model === name);
-  const gst = find("granite", "GST 7546"), tss = find("stainless-steel", "W 8050 TSS");
-  const rooms = [
-    { img: LX_IMG("closing.webp"), to: gst ? ksDetailHref(gst) : "#/shop/kitchen-sinks/granite",
-      label: { en: "A contemporary kitchen", id: "Dapur kontemporer" }, what: { en: "GST 7546 granite sink", id: "Bak cuci granit GST 7546" } },
-    { img: "img/kitchens/w-8050-tss.webp", to: tss ? ksDetailHref(tss) : "#/shop/kitchen-sinks/stainless-steel",
-      label: { en: "A minimalist kitchen", id: "Dapur minimalis" }, what: { en: "W 8050 TSS stainless steel sink", id: "Bak cuci stainless steel W 8050 TSS" } },
-    { img: LX_IMG("cat-sanitary.webp"), to: "#/shop/c/sanitary",
-      label: { en: "A modern bathroom", id: "Kamar mandi modern" }, what: { en: "Faucets & sanitary", id: "Keran & saniter" } },
-    { img: LX_IMG("cat-door.webp"), to: "#/shop/doors",
-      label: { en: "A contemporary home", id: "Hunian kontemporer" }, what: { en: "Wellup uPVC door", id: "Pintu uPVC Wellup" } },
+  const model = (name) => ksModels("stainless-steel").find((mm) => mm.model === name);
+  const tdg = model("W 8550 TDG"), lps = model("LPS 9643 A");
+  const tiles = [
+    { cls: "lx-mag-a", img: LX_IMG("inspire-kitchen.webp"), to: tdg ? ksDetailHref(tdg) : "#/shop/kitchen-sinks",
+      label: { en: "Modern kitchens", id: "Dapur modern" },
+      text:  { en: "W 8550 TDG, hand made in stainless steel, on a light quartz island.",
+               id: "W 8550 TDG, hand made dari stainless steel, di atas meja island kuarsa terang." } },
+    { cls: "lx-mag-b", img: "img/collections/sanitaryware.jpg", to: "#/shop/c/sanitary",
+      label: { en: "Bathrooms", id: "Kamar mandi" },
+      text:  { en: "Clean, lasting forms for the bathroom.", id: "Bentuk yang bersih dan awet untuk kamar mandi." } },
+    { cls: "lx-mag-c", img: LX_IMG("inspire-material.webp"), to: lps ? ksDetailHref(lps) : "#/shop/kitchen-sinks",
+      label: { en: "Materials", id: "Material" },
+      text:  { en: "Mat polished stainless steel — the drainer of the LPS 9643 A.",
+               id: "Stainless steel mat polished — papan tiris LPS 9643 A." } },
   ];
   return (
     <section className="lx-section lx-alt" aria-labelledby="lx-insp-h">
       <div className="lx-wrap">
         <Reveal className="lx-head">
           <div>
-            <p className="lx-eyebrow rv">{x({ en: "Design Inspiration", id: "Inspirasi Desain" })}</p>
-            <h2 id="lx-insp-h" className="lx-h2"><span className="rise"><span>{x({ en: "Designed around your space", id: "Dirancang untuk ruang Anda" })}</span></span></h2>
+            <p className="lx-eyebrow rv">{x({ en: "Interior Inspiration", id: "Inspirasi Interior" })}</p>
+            <h2 id="lx-insp-h" className="lx-h2"><span className="rise"><span>{x({ en: "Imagine it in your home", id: "Bayangkan di rumah Anda" })}</span></span></h2>
           </div>
           <div>
             <p className="lx-lede rv rv-2">
-              {x({ en: "Four rooms, each with an MTJ product in it — a place to start.",
-                   id: "Empat ruangan, masing-masing dengan produk MTJ di dalamnya — sebagai titik awal." })}
+              {x({ en: "Kitchens, bathrooms and the materials around them — a few rooms to start from.",
+                   id: "Dapur, kamar mandi, dan material di sekitarnya — beberapa ruangan sebagai titik awal." })}
             </p>
-          </div>
-        </Reveal>
-        <Reveal still className="lx-rooms cascade">
-          {rooms.map((r, n) => (
-            <a key={n} href={r.to} className="lx-room lx-hover">
-              <Media className="lx-room-media" delay={n * 90}><Photo src={r.img} alt="" tone="#2C2824" className="lx-fill lx-zoom" /></Media>
-              <span className="lx-room-label">{x(r.label)}</span>
-              <span className="lx-room-what">{x(r.what)}</span>
-            </a>
-          ))}
-        </Reveal>
-      </div>
-    </section>
-  );
-};
-
-/* ── 5 · the catalogues: each one's cover and its name, in the site's language; they open on the Catalogue page ── */
-const LxCatalogues = () => {
-  const { x, lang } = useStore();
-  const files = useKsFiles();
-  const L = lang === "id" ? "id" : "en";
-  return (
-    <section className="lx-section" aria-labelledby="lx-cl-h">
-      <div className="lx-wrap">
-        <Reveal className="lx-head">
-          <div>
-            <p className="lx-eyebrow rv">{x({ en: "Catalogue", id: "Katalog" })}</p>
-            <h2 id="lx-cl-h" className="lx-h2"><span className="rise"><span>{x({ en: "Three catalogues, to read or download", id: "Tiga katalog, untuk dibaca atau diunduh" })}</span></span></h2>
-          </div>
-          <div>
-            <div className="lx-head-links rv rv-2">
-              <a href="#/catalogue" className="lx-link"><LxLinkText>{x({ en: "Open the catalogues", id: "Buka katalog" })}</LxLinkText></a>
+            <div className="lx-head-links rv rv-3">
+              <a href="#/virtual-showroom" className="lx-link"><LxLinkText>{x({ en: "Enter the virtual showroom", id: "Masuk ke showroom virtual" })}</LxLinkText></a>
             </div>
           </div>
         </Reveal>
-        <Reveal still className="lx-cls cascade">
-          {CAT_DOC_LIST.map((d, n) => (
-            <a key={d} href="#/catalogue" className="lx-cl lx-hover" data-lx-cat-doc={d}>
-              <Media className="lx-cl-cover" delay={n * 90}>
-                <Photo src={KS_IMG("pages/" + d + "-" + L + "-1.jpg")} alt="" tone="#2B2926" className="no-dim lx-fill lx-zoom" />
-              </Media>
-              <span className="lx-cl-name">{tx(CAT_TITLES[d], L)}</span>
-              <span className="lx-cl-facts">{ksPdfLine(d, L, files)}</span>
-            </a>
-          ))}
+        <Reveal still className="lx-mag cascade">
+          <LxMagTile tile={tiles[0]} n={0} />
+          <LxMagTile tile={tiles[1]} n={1} />
+          <blockquote className="lx-mag-q">
+            <p className="lx-quote">{x({ en: "A room is finished when nothing in it asks for attention.",
+                                          id: "Sebuah ruangan selesai ketika tidak ada satu pun di dalamnya yang menuntut perhatian." })}</p>
+            <p className="lx-quote-by">{x({ en: "Maju Terus Jaya — House of Materials", id: "Maju Terus Jaya — Rumah Material" })}</p>
+          </blockquote>
+          <LxMagTile tile={tiles[2]} n={2} />
         </Reveal>
       </div>
     </section>
   );
 };
 
-/* ── 6 · the way on: one line, and a way to reach the house ── */
-const LxContact = () => {
+/* ── 7 · the way on: GST 7546 under a deep shade ── */
+const LxClose = () => {
   const { x } = useStore();
+  const par = useParallax(60);
   return (
-    <section className="lx-contact" aria-labelledby="lx-contact-h">
-      <Reveal className="lx-wrap lx-contact-in">
-        <h2 id="lx-contact-h" className="lx-h2"><span className="rise"><span>{x({ en: "Let\u2019s create something timeless.", id: "Mari wujudkan ruang yang tak lekang waktu." })}</span></span></h2>
-        <div className="lx-actions rv rv-2">
-          <LxButton to="#/contact">{x({ en: "Contact Us", id: "Hubungi Kami" })}</LxButton>
-          <LxButton to="#/shop" ghost>{x({ en: "Visit the Shop", id: "Kunjungi Toko" })}</LxButton>
+    <section className="lx-close" aria-labelledby="lx-close-h">
+      <Media><div ref={par} className="par"><Photo src={LX_IMG("closing.webp")} alt="" tone="#2C2824" className="lx-fill" /></div></Media>
+      <div className="lx-close-shade" />
+      <Reveal className="lx-close-in lx-wrap on-dark">
+        <p className="lx-eyebrow rv">{BRAND}</p>
+        <h2 id="lx-close-h" className="lx-h2"><span className="rise"><span>{x({ en: "Find the Perfect Elements for Your Space.", id: "Temukan Elemen yang Tepat untuk Ruang Anda." })}</span></span></h2>
+        <div className="lx-close-rule rv rv-2" />
+        <div className="lx-actions rv rv-3">
+          <LxButton to="#/shop/all">{x({ en: "Explore Products", id: "Jelajahi Produk" })}</LxButton>
+          <LxButton to="#/contact" ghost>{x({ en: "Contact Us", id: "Hubungi Kami" })}</LxButton>
         </div>
       </Reveal>
     </section>
@@ -12292,11 +12372,13 @@ const HomePage = () => {
     <>
       <LxHero />
       <LxCategories />
-      <LxBrand />
       <LxFeatured />
+      <LxBrand />
       <LxInspiration />
-      <LxCatalogues />
-      <LxContact />
+      <Services />
+      <JournalRail />
+      <Newsletter />
+      <LxClose />
     </>
   );
 };
@@ -12554,23 +12636,20 @@ const ProductsPage = () => {
     return () => clearTimeout(id);
   }, [route.section]);
 
-  /* what each collection holds, counted from the site's own lists */
-  const live = CATALOG.filter(listed);
-  const models = (cat) => new Set(live.filter((p) => p.cat === cat).map((p) => p.model || p.slug)).size;
   const groups = [
-    { id: "sinks", lead: "gsu-7545-titanium-grey",
-      body: { en: "Granite composite kitchen sinks: " + models("sinks") + " models, in Pearl Black, Pure White and Titanium Grey.",
-              id: "Bak cuci dapur komposit granit: " + models("sinks") + " model, dalam Hitam Mutiara, Putih Murni dan Abu Titanium." } },
-    /* the stainless steel price list's sinks, pictured by W 8050 TSS */
-    { id: "steelsinks", lead: "w-8050-tss",
+    { id: "sinks",    img: null, tone: null,
+      body: { en: "Six models cast from quartz composite at eighty per cent mineral content, cured slowly so the surface takes heat, stains and a dropped pan without complaint.",
+              id: "Enam model dari komposit kuarsa dengan kandungan mineral delapan puluh persen, dikeraskan perlahan agar tahan panas, noda dan panci yang terjatuh." } },
+    /* the twenty-five of the stainless steel price list, pictured by W 8050 TSS */
+    { id: "steelsinks", img: null, tone: null, lead: "w-8050-tss",
       body: KS_KINDS["stainless-steel"].lede },
     /* the doors, pictured by the PT 2602 */
-    { id: "doors", lead: "pt-2602-dark-grey-black-list",
-      body: { en: "Wellup UPVC doors: " + models("doors") + " models, each 200 x 70 cm, in White, Brown and Dark Grey — from Rp 1.300.000.",
-              id: "Pintu UPVC Wellup: " + models("doors") + " model, masing-masing 200 x 70 cm, dalam White, Brown dan Dark Grey — mulai Rp 1.300.000." } },
+    { id: "doors", img: null, tone: null, lead: "pt-2602-dark-grey-black-list",
+      body: { en: "Wellup UPVC doors: 19 models, each 200 x 70 cm, in White, Brown and Dark Grey — from Rp 1.300.000.",
+              id: "Pintu UPVC Wellup: 19 model, masing-masing 200 x 70 cm, dalam White, Brown dan Dark Grey — mulai Rp 1.300.000." } },
     { id: "sanitary", pic: "img/home/cat-sanitary.webp", tone: "#C9C0B2",
-      body: { en: "Faucets, basins and sanitary ware for the bathroom and the kitchen. Not listed online yet: ask us what is in store.",
-              id: "Keran, wastafel dan perlengkapan saniter untuk kamar mandi dan dapur. Belum tercantum online: tanyakan kepada kami." } },
+      body: { en: "Basins, mixers and showers for the bathroom and the kitchen.",
+              id: "Wastafel, keran dan shower untuk kamar mandi dan dapur." } },
   ];
 
   return (
@@ -12587,8 +12666,8 @@ const ProductsPage = () => {
         </div>
       </PageHead>
 
-      <section className="mx-auto max-w-site px-5 pb-16 md:px-10 md:pb-24">
-        <div className="flex flex-col gap-16 md:gap-24">
+      <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[190px]">
+        <div className="flex flex-col gap-[90px] md:gap-[160px]">
           {groups.map((g, n) => {
             const any = (g.lead && bySlug(g.lead)) || CATALOG.find((p) => p.cat === g.id);
             const flip = n % 2 === 1;
@@ -12603,9 +12682,9 @@ const ProductsPage = () => {
                     </div>
                   </div>
                   <div className={"md:col-span-4 " + (flip ? "md:order-1 md:col-start-1" : "md:col-start-9")}>
-                    <p className="lx-eyebrow">{String(n + 1).padStart(2, "0")}</p>
-                    <h2 className="lx-h2 max-w-[14ch]">{x(catLabel(g.id))}</h2>
-                    <p className="mt-6 max-w-[40ch] text-[16px] leading-[26px] text-mute">{x(g.body)}</p>
+                    <Eyebrow className="mb-7">{String(n + 1).padStart(2, "0")}</Eyebrow>
+                    <h2 className="max-w-[12ch] text-[32px] font-medium leading-[1.14] text-ink md:text-[46px]">{x(catLabel(g.id))}</h2>
+                    <p className="mt-8 max-w-[40ch] text-[15.5px] leading-[1.8] text-mute">{x(g.body)}</p>
                     <a href={`#/shop/c/${g.id}`} className="group/l mt-9 inline-flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">
                       <span className="u">{t("shopCollection")}</span>
                       <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
@@ -12618,19 +12697,19 @@ const ProductsPage = () => {
         </div>
       </section>
 
-      {/* the colours and finishes the products really come in */}
-      <RealFinishes />
+      {/* finishes belong to the brand, not the till */}
+      <Finishes />
 
       <section className="w-full bg-shell">
-        <div className="relative mx-auto max-w-site overflow-hidden px-5 py-16 md:px-10 md:py-24">
+        <div className="relative mx-auto max-w-site overflow-hidden px-5 py-[110px] md:px-10 md:py-[150px]">
           <div ref={par} className="par">
             <Reveal className="mx-auto max-w-[620px] text-center">
-              <h2 className="lx-h2 mx-auto">
-                {x({ en: "Prices are in the shop", id: "Harga ada di toko" })}
+              <h2 className="text-[32px] font-medium leading-[1.14] text-ink md:text-[46px]">
+                {x({ en: "Everything here is in the shop", id: "Semuanya tersedia di toko" })}
               </h2>
-              <p className="mx-auto mt-6 max-w-[46ch] text-[16px] leading-[26px] text-mute">
-                {x({ en: "Every sink and door, with its price list's price and its sizes. Ask us about anything else.",
-                     id: "Setiap bak cuci dan pintu, dengan harga dari daftar harganya dan ukurannya. Tanyakan kepada kami untuk yang lain." })}
+              <p className="mx-auto mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
+                {x({ en: "Prices, stock, delivery and installation — all of it lives one click away.",
+                     id: "Harga, stok, pengiriman dan pemasangan — semuanya hanya satu klik dari sini." })}
               </p>
               <a href="#/shop" className="group/cta mt-10 inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[12px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
                 {t("enterShop")}
@@ -12651,8 +12730,7 @@ const PageHead = ({ trail, title, sub, children }) => (
   <div className="mx-auto max-w-site px-5 pb-16 pt-12 md:px-10 md:pb-24 md:pt-20">
     {trail ? <Breadcrumb trail={trail} /> : null}
     <Reveal className="mt-12 block md:mt-16">
-      {/* Display/L of the type scale: Source Serif 4 Light, 48/54 (36/42 on a phone) */}
-      <h1 className="page-title max-w-[18ch]">
+      <h1 className="max-w-[16ch] text-[46px] font-medium leading-[1.05] md:text-[80px]">
         <span className="rise"><span>{title}</span></span>
       </h1>
       {sub ? <p className="mt-9 max-w-[54ch] text-[16px] leading-[1.8] text-mute md:mt-11">{sub}</p> : null}

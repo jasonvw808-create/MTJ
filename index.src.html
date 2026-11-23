@@ -1595,6 +1595,8 @@
   .f-err-msg { display: block; margin-top: 8px; font-size: 12px; line-height: 1.5; color: rgb(var(--err)); }
 
   /* ── the parts every section shares ── */
+  .page-title { font-family: var(--lx-serif); font-weight: 300; font-size: 36px; line-height: 42px; letter-spacing: -0.012em; color: rgb(var(--ink)); }
+  @media (min-width: 768px) { .page-title { font-size: 48px; line-height: 54px; } }
   .lx-wrap { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 20px; }
   .lx-section { position: relative; padding: 64px 0; background: rgb(var(--bone)); }
   .lx-section.lx-alt { background: rgb(var(--shell)); }
@@ -9389,14 +9391,6 @@ const ROOMS = [
   { cat:"flooring", eyebrow:{en:"Surfaces",id:"Permukaan"},   title:{en:"Concrete & Oak",id:"Beton & Oak"},     img:"img/home/inspire-material.webp", tone:TONE[2] },
 ];
 
-const FINISH_NOTES = {
-  steel: { en:"304 grade, hand-brushed along the grain.", id:"Kelas 304, disikat manual searah serat." },
-  brass: { en:"PVD over solid brass. It will not tarnish.", id:"PVD di atas kuningan padat. Tidak akan kusam." },
-  raw:   { en:"Left bare, to darken with the years.", id:"Dibiarkan polos, menggelap seiring tahun." },
-  white: { en:"Fired twice, glazed once, unpolished.", id:"Dibakar dua kali, diglasir sekali, tanpa poles." },
-  stone: { en:"Ground flat, sealed open, never shined.", id:"Digerinda rata, disegel terbuka, tak pernah dikilapkan." },
-  black: { en:"Oxidised by hand, waxed while warm.", id:"Dioksidasi manual, dililin selagi hangat." },
-};
 
 const SITU = [
   { name:{ en:"The Kemang Kitchen", id:"Dapur Kemang" }, img:"img/home/inspire-kitchen.webp", tone:TONE[3],
@@ -11844,55 +11838,62 @@ const StoryBlock = ({ flip = false, eyebrow, title, body, note, links = [], img,
   );
 };
 
-const Finishes = () => {
-  const { t, x } = useStore();
-  const [active, setActive] = useState(0);
-  const [form, setForm] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [email, setEmail] = useState("");
-  const f = FINISH_LIST[active];
+/* ── the colours and finishes the products come in: each one pictured by a product in it, and counted from the lists.
+   (It replaces "the specimen wall": six invented finishes, and samples at every store no one had confirmed.) ── */
+const REAL_FINISHES = [
+  { id: "granite", to: "#/shop/c/sinks", title: { en: "Granite sinks", id: "Bak cuci granit" },
+    items: [["pearl", F.pearl.name], ["pure", F.pure.name], ["titan", F.titan.name]],
+    has: (p, v) => p.cat === "sinks" && p.colourId === v },
+  { id: "steel", to: "#/shop/c/steelsinks", title: { en: "Stainless steel sinks", id: "Bak cuci stainless steel" },
+    items: [["ss-satin", SSF.satin.name], ["ss-mat", SSF.mat.name], ["ss-electro", SSF.electro.name], ["ss-nano", SSF.nano.name]],
+    has: (p, v) => p.cat === "steelsinks" && (p.finishes || []).some((f) => f.id === v) },
+  { id: "doors", to: "#/shop/doors", title: { en: "UPVC doors", id: "Pintu UPVC" },
+    items: Object.keys(DOOR_COLOUR).map((c) => [c, DOOR_COLOUR[c]]),
+    has: (p, v) => p.cat === "doors" && p.doorCol === v },
+];
 
+const RealFinishes = () => {
+  const { x, lang } = useStore();
+  const live = CATALOG.filter(listed);
+  const groups = REAL_FINISHES.map((g) => ({ ...g, items: g.items.map(([v, name]) => {
+    const all = live.filter((p) => g.has(p, v));
+    return { v, name, p: all.find((p) => !p.listCol) || all[0], n: all.length };   // a door without a list pictures its colour best
+  }).filter((it) => it.p) })).filter((g) => g.items.length);
+  const products = (n) => n + (lang === "id" ? " produk" : n === 1 ? " product" : " products");
   return (
-    <section id="finishes" className="grain relative w-full scroll-mt-[90px] bg-concrete">
-      <div className="relative mx-auto max-w-site px-5 py-[110px] md:px-10 md:py-[170px]">
-        <Reveal still className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="cascade lg:col-span-4">
-            <Eyebrow>{x({ en: "The Specimen Wall", id: "Dinding Sampel" })}</Eyebrow>
-            <h2 className="mt-7 text-[38px] font-medium leading-[1.08] md:text-[52px]">
-              {x({ en: "Six finishes,", id: "Enam finishing," })}<br />{x({ en: "chosen by hand", id: "dipilih dengan tangan" })}
-            </h2>
-            <p className="mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
-              {x({ en: "Every fixture we carry is offered in a finish we have specified ourselves. Samples of all six are held at each store, and may be taken home before you commit to a room.",
-                   id: "Setiap produk kami tersedia dalam finishing yang kami tentukan sendiri. Sampel keenamnya tersedia di setiap toko, dan boleh dibawa pulang sebelum Anda memutuskan." })}
-            </p>
-
-            {!form ? (
-              <button onClick={() => setForm(true)} className="tap-y u mt-9 inline-block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">{t("sampleBox")}</button>
-            ) : sent ? (
-              <p className="mt-9 text-[12px] leading-[1.7] text-accent">{t("requestSent")}</p>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); if (email.includes("@")) setSent(true); }}
-                className="mt-9 flex max-w-[360px] items-center gap-4 border-b border-ink/25 pb-3 focus-within:border-ink">
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("email")} aria-label={t("email")}
-                  className="w-full bg-transparent text-[12.5px] font-medium uppercase tracking-[0.06em] text-ink placeholder:text-mute focus:outline-none" />
-                <button type="submit" aria-label={t("sampleBox")} className="shrink-0 text-ink/85 transition-transform duration-500 ease-quiet hover:translate-x-1"><Icon name="arrow" size={17} /></button>
-              </form>
-            )}
+    <section id="finishes" className="w-full scroll-mt-[90px] bg-shell">
+      <div className="mx-auto max-w-site px-5 py-16 md:px-10 md:py-24">
+        <Reveal className="lx-head">
+          <div>
+            <p className="lx-eyebrow rv">{x({ en: "Colours & finishes", id: "Warna & finishing" })}</p>
+            <h2 className="lx-h2"><span className="rise"><span>{x({ en: "What each collection comes in", id: "Pilihan warna setiap koleksi" })}</span></span></h2>
           </div>
-
-          <div className="lg:col-span-8">
-            <div className="cascade grid grid-cols-2 gap-[1px] border border-line bg-line sm:grid-cols-3">
-              {FINISH_LIST.map((s, n) => (
-                <button key={s.id} onMouseEnter={() => setActive(n)} onFocus={() => setActive(n)} onClick={() => go("#/shop/search/" + encodeURIComponent(x(s.name)))}
-                  className="group relative bg-bone p-6 text-left transition-colors duration-500 ease-quiet hover:bg-shell md:p-8">
-                  <span className="block aspect-square w-full transition-transform duration-[800ms] ease-quiet group-hover:scale-[1.03]" style={{ background: s.hex }} />
-                  <span className={"mt-5 block text-[12px] font-medium uppercase tracking-[0.08em] transition-colors duration-300 " + (active === n ? "text-ink" : "text-mute")}>{x(s.name)}</span>
-                </button>
-              ))}
-            </div>
-            <p className="rv rv-6 mt-7 text-[21px] font-normal leading-[1.5] text-mute md:text-[23px]">{x(FINISH_NOTES[f.id])}</p>
+          <div>
+            <p className="lx-lede rv rv-2">{x({ en: "Each colour is shown on a product made in it. Colours on a screen are never exact: ask us to see one in store.",
+                                                 id: "Setiap warna ditampilkan pada produk yang dibuat dalam warna itu. Warna di layar tidak pernah persis: tanyakan kepada kami untuk melihatnya di toko." })}</p>
           </div>
         </Reveal>
+        <div className="flex flex-col gap-12 md:gap-16">
+          {groups.map((g) => (
+            <Reveal still key={g.id} className="block">
+              <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-line pb-4">
+                <h3 className="text-[18px] font-medium leading-[26px] text-ink">{x(g.title)}</h3>
+                <a href={g.to} className="lx-link"><LxLinkText>{x({ en: "Shop", id: "Belanja" })}</LxLinkText></a>
+              </div>
+              <div className="cascade grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
+                {g.items.map((it) => (
+                  <a key={it.v} href={"#/shop/p/" + it.p.slug} className="lx-hover group block" data-finish={it.v}>
+                    <span className={"relative block aspect-square overflow-hidden " + pPlate(it.p)}>
+                      <Photo src={pImg(it.p, 0, 700)} alt="" tone={pTone(it.p)} className={"lx-fill lx-zoom " + pFit(it.p)} />
+                    </span>
+                    <span className="mt-4 block text-[16px] font-medium leading-[24px] text-ink">{x(it.name)}</span>
+                    <span className="block text-[14px] leading-[22px] text-mute">{products(it.n)}</span>
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -12553,20 +12554,23 @@ const ProductsPage = () => {
     return () => clearTimeout(id);
   }, [route.section]);
 
+  /* what each collection holds, counted from the site's own lists */
+  const live = CATALOG.filter(listed);
+  const models = (cat) => new Set(live.filter((p) => p.cat === cat).map((p) => p.model || p.slug)).size;
   const groups = [
-    { id: "sinks",    img: null, tone: null,
-      body: { en: "Six models cast from quartz composite at eighty per cent mineral content, cured slowly so the surface takes heat, stains and a dropped pan without complaint.",
-              id: "Enam model dari komposit kuarsa dengan kandungan mineral delapan puluh persen, dikeraskan perlahan agar tahan panas, noda dan panci yang terjatuh." } },
-    /* the twenty-five of the stainless steel price list, pictured by W 8050 TSS */
-    { id: "steelsinks", img: null, tone: null, lead: "w-8050-tss",
+    { id: "sinks", lead: "gsu-7545-titanium-grey",
+      body: { en: "Granite composite kitchen sinks: " + models("sinks") + " models, in Pearl Black, Pure White and Titanium Grey.",
+              id: "Bak cuci dapur komposit granit: " + models("sinks") + " model, dalam Hitam Mutiara, Putih Murni dan Abu Titanium." } },
+    /* the stainless steel price list's sinks, pictured by W 8050 TSS */
+    { id: "steelsinks", lead: "w-8050-tss",
       body: KS_KINDS["stainless-steel"].lede },
     /* the doors, pictured by the PT 2602 */
-    { id: "doors", img: null, tone: null, lead: "pt-2602-dark-grey-black-list",
-      body: { en: "Wellup UPVC doors: 19 models, each 200 x 70 cm, in White, Brown and Dark Grey — from Rp 1.300.000.",
-              id: "Pintu UPVC Wellup: 19 model, masing-masing 200 x 70 cm, dalam White, Brown dan Dark Grey — mulai Rp 1.300.000." } },
+    { id: "doors", lead: "pt-2602-dark-grey-black-list",
+      body: { en: "Wellup UPVC doors: " + models("doors") + " models, each 200 x 70 cm, in White, Brown and Dark Grey — from Rp 1.300.000.",
+              id: "Pintu UPVC Wellup: " + models("doors") + " model, masing-masing 200 x 70 cm, dalam White, Brown dan Dark Grey — mulai Rp 1.300.000." } },
     { id: "sanitary", pic: "img/home/cat-sanitary.webp", tone: "#C9C0B2",
-      body: { en: "Basins, mixers and showers for the bathroom and the kitchen.",
-              id: "Wastafel, keran dan shower untuk kamar mandi dan dapur." } },
+      body: { en: "Faucets, basins and sanitary ware for the bathroom and the kitchen. Not listed online yet: ask us what is in store.",
+              id: "Keran, wastafel dan perlengkapan saniter untuk kamar mandi dan dapur. Belum tercantum online: tanyakan kepada kami." } },
   ];
 
   return (
@@ -12583,8 +12587,8 @@ const ProductsPage = () => {
         </div>
       </PageHead>
 
-      <section className="mx-auto max-w-site px-5 pb-[110px] md:px-10 md:pb-[190px]">
-        <div className="flex flex-col gap-[90px] md:gap-[160px]">
+      <section className="mx-auto max-w-site px-5 pb-16 md:px-10 md:pb-24">
+        <div className="flex flex-col gap-16 md:gap-24">
           {groups.map((g, n) => {
             const any = (g.lead && bySlug(g.lead)) || CATALOG.find((p) => p.cat === g.id);
             const flip = n % 2 === 1;
@@ -12599,9 +12603,9 @@ const ProductsPage = () => {
                     </div>
                   </div>
                   <div className={"md:col-span-4 " + (flip ? "md:order-1 md:col-start-1" : "md:col-start-9")}>
-                    <Eyebrow className="mb-7">{String(n + 1).padStart(2, "0")}</Eyebrow>
-                    <h2 className="max-w-[12ch] text-[32px] font-medium leading-[1.14] text-ink md:text-[46px]">{x(catLabel(g.id))}</h2>
-                    <p className="mt-8 max-w-[40ch] text-[15.5px] leading-[1.8] text-mute">{x(g.body)}</p>
+                    <p className="lx-eyebrow">{String(n + 1).padStart(2, "0")}</p>
+                    <h2 className="lx-h2 max-w-[14ch]">{x(catLabel(g.id))}</h2>
+                    <p className="mt-6 max-w-[40ch] text-[16px] leading-[26px] text-mute">{x(g.body)}</p>
                     <a href={`#/shop/c/${g.id}`} className="group/l mt-9 inline-flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink">
                       <span className="u">{t("shopCollection")}</span>
                       <span className="transition-transform duration-500 ease-quiet group-hover/l:translate-x-1.5"><Icon name="arrow" size={15} /></span>
@@ -12614,19 +12618,19 @@ const ProductsPage = () => {
         </div>
       </section>
 
-      {/* finishes belong to the brand, not the till */}
-      <Finishes />
+      {/* the colours and finishes the products really come in */}
+      <RealFinishes />
 
       <section className="w-full bg-shell">
-        <div className="relative mx-auto max-w-site overflow-hidden px-5 py-[110px] md:px-10 md:py-[150px]">
+        <div className="relative mx-auto max-w-site overflow-hidden px-5 py-16 md:px-10 md:py-24">
           <div ref={par} className="par">
             <Reveal className="mx-auto max-w-[620px] text-center">
-              <h2 className="text-[32px] font-medium leading-[1.14] text-ink md:text-[46px]">
-                {x({ en: "Everything here is in the shop", id: "Semuanya tersedia di toko" })}
+              <h2 className="lx-h2 mx-auto">
+                {x({ en: "Prices are in the shop", id: "Harga ada di toko" })}
               </h2>
-              <p className="mx-auto mt-8 max-w-[46ch] text-[15.5px] leading-[1.8] text-mute">
-                {x({ en: "Prices, stock, delivery and installation — all of it lives one click away.",
-                     id: "Harga, stok, pengiriman dan pemasangan — semuanya hanya satu klik dari sini." })}
+              <p className="mx-auto mt-6 max-w-[46ch] text-[16px] leading-[26px] text-mute">
+                {x({ en: "Every sink and door, with its price list's price and its sizes. Ask us about anything else.",
+                     id: "Setiap bak cuci dan pintu, dengan harga dari daftar harganya dan ukurannya. Tanyakan kepada kami untuk yang lain." })}
               </p>
               <a href="#/shop" className="group/cta mt-10 inline-flex h-[54px] items-center gap-5 whitespace-nowrap border border-ink bg-ink pl-9 pr-7 text-[12px] font-semibold uppercase tracking-[0.1em] text-bone transition-[background-color,color] duration-700 ease-quiet hover:bg-transparent hover:text-ink">
                 {t("enterShop")}
@@ -12647,7 +12651,8 @@ const PageHead = ({ trail, title, sub, children }) => (
   <div className="mx-auto max-w-site px-5 pb-16 pt-12 md:px-10 md:pb-24 md:pt-20">
     {trail ? <Breadcrumb trail={trail} /> : null}
     <Reveal className="mt-12 block md:mt-16">
-      <h1 className="max-w-[16ch] text-[46px] font-medium leading-[1.05] md:text-[80px]">
+      {/* Display/L of the type scale: Source Serif 4 Light, 48/54 (36/42 on a phone) */}
+      <h1 className="page-title max-w-[18ch]">
         <span className="rise"><span>{title}</span></span>
       </h1>
       {sub ? <p className="mt-9 max-w-[54ch] text-[16px] leading-[1.8] text-mute md:mt-11">{sub}</p> : null}

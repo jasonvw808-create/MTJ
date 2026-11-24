@@ -8090,7 +8090,7 @@ const T = {
   subtotal:    { en: "Subtotal",         id: "Subtotal" },
   shipping:    { en: "Shipping",         id: "Pengiriman" },
   total:       { en: "Total",            id: "Total" },
-  free:        { en: "Complimentary",    id: "Gratis" },
+  free:        { en: "To be confirmed",  id: "Dikonfirmasi" },
   checkout:    { en: "Checkout",         id: "Pembayaran" },
   toCheckout:  { en: "Proceed to checkout", id: "Lanjut ke pembayaran" },
   placeOrder:  { en: "Place order",      id: "Buat pesanan" },
@@ -9386,9 +9386,7 @@ const mapsUrl = (s) => "https://www.google.com/maps/search/?api=1&query=" + enco
 const TAGLINE = { en: "Supermarket Bahan Bangunan", id: "Supermarket Bahan Bangunan" };
 
 const ANNOUNCEMENTS = [
-  { en:"Complimentary delivery across Jabodetabek", id:"Gratis pengiriman se-Jabodetabek" },
-  { en:"Installation by certified fitters, on every fixture", id:"Pemasangan oleh teknisi bersertifikat, untuk setiap produk" },
-  { en:"Free delivery across Jabodetabek on orders over Rp 5.000.000", id:"Gratis ongkir Jabodetabek untuk pesanan di atas Rp 5.000.000" },
+  /* empty until the house confirms what it offers (delivery, installation): with no message the bar is not drawn */
 ];
 
 const ROOMS = [
@@ -9418,8 +9416,8 @@ const SITU = [
 ];
 
 const SERVICES = [
-  { icon:"truck", label:{en:"Delivery Across Jabodetabek",id:"Pengiriman se-Jabodetabek"}, link:{en:"Coverage & timing",id:"Cakupan & waktu"} },
-  { icon:"tool",  label:{en:"Installation by Our Fitters",id:"Pemasangan oleh Teknisi Kami"}, link:{en:"How it works",id:"Cara kerjanya"} },
+  { icon:"truck", label:{en:"Delivery",id:"Pengiriman"}, link:{en:"Coverage & timing",id:"Cakupan & waktu"} },
+  { icon:"tool",  label:{en:"Installation",id:"Pemasangan"}, link:{en:"How it works",id:"Cara kerjanya"} },
   { icon:"cal",   label:{en:"Design Consultation",id:"Konsultasi Desain"}, link:{en:"Arrange one",id:"Atur jadwal"} },
 ];
 
@@ -11071,12 +11069,13 @@ const AnnouncementBar = ({ solid }) => {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || !ANNOUNCEMENTS.length) return;
     const t = setInterval(() => setI((v) => (v + 1) % ANNOUNCEMENTS.length), 5200);
     return () => clearInterval(t);
   }, [paused]);
   const step = (d) => setI((v) => (v + d + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length);
 
+  if (!ANNOUNCEMENTS.length) return null;
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} data-announce=""
       className={"group relative h-9 w-full overflow-hidden transition-[background-color,color] duration-500 ease-quiet " + (solid ? "bg-shell text-ink" : "bg-black/10 text-white")}>
@@ -11559,8 +11558,8 @@ const BrandFooter = () => {
           <div className="md:col-span-5">
             <a href="#/" aria-label={BRAND}><Logo h={30} /></a>
             <p className="mt-9 max-w-[38ch] text-[16px] leading-[1.8] text-mute">
-              {x({ en: "A building materials house in Jakarta, carrying kitchens, bathrooms and surfaces chosen to be worth keeping. Trading since 1998.",
-                   id: "Rumah bahan bangunan di Jakarta, menyediakan dapur, kamar mandi dan permukaan yang dipilih untuk bertahan lama. Berdagang sejak 1998." })}
+              {x({ en: "A building materials house in Jakarta, carrying kitchens, bathrooms and surfaces chosen to be worth keeping.",
+                   id: "Rumah bahan bangunan di Jakarta, menyediakan dapur, kamar mandi dan permukaan yang dipilih untuk bertahan lama." })}
             </p>
           </div>
           <div className="md:col-span-3 md:col-start-7">
@@ -11933,7 +11932,7 @@ const InSitu = () => {
           <Eyebrow>{x({ en: "In situ", id: "Di lokasi" })}</Eyebrow>
           <h2 className="mt-7 text-[32px] leading-[1.14] md:text-[48px] font-display font-light">{x(S.name)}</h2>
           <p className="mt-8 max-w-[55ch] text-[16px] leading-[1.8] text-mute">
-            {x({ en: "Everything in this room is held in stock and fitted by our own installers.", id: "Semua di ruangan ini tersedia dan dipasang oleh teknisi kami sendiri." })}{" "}
+            
             <span className="hover-only">{x({ en: "Hover a marker to see what was specified.", id: "Arahkan kursor ke penanda untuk melihat spesifikasinya." })}</span>
             <span className="touch-only">{x({ en: "Tap a marker to see what was specified.", id: "Ketuk penanda untuk melihat spesifikasinya." })}</span>
           </p>
@@ -12038,8 +12037,8 @@ const Newsletter = () => {
         <Reveal still className="cascade mx-auto max-w-[560px]">
           <h2 className="text-[32px] leading-[1.14] md:text-[48px] font-display font-light">{x({ en: "Plans, Slowly Made", id: "Rencana yang Matang" })}</h2>
           <p className="mx-auto mt-8 max-w-[46ch] text-[16px] leading-[1.8] text-mute">
-            {x({ en: "New rooms, new finishes, and notes from our fitters — a few times a year, never more.",
-                 id: "Ruangan baru, finishing baru, dan catatan dari teknisi kami — beberapa kali setahun, tidak lebih." })}
+            {x({ en: "New rooms and new finishes — a few times a year, never more.",
+                 id: "Ruangan baru dan finishing baru — beberapa kali setahun, tidak lebih." })}
           </p>
           <form onSubmit={(e) => { e.preventDefault(); if (v.includes("@")) setSent(true); }}
             className="mx-auto mt-12 flex max-w-[420px] items-center gap-4 border-b border-ink/25 pb-3 transition-colors duration-500 focus-within:border-ink">
@@ -12263,9 +12262,6 @@ const LxBrand = () => {
           <p className="lx-brand-body rv rv-3">
             {x({ en: "Will this still be good in ten years? It is the only test a product has to pass to reach our floor, and most do not. What survives it is a narrow range — fewer taps than our competitors, fewer tiles, fewer of almost everything.",
                  id: "Apakah ini masih akan baik sepuluh tahun lagi? Itulah satu-satunya ujian yang harus dilewati sebuah produk untuk sampai ke lantai kami, dan sebagian besar gagal. Yang bertahan adalah rangkaian yang ringkas — lebih sedikit keran dari pesaing kami, lebih sedikit keramik, lebih sedikit hampir segalanya." })}
-          </p>
-          <p className="lx-brand-note rv rv-4">
-            {x({ en: "We have been answering it in Jakarta since 1998.", id: "Kami sudah menjawabnya di Jakarta sejak 1998." })}
           </p>
           <div className="lx-actions rv rv-5">
             <LxButton to="#/about" ghost>{x({ en: "Discover More", id: "Selengkapnya" })}</LxButton>
@@ -12522,8 +12518,8 @@ const ShopHome = () => {
             </Reveal>
             <Reveal className="mt-8 block" delay={380}>
               <p className="max-w-[48ch] text-[16px] leading-[1.8] text-white/85">
-                {x({ en: "Kitchen sinks, UPVC doors, sanitary and plumbing — delivered across Jabodetabek and fitted by our own installers.",
-                     id: "Bak cuci dapur, pintu UPVC, saniter dan perpipaan — dikirim se-Jabodetabek dan dipasang oleh teknisi kami sendiri." })}
+                {x({ en: "Kitchen sinks, UPVC doors, sanitary and plumbing.",
+                     id: "Bak cuci dapur, pintu UPVC, saniter dan perpipaan." })}
               </p>
             </Reveal>
             <Reveal className="mt-10 block md:mt-12" delay={500}>
@@ -12608,8 +12604,8 @@ const ShopHome = () => {
                 {x({ en: "Every product here passed the same test", id: "Setiap produk di sini lolos ujian yang sama" })}
               </h2>
               <p className="mt-8 max-w-[52ch] text-[16px] leading-[1.8] text-mute">
-                {x({ en: "Will it still be good in ten years? Most of what we were offered did not pass, which is why this shop is shorter than it could be — and why the warranty is printed in the specifications rather than buried in a policy.",
-                     id: "Apakah masih akan baik sepuluh tahun lagi? Sebagian besar yang ditawarkan kepada kami tidak lolos, itulah sebabnya toko ini lebih ringkas dari yang mungkin — dan mengapa garansinya tercetak di spesifikasi, bukan terkubur dalam kebijakan." })}
+                {x({ en: "Will it still be good in ten years? Most of what we were offered did not pass, which is why this shop is shorter than it could be.",
+                     id: "Apakah masih akan baik sepuluh tahun lagi? Sebagian besar yang ditawarkan kepada kami tidak lolos, itulah sebabnya toko ini lebih ringkas dari yang mungkin." })}
               </p>
             </div>
             <div className="md:col-span-4 md:col-start-9">
@@ -13240,13 +13236,6 @@ const ProductPage = ({ slug }) => {
                 </table>
               </Accordion>
               <KsProductDownloads p={p} />
-              <Accordion title={x({ en: "Delivery & Installation", id: "Pengiriman & Pemasangan" })}>
-                <p className="mb-3">{x({ en: "Complimentary delivery across Jabodetabek in 2–4 working days. Outside the region, quoted at checkout.", id: "Gratis pengiriman se-Jabodetabek dalam 2–4 hari kerja. Di luar wilayah, biaya dihitung saat pembayaran." })}</p>
-                <p>{x({ en: "Installation by our own fitters can be booked with the order.", id: "Pemasangan oleh teknisi kami dapat dipesan bersama pesanan." })}</p>
-              </Accordion>
-              <Accordion title={x({ en: "Returns & Warranty", id: "Pengembalian & Garansi" })}>
-                <p>{x({ en: "Unopened goods may be returned within 14 days. Warranty terms are listed in the specifications above.", id: "Barang yang belum dibuka dapat dikembalikan dalam 14 hari. Ketentuan garansi tercantum pada spesifikasi di atas." })}</p>
-              </Accordion>
             </div>
           </div>
         </div>
@@ -13485,10 +13474,6 @@ const BagPage = () => {
               <div className="mt-8"><Action onClick={() => go("#/shop/checkout")}>{t("toCheckout")}</Action></div>
               <p className="mt-6 flex items-center justify-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-mute"><Icon name="lock" size={13} /> {t("checkout")}</p>
             </div>
-            <ul className="mt-8 flex flex-col gap-3 text-[12px] leading-[1.7] text-mute">
-              <li className="flex items-center gap-3"><Icon name="truck" size={16} /> {x({ en: "Complimentary delivery across Jabodetabek", id: "Gratis pengiriman se-Jabodetabek" })}</li>
-              <li className="flex items-center gap-3"><Icon name="tool" size={16} /> {x({ en: "Installation available on request", id: "Pemasangan tersedia atas permintaan" })}</li>
-            </ul>
           </div>
         </div>
       </div>
@@ -13507,9 +13492,9 @@ const CheckoutPage = () => {
   const set = (k) => (v) => setF((p) => ({ ...p, [k]: v }));
 
   const SHIP = [
-    { id: "standard", label: { en: "Standard delivery", id: "Pengiriman reguler" }, note: { en: "2–4 working days", id: "2–4 hari kerja" }, price: 0 },
+    { id: "standard", label: { en: "Standard delivery", id: "Pengiriman reguler" }, note: { en: "Confirmed with you", id: "Dikonfirmasi dengan Anda" }, price: 0 },
     { id: "express",  label: { en: "Express delivery",  id: "Pengiriman ekspres" }, note: { en: "Next working day", id: "Hari kerja berikutnya" }, price: 250000 },
-    { id: "install",  label: { en: "Delivery + installation", id: "Pengiriman + pemasangan" }, note: { en: "Booked by our fitters", id: "Dijadwalkan oleh teknisi kami" }, price: 750000 },
+    { id: "install",  label: { en: "Delivery + installation", id: "Pengiriman + pemasangan" }, note: { en: "Confirmed with you", id: "Dikonfirmasi dengan Anda" }, price: 750000 },
     { id: "pickup",   label: { en: "Collect in store", id: "Ambil di toko" }, note: { en: "Ready within 24 hours", id: "Siap dalam 24 jam" }, price: 0 },
   ];
   const PAY = [
@@ -13819,7 +13804,7 @@ const JournalPage = ({ slug }) => {
     <>
       <PageHead trail={[{ label: t("home"), to: "#/" }, { label: lang === "id" ? "Artikel" : "Journal" }]}
         title={lang === "id" ? "Ide & Inspirasi" : "Ideas & Inspiration"}
-        sub={x({ en: "Notes from our fitters, our buyers and the rooms we have finished.", id: "Catatan dari teknisi, tim pembelian, dan ruangan-ruangan yang telah kami selesaikan." })} />
+        sub={x({ en: "Notes on materials, finishes and rooms.", id: "Catatan tentang material, finishing, dan ruangan." })} />
       <div className="mx-auto max-w-site px-5 pb-16 md:px-10">
         <div className="grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {JOURNAL.map((j, n) => (
@@ -13843,12 +13828,10 @@ const JournalPage = ({ slug }) => {
 const ServicesPage = () => {
   const { t, x } = useStore();
   const blocks = [
-    { icon: "truck", title: { en: "Delivery across Jabodetabek", id: "Pengiriman se-Jabodetabek" },
-      body: { en: "Complimentary on every order within Jabodetabek, in two to four working days. Express and same-week slots are offered at checkout, and heavy items are carried to the room rather than left at the gate.",
-              id: "Gratis untuk setiap pesanan di Jabodetabek, dalam dua sampai empat hari kerja. Pilihan ekspres tersedia saat pembayaran, dan barang berat diantar sampai ke ruangan, bukan ditinggal di pagar." } },
-    { icon: "tool", title: { en: "Installation by our own fitters", id: "Pemasangan oleh teknisi kami" },
-      body: { en: "Our installers are on our payroll and trained on the products we sell. Book installation with the order and one team is responsible for the fixture and the fitting — so there is one number to call.",
-              id: "Teknisi kami adalah karyawan sendiri dan dilatih pada produk yang kami jual. Pesan pemasangan bersama pesanan, dan satu tim bertanggung jawab atas produk sekaligus pemasangannya — jadi hanya ada satu nomor untuk dihubungi." } },
+    { icon: "truck", title: { en: "Delivery", id: "Pengiriman" },
+      body: { en: "Ask us about delivery to your address.", id: "Tanyakan kepada kami tentang pengiriman ke alamat Anda." } },
+    { icon: "tool", title: { en: "Installation", id: "Pemasangan" },
+      body: { en: "Ask us about installation.", id: "Tanyakan kepada kami tentang pemasangan." } },
     { icon: "cal", title: { en: "Project & trade accounts", id: "Akun proyek & kontraktor" },
       body: { en: "Trade accounts carry project pricing, stock held against a build schedule, and a named contact. Send a bill of quantities and we will price it within two working days.",
               id: "Akun proyek mendapat harga khusus, stok ditahan sesuai jadwal pembangunan, dan satu kontak bernama. Kirim RAB dan kami hitung dalam dua hari kerja." } },
@@ -13918,8 +13901,6 @@ const AboutPage = () => {
             <div className="flex flex-col gap-7 text-[16px] leading-[1.85] text-mute">
               <p>{x({ en: "We keep a short range on purpose. Every fixture on these pages has been chosen against one test — whether it will look better worn than new — and everything that failed it is not here. That leaves us with fewer taps than our competitors, fewer tiles, and fewer of almost everything.",
                       id: "Rangkaian kami sengaja pendek. Setiap produk di halaman ini dipilih dengan satu ujian — apakah ia akan tampak lebih baik saat aus ketimbang saat baru — dan semua yang gagal tidak ada di sini. Hasilnya: keran kami lebih sedikit dari pesaing, keramik lebih sedikit, hampir semuanya lebih sedikit." })}</p>
-              <p>{x({ en: "Goods are checked before they leave the warehouse, fitted by installers on our own payroll, and backed by a warranty printed in the specifications rather than buried in a policy. If a joint weeps in year three, there is one number to call and it is ours.",
-                      id: "Barang diperiksa sebelum meninggalkan gudang, dipasang oleh teknisi karyawan kami sendiri, dan didukung garansi yang tercetak di spesifikasi, bukan terkubur dalam kebijakan. Bila ada sambungan merembes di tahun ketiga, hanya ada satu nomor untuk dihubungi, dan itu nomor kami." })}</p>
             </div>
           </Reveal>
         </div>
